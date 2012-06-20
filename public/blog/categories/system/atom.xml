@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Just Another Linux BLog]]></title>
-  <link href="http://http://warm-sword-7449.herokuapp.com//atom.xml" rel="self"/>
+  <title><![CDATA[Category: System | Just Another Linux BLog]]></title>
+  <link href="http://http://warm-sword-7449.herokuapp.com//blog/categories/system/atom.xml" rel="self"/>
   <link href="http://http://warm-sword-7449.herokuapp.com//"/>
   <updated>2012-06-20T20:32:48+01:00</updated>
   <id>http://http://warm-sword-7449.herokuapp.com//</id>
