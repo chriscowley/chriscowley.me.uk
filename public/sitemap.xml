@@ -2,28 +2,44 @@
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
         <loc>
+            http://http://warm-sword-7449.herokuapp.com//blog/2012/02/08/home-made-redundant-thin-provisioned-san/
+        </loc>
+        <lastmod>2012-06-21T20:18:21+01:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            http://http://warm-sword-7449.herokuapp.com//blog/2012/03/19/highly-available-nfs-slash-nas/
+        </loc>
+        <lastmod>2012-06-21T19:56:03+01:00</lastmod>
+    </url>
+    <url>
+        <loc>
             http://http://warm-sword-7449.herokuapp.com//blog/2012/04/05/pycurl-and-self-signed-ssl-certificates/
         </loc>
-        <lastmod>2012-06-21T16:56:26+01:00</lastmod>
+        <lastmod>2012-06-21T19:38:39+01:00</lastmod>
     </url>
     <url>
         <loc>
             http://http://warm-sword-7449.herokuapp.com//blog/2012/04/16/a-learning-experience/
         </loc>
-        <lastmod>2012-06-21T10:34:17+01:00</lastmod>
+        <lastmod>2012-06-21T20:21:32+01:00</lastmod>
     </url>
     <url>
         <loc>
             http://http://warm-sword-7449.herokuapp.com//blog/2012/04/18/skype-video-on-fedora-64bit/
         </loc>
-        <lastmod>2012-06-21T16:36:42+01:00</lastmod>
+        <lastmod>2012-06-21T20:20:48+01:00</lastmod>
     </url>
     <url>
         <loc>http://http://warm-sword-7449.herokuapp.com//blog/archives/</loc>
-        <lastmod>2012-06-21T16:56:26+01:00</lastmod>
+        <lastmod>2012-06-21T20:21:32+01:00</lastmod>
     </url>
     <url>
         <loc>http://http://warm-sword-7449.herokuapp.com//</loc>
-        <lastmod>2012-06-21T16:56:26+01:00</lastmod>
+        <lastmod>2012-06-21T20:21:32+01:00</lastmod>
+    </url>
+    <url>
+        <loc>http://http://warm-sword-7449.herokuapp.com//about-me/</loc>
+        <lastmod>2012-06-21T20:29:46+01:00</lastmod>
     </url>
 </urlset>

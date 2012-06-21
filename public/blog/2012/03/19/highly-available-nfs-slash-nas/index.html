@@ -1,0 +1,515 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Highly Available NFS/NAS - Just Another Linux Blog</title>
+  <meta name="author" content="Chris Cowley">
+
+  
+  <meta name="description" content="Take 2 Centos Servers (nfs1 and nfs2 will do nicely) and install ELrepo and EPEL on them both: 1
+2
+3
+yum install \ http://download.fedoraproject.org/ &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://http://warm-sword-7449.herokuapp.com//blog/2012/03/19/highly-available-nfs-slash-nas/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Just Another Linux Blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Just Another Linux Blog</a></h1>
+  
+    <h2>quite a bit about cycling as well</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:http://warm-sword-7449.herokuapp.com/" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about-me">About Me</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Highly Available NFS/NAS</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-03-19T16:59:00+00:00" pubdate data-updated="true">Mar 19<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Take 2 Centos Servers (nfs1 and nfs2 will do nicely) and install ELrepo and EPEL on them both:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>yum install \
+</span><span class='line'>    http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-5.noarch.rpm \
+</span><span class='line'>    http://elrepo.org/elrepo-release-6-4.el6.elrepo.noarch.rpm --nogpgcheck</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Each of them should ideally have 2 NICS, with the secondary ones just used for DRBD sync purposes. We’ll give these the address 10.0.0.1/32 and 10.0.0.2/32.</p>
+
+<p>I am also assuming that you have disabled the firewall and SELinux – I do not recommend that for production, but for testing it is fine.</p>
+
+<h2>DRBD Configuration</h2>
+
+<p>Install DRBD 8.4 on the both:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>yum install drbd84-utils kmod-drbd84</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On each node the file /etc/drbd.d/global_common.conf should contain:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>global {
+</span><span class='line'>  usage-count yes;
+</span><span class='line'>}
+</span><span class='line'>common {
+</span><span class='line'>  net {
+</span><span class='line'>    protocol C;
+</span><span class='line'>  }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>and /etc/drbd.d/main.res should contain:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>resource main {
+</span><span class='line'>  on nfs1 {
+</span><span class='line'>    device    /dev/drbd0;
+</span><span class='line'>    disk      /dev/sdb;
+</span><span class='line'>    address   10.0.0.1:7788;
+</span><span class='line'>    meta-disk internal;
+</span><span class='line'>  }
+</span><span class='line'>  on nfs2 {
+</span><span class='line'>    device    /dev/drbd0;
+</span><span class='line'>    disk      /dev/sdb;
+</span><span class='line'>    address   10.0.0.2:7788;
+</span><span class='line'>    meta-disk internal;
+</span><span class='line'>  }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On both nodes you will need to create the resource metadata:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>drbdadm create-md main</span></code></pre></td></tr></table></div></figure>
+
+
+<p>and start the daemons</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>service drbd start
+</span><span class='line'>chkconfig drbd on</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now <code>service drbd status</code> will give you:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>drbd driver loaded OK; device status:
+</span><span class='line'>version: 8.4.1 (api:1/proto:86-100)
+</span><span class='line'>GIT-hash: 91b4c048c1a0e06777b5f65d312b38d47abaea80 build by dag@Build64R6, 2011-12-21 06:08:50
+</span><span class='line'>m:res   cs         ro                   ds                         p  mounted  fstype
+</span><span class='line'>0:main  Connected  Secondary/Secondary  Inconsistent/Inconsistent  C</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Both devices or secondary and inconsistent, this is normal at this stage. Choose a node to be your primary and run:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>drbdadm primary --force main</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And it start sync’ing, which will take a long time. You can temporarily make it faster with (on one node:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>drbdadm disk-options --resync-rate=110M main</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Put it back again with drbdadm adjust main</p>
+
+<p>On your primary node you can now create a fiiesystem. I’m using ext4 for no good reason other than it being the default. Use whatever you are most comfortable with.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mkfs.ext4 /dev/drbd0</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Configure NFS</h2>
+
+<p>If you diid a minimal Centos install, then you willl need to install the nfs-utils package (yum install nfs-utils). Prepare your mount points and exports on both servers:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mkdir /drbd
+</span><span class='line'>echo "/drbd/main *(rw)" >> /etc/exports</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now we do the actual NFS set up. We previously choose nfs1 as our master when you used it to trigger the initial sync. On nfs1 mount the replicated volumes, move the NFS data to it, then create symlinks to our replicated data.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mount /dev/drbd0 /drbd
+</span><span class='line'>mkdir /drbd/main
+</span><span class='line'>mv /var/lib/nfs/ /drbd/
+</span><span class='line'>ln -s /drbd/nfs/ /var/lib/nfs
+</span><span class='line'>umount /drbd</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you get errors about not bring able to remove directories in /var/lib/nfs do not worry.</p>
+
+<p>Now a little preparation on nfs2:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mv /var/lib/nfs /var/lib/nfs.bak
+</span><span class='line'>ln -s /drbd/nfs/ /var/lib/nfs</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This will create a broken symbolic link, but it will be fixed when everything fails over.</p>
+
+<h2>Heartbeat Configuration</h2>
+
+<p>Heartbeat is in the EPEL repository, so enable that and install it on both nodes:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>yum -y install heartbeat</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Make sure that <em>/etc/ha.d/ha.cf</em> contains:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>keepalive 2
+</span><span class='line'>deadtime 30
+</span><span class='line'>bcast eth0
+</span><span class='line'>node nfs1 nfs2</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The values in node should be whatever <code>uname -n</code> returns.</p>
+
+<p>Now create <em>/etc/ha.d/haresources</em>:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>nfs1 IPaddr::10.0.0.100/24/eth0 drbddisk::main Filesystem::/dev/drbd0::/drbd::ext4 nfslock nfs</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That is a little cryptic, so I’ll explain; nfs1 is the primary node, IPaddr sets up a floating address on eth0 that our clients will connect to. This has a resource drbddisk::main bound to it, which sets our main to resource to primary on nfs1. Filesystem mounts /dev/drbd0 at /drbd on nfs1. Finally the the services nfslock and nfs are started on nfs1.</p>
+
+<p>Finally, it needs an authentication file in /etc/ha.d/authkeys, which should be chmod’ed to 600 to be only readable by root.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>auth 3
+</span><span class='line'>3 md5 mypassword123</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You should also make sure that nfslock and nfs do not start up by themselves:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>chkconfig nfs off
+</span><span class='line'>chkconfig nfslock off</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now you can start heartbeat and check it is working:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>service heartbeat start
+</span><span class='line'>chkconfig heartbeat on</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Testing</h2>
+
+<p>Running <code>ifconfig</code> on nfs1 should give you something like:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>eth0      Link encap:Ethernet  HWaddr 52:54:00:84:73:BD  
+</span><span class='line'>          inet addr:10.0.0.1  Bcast:10.0.0.255  Mask:255.255.255.0
+</span><span class='line'>          inet6 addr: fe80::5054:ff:fe84:73bd/64 Scope:Link
+</span><span class='line'>          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+</span><span class='line'>          RX packets:881922 errors:0 dropped:0 overruns:0 frame:0
+</span><span class='line'>          TX packets:1302012 errors:0 dropped:0 overruns:0 carrier:0
+</span><span class='line'>          collisions:0 txqueuelen:1000
+</span><span class='line'>          RX bytes:239440621 (228.3 MiB)  TX bytes:5791818459 (5.3 GiB)
+</span><span class='line'>
+</span><span class='line'>eth0:0    Link encap:Ethernet  HWaddr 52:54:00:84:73:BD  
+</span><span class='line'>          inet addr:10.0.0.100  Bcast:10.0.0.255  Mask:255.255.255.0
+</span><span class='line'>          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+</span><span class='line'>
+</span><span class='line'>lo        Link encap:Local Loopback  
+</span><span class='line'>          inet addr:127.0.0.1  Mask:255.0.0.0
+</span><span class='line'>          inet6 addr: ::1/128 Scope:Host
+</span><span class='line'>          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+</span><span class='line'>          RX packets:2 errors:0 dropped:0 overruns:0 frame:0
+</span><span class='line'>          TX packets:2 errors:0 dropped:0 overruns:0 carrier:0
+</span><span class='line'>          collisions:0 txqueuelen:0
+</span><span class='line'>          RX bytes:224 (224.0 b)  TX bytes:224 (224.0 b)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Note an entry for <em>eth0:0</em> has miraculously appeared.</p>
+
+<p>Also <code>df</code> should include the entry:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>/dev/drbd0             20G  172M   19G   1% /drbd</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Reboot nfs1 and the services should appear on nfs2.</p>
+
+<p>Connect an NFS client to you floating address (10.0.0.100) and you should be able to kill the live node and it will carry on.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Chris Cowley</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-03-19T16:59:00+00:00" pubdate data-updated="true">Mar 19<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/storage/'>storage</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://http://warm-sword-7449.herokuapp.com//blog/2012/03/19/highly-available-nfs-slash-nas/" data-via="" data-counturl="http://http://warm-sword-7449.herokuapp.com//blog/2012/03/19/highly-available-nfs-slash-nas/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/02/08/home-made-redundant-thin-provisioned-san/" title="Previous Post: Home-made Redundant Thin-provisioned SAN">&laquo; Home-made Redundant Thin-provisioned SAN</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2012/04/05/pycurl-and-self-signed-ssl-certificates/" title="Next Post: PyCurl and self-signed SSL certificates">PyCurl and self-signed SSL certificates &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/04/18/skype-video-on-fedora-64bit/">Skype video on Fedora 64bit</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/04/16/a-learning-experience/">A Learning Experience</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/04/05/pycurl-and-self-signed-ssl-certificates/">PyCurl and self-signed SSL certificates</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/03/19/highly-available-nfs-slash-nas/">Highly Available NFS/NAS</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/02/08/home-made-redundant-thin-provisioned-san/">Home-made Redundant Thin-provisioned SAN</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Chris Cowley -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jalb';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://http://warm-sword-7449.herokuapp.com//blog/2012/03/19/highly-available-nfs-slash-nas/';
+        var disqus_url = 'http://http://warm-sword-7449.herokuapp.com//blog/2012/03/19/highly-available-nfs-slash-nas/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

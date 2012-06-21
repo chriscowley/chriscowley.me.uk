@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linux | Just Another Linux Blog]]></title>
   <link href="http://http://warm-sword-7449.herokuapp.com//blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://http://warm-sword-7449.herokuapp.com//"/>
-  <updated>2012-06-21T17:08:59+01:00</updated>
+  <updated>2012-06-21T20:30:55+01:00</updated>
   <id>http://http://warm-sword-7449.herokuapp.com//</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -23,7 +23,7 @@
 <p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>sudo yum install libv4l.i686</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
-<p>Now create a wrapper script to launch it with a custom environment. I put it in /usr/local/bin/skype</p>
+<p>Now create a wrapper script to launch it with a custom environment. I put it in <em>/usr/local/bin/skype</em></p>
 
 <p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span> (skype)</span> <a href='/downloads/code/skype'>download</a></figcaption>
  <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>

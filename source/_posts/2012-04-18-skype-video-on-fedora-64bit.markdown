@@ -12,7 +12,7 @@ Install Skype – I used <a href="http://slayachronicles.blogspot.co.uk/2012/03/
 sudo yum install libv4l.i686
 {% endcodeblock %}
 
-Now create a wrapper script to launch it with a custom environment. I put it in /usr/local/bin/skype
+Now create a wrapper script to launch it with a custom environment. I put it in _/usr/local/bin/skype_
 
 {% include_code lang:bash skype %}
 
