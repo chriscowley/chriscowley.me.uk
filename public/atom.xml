@@ -4,7 +4,7 @@
   <title><![CDATA[Just Another Linux BLog]]></title>
   <link href="http://http://warm-sword-7449.herokuapp.com//atom.xml" rel="self"/>
   <link href="http://http://warm-sword-7449.herokuapp.com//"/>
-  <updated>2012-06-21T17:00:18+01:00</updated>
+  <updated>2012-06-21T17:03:53+01:00</updated>
   <id>http://http://warm-sword-7449.herokuapp.com//</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -12,15 +12,6 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
-  
-  <entry>
-    <title type="html"><![CDATA[Highly Available NFS/NAS]]></title>
-    <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/06/21/highly-available-nfs-slash-nas/"/>
-    <updated>2012-06-21T16:59:00+01:00</updated>
-    <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/06/21/highly-available-nfs-slash-nas</id>
-    <content type="html"><![CDATA[
-]]></content>
-  </entry>
   
   <entry>
     <title type="html"><![CDATA[Skype video on Fedora 64bit]]></title>
