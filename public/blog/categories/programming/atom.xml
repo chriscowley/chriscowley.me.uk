@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Just Another Linux BLog]]></title>
-  <link href="http://http://warm-sword-7449.herokuapp.com//atom.xml" rel="self"/>
+  <title><![CDATA[Category: Programming | Just Another Linux BLog]]></title>
+  <link href="http://http://warm-sword-7449.herokuapp.com//blog/categories/programming/atom.xml" rel="self"/>
   <link href="http://http://warm-sword-7449.herokuapp.com//"/>
   <updated>2012-06-21T17:00:18+01:00</updated>
   <id>http://http://warm-sword-7449.herokuapp.com//</id>
@@ -12,55 +12,6 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
-  
-  <entry>
-    <title type="html"><![CDATA[Highly Available NFS/NAS]]></title>
-    <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/06/21/highly-available-nfs-slash-nas/"/>
-    <updated>2012-06-21T16:59:00+01:00</updated>
-    <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/06/21/highly-available-nfs-slash-nas</id>
-    <content type="html"><![CDATA[
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Skype video on Fedora 64bit]]></title>
-    <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/04/18/skype-video-on-fedora-64bit/"/>
-    <updated>2012-04-18T15:53:00+01:00</updated>
-    <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/04/18/skype-video-on-fedora-64bit</id>
-    <content type="html"><![CDATA[<p>Install Skype – I used <a href="http://slayachronicles.blogspot.co.uk/2012/03/installing-skype-on-fedora-16-64-bit.html" target="_blank" >these</a> instructions. This will seem to get everything working, but video will just give you a black screen and no error message. This is because Skype is 32 bit and you webcam driver is 64 bit. Make sure you have libv4l.i686 installed.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo yum install libv4l.i686</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now create a wrapper script to launch it with a custom environment. I put it in /usr/local/bin/skype</p>
-
-<figure class='code'><figcaption><span> (skype)</span> <a href='http://http://warm-sword-7449.herokuapp.com//downloads/code/skype'>download</a></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c">#!/bin/bash</span>
-</span><span class='line'><span class="nv">LD_PRELOAD</span><span class="o">=</span>/usr/lib/libv4l/v4l1compat.so  /usr/bin/skype
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This will now get loaded before the main Skype executable and you will have a working video device.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[A Learning Experience]]></title>
-    <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/04/16/a-learning-experience/"/>
-    <updated>2012-04-16T20:30:00+01:00</updated>
-    <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/04/16/a-learning-experience</id>
-    <content type="html"><![CDATA[<p>How many times have you installed/updated a bit of software and read the line “Please take a back up” or something to that effect? 99 times out of a hundred, you will just continue and ignore it.</p>
-
-<p>Today I had a reminder of why it is import to do so. I did a routine plug-in upgrade on our Jira installation (Customware Salesforce connector for those who want to know). I have done this several times, I had tested it our Dev installation I was 100% confident it would work as expected. However, I actually decided to take a backup anyway.</p>
-
-<p>I ran the upgrade in the production environment and re-indexed. Nothing out of the ordinary. 10% of the way into the index it fell over. Jira’s database was gone! Fortunately I was able to restore from my backup and at worst a comment or two was lost, but that still caused significant downtime.</p>
-
-<p>I had done everything I could to make sure the upgrade would go smoothly, but it still did not. That is why software vendors always tell you to take a backup before even the smallest change – DO IT!</p>
-]]></content>
-  </entry>
   
   <entry>
     <title type="html"><![CDATA[PyCurl and self-signed SSL certificates]]></title>
@@ -75,7 +26,7 @@
 
 <p>After an hour of Google-Fu and DuckDuckGo-Fu I finally managed to do what I wanted:</p>
 
-<figure class='code'><figcaption><span> (pycurl_ssl.py)</span> <a href='http://http://warm-sword-7449.herokuapp.com//downloads/code/pycurl_ssl.py'>download</a></figcaption>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span> (pycurl_ssl.py)</span> <a href='/downloads/code/pycurl_ssl.py'>download</a></figcaption>
  <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
@@ -98,8 +49,7 @@
 </span><span class='line'><span class="n">c</span><span class="o">.</span><span class="n">setopt</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">SSL_VERIFYPEER</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="c"># That is you key line for this purpose!</span>
 </span><span class='line'><span class="n">c</span><span class="o">.</span><span class="n">perform</span><span class="p">()</span>
 </span><span class='line'><span class="n">c</span><span class="o">.</span><span class="n">close</span>
-</span></code></pre></td></tr></table></div></figure>
-
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>There you go!</p>
 ]]></content>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: linux | Just Another Linux BLog]]></title>
+  <link href="http://http://warm-sword-7449.herokuapp.com//blog/categories/linux/atom.xml" rel="self"/>
+  <link href="http://http://warm-sword-7449.herokuapp.com//"/>
+  <updated>2012-06-21T17:00:18+01:00</updated>
+  <id>http://http://warm-sword-7449.herokuapp.com//</id>
+  <author>
+    <name><![CDATA[Chris Cowley]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Skype video on Fedora 64bit]]></title>
+    <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/04/18/skype-video-on-fedora-64bit/"/>
+    <updated>2012-04-18T15:53:00+01:00</updated>
+    <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/04/18/skype-video-on-fedora-64bit</id>
+    <content type="html"><![CDATA[<p>Install Skype – I used <a href="http://slayachronicles.blogspot.co.uk/2012/03/installing-skype-on-fedora-16-64-bit.html" target="_blank" >these</a> instructions. This will seem to get everything working, but video will just give you a black screen and no error message. This is because Skype is 32 bit and you webcam driver is 64 bit. Make sure you have libv4l.i686 installed.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo yum install libv4l.i686</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Now create a wrapper script to launch it with a custom environment. I put it in /usr/local/bin/skype</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span> (skype)</span> <a href='/downloads/code/skype'>download</a></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c">#!/bin/bash</span>
+</span><span class='line'><span class="nv">LD_PRELOAD</span><span class="o">=</span>/usr/lib/libv4l/v4l1compat.so  /usr/bin/skype
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>This will now get loaded before the main Skype executable and you will have a working video device.</p>
+]]></content>
+  </entry>
+  
+</feed>
