@@ -4,7 +4,7 @@
 
 url: http://http://warm-sword-7449.herokuapp.com/
 title: Just Another Linux Blog
-subtitle: quite a bit about cycling as well
+subtitle: maybe a bit about cycling as well
 author: Chris Cowley
 simple_search: http://www.duckduckgo.com/
 description:
@@ -89,8 +89,8 @@ delicious_user:
 delicious_count: 3
 
 # Disqus Comments
-disqus_short_name: jalb
-disqus_show_comment_count: false
+disqus_short_name: justanotherlinuxblog
+disqus_show_comment_count: true
 
 # Google Analytics
 google_analytics_tracking_id: UA-32843690-1
