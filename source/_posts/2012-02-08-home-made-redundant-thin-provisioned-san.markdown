@@ -2,7 +2,7 @@
 layout: post
 title: "Home-made Redundant Thin-provisioned SAN"
 date: 2012-02-08 20:02
-published: false
+published: true
 comments: true
 categories: storage
 ---

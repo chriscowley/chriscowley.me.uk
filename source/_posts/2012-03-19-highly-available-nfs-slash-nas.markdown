@@ -4,7 +4,7 @@ title: "Highly Available NFS/NAS"
 date: 2012-03-19 16:59
 comments: true
 categories: storage
-published: false
+published: true
 ---
 Take 2 Centos Servers (nfs1 and nfs2 will do nicely) and install ELrepo and EPEL on them both:
 
