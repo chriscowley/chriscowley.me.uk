@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: media | Just Another Linux Blog]]></title>
+  <link href="http://http://warm-sword-7449.herokuapp.com//blog/categories/media/atom.xml" rel="self"/>
+  <link href="http://http://warm-sword-7449.herokuapp.com//"/>
+  <updated>2012-06-22T14:20:29+01:00</updated>
+  <id>http://http://warm-sword-7449.herokuapp.com//</id>
+  <author>
+    <name><![CDATA[Chris Cowley]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Music Player Daemon in Fedora]]></title>
+    <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/03/16/music-player-daemon-in-fedora/"/>
+    <updated>2012-03-16T22:04:00+00:00</updated>
+    <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/03/16/music-player-daemon-in-fedora</id>
+    <content type="html"><![CDATA[<p>This should have nice and simple, but there was a little gotcha (for me anyway).</p>
+
+<p>First install the RPMFusion repositories:
+```
+yum localinstall --nogpgcheck \</p>
+
+<pre><code>http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-stable.noarch.rpm \
+http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-stable.noarch.rpm
+</code></pre>
+
+<p>```</p>
+
+<p>Now you can install MPD and a simple client with
+<code>
+yum install mpd mpc
+</code></p>
+
+<p>By default it looks in <em>/var/lib/mpd/music</em> which strikes me as reasonable, so copy some music there. Now comes the bit that caught me out; you will need to update is library:
+<code>
+mpc update
+</code>
+A lot of documentation on the net talks about running <code>mpd –create-db</code>, but this is now depreciated. I eventually found this out on Arch Linux’s wiki.</p>
+
+<p>Connect a client and listen to your music – I’m using gmpc (<code>yum install gmpc</code>) which is very feature rich, but if you want something simpler, try Sonata (<code>yum install sonata</code>) or even <em>mpc</em> itself. Finally you can also use you MPDroid on your phone.</p>
+]]></content>
+  </entry>
+  
+</feed>

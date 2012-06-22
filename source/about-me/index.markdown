@@ -6,4 +6,9 @@ comments: false
 sharing: true
 footer: true
 ---
-About me
+
+
+I am an experienced system engineer with a special interest in open-source platforms.
+
+In particular virtualisation and high-performance storage.
+

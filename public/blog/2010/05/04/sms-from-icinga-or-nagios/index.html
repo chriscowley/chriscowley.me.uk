@@ -1,0 +1,488 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>SMS from Icinga or Nagios - Just Another Linux Blog</title>
+  <meta name="author" content="Chris Cowley">
+
+  
+  <meta name="description" content="Finding out how to have Nagios (or in my case Icinga) send SMS alerts is easy. However, from my point of view it fell down in 2 ways. Most of these &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://http://warm-sword-7449.herokuapp.com//blog/2010/05/04/sms-from-icinga-or-nagios/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Just Another Linux Blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript">
+    // Avoid conflict with ender.js.
+    jQuery.noConflict();
+</script>
+<!-- jQuery Form Plugin -->
+<script src="http://malsup.github.com/jquery.form.js"></script>
+<!-- jQuery Form Validation Plugin -->
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script> 
+<script src="/javascripts/google_form.js"></script>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-32843690-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Just Another Linux Blog</a></h1>
+  
+    <h2>quite a bit about cycling as well</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://www.duckduckgo.com/" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sites" value="site:http://warm-sword-7449.herokuapp.com/" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search&hellip;"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/about-me">About Me</a></li>
+  <li><a href="/cv">CV</a></li>
+  <li><a href="/contact">Contact</a></li>
+  <li><a href="/yum">Yum</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">SMS From Icinga or Nagios</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-05-04T13:26:00+01:00" pubdate data-updated="true">Tuesday 04 May 2010</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Finding out how to have Nagios (or in my case Icinga) send SMS alerts is easy. However, from my point of view it fell down in 2 ways.</p>
+
+<ol>
+<li>Most of these guides are Debian specific, I am using Centos.</li>
+<li>The SMS alerts are all or nothing, I only want SMS alerts for specific services (such as the corporate website).</li>
+</ol>
+
+
+<h2>Hardware</h2>
+
+<p>First things first you need something to send the SMS. I am using a brand new Vodaphone USB dongle taped to the side of the rack . I also had it working with a Nokia E51 using the same tools – obviously this would the require constant charging.</p>
+
+<p>Ideally I would have prefered to use an internal card. PCI -> PC card bridges do exist, but I had no joy on my Icinga server, although it did work in a Dell Optiplex we had lying around, but it caused an HP XW4600 not to switch on at all.</p>
+
+<h2>Software</h2>
+
+<p>I am using <a href="http://smstools3.kekekasvi.com/" target="_blank">SMS Server Tools 3</a> which are available for Centos/RHEL in <a href="https://fedoraproject.org/wiki/EPEL" target="_blank">EPEL</a>. This gives you an smsd daemon that watches a folder for text messages in a particular format.</p>
+
+<p>When you have enabled EPEL run</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>yum install smstools
+</span><span class='line'>chkconfig –levels 35 smsd on</span></code></pre></td></tr></table></div></figure>
+
+
+<p>When I plugged in the USB dongle I got a pair of USB ttys at /dev/ttyUSB0 and /dev/ttyUSB1</p>
+
+<p>Add the following to /etc/smsd.conf</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>devices = GSM1
+</span><span class='line'>logfile = /var/log/smsd.log
+</span><span class='line'>loglevel = 7
+</span><span class='line'>
+</span><span class='line'>ARVE Error: no video ID
+</span><span class='line'>device = /dev/ttyUSB0
+</span><span class='line'>smsc = 447785016005 # I am using Vodaphone, your’s may vary.
+</span><span class='line'>incoming = no</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now you can start the daemon</p>
+
+<pre><code>/etc/init.d/smsd start
+</code></pre>
+
+<p>Finally, for reasons explained later, you need an entry in icinga’s cron.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>* * * * * if [[ `ls /tmp/ | grep 'sms-icinga' | wc -l` -gt 0 ]];then /bin/mv /tmp/sms-icinga* /var/spool/sms/outgoing/;fi</span></code></pre></td></tr></table></div></figure>
+
+
+<p>What does this do? It checks “/tmp/” for any files that contain the name “sms-icinga” every minute. If any exist it moves them to “/var/spool/sms/outgoing/”. That last folder is watched by smsd for those special text files mentioned above.
+Icinga/Nagios configuration</p>
+
+<p>First add the commands, for which I use the file /etc/icinga/objects/commands.conf</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>define command {
+</span><span class='line'>    command_name notify-host-by-sms
+</span><span class='line'>    command_line /usr/bin/printf “%b” “To: $CONTACTPAGER$\n\n$NOTIFICATIONTYPE$\nHost Alert: $HOSTNAME$ is $HOSTSTATE$\n” &gt; /tmp/sms-icinga.$HOSTNAME$.$HOSTSTATE$.$CONTACTPAGER$
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>define command {
+</span><span class='line'>    command_name notify-service-by-sms
+</span><span class='line'>    command_line /usr/bin/printf “%b” “To: $CONTACTPAGER$\n\n$NOTIFICATIONTYPE$\nService Alert:     $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$” &gt; /tmp/sms-icinga.$SERVICEDESC$.$HOSTNAME$.$CONTACTPAGER$
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>These commands write a file in /tmp that includes the string sms-icinga that our cron script looks for. The rest of it is to endure we do not accidentally overwrite an alert that has not been sent yet. The reason we need to write it into tmp, and the mv it to the outgoing folder is a little weird. I found that if I wrote directly to the outgoing folder, then smsd seemed picked it up too early and failed to parse the file correctly – strange, but not to worry.</p>
+
+<p>Now is where need to fiddle things a little bit if we only want to send messages for certain critical services. If you want SMS alerts for all your services you can just add a pager entry to all you contacts. We need to create an SMS user and a couple of templates to base our critical stuff on.</p>
+
+<p>The templates:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>define contact {
+</span><span class='line'>    name sms-contact
+</span><span class='line'>    use generic-contact
+</span><span class='line'>    service_notification_commands notify-service-by-sms, notify-service-by-email
+</span><span class='line'>    host_notification_commands notify-host-by-sms, notify-host-by-email
+</span><span class='line'>    register 0
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>define service {
+</span><span class='line'>    use generic-service
+</span><span class='line'>    name critical-service
+</span><span class='line'>    contact_groups admins-sms,linux-admin
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>define host {
+</span><span class='line'>    name critical-host
+</span><span class='line'>    use generic-host
+</span><span class='line'>    contact_groups admins-sms,linux-admin
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>my user:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>define contact {
+</span><span class='line'>    contact_name ChrisCowley-SMS
+</span><span class='line'>    use sms-contact
+</span><span class='line'>    pager &lt;my-mobile-number&gt;
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>a contact group:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>define contactgroup {
+</span><span class='line'>    contactgroup_name admins-sms
+</span><span class='line'>    members ChrisCowley-SMS
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Finally we can create our essential service:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>define service {
+</span><span class='line'>    use critical-service
+</span><span class='line'>    service_description Website-content
+</span><span class='line'>    check_command check_http_content!-U http://www.snellgroup.com -m Snell
+</span><span class='line'>    host_name www.snellgroup.com
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Chris Cowley</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2010-05-04T13:26:00+01:00" pubdate data-updated="true">Tuesday 04 May 2010</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/monitoring/'>monitoring</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://http://warm-sword-7449.herokuapp.com//blog/2010/05/04/sms-from-icinga-or-nagios/" data-via="" data-counturl="http://http://warm-sword-7449.herokuapp.com//blog/2010/05/04/sms-from-icinga-or-nagios/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2010/01/12/some-great-new-san-gear/" title="Previous Post: Some great new SAN gear">&laquo; Some great new SAN gear</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2011/10/16/ubuntu-upgrade-problems/" title="Next Post: Ubuntu upgrade problems">Ubuntu upgrade problems &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/04/18/skype-video-on-fedora-64bit/">Skype video on Fedora 64bit</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/04/16/a-learning-experience/">A Learning Experience</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/04/05/pycurl-and-self-signed-ssl-certificates/">PyCurl and self-signed SSL certificates</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/03/16/music-player-daemon-in-fedora/">Music Player Daemon in Fedora</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/02/22/back-to-basics/">Back to basics</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/chriscowley">@chriscowley</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'chriscowley',
+            count: 3,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/104270895010699552462?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Chris Cowley -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'jalb';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://http://warm-sword-7449.herokuapp.com//blog/2010/05/04/sms-from-icinga-or-nagios/';
+        var disqus_url = 'http://http://warm-sword-7449.herokuapp.com//blog/2010/05/04/sms-from-icinga-or-nagios/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
