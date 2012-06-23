@@ -5,13 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Blog Archive - Just Another Linux Blog</title>
+  <title>Installing PostgreSQL on Fedora 17 - Just Another Linux Blog</title>
   <meta name="author" content="Chris Cowley">
 
   
-  <meta name="description" content="Blog Archive 2012 Installing PostgreSQL on Fedora 17
-Jun 23 2012 posted in linux Skype video on Fedora 64bit
-Apr 18 2012 posted in linux A Learning &hellip;">
+  <meta name="description" content="With the new systemd this now requires a couple of manual steps. Obviously we start by installing the RPMS themselves: 1
+sudo yum install postgresql- &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -20,7 +19,7 @@ Apr 18 2012 posted in linux A Learning &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://http://warm-sword-7449.herokuapp.com//blog/archives/">
+  <link rel="canonical" href="http://http://warm-sword-7449.herokuapp.com//blog/2012/06/23/installing-postgresql-on-fedora-17/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -92,224 +91,133 @@ Apr 18 2012 posted in linux A Learning &hellip;">
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Blog Archive</h1>
+    
+      <h1 class="entry-title">Installing PostgreSQL on Fedora 17</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-23T13:02:00+01:00" pubdate data-updated="true">Saturday 23 June 2012</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives">
 
 
+<div class="entry-content"><p>With the new systemd this now requires a couple of manual steps.</p>
 
-  
-  <h2>2012</h2>
+<p>Obviously we start by installing the RPMS themselves:</p>
 
-<article>
-  
-<h1><a href="/blog/2012/06/23/installing-postgresql-on-fedora-17/">Installing PostgreSQL on Fedora 17</a></h1>
-<time datetime="2012-06-23T13:02:00+01:00" pubdate><span class='month'>Jun</span> <span class='day'>23</span> <span class='year'>2012</span></time>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo yum install postgresql-server postgresql</span></code></pre></td></tr></table></div></figure>
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/linux/'>linux</a></span>
-</footer>
 
+<p>If you were to now try and start the server it would fail as there is no database. The old SysV init script had an <em>initdb</em> option, but this no longer exists in the systemd service script. This means that you need to initialise the database manually:</p>
 
-</article>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo -u postrgres initdb -D /var/lib/pgsql/</span></code></pre></td></tr></table></div></figure>
 
 
+<p>You can now start the service and enable it permanently</p>
 
-<article>
-  
-<h1><a href="/blog/2012/04/18/skype-video-on-fedora-64bit/">Skype video on Fedora 64bit</a></h1>
-<time datetime="2012-04-18T15:53:00+01:00" pubdate><span class='month'>Apr</span> <span class='day'>18</span> <span class='year'>2012</span></time>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo service postgresql start
+</span><span class='line'>sudo chkconfig postgresql on</span></code></pre></td></tr></table></div></figure>
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/linux/'>linux</a></span>
-</footer>
 
+<p>Now you can enter the database as the postgres <em>superuser</em>:</p>
 
-</article>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo -u postgres psql -d postgres</span></code></pre></td></tr></table></div></figure>
 
 
+<p>Finally create your user and associated database</p>
 
-<article>
-  
-<h1><a href="/blog/2012/04/16/a-learning-experience/">A Learning Experience</a></h1>
-<time datetime="2012-04-16T20:30:00+01:00" pubdate><span class='month'>Apr</span> <span class='day'>16</span> <span class='year'>2012</span></time>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>CREATE ROLE "testAdmin" LOGIN PASSWORD 'testAdmin';
+</span><span class='line'>CREATE DATABASE "testDB" WITH ENCODING='UTF8' OWNER="testAdmin";
+</span><span class='line'>\q</span></code></pre></td></tr></table></div></figure>
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/administration/'>Administration</a>, <a class='category' href='/blog/categories/system/'>System</a></span>
-</footer>
 
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2012/04/05/pycurl-and-self-signed-ssl-certificates/">PyCurl and self-signed SSL certificates</a></h1>
-<time datetime="2012-04-05T16:50:00+01:00" pubdate><span class='month'>Apr</span> <span class='day'>05</span> <span class='year'>2012</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/programming/'>Programming</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2012/03/19/highly-available-nfs-slash-nas/">Highly Available NFS/NAS</a></h1>
-<time datetime="2012-03-19T16:59:00+00:00" pubdate><span class='month'>Mar</span> <span class='day'>19</span> <span class='year'>2012</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/storage/'>storage</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2012/03/16/music-player-daemon-in-fedora/">Music Player Daemon in Fedora</a></h1>
-<time datetime="2012-03-16T22:04:00+00:00" pubdate><span class='month'>Mar</span> <span class='day'>16</span> <span class='year'>2012</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/media/'>media</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2012/02/22/back-to-basics/">Back to basics</a></h1>
-<time datetime="2012-02-22T13:00:00+00:00" pubdate><span class='month'>Feb</span> <span class='day'>22</span> <span class='year'>2012</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/programming/'>programming</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2012/02/20/add-san-functions-to-highly-available-nfs-slash-nas/">Add SAN functions to Highly Available NFS/NAS</a></h1>
-<time datetime="2012-02-20T21:07:00+00:00" pubdate><span class='month'>Feb</span> <span class='day'>20</span> <span class='year'>2012</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/storage/'>storage</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2012/02/08/home-made-redundant-thin-provisioned-san/">Home-made Redundant Thin-provisioned SAN</a></h1>
-<time datetime="2012-02-08T20:02:00+00:00" pubdate><span class='month'>Feb</span> <span class='day'>08</span> <span class='year'>2012</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/storage/'>storage</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2012/02/06/vmware-cli-installation-woes-on-centos-6/">VMware CLI installation woes on Centos 6</a></h1>
-<time datetime="2012-02-06T13:09:00+00:00" pubdate><span class='month'>Feb</span> <span class='day'>06</span> <span class='year'>2012</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/virtualisation/'>virtualisation</a></span>
-</footer>
-
-
-</article>
-
-
-
-  
-  <h2>2011</h2>
-
-<article>
-  
-<h1><a href="/blog/2011/11/10/open-source-storage/">Open Source Storage</a></h1>
-<time datetime="2011-11-10T13:12:00+00:00" pubdate><span class='month'>Nov</span> <span class='day'>10</span> <span class='year'>2011</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/storage/'>storage</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2011/10/16/ubuntu-upgrade-problems/">Ubuntu upgrade problems</a></h1>
-<time datetime="2011-10-16T13:24:00+01:00" pubdate><span class='month'>Oct</span> <span class='day'>16</span> <span class='year'>2011</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/linux/'>linux</a></span>
-</footer>
-
-
-</article>
-
-
-
-  
-  <h2>2010</h2>
-
-<article>
-  
-<h1><a href="/blog/2010/05/04/sms-from-icinga-or-nagios/">SMS from Icinga or Nagios</a></h1>
-<time datetime="2010-05-04T13:26:00+01:00" pubdate><span class='month'>May</span> <span class='day'>04</span> <span class='year'>2010</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/monitoring/'>monitoring</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2010/01/12/some-great-new-san-gear/">Some great new SAN gear</a></h1>
-<time datetime="2010-01-12T13:35:00+00:00" pubdate><span class='month'>Jan</span> <span class='day'>12</span> <span class='year'>2010</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/storage/'>storage</a></span>
-</footer>
-
-
-</article>
 
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Chris Cowley</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-23T13:02:00+01:00" pubdate data-updated="true">Saturday 23 June 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/linux/'>linux</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://http://warm-sword-7449.herokuapp.com//blog/2012/06/23/installing-postgresql-on-fedora-17/" data-via="" data-counturl="http://http://warm-sword-7449.herokuapp.com//blog/2012/06/23/installing-postgresql-on-fedora-17/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/04/18/skype-video-on-fedora-64bit/" title="Previous Post: Skype video on Fedora 64bit">&laquo; Skype video on Fedora 64bit</a>
+      
+      
+    </p>
+  </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
 
@@ -403,7 +311,10 @@ Apr 18 2012 posted in linux A Learning &hellip;">
       var disqus_shortname = 'justanotherlinuxblog';
       
         
-        var disqus_script = 'count.js';
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://http://warm-sword-7449.herokuapp.com//blog/2012/06/23/installing-postgresql-on-fedora-17/';
+        var disqus_url = 'http://http://warm-sword-7449.herokuapp.com//blog/2012/06/23/installing-postgresql-on-fedora-17/';
+        var disqus_script = 'embed.js';
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

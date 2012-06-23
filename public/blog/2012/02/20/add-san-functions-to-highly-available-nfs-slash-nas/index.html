@@ -1,0 +1,490 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Add SAN functions to Highly Available NFS/NAS - Just Another Linux Blog</title>
+  <meta name="author" content="Chris Cowley">
+
+  
+  <meta name="description" content="This based on my last post where I documented building a Highly Available NFS/NAS server. There is not a huge amount that needs to be done in order &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://http://warm-sword-7449.herokuapp.com//blog/2012/02/20/add-san-functions-to-highly-available-nfs-slash-nas/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Just Another Linux Blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript">
+    // Avoid conflict with ender.js.
+    jQuery.noConflict();
+</script>
+<!-- jQuery Form Plugin -->
+<script src="http://malsup.github.com/jquery.form.js"></script>
+<!-- jQuery Form Validation Plugin -->
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script> 
+<script src="/javascripts/google_form.js"></script>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-32843690-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Just Another Linux Blog</a></h1>
+  
+    <h2>maybe a bit about cycling as well</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://www.duckduckgo.com/" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sites" value="site:http://warm-sword-7449.herokuapp.com/" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search&hellip;"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/about-me">About Me</a></li>
+  <li><a href="/cv">CV</a></li>
+  <li><a href="/contact">Contact</a></li>
+  <li><a href="/yum">Yum</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Add SAN Functions to Highly Available NFS/NAS</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-02-20T21:07:00+00:00" pubdate data-updated="true">Monday 20 February 2012</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>This based on my last post where I documented building a Highly Available NFS/NAS server.</p>
+
+<p>There is not a huge amount that needs to be done in order to add iSCSI functionality as well.</p>
+
+<p>Add a file called <em>/etc/drbd/iscsi.res</em> containing:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>resource iscsi {
+</span><span class='line'>    on nfs1 {
+</span><span class='line'>        device /dev/drbd1;
+</span><span class='line'>        disk   /dev/vdc;
+</span><span class='line'>        meta-disk internal;
+</span><span class='line'>        address   10.0.0.1:7789;
+</span><span class='line'>    }
+</span><span class='line'>    on nfs2 {
+</span><span class='line'>        device /dev/drbd1;
+</span><span class='line'>        disk   /dev/vdc;
+</span><span class='line'>        meta-disk internal;
+</span><span class='line'>        address   10.0.0.2:7789;
+</span><span class='line'>    }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This differs from the previous resource in 2 ways. Obviously it using a different physical disk. Also the port number of the address is incremented; each resource has to have its own port to communicate on.</p>
+
+<h2>Configure Heartbeat</h2>
+
+<p>Add a new resource to <em>/etc/ha.d/haresources</em>:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>iscsi1.snellwilcox.local IPaddr::10.0.0.101/24/eth0 drbddisk::iscsi tgtd</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Same primary host, new IP address, new drbd resource and of course the service to be controlled (tgtd in this case).</p>
+
+<p>I also made a couple of changes to <em>/etc/ha.d/ha.cf</em>:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>keepalive 500ms
+</span><span class='line'>deadtime 5
+</span><span class='line'>warntime 10
+</span><span class='line'>initdead 120</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This changes the regularity of the heartbeat packets from every 2 seconds to 2 every second. We also say that a node is dead after only 5 seconds rather than after 30.</p>
+
+<h2>Configure an iSCSI Target</h2>
+
+<p>Tgtd has a config file that you can use in <em>/etc/tgt/targets.conf</em>. It is an XML file, so add entry like:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;target iqn.2011-07.world.server:target0&gt;
+</span><span class='line'>        # provided devicce as a iSCSI target
+</span><span class='line'>        backing-store /dev/vg_matthew/lv_iscsi1
+</span><span class='line'>        # iSCSI Initiator's IP address you allow to connect
+</span><span class='line'>        initiator-address 192.168.1.20
+</span><span class='line'>        # authentication info ( set anyone you like for "username", "password" )
+</span><span class='line'>&lt;/target&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The target name is by convention <em>iqn.year-month.reverse-domainname:hostname.targetname</em>. Each backing store will be a seperate LUN. A discussion of this is out of the scope of this article.</p>
+
+<p>By default, this config file is disabled. Enable it by un-commenting the line <code>#TGTD_CONFIG=/etc/tgt/targets.conf</code> in <em>/etc/sysconfig/tgtd</em>. You can now enable the target with service tgtd reload.</p>
+
+<p>Now when you run <code>tgtadm –mode target –op show</code> you should get something like:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Target 1: iqn.2012-03.com.example:iscsi.target1
+</span><span class='line'>    System information:
+</span><span class='line'>        Driver: iscsi
+</span><span class='line'>        State: ready
+</span><span class='line'>    I_T nexus information:
+</span><span class='line'>    LUN information:
+</span><span class='line'>        LUN: 0
+</span><span class='line'>            Type: controller
+</span><span class='line'>            SCSI ID: IET     00010000
+</span><span class='line'>            SCSI SN: beaf10
+</span><span class='line'>            Size: 0 MB, Block size: 1
+</span><span class='line'>            Online: Yes
+</span><span class='line'>            Removable media: No
+</span><span class='line'>            Readonly: No
+</span><span class='line'>            Backing store type: null
+</span><span class='line'>            Backing store path: None
+</span><span class='line'>            Backing store flags:
+</span><span class='line'>        LUN: 1
+</span><span class='line'>            Type: disk
+</span><span class='line'>            SCSI ID: IET     00010001
+</span><span class='line'>            SCSI SN: beaf11
+</span><span class='line'>            Size: 8590 MB, Block size: 512
+</span><span class='line'>            Online: Yes
+</span><span class='line'>            Removable media: No
+</span><span class='line'>            Readonly: No
+</span><span class='line'>            Backing store type: rdwr
+</span><span class='line'>            Backing store path: /dev/drbd/by-res/iscsi
+</span><span class='line'>            Backing store flags:
+</span><span class='line'>    Account information:
+</span><span class='line'>    ACL information:
+</span><span class='line'>        ALL</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Connect An Initiator</h2>
+
+<p>Install the iscsi utils:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>yum install iscsi-initiator-utils
+</span><span class='line'>chkconfig iscsi on
+</span><span class='line'>chkconfig iscsid on</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Discover the targets on the host and login to the target.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>iscsiadm -m discovery -t sendtargets -p 10.0.0.101
+</span><span class='line'>iscsiadm -m node --login</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you run <code>cat /proc/partitions</code> you will see an new partition has appeared. You can do whatever you want with it.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Chris Cowley</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-02-20T21:07:00+00:00" pubdate data-updated="true">Monday 20 February 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/storage/'>storage</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://http://warm-sword-7449.herokuapp.com//blog/2012/02/20/add-san-functions-to-highly-available-nfs-slash-nas/" data-via="" data-counturl="http://http://warm-sword-7449.herokuapp.com//blog/2012/02/20/add-san-functions-to-highly-available-nfs-slash-nas/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/02/08/home-made-redundant-thin-provisioned-san/" title="Previous Post: Home-made Redundant Thin-provisioned SAN">&laquo; Home-made Redundant Thin-provisioned SAN</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2012/02/22/back-to-basics/" title="Next Post: Back to basics">Back to basics &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/06/23/installing-postgresql-on-fedora-17/">Installing PostgreSQL on Fedora 17</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/04/18/skype-video-on-fedora-64bit/">Skype video on Fedora 64bit</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/04/16/a-learning-experience/">A Learning Experience</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/04/05/pycurl-and-self-signed-ssl-certificates/">PyCurl and self-signed SSL certificates</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/03/19/highly-available-nfs-slash-nas/">Highly Available NFS/NAS</a>
+      </li>
+    
+  </ul>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/chriscowley">@chriscowley</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'chriscowley',
+            count: 3,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/104270895010699552462?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - Chris Cowley -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'justanotherlinuxblog';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://http://warm-sword-7449.herokuapp.com//blog/2012/02/20/add-san-functions-to-highly-available-nfs-slash-nas/';
+        var disqus_url = 'http://http://warm-sword-7449.herokuapp.com//blog/2012/02/20/add-san-functions-to-highly-available-nfs-slash-nas/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
