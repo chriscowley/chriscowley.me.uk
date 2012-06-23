@@ -9,7 +9,8 @@
   <meta name="author" content="Chris Cowley">
 
   
-  <meta name="description" content="Install Skype – I used these instructions. This will seem to get everything working, but video will just give you a black screen and no error message &hellip;">
+  <meta name="description" content="With the new systemd this is now requires a couple of manual steps. Install the RPMS themselves with 1
+sudo yum install postgresql-server postgresql &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -60,7 +61,7 @@
   <header role="banner"><hgroup>
   <h1><a href="/">Just Another Linux Blog</a></h1>
   
-    <h2>quite a bit about cycling as well</h2>
+    <h2>maybe a bit about cycling as well</h2>
   
 </hgroup>
 
@@ -97,6 +98,82 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2012/06/23/installing-postgresql-on-fedora-17/">Installing PostgreSQL on Fedora 17</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-06-23T13:02:00+01:00" pubdate data-updated="true">Saturday 23 June 2012</time>
+        
+         | <a href="/blog/2012/06/23/installing-postgresql-on-fedora-17/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>With the new systemd this is now requires a couple of manual steps.</p>
+
+<p>Install the RPMS themselves with</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo yum install postgresql-server postgresql</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you were to now try and start the server it would fail as there is no database. The old SysV init script had an <em>initdb</em> option, but this no longer exists in the systemd service script. This means that you need to initialise the database manually:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo -u postrgres initdb -D /var/lib/pgsql/</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You can now start the service and enable it permanently</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo service postgresql start
+</span><span class='line'>sudo chkconfig postgresql on</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now you can enter the database as the postgres <em>superuser</em>:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo -u postgres psql -d postgres</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Finally create your user and associated database</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>CREATE ROLE "testAdmin" LOGIN PASSWORD 'testAdmin';
+</span><span class='line'>CREATE DATABASE "testDB" WITH ENCODING='UTF8' OWNER="testAdmin";
+</span><span class='line'>\q</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2012/04/18/skype-video-on-fedora-64bit/">Skype Video on Fedora 64bit</a></h1>
     
     
@@ -114,6 +191,8 @@
 
 
 <time datetime="2012-04-18T15:53:00+01:00" pubdate data-updated="true">Wednesday 18 April 2012</time>
+        
+         | <a href="/blog/2012/04/18/skype-video-on-fedora-64bit/#disqus_thread">Comments</a>
         
       </p>
     
@@ -167,6 +246,8 @@
 
 <time datetime="2012-04-16T20:30:00+01:00" pubdate data-updated="true">Monday 16 April 2012</time>
         
+         | <a href="/blog/2012/04/16/a-learning-experience/#disqus_thread">Comments</a>
+        
       </p>
     
   </header>
@@ -208,6 +289,8 @@
 
 
 <time datetime="2012-04-05T16:50:00+01:00" pubdate data-updated="true">Thursday 05 April 2012</time>
+        
+         | <a href="/blog/2012/04/05/pycurl-and-self-signed-ssl-certificates/#disqus_thread">Comments</a>
         
       </p>
     
@@ -261,6 +344,314 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2012/03/19/highly-available-nfs-slash-nas/">Highly Available NFS/NAS</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-03-19T16:59:00+00:00" pubdate data-updated="true">Monday 19 March 2012</time>
+        
+         | <a href="/blog/2012/03/19/highly-available-nfs-slash-nas/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Take 2 Centos Servers (nfs1 and nfs2 will do nicely) and install ELrepo and EPEL on them both:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>yum install \
+</span><span class='line'>    http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-5.noarch.rpm \
+</span><span class='line'>    http://elrepo.org/elrepo-release-6-4.el6.elrepo.noarch.rpm --nogpgcheck</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Each of them should ideally have 2 NICS, with the secondary ones just used for DRBD sync purposes. We’ll give these the address 10.0.0.1/32 and 10.0.0.2/32.</p>
+
+<p>I am also assuming that you have disabled the firewall and SELinux – I do not recommend that for production, but for testing it is fine.</p>
+
+<h2>DRBD Configuration</h2>
+
+<p>Install DRBD 8.4 on the both:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>yum install drbd84-utils kmod-drbd84</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On each node the file /etc/drbd.d/global_common.conf should contain:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>global {
+</span><span class='line'>  usage-count yes;
+</span><span class='line'>}
+</span><span class='line'>common {
+</span><span class='line'>  net {
+</span><span class='line'>    protocol C;
+</span><span class='line'>  }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>and /etc/drbd.d/main.res should contain:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>resource main {
+</span><span class='line'>  on nfs1 {
+</span><span class='line'>    device    /dev/drbd0;
+</span><span class='line'>    disk      /dev/sdb;
+</span><span class='line'>    address   10.0.0.1:7788;
+</span><span class='line'>    meta-disk internal;
+</span><span class='line'>  }
+</span><span class='line'>  on nfs2 {
+</span><span class='line'>    device    /dev/drbd0;
+</span><span class='line'>    disk      /dev/sdb;
+</span><span class='line'>    address   10.0.0.2:7788;
+</span><span class='line'>    meta-disk internal;
+</span><span class='line'>  }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On both nodes you will need to create the resource metadata:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>drbdadm create-md main</span></code></pre></td></tr></table></div></figure>
+
+
+<p>and start the daemons</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>service drbd start
+</span><span class='line'>chkconfig drbd on</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now <code>service drbd status</code> will give you:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>drbd driver loaded OK; device status:
+</span><span class='line'>version: 8.4.1 (api:1/proto:86-100)
+</span><span class='line'>GIT-hash: 91b4c048c1a0e06777b5f65d312b38d47abaea80 build by dag@Build64R6, 2011-12-21 06:08:50
+</span><span class='line'>m:res   cs         ro                   ds                         p  mounted  fstype
+</span><span class='line'>0:main  Connected  Secondary/Secondary  Inconsistent/Inconsistent  C</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Both devices or secondary and inconsistent, this is normal at this stage. Choose a node to be your primary and run:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>drbdadm primary --force main</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And it start sync’ing, which will take a long time. You can temporarily make it faster with (on one node:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>drbdadm disk-options --resync-rate=110M main</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Put it back again with drbdadm adjust main</p>
+
+<p>On your primary node you can now create a fiiesystem. I’m using ext4 for no good reason other than it being the default. Use whatever you are most comfortable with.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mkfs.ext4 /dev/drbd0</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Configure NFS</h2>
+
+<p>If you diid a minimal Centos install, then you willl need to install the nfs-utils package (yum install nfs-utils). Prepare your mount points and exports on both servers:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mkdir /drbd
+</span><span class='line'>echo "/drbd/main *(rw)" >> /etc/exports</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now we do the actual NFS set up. We previously choose nfs1 as our master when you used it to trigger the initial sync. On nfs1 mount the replicated volumes, move the NFS data to it, then create symlinks to our replicated data.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mount /dev/drbd0 /drbd
+</span><span class='line'>mkdir /drbd/main
+</span><span class='line'>mv /var/lib/nfs/ /drbd/
+</span><span class='line'>ln -s /drbd/nfs/ /var/lib/nfs
+</span><span class='line'>umount /drbd</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you get errors about not bring able to remove directories in /var/lib/nfs do not worry.</p>
+
+<p>Now a little preparation on nfs2:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mv /var/lib/nfs /var/lib/nfs.bak
+</span><span class='line'>ln -s /drbd/nfs/ /var/lib/nfs</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This will create a broken symbolic link, but it will be fixed when everything fails over.</p>
+
+<h2>Heartbeat Configuration</h2>
+
+<p>Heartbeat is in the EPEL repository, so enable that and install it on both nodes:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>yum -y install heartbeat</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Make sure that <em>/etc/ha.d/ha.cf</em> contains:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>keepalive 2
+</span><span class='line'>deadtime 30
+</span><span class='line'>bcast eth0
+</span><span class='line'>node nfs1 nfs2</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The values in node should be whatever <code>uname -n</code> returns.</p>
+
+<p>Now create <em>/etc/ha.d/haresources</em>:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>nfs1 IPaddr::10.0.0.100/24/eth0 drbddisk::main Filesystem::/dev/drbd0::/drbd::ext4 nfslock nfs</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That is a little cryptic, so I’ll explain; nfs1 is the primary node, IPaddr sets up a floating address on eth0 that our clients will connect to. This has a resource drbddisk::main bound to it, which sets our main to resource to primary on nfs1. Filesystem mounts /dev/drbd0 at /drbd on nfs1. Finally the the services nfslock and nfs are started on nfs1.</p>
+
+<p>Finally, it needs an authentication file in /etc/ha.d/authkeys, which should be chmod’ed to 600 to be only readable by root.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>auth 3
+</span><span class='line'>3 md5 mypassword123</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You should also make sure that nfslock and nfs do not start up by themselves:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>chkconfig nfs off
+</span><span class='line'>chkconfig nfslock off</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now you can start heartbeat and check it is working:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>service heartbeat start
+</span><span class='line'>chkconfig heartbeat on</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Testing</h2>
+
+<p>Running <code>ifconfig</code> on nfs1 should give you something like:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>eth0      Link encap:Ethernet  HWaddr 52:54:00:84:73:BD  
+</span><span class='line'>          inet addr:10.0.0.1  Bcast:10.0.0.255  Mask:255.255.255.0
+</span><span class='line'>          inet6 addr: fe80::5054:ff:fe84:73bd/64 Scope:Link
+</span><span class='line'>          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+</span><span class='line'>          RX packets:881922 errors:0 dropped:0 overruns:0 frame:0
+</span><span class='line'>          TX packets:1302012 errors:0 dropped:0 overruns:0 carrier:0
+</span><span class='line'>          collisions:0 txqueuelen:1000
+</span><span class='line'>          RX bytes:239440621 (228.3 MiB)  TX bytes:5791818459 (5.3 GiB)
+</span><span class='line'>
+</span><span class='line'>eth0:0    Link encap:Ethernet  HWaddr 52:54:00:84:73:BD  
+</span><span class='line'>          inet addr:10.0.0.100  Bcast:10.0.0.255  Mask:255.255.255.0
+</span><span class='line'>          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+</span><span class='line'>
+</span><span class='line'>lo        Link encap:Local Loopback  
+</span><span class='line'>          inet addr:127.0.0.1  Mask:255.0.0.0
+</span><span class='line'>          inet6 addr: ::1/128 Scope:Host
+</span><span class='line'>          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+</span><span class='line'>          RX packets:2 errors:0 dropped:0 overruns:0 frame:0
+</span><span class='line'>          TX packets:2 errors:0 dropped:0 overruns:0 carrier:0
+</span><span class='line'>          collisions:0 txqueuelen:0
+</span><span class='line'>          RX bytes:224 (224.0 b)  TX bytes:224 (224.0 b)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Note an entry for <em>eth0:0</em> has miraculously appeared.</p>
+
+<p>Also <code>df</code> should include the entry:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>/dev/drbd0             20G  172M   19G   1% /drbd</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Reboot nfs1 and the services should appear on nfs2.</p>
+
+<p>Connect an NFS client to you floating address (10.0.0.100) and you should be able to kill the live node and it will carry on.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2012/03/16/music-player-daemon-in-fedora/">Music Player Daemon in Fedora</a></h1>
     
     
@@ -278,6 +669,8 @@
 
 
 <time datetime="2012-03-16T22:04:00+00:00" pubdate data-updated="true">Friday 16 March 2012</time>
+        
+         | <a href="/blog/2012/03/16/music-player-daemon-in-fedora/#disqus_thread">Comments</a>
         
       </p>
     
@@ -341,6 +734,8 @@
 
 <time datetime="2012-02-22T13:00:00+00:00" pubdate data-updated="true">Wednesday 22 February 2012</time>
         
+         | <a href="/blog/2012/02/22/back-to-basics/#disqus_thread">Comments</a>
+        
       </p>
     
   </header>
@@ -371,6 +766,467 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2012/02/20/add-san-functions-to-highly-available-nfs-slash-nas/">Add SAN Functions to Highly Available NFS/NAS</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-02-20T21:07:00+00:00" pubdate data-updated="true">Monday 20 February 2012</time>
+        
+         | <a href="/blog/2012/02/20/add-san-functions-to-highly-available-nfs-slash-nas/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>This based on my last post where I documented building a Highly Available NFS/NAS server.</p>
+
+<p>There is not a huge amount that needs to be done in order to add iSCSI functionality as well.</p>
+
+<p>Add a file called <em>/etc/drbd/iscsi.res</em> containing:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>resource iscsi {
+</span><span class='line'>    on nfs1 {
+</span><span class='line'>        device /dev/drbd1;
+</span><span class='line'>        disk   /dev/vdc;
+</span><span class='line'>        meta-disk internal;
+</span><span class='line'>        address   10.0.0.1:7789;
+</span><span class='line'>    }
+</span><span class='line'>    on nfs2 {
+</span><span class='line'>        device /dev/drbd1;
+</span><span class='line'>        disk   /dev/vdc;
+</span><span class='line'>        meta-disk internal;
+</span><span class='line'>        address   10.0.0.2:7789;
+</span><span class='line'>    }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This differs from the previous resource in 2 ways. Obviously it using a different physical disk. Also the port number of the address is incremented; each resource has to have its own port to communicate on.</p>
+
+<h2>Configure Heartbeat</h2>
+
+<p>Add a new resource to <em>/etc/ha.d/haresources</em>:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>iscsi1.snellwilcox.local IPaddr::10.0.0.101/24/eth0 drbddisk::iscsi tgtd</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Same primary host, new IP address, new drbd resource and of course the service to be controlled (tgtd in this case).</p>
+
+<p>I also made a couple of changes to <em>/etc/ha.d/ha.cf</em>:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>keepalive 500ms
+</span><span class='line'>deadtime 5
+</span><span class='line'>warntime 10
+</span><span class='line'>initdead 120</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This changes the regularity of the heartbeat packets from every 2 seconds to 2 every second. We also say that a node is dead after only 5 seconds rather than after 30.</p>
+
+<h2>Configure an iSCSI Target</h2>
+
+<p>Tgtd has a config file that you can use in <em>/etc/tgt/targets.conf</em>. It is an XML file, so add entry like:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;target iqn.2011-07.world.server:target0&gt;
+</span><span class='line'>        # provided devicce as a iSCSI target
+</span><span class='line'>        backing-store /dev/vg_matthew/lv_iscsi1
+</span><span class='line'>        # iSCSI Initiator's IP address you allow to connect
+</span><span class='line'>        initiator-address 192.168.1.20
+</span><span class='line'>        # authentication info ( set anyone you like for "username", "password" )
+</span><span class='line'>&lt;/target&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The target name is by convention <em>iqn.year-month.reverse-domainname:hostname.targetname</em>. Each backing store will be a seperate LUN. A discussion of this is out of the scope of this article.</p>
+
+<p>By default, this config file is disabled. Enable it by un-commenting the line <code>#TGTD_CONFIG=/etc/tgt/targets.conf</code> in <em>/etc/sysconfig/tgtd</em>. You can now enable the target with service tgtd reload.</p>
+
+<p>Now when you run <code>tgtadm –mode target –op show</code> you should get something like:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Target 1: iqn.2012-03.com.example:iscsi.target1
+</span><span class='line'>    System information:
+</span><span class='line'>        Driver: iscsi
+</span><span class='line'>        State: ready
+</span><span class='line'>    I_T nexus information:
+</span><span class='line'>    LUN information:
+</span><span class='line'>        LUN: 0
+</span><span class='line'>            Type: controller
+</span><span class='line'>            SCSI ID: IET     00010000
+</span><span class='line'>            SCSI SN: beaf10
+</span><span class='line'>            Size: 0 MB, Block size: 1
+</span><span class='line'>            Online: Yes
+</span><span class='line'>            Removable media: No
+</span><span class='line'>            Readonly: No
+</span><span class='line'>            Backing store type: null
+</span><span class='line'>            Backing store path: None
+</span><span class='line'>            Backing store flags:
+</span><span class='line'>        LUN: 1
+</span><span class='line'>            Type: disk
+</span><span class='line'>            SCSI ID: IET     00010001
+</span><span class='line'>            SCSI SN: beaf11
+</span><span class='line'>            Size: 8590 MB, Block size: 512
+</span><span class='line'>            Online: Yes
+</span><span class='line'>            Removable media: No
+</span><span class='line'>            Readonly: No
+</span><span class='line'>            Backing store type: rdwr
+</span><span class='line'>            Backing store path: /dev/drbd/by-res/iscsi
+</span><span class='line'>            Backing store flags:
+</span><span class='line'>    Account information:
+</span><span class='line'>    ACL information:
+</span><span class='line'>        ALL</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Connect An Initiator</h2>
+
+<p>Install the iscsi utils:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>yum install iscsi-initiator-utils
+</span><span class='line'>chkconfig iscsi on
+</span><span class='line'>chkconfig iscsid on</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Discover the targets on the host and login to the target.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>iscsiadm -m discovery -t sendtargets -p 10.0.0.101
+</span><span class='line'>iscsiadm -m node --login</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you run <code>cat /proc/partitions</code> you will see an new partition has appeared. You can do whatever you want with it.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/02/08/home-made-redundant-thin-provisioned-san/">Home-made Redundant Thin-provisioned SAN</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-02-08T20:02:00+00:00" pubdate data-updated="true">Wednesday 08 February 2012</time>
+        
+         | <a href="/blog/2012/02/08/home-made-redundant-thin-provisioned-san/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>The inspiration for this came from a mixture of problems I was having with my HP P2000, ideas that have been floating around my head for a while, plus a post over at Bauer-power.net. Basically I got given a bunch of warranty returned Supermicro servers from our Customer Service guys  and got tasked with making it our secondary VMware store and DR snapshot storage. Incidentally, the Supermicro servers are used for our Channel-in-a-box product for those you in the broadcast world. They are not ideal, the 2U 12 disk models that Pablo uses are far more suitable.</p>
+
+<p>Plenty of companies already build their arrays on commodity hardware like these, so I am not doing anything new:</p>
+
+<ul>
+<li> Dell Compellent (Supermicro, soon to be Dell)</li>
+<li> CoRAID (Supermicro)</li>
+<li> EMC  Clarion and VNX</li>
+<li> HP P4000 (HP DL180)</li>
+<li> 3Par</li>
+<li> Pure Storage</li>
+<li> Nutanix</li>
+<li> Solid Fire</li>
+</ul>
+
+
+<p>My set up is basically the same as that used by Pablo in the second iteration of his array:</p>
+
+<ul>
+<li> Linux</li>
+<li> GlusterFS</li>
+<li> Tgtd</li>
+<li> Heartbeat</li>
+</ul>
+
+
+<p>There are a couple of differences:</p>
+
+<ul>
+<li> Mine uses a new version of GlusterFS which is currently in beta. This has several new features, the one I am interested in is Granular Locking. As I am storing VM images, I do not want these being locked during a self-heal – a problem in 3.2 and before. There are also other things such as object-storage (Amazon S3 compatible) for use with Open Stack. I’d love that, but I am not using it in my environment :( .</li>
+<li> I am building on top of CentOS. I started with Red Hat and will continue to use it for server environments in the forceeable future.</li>
+<li> I do not have de-duplication as I am not using ZFS, I am running on top of Ext4 and will use XFS or BTRFS if I need to. I am only using 8x 1TB drives as that is what I got given for free.</li>
+</ul>
+
+
+<p>I have had to build a couple of custom RPMS which I have made available in my <a href="http://yum.chriscowley.me.uk/el/6/x86_64/repoview/" target="blank">Yum repository</a>.</p>
+
+<p>I did investigate de-duplication using LessFS, but sadly that is a no go as it does not currently support Extended Attributes, which are required by GlusterFS.</p>
+
+<h2>Installation</h2>
+
+<p>Install a basic CentOS 6 system on each node – the base system will be fine.</p>
+
+<p>The two servers are</p>
+
+<ul>
+<li>server1 192.168.1.1(eth0),10.0.0.1(eth1)</li>
+<li>server2 192.168.1.2(eth0),10.0.0.2(eth1)</li>
+</ul>
+
+
+<p>They connect to the rest of your network using eth0 and eth1 is a dedicated link between the 2. I would put them via a seperate switches/vLANs rather than a direct link, that way you can scale out your pool easily.</p>
+
+<p>In the hosts file add:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>10.0.0.1 server1.example.com
+</span><span class='line'>10.0.0.2 server2.example.com</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Add my repository:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rpm --import http://yum.chriscowley.me.uk/RPM-GPG-KEY-ChrisCowley
+</span><span class='line'>yum install http://yum.chriscowley.me.uk/el/6/x86_64/RPMS/chriscowley-release-1-1.noarch.rpm
+</span><span class='line'>rpm --import https://fedoraproject.org/static/0608B895.txt
+</span><span class='line'>yum install http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-5.noarch.rpm</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now you can install the necessary packages, which is not many. :</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>yum install glusterfs-core glusterfs-fuse heartbeat scsi-target-utils</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now you can add create a pool of servers:</p>
+
+<h2>GlusterFS</h2>
+
+<p>From server1:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>gluster peer probe server2</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You next step is to configure a Gluster Volume. Gluster’s documentation for this is excellent. For our simple 2-node cluster we just want a simple replicated volume. As you grow, you can simple add extra pairs of nodes to expand your storage pool.</p>
+
+<p>On each node create a folder to store the data and a mount-point for the replicated data:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mkdir /exp1
+</span><span class='line'>mkdir /mnt/test-volume</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now create your volume and activate it(on a single node):</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>gluster volume create test-volume replica 2 transport tcp server1:/exp1 server2:/exp1
+</span><span class='line'>gluster volume start test-volume</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now you need to mount that volume on each of your nodes.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>echo "`hostname`:/test-volume /mnt/test-volume glusterfs defaults,noauto,_netdev 0 0" >> /etc/fstab
+</span><span class='line'>echo "mount /mnt/test-volume" >> /etc/rc.local
+</span><span class='line'>mount /mnt/test-volume</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Heartbeat</h2>
+
+<p>Now you need to configure heartbeat to control a floating IP address and the associated TGTD service. You need to create a few files on each node.</p>
+
+<p>/etc/ha.d/authkeys:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>auth 2
+</span><span class='line'>2 crc</span></code></pre></td></tr></table></div></figure>
+
+
+<p>/etc/ha.d/ha.cf</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>logfacility     local0
+</span><span class='line'>keepalive 500ms
+</span><span class='line'>deadtime 5
+</span><span class='line'>warntime 10
+</span><span class='line'>initdead 120
+</span><span class='line'>bcast eth1
+</span><span class='line'>node server1
+</span><span class='line'>node server2
+</span><span class='line'>auto_failback no</span></code></pre></td></tr></table></div></figure>
+
+
+<p>/etc/ha.d/haresources:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>server1 IPaddr::192.168.1.3/24/eth0 tgtd</span></code></pre></td></tr></table></div></figure>
+
+
+<p>There are a couple of considerations. The Gluster filesystems need to be mounted before tgtd starts. Tgtd is in turn controled by Heartbeat (see the above haresources file). To this end make sure both heartbeat and tgtd are disabled and start heartbeat from /etc/rc.local.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>echo "/etc/init.d/heartbeat start" >> /etc/rc.local</span></code></pre></td></tr></table></div></figure>
+
+
+<p>With all this done on both nodes, you can now start heartbeat on each node:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>/etc/init.d/heartbeat start</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Checking ifconfig will show that one of your nodes now has an <em>eth0:0</em> address.You will also find that tgtd is also running on that same node.</p>
+
+<h2>iSCSI Target</h2>
+
+<p>First create yourself a file to use as the backend for your iSCSI target:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>dd if=/dev/zero bs=1M count=40000 of=/mnt/test-volume/test.img</span></code></pre></td></tr></table></div></figure>
+
+
+<p>or, if you prefer thin provisioned:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>dd if=/dev/zero bs=1M seek=40000 count=0 of=/mnt/test-volume/test.img</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You now need to define this file as a target. This requires the editting of 2 files.</p>
+
+<p>/etc/sysconfig/tgtd:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>TGTD_CONFIG=/etc/tgt/targets.conf</span></code></pre></td></tr></table></div></figure>
+
+
+<p>/etc/tgtd/targets.conf, make sure there is an entry such as:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;target iqn.2012-02.com.example.gluster:isci>
+</span><span class='line'>    backing-store /mnt/test-volume/test.img
+</span><span class='line'>    initiator-address 192.168.1.10
+</span><span class='line'>&lt;/target></span></code></pre></td></tr></table></div></figure>
+
+
+<p>This will make that image file you created available to the client with the address 192.168.1.10. This targets.conf file is extremely well commented, so have a read. Now just tell tgtd to reload its configuration from the live node:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>/etc/init.d/tgtd reload</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Conclusion</h2>
+
+<p>Nothing here is particularly complicated, but it does give you a lot of storage for a very low price, using a very enterprise friendly OS.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2012/02/06/vmware-cli-installation-woes-on-centos-6/">VMware CLI Installation Woes on Centos 6</a></h1>
     
     
@@ -388,6 +1244,8 @@
 
 
 <time datetime="2012-02-06T13:09:00+00:00" pubdate data-updated="true">Monday 06 February 2012</time>
+        
+         | <a href="/blog/2012/02/06/vmware-cli-installation-woes-on-centos-6/#disqus_thread">Comments</a>
         
       </p>
     
@@ -444,353 +1302,9 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2011/11/10/open-source-storage/">Open Source Storage</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-11-10T13:12:00+00:00" pubdate data-updated="true">Thursday 10 November 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I have searchstorage.co.uk send me potentially interesting white-papers regularly. If I am honest, most of them or thinly veiled press-releases. However occasionally one is interesting.</p>
-
-<p>Today I received one entitled <a href="/downloads/ITinEU_Storage_autumn11_final.pdf">Break free of vendor lock-in with open source storage</a>. Being a FLOSS fan and a storage specialist, that obviously intrigued me.</p>
-
-<p>The article of interest starts on page 8 and is pretty good. It mentions all the main players; unusually it is not condescending towards Open Source (i.e. it will get you by until you can afford to buy a proper/stupidly-over-priced solution).</p>
-
-<p>It also mentions <a href="http://www.gluster.org" target="_blank">GlusterFS</a>, which is particularly interesting. I have just built a solution at work built around this and it excellent. I will be putting more info up soon as a complete how-to on building a full-featured, high availability SAN/NAS.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2011/10/16/ubuntu-upgrade-problems/">Ubuntu Upgrade Problems</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-10-16T13:24:00+01:00" pubdate data-updated="true">Sunday 16 October 2011</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Usually the release upgrade is relatively trouble-free, but this time I had a minor problem. After the upgrade I had no X Windows. It turned out that the NVidia driver not loading.</p>
-
-<p>I had to boot it up in rescue mode, which is selectable from the Grub menu. From there I could drop to a root console.</p>
-
-<p>The first step is to remount / as read-write and then mount my boot partition (/dev/sda1).</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>mount -o rw,remount /
-</span><span class='line'>mount /dev/sda1 /boot</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now I just need to move the xorg.conf to one side and reinstall the nvidia driver</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>mv /etc/X11/xorg.conf /etc/X11/xorg.conf.bak
-</span><span class='line'>apt-get remove nvidia-current && apt-get install nvidia-current</span></code></pre></td></tr></table></div></figure>
-
-
-<p>After a reboot it should come up all fine and dandy.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2010/05/04/sms-from-icinga-or-nagios/">SMS From Icinga or Nagios</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-05-04T13:26:00+01:00" pubdate data-updated="true">Tuesday 04 May 2010</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Finding out how to have Nagios (or in my case Icinga) send SMS alerts is easy. However, from my point of view it fell down in 2 ways.</p>
-
-<ol>
-<li>Most of these guides are Debian specific, I am using Centos.</li>
-<li>The SMS alerts are all or nothing, I only want SMS alerts for specific services (such as the corporate website).</li>
-</ol>
-
-
-<h2>Hardware</h2>
-
-<p>First things first you need something to send the SMS. I am using a brand new Vodaphone USB dongle taped to the side of the rack . I also had it working with a Nokia E51 using the same tools – obviously this would the require constant charging.</p>
-
-<p>Ideally I would have prefered to use an internal card. PCI -> PC card bridges do exist, but I had no joy on my Icinga server, although it did work in a Dell Optiplex we had lying around, but it caused an HP XW4600 not to switch on at all.</p>
-
-<h2>Software</h2>
-
-<p>I am using <a href="http://smstools3.kekekasvi.com/" target="_blank">SMS Server Tools 3</a> which are available for Centos/RHEL in <a href="https://fedoraproject.org/wiki/EPEL" target="_blank">EPEL</a>. This gives you an smsd daemon that watches a folder for text messages in a particular format.</p>
-
-<p>When you have enabled EPEL run</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>yum install smstools
-</span><span class='line'>chkconfig –levels 35 smsd on</span></code></pre></td></tr></table></div></figure>
-
-
-<p>When I plugged in the USB dongle I got a pair of USB ttys at /dev/ttyUSB0 and /dev/ttyUSB1</p>
-
-<p>Add the following to /etc/smsd.conf</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>devices = GSM1
-</span><span class='line'>logfile = /var/log/smsd.log
-</span><span class='line'>loglevel = 7
-</span><span class='line'>
-</span><span class='line'>ARVE Error: no video ID
-</span><span class='line'>device = /dev/ttyUSB0
-</span><span class='line'>smsc = 447785016005 # I am using Vodaphone, your’s may vary.
-</span><span class='line'>incoming = no</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now you can start the daemon</p>
-
-<pre><code>/etc/init.d/smsd start
-</code></pre>
-
-<p>Finally, for reasons explained later, you need an entry in icinga’s cron.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>* * * * * if [[ `ls /tmp/ | grep 'sms-icinga' | wc -l` -gt 0 ]];then /bin/mv /tmp/sms-icinga* /var/spool/sms/outgoing/;fi</span></code></pre></td></tr></table></div></figure>
-
-
-<p>What does this do? It checks “/tmp/” for any files that contain the name “sms-icinga” every minute. If any exist it moves them to “/var/spool/sms/outgoing/”. That last folder is watched by smsd for those special text files mentioned above.
-Icinga/Nagios configuration</p>
-
-<p>First add the commands, for which I use the file /etc/icinga/objects/commands.conf</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>define command {
-</span><span class='line'>    command_name notify-host-by-sms
-</span><span class='line'>    command_line /usr/bin/printf “%b” “To: $CONTACTPAGER$\n\n$NOTIFICATIONTYPE$\nHost Alert: $HOSTNAME$ is $HOSTSTATE$\n” &gt; /tmp/sms-icinga.$HOSTNAME$.$HOSTSTATE$.$CONTACTPAGER$
-</span><span class='line'>}
-</span><span class='line'>
-</span><span class='line'>define command {
-</span><span class='line'>    command_name notify-service-by-sms
-</span><span class='line'>    command_line /usr/bin/printf “%b” “To: $CONTACTPAGER$\n\n$NOTIFICATIONTYPE$\nService Alert:     $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$” &gt; /tmp/sms-icinga.$SERVICEDESC$.$HOSTNAME$.$CONTACTPAGER$
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<p>These commands write a file in /tmp that includes the string sms-icinga that our cron script looks for. The rest of it is to endure we do not accidentally overwrite an alert that has not been sent yet. The reason we need to write it into tmp, and the mv it to the outgoing folder is a little weird. I found that if I wrote directly to the outgoing folder, then smsd seemed picked it up too early and failed to parse the file correctly – strange, but not to worry.</p>
-
-<p>Now is where need to fiddle things a little bit if we only want to send messages for certain critical services. If you want SMS alerts for all your services you can just add a pager entry to all you contacts. We need to create an SMS user and a couple of templates to base our critical stuff on.</p>
-
-<p>The templates:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>define contact {
-</span><span class='line'>    name sms-contact
-</span><span class='line'>    use generic-contact
-</span><span class='line'>    service_notification_commands notify-service-by-sms, notify-service-by-email
-</span><span class='line'>    host_notification_commands notify-host-by-sms, notify-host-by-email
-</span><span class='line'>    register 0
-</span><span class='line'>}
-</span><span class='line'>
-</span><span class='line'>define service {
-</span><span class='line'>    use generic-service
-</span><span class='line'>    name critical-service
-</span><span class='line'>    contact_groups admins-sms,linux-admin
-</span><span class='line'>}
-</span><span class='line'>
-</span><span class='line'>define host {
-</span><span class='line'>    name critical-host
-</span><span class='line'>    use generic-host
-</span><span class='line'>    contact_groups admins-sms,linux-admin
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<p>my user:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>define contact {
-</span><span class='line'>    contact_name ChrisCowley-SMS
-</span><span class='line'>    use sms-contact
-</span><span class='line'>    pager &lt;my-mobile-number&gt;
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<p>a contact group:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>define contactgroup {
-</span><span class='line'>    contactgroup_name admins-sms
-</span><span class='line'>    members ChrisCowley-SMS
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Finally we can create our essential service:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>define service {
-</span><span class='line'>    use critical-service
-</span><span class='line'>    service_description Website-content
-</span><span class='line'>    check_command check_http_content!-U http://www.snellgroup.com -m Snell
-</span><span class='line'>    host_name www.snellgroup.com
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2010/01/12/some-great-new-san-gear/">Some Great New SAN Gear</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-01-12T13:35:00+00:00" pubdate data-updated="true">Tuesday 12 January 2010</time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Just before Christmas I was up at a storage seminar run by a company called <a href="http://www.dothill.com/" target="_blank">Dot Hill</a>. Until I was pointed to them when I spoke to our storage supplier about replacing an aging array I had never heard of them. However, it turns out that they make the hardware used by HP, NetApp and others – quite a pedigree then.</p>
-
-<p>All their products are completely modular, based on the same chassis. If you have an iSCSI unit, then you can later change it into a FC one and you do not have to migrate anything as the array config is not stored on the controllers.</p>
-
-<p>They have some very clever technologies as well. In most arrays, the cache on the controllers need to be kept in sync. This generally goes through the backplane. In the Dot Hill arrays, there is dedicated circuitry that goes directly between the controllers – much faster! I also like the fact that they no longer use batteries, but instead use supercapacitors which are much greener.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
+    
+      <a class="prev" href="/blog/page/2/">&larr; Older</a>
     
     <a href="/blog/archives">Blog Archives</a>
     
@@ -801,6 +1315,10 @@ Icinga/Nagios configuration</p>
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/06/23/installing-postgresql-on-fedora-17/">Installing PostgreSQL on Fedora 17</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2012/04/18/skype-video-on-fedora-64bit/">Skype video on Fedora 64bit</a>
@@ -815,11 +1333,7 @@ Icinga/Nagios configuration</p>
       </li>
     
       <li class="post">
-        <a href="/blog/2012/03/16/music-player-daemon-in-fedora/">Music Player Daemon in Fedora</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/02/22/back-to-basics/">Back to basics</a>
+        <a href="/blog/2012/03/19/highly-available-nfs-slash-nas/">Highly Available NFS/NAS</a>
       </li>
     
   </ul>
@@ -882,7 +1396,7 @@ Icinga/Nagios configuration</p>
   
 
 <script type="text/javascript">
-      var disqus_shortname = 'jalb';
+      var disqus_shortname = 'justanotherlinuxblog';
       
         
         var disqus_script = 'count.js';
