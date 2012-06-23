@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linux | Just Another Linux Blog]]></title>
   <link href="http://http://warm-sword-7449.herokuapp.com//blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://http://warm-sword-7449.herokuapp.com//"/>
-  <updated>2012-06-23T13:41:47+01:00</updated>
+  <updated>2012-06-23T13:46:49+01:00</updated>
   <id>http://http://warm-sword-7449.herokuapp.com//</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -12,6 +12,42 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Installing PostgreSQL on Fedora 17]]></title>
+    <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/06/23/installing-postgresql-on-fedora-17/"/>
+    <updated>2012-06-23T13:02:00+01:00</updated>
+    <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/06/23/installing-postgresql-on-fedora-17</id>
+    <content type="html"><![CDATA[<p>With the new systemd this now requires a couple of manual steps.</p>
+
+<p>Obviously we start by installing the RPMS themselves:
+<code>
+sudo yum install postgresql-server postgresql
+</code></p>
+
+<p>If you were to now try and start the server it would fail as there is no database. The old SysV init script had an <em>initdb</em> option, but this no longer exists in the systemd service script. This means that you need to initialise the database manually:
+<code>
+sudo -u postrgres initdb -D /var/lib/pgsql/
+</code></p>
+
+<p>You can now start the service and enable it permanently
+<code>
+sudo service postgresql start
+sudo chkconfig postgresql on
+</code></p>
+
+<p>Now you can enter the database as the postgres <em>superuser</em>:
+<code>
+sudo -u postgres psql -d postgres
+</code>
+Finally create your user and associated database
+<code>
+CREATE ROLE "testAdmin" LOGIN PASSWORD 'testAdmin';
+CREATE DATABASE "testDB" WITH ENCODING='UTF8' OWNER="testAdmin";
+\q
+</code></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Skype video on Fedora 64bit]]></title>
