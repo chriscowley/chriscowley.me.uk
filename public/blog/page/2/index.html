@@ -9,8 +9,7 @@
   <meta name="author" content="Chris Cowley">
 
   
-  <meta name="description" content="Installing the VMware CLI should have been simple, but it was a bit of a fiddle. Use yum all the bits it needs: 1
-yum install make autoconf automake &hellip;">
+  <meta name="description" content="I have searchstorage.co.uk send me potentially interesting white-papers regularly. If I am honest, most of them or thinly veiled press-releases. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -92,86 +91,6 @@ yum install make autoconf automake &hellip;">
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/02/06/vmware-cli-installation-woes-on-centos-6/">VMware CLI Installation Woes on Centos 6</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-02-06T13:09:00+00:00" pubdate data-updated="true">Monday 06 February 2012</time>
-        
-         | <a href="/blog/2012/02/06/vmware-cli-installation-woes-on-centos-6/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Installing the VMware CLI should have been simple, but it was a bit of a fiddle.</p>
-
-<p>Use yum  all the bits it needs:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>yum install make autoconf automake openssl-devel gcc gcc-c++ make uuid-perl libuuid-devel uuid-devel  perl-Data-Dump perl-SOAP-Lite perl-XML-SAX perl-XML-NamespaceSupport perl-XML-LibXML perl-XML-LibXML-Common perl-CPAN</span></code></pre></td></tr></table></div></figure>
-
-
-<p>You should now be able to run the installer, but I had another problem though. The installer script would not believe me that I had a direct internet connection and insisted that I gave some proxy server settings. As a simple workaround I just commented out that code in the installation script:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>if ( direct_command("env | grep -i http_proxy") ) {
-</span><span class='line'> $httpproxy = 1;
-</span><span class='line'>} else {
-</span><span class='line'> print wrap("http_proxy not set. please set environment variable 'http_proxy' e.g. export http_proxy=http://myproxy.mydomain.com:0000 . \n\n", 0);
-</span><span class='line'>}
-</span><span class='line'>if ( direct_command("env | grep -i ftp_proxy") ) {
-</span><span class='line'> $ftpproxy = 1;
-</span><span class='line'>} else {
-</span><span class='line'> print wrap("ftp_proxy not set. please set environment variable 'ftp_proxy' e.g. export ftp_proxy=http://myproxy.mydomain.com:0000 . \n\n", 0);
-</span><span class='line'>}
-</span><span class='line'>
-</span><span class='line'>if ( !( $ftpproxy && $httpproxy)) {
-</span><span class='line'>    uninstall_file($gInstallerMainDB);
-</span><span class='line'>    exit 1;
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<p>After this I was able to run the installer with no problems. Of course, there is still the problem I have VMware about them putting their files under <em>/usr</em>. If it is not under control of my package manager, the default should be <em>/opt</em> or <em>/usr/local</em>.</p>
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -542,10 +461,6 @@ Icinga/Nagios configuration</p>
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2012/06/23/the-move-to-jekyll/">The move to Jekyll</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/2012/06/23/installing-postgresql-on-fedora-17/">Installing PostgreSQL on Fedora 17</a>
       </li>
     
@@ -559,6 +474,10 @@ Icinga/Nagios configuration</p>
     
       <li class="post">
         <a href="/blog/2012/04/05/pycurl-and-self-signed-ssl-certificates/">PyCurl and self-signed SSL certificates</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/03/19/highly-available-nfs-slash-nas/">Highly Available NFS/NAS</a>
       </li>
     
   </ul>
