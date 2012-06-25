@@ -328,7 +328,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://http://warm-sword-7449.herokuapp.com//blog/2012/02/20/add-san-functions-to-highly-available-nfs-slash-nas/" data-via="" data-counturl="http://http://warm-sword-7449.herokuapp.com//blog/2012/02/20/add-san-functions-to-highly-available-nfs-slash-nas/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://http://warm-sword-7449.herokuapp.com//blog/2012/02/20/add-san-functions-to-highly-available-nfs-slash-nas/" data-via="chriscowleyunix" data-counturl="http://http://warm-sword-7449.herokuapp.com//blog/2012/02/20/add-san-functions-to-highly-available-nfs-slash-nas/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -414,6 +414,22 @@
   <script src="/javascripts/github.js" type="text/javascript"> </script>
 </section>
 
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("chriscowleyunix", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/chriscowleyunix" class="twitter-follow-button" data-show-count="false">Follow @chriscowleyunix</a>
+  
+</section>
 
 
 
