@@ -4,7 +4,7 @@
   <title><![CDATA[Just Another Linux Blog]]></title>
   <link href="http://http://warm-sword-7449.herokuapp.com//atom.xml" rel="self"/>
   <link href="http://http://warm-sword-7449.herokuapp.com//"/>
-  <updated>2012-07-03T20:23:40+01:00</updated>
+  <updated>2012-07-03T21:23:58+01:00</updated>
   <id>http://http://warm-sword-7449.herokuapp.com//</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -12,6 +12,47 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Fixed my gihub repo list]]></title>
+    <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/07/03/fixed-my-gihub-repo-list/"/>
+    <updated>2012-07-03T20:54:00+01:00</updated>
+    <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/07/03/fixed-my-gihub-repo-list</id>
+    <content type="html"><![CDATA[<p>My Github repo list has not worked as all since I moved over to Octopress/Heroku. This evening I though I would have a little look into it.</p>
+
+<p>It turned out that GitHub has <a href="https://github.com/blog/1160-github-api-v2-end-of-life" target="_blank">depreciated the version 1 and 2 APIs</a>. Octopress was using version 2, so I have made a little change.</p>
+
+<div><script src='https://gist.github.com/3042647.js?file='></script>
+<noscript><pre><code>diff --git a/source/javascripts/github.js b/source/javascripts/github.js
+index 678775a..8b79dad 100644
+--- a/source/javascripts/github.js
++++ b/source/javascripts/github.js
+@@ -10,15 +10,15 @@ var github = (function(){
+   return {
+     showRepos: function(options){
+       $.ajax({
+-          url: &quot;http://github.com/api/v2/json/repos/show/&quot;+options.user+&quot;?callback=?&quot;
++          url: &quot;https://api.github.com/users/&quot;+options.user+&quot;/repos?callback=?&quot;
+         , type: 'jsonp'
+         , error: function (err) { $(options.target + ' li.loading').addClass('error').text(&quot;Error loading feed&quot;); }
+         , success: function(data) {
+           var repos = [];
+-          if (!data || !data.repositories) { return; }
+-          for (var i = 0; i &lt; data.repositories.length; i++) {
+-            if (options.skip_forks &amp;&amp; data.repositories[i].fork) { continue; }
+-            repos.push(data.repositories[i]);
++          if (!data || !data.data) { return; }
++          for (var i = 0; i &lt; data.data.length; i++) {
++            if (options.skip_forks &amp;&amp; data.data[i].fork) { continue; }
++            repos.push(data.data[i]);
+           }
+           repos.sort(function(a, b) {
+             var aDate = new Date(a.pushed_at).valueOf(),</code></pre></noscript></div>
+
+
+<p>According to <a href="https://github.com/imathis/octopress/issues/620" target="_blank">this issue</a> there will be a fix in <a href="https://github.com/imathis/octopress/tree/2.1" target="_blank" >Octopress 2.1</a>. However, this patch will keep things working until Brandon Mathis moves it into the master branch. Of course that issue also highlighted the fact that I had just re-invented the wheel :(</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Excellent seminar given by a friend of mine]]></title>
