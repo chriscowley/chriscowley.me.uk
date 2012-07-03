@@ -6,7 +6,7 @@ comments: true
 categories: [web,mobile]
 ---
 
-My friend <a target="_blank" href="http://twitter.com/#!/bobscape">Rob Borley</a> was talking at this year's <a href="http://iwmw.ukoln.ac.uk/" target="_blank">Internation Web Management Workshow</a>. He actually got voted "best talk" - which was nice.
+My friend <a target="_blank" href="http://twitter.com/#!/bobscape">Rob Borley</a> was talking at this year's <a href="http://iwmw.ukoln.ac.uk/" target="_blank">International Web Management Workshow</a>. He actually got voted "best talk" - which was nice.
 
 Anyone who even touches on Web vs mobile development should really watch it. His comes out with some very good idea.
 
