@@ -9,7 +9,7 @@
   <meta name="author" content="Chris Cowley">
 
   
-  <meta name="description" content="The basic idea is that everytime a change happens on the master, it gets pushed to the slave. This is done using hook scripts. First the master needs &hellip;">
+  <meta name="description" content="The basic idea is that everytime a change happens on the master, it gets pushed to the slave. In this set up it will not get you any more capacity; &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -122,10 +122,11 @@
   </header>
 
 
-  <div class="entry-content"><p>The basic idea is that everytime a change happens on the master, it gets pushed to the slave. This is done using hook scripts.</p>
+  <div class="entry-content"><p>The basic idea is that everytime a change happens on the master, it gets pushed to the slave. In this set up it will <em>not</em> get you any more capacity; you cannot commit back to the slave. If you do it will get out of sync, resulting in a <em>split brain</em> situation. This is what we sysadmins call a &#8220;bad thing&#8221;. I am doing this in order to have <a href="http://www.atlassian.com/software/fisheye/overview" target="_blank">Atlassian Fisheye</a> can scan the repository without having to go over the network. The basic layout is:</p>
 
-<p>First the master needs to be able to send the data to the slave without any user interaction
-On both the slave create a user to perform the sync</p>
+<p><img class="center" src="/images/svnsync.png"></p>
+
+<p>First the master needs to be able to send the data to the slave without any user interaction. On both the slave create a user to perform the sync:</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>useradd svnsync</span></code></pre></td></tr></table></div></figure>

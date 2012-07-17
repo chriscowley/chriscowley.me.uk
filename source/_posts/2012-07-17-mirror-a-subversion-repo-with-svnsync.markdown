@@ -5,10 +5,11 @@ date: 2012-07-17 12:03
 comments: true
 categories: Subversion
 ---
-The basic idea is that everytime a change happens on the master, it gets pushed to the slave. This is done using hook scripts.
+The basic idea is that everytime a change happens on the master, it gets pushed to the slave. In this set up it will *not* get you any more capacity; you cannot commit back to the slave. If you do it will get out of sync, resulting in a _split brain_ situation. This is what we sysadmins call a "bad thing". I am doing this in order to have <a href="http://www.atlassian.com/software/fisheye/overview" target="_blank">Atlassian Fisheye</a> can scan the repository without having to go over the network. The basic layout is:
 
-First the master needs to be able to send the data to the slave without any user interaction
-On both the slave create a user to perform the sync
+{% img  center /images/svnsync.png %}
+
+First the master needs to be able to send the data to the slave without any user interaction. On both the slave create a user to perform the sync:
 ```
 useradd svnsync
 ```
