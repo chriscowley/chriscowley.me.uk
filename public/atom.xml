@@ -4,7 +4,7 @@
   <title><![CDATA[Just Another Linux Blog]]></title>
   <link href="http://http://warm-sword-7449.herokuapp.com//atom.xml" rel="self"/>
   <link href="http://http://warm-sword-7449.herokuapp.com//"/>
-  <updated>2012-07-03T21:31:35+01:00</updated>
+  <updated>2012-07-17T12:40:08+01:00</updated>
   <id>http://http://warm-sword-7449.herokuapp.com//</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -12,6 +12,112 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Mirror a Subversion repo with svnsync]]></title>
+    <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/07/17/mirror-a-subversion-repo-with-svnsync/"/>
+    <updated>2012-07-17T12:03:00+01:00</updated>
+    <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/07/17/mirror-a-subversion-repo-with-svnsync</id>
+    <content type="html"><![CDATA[<p>The basic idea is that everytime a change happens on the master, it gets pushed to the slave. This is done using hook scripts.</p>
+
+<p>First the master needs to be able to send the data to the slave without any user interaction
+On both the slave create a user to perform the sync</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>useradd svnsync</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On the master, I use https to access my repositories. This means that all my hook scripts run as the apache user. Change to that user with <code>sudo su -s /bin/bash - apache</code></p>
+
+<p>Create an ssh key-pair (<code>ssh-keygen</code>) and add the contents of <code>~apache\.ssh\id_rsa.pub</code> on the master to <code>~svnsync/.ssh/authorized_keys2</code> on the slave.</p>
+
+<p>Now you can push push data to the slave without a password. Test it by running:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ssh svnsync@&lt;slave&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>On Slave</h2>
+
+<p>Create a new repository to store what gets pushed to it</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>svnadmin create --fs-type=fsfs /var/local/svnsync/&lt;reponame&gt;
+</span><span class='line'>chown -Rv svnsync:svnsync /var/local/svnsync/&lt;reponame&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The process will need to make modifications to the properties, so you need to enable that. Put the following into <code>/var/local/svnsync/&lt;reponame&gt;/hooks/pre-revprop-change</code></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#!/bin/sh
+</span><span class='line'>USER="$3"
+</span><span class='line'>
+</span><span class='line'>if [ "$USER" = "svnsync" ]; then exit 0; fi
+</span><span class='line'>
+</span><span class='line'>echo "Only the svnsync user can change revprops" &gt;&2
+</span><span class='line'>exit 1</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Finally make it executable with</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>chmod +x /var/local/svnsync/&lt;reponame&gt;/hooks/pre-revprop-change</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>On Master</h2>
+
+<p>First initialize the transfer and do the initial population. Do all this as the apache user again.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>svnsync init --username svnsync \
+</span><span class='line'>    svn+ssh://svnsync@vm-slp-is-rc/var/local/svnsync/&lt;reponame&gt; \
+</span><span class='line'>    file:///var/svn/&lt;reponame&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now we need to configure the Master repo to push all changes to the slave. Create a post-commit hook script containing</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#!/bin/bash
+</span><span class='line'>svnsync --username svnsync --non-interactive sync \
+</span><span class='line'>    svn+ssh://svnsync@vm-slp-is-rc/var/local/svnsync/&lt;reponame&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Finally create another hook script to keep revision properties in sync in <code>/var/svn/&lt;reponame&gt;/hooks/post-revprop-change</code></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#!/bin/bash
+</span><span class='line'>REPOS="$1"
+</span><span class='line'>REV="$2"
+</span><span class='line'>USER="$3"
+</span><span class='line'>PROPNAME="$4"
+</span><span class='line'>ACTION="$5"
+</span><span class='line'>
+</span><span class='line'>svnsync --username svnsync --non-interactive copy-revprops \
+</span><span class='line'>    svn+ssh://svnsync@vm-slp-is-rc/var/local/svnsync/&lt;reponame&gt; $REV && \
+</span><span class='line'>    exit 0</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Fixed my gihub repo list]]></title>
