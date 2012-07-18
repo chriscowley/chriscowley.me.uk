@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Subversion | Just Another Linux Blog]]></title>
   <link href="http://http://warm-sword-7449.herokuapp.com//blog/categories/subversion/atom.xml" rel="self"/>
   <link href="http://http://warm-sword-7449.herokuapp.com//"/>
-  <updated>2012-07-17T13:26:08+01:00</updated>
+  <updated>2012-07-18T10:09:38+01:00</updated>
   <id>http://http://warm-sword-7449.herokuapp.com//</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -67,7 +67,7 @@ chmod +x /var/local/svnsync/&lt;reponame&gt;/hooks/pre-revprop-change
 ```
 svnsync init --username svnsync \</p>
 
-<pre><code>svn+ssh://svnsync@vm-slp-is-rc/var/local/svnsync/&lt;reponame&gt; \
+<pre><code>svn+ssh://svnsync@&lt;slave&gt;/var/local/svnsync/&lt;reponame&gt; \
 file:///var/svn/&lt;reponame&gt;
 </code></pre>
 
@@ -80,7 +80,7 @@ file:///var/svn/&lt;reponame&gt;
 
 <p>svnsync --username svnsync --non-interactive sync \</p>
 
-<pre><code>svn+ssh://svnsync@vm-slp-is-rc/var/local/svnsync/&lt;reponame&gt;
+<pre><code>svn+ssh://svnsync@&lt;slave&gt;/var/local/svnsync/&lt;reponame&gt;
 </code></pre>
 
 <p><code>
@@ -97,7 +97,7 @@ ACTION="$5"</p>
 
 <p>svnsync --username svnsync --non-interactive copy-revprops \</p>
 
-<pre><code>svn+ssh://svnsync@vm-slp-is-rc/var/local/svnsync/&lt;reponame&gt; $REV &amp;&amp; \
+<pre><code>svn+ssh://svnsync@&lt;slave&gt;/var/local/svnsync/&lt;reponame&gt; $REV &amp;&amp; \
 exit 0
 </code></pre>
 

@@ -51,7 +51,7 @@ chmod +x /var/local/svnsync/<reponame>/hooks/pre-revprop-change
 First initialize the transfer and do the initial population. Do all this as the apache user again.
 ```
 svnsync init --username svnsync \
-    svn+ssh://svnsync@vm-slp-is-rc/var/local/svnsync/<reponame> \
+    svn+ssh://svnsync@<slave>/var/local/svnsync/<reponame> \
     file:///var/svn/<reponame>
 ```
 
@@ -59,7 +59,7 @@ Now we need to configure the Master repo to push all changes to the slave. Creat
 ```
 #!/bin/bash
 svnsync --username svnsync --non-interactive sync \
-    svn+ssh://svnsync@vm-slp-is-rc/var/local/svnsync/<reponame>
+    svn+ssh://svnsync@<slave>/var/local/svnsync/<reponame>
 ```
 Finally create another hook script to keep revision properties in sync in `/var/svn/<reponame>/hooks/post-revprop-change`
 ```
@@ -71,6 +71,6 @@ PROPNAME="$4"
 ACTION="$5"
 
 svnsync --username svnsync --non-interactive copy-revprops \
-    svn+ssh://svnsync@vm-slp-is-rc/var/local/svnsync/<reponame> $REV && \
+    svn+ssh://svnsync@<slave>/var/local/svnsync/<reponame> $REV && \
     exit 0
 ```

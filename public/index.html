@@ -184,7 +184,7 @@
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>svnsync init --username svnsync \
-</span><span class='line'>    svn+ssh://svnsync@vm-slp-is-rc/var/local/svnsync/&lt;reponame&gt; \
+</span><span class='line'>    svn+ssh://svnsync@&lt;slave&gt;/var/local/svnsync/&lt;reponame&gt; \
 </span><span class='line'>    file:///var/svn/&lt;reponame&gt;</span></code></pre></td></tr></table></div></figure>
 
 
@@ -195,7 +195,7 @@
 <span class='line-number'>3</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>#!/bin/bash
 </span><span class='line'>svnsync --username svnsync --non-interactive sync \
-</span><span class='line'>    svn+ssh://svnsync@vm-slp-is-rc/var/local/svnsync/&lt;reponame&gt;</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>    svn+ssh://svnsync@&lt;slave&gt;/var/local/svnsync/&lt;reponame&gt;</span></code></pre></td></tr></table></div></figure>
 
 
 <p>Finally create another hook script to keep revision properties in sync in <code>/var/svn/&lt;reponame&gt;/hooks/post-revprop-change</code></p>
@@ -218,7 +218,7 @@
 </span><span class='line'>ACTION="$5"
 </span><span class='line'>
 </span><span class='line'>svnsync --username svnsync --non-interactive copy-revprops \
-</span><span class='line'>    svn+ssh://svnsync@vm-slp-is-rc/var/local/svnsync/&lt;reponame&gt; $REV && \
+</span><span class='line'>    svn+ssh://svnsync@&lt;slave&gt;/var/local/svnsync/&lt;reponame&gt; $REV && \
 </span><span class='line'>    exit 0</span></code></pre></td></tr></table></div></figure>
 
 </div>
