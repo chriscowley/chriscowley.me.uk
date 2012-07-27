@@ -5,12 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Installing PostgreSQL on Fedora 17 - Just Another Linux Blog</title>
+  <title>Category: cycling - Just Another Linux Blog</title>
   <meta name="author" content="Chris Cowley">
 
   
-  <meta name="description" content="With the new systemd this now requires a couple of manual steps. Obviously we start by installing the RPMS themselves: 1
-sudo yum install postgresql- &hellip;">
+  <meta name="description" content="Category: cycling">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +18,7 @@ sudo yum install postgresql- &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://http://warm-sword-7449.herokuapp.com//blog/2012/06/23/installing-postgresql-on-fedora-17/">
+  <link rel="canonical" href="http://http://warm-sword-7449.herokuapp.com/blog/categories/cycling/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -91,135 +90,36 @@ sudo yum install postgresql- &hellip;">
   <div id="main">
     <div id="content">
       <div>
-<article class="hentry" role="article">
+<article role="article">
   
   <header>
-    
-      <h1 class="entry-title">Installing PostgreSQL on Fedora 17</h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-06-23T13:02:00+01:00" pubdate data-updated="true">Saturday 23 June 2012</time>
-        
-         | <a href="#disqus_thread">Comments</a>
-        
-      </p>
+    <h1 class="entry-title">Category: Cycling</h1>
     
   </header>
-
-
-<div class="entry-content"><p>With the new systemd this now requires a couple of manual steps.</p>
-
-<p>Obviously we start by installing the RPMS themselves:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo yum install postgresql-server postgresql</span></code></pre></td></tr></table></div></figure>
-
-
-<p>If you were to now try and start the server it would fail as there is no database. The old SysV init script had an <em>initdb</em> option, but this no longer exists in the systemd service script. This means that you need to initialise the database manually:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo -u postrgres initdb -D /var/lib/pgsql/</span></code></pre></td></tr></table></div></figure>
-
-
-<p>You can now start the service and enable it permanently</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo service postgresql start
-</span><span class='line'>sudo chkconfig postgresql on</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now you can enter the database as the postgres <em>superuser</em>:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo -u postgres psql -d postgres</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Finally create your user and associated database</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>CREATE ROLE "testAdmin" LOGIN PASSWORD 'testAdmin';
-</span><span class='line'>CREATE DATABASE "testDB" WITH ENCODING='UTF8' OWNER="testAdmin";
-</span><span class='line'>\q</span></code></pre></td></tr></table></div></figure>
-
-
-
-</div>
-
-
-  <footer>
-    <p class="meta">
-      
   
-
-<span class="byline author vcard">Posted by <span class="fn">Chris Cowley</span></span>
-
-      
-
-
-
-
-
+  <div id="blog-archives" class="category">
 
 
 
   
+  <h2>2012</h2>
+
+<article>
+  
+<h1><a href="/blog/2012/07/27/isle-of-wight-ride/">Isle of Wight Ride</a></h1>
+<time datetime="2012-07-27T16:02:00+01:00" pubdate><span class='month'>Jul</span> <span class='day'>27</span> <span class='year'>2012</span></time>
+
+<footer>
+  <span class="categories">posted in <a class='category' href='/blog/categories/cycling/'>cycling</a></span>
+</footer>
 
 
-<time datetime="2012-06-23T13:02:00+01:00" pubdate data-updated="true">Saturday 23 June 2012</time>
-      
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/linux/'>linux</a>
-  
-</span>
-
-
-    </p>
-    
-      <div class="sharing">
-  
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://http://warm-sword-7449.herokuapp.com//blog/2012/06/23/installing-postgresql-on-fedora-17/" data-via="chriscowleyunix" data-counturl="http://http://warm-sword-7449.herokuapp.com//blog/2012/06/23/installing-postgresql-on-fedora-17/" >Tweet</a>
-  
-  
-  <div class="g-plusone" data-size="medium"></div>
-  
-  
-</div>
-
-    
-    <p class="meta">
-      
-        <a class="basic-alignment left" href="/blog/2012/04/18/skype-video-on-fedora-64bit/" title="Previous Post: Skype video on Fedora 64bit">&laquo; Skype video on Fedora 64bit</a>
-      
-      
-        <a class="basic-alignment right" href="/blog/2012/06/23/the-move-to-jekyll/" title="Next Post: The move to Jekyll">The move to Jekyll &raquo;</a>
-      
-    </p>
-  </footer>
 </article>
 
-  <section>
-    <h1>Comments</h1>
-    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
-  </section>
+
+  
+</article>
 
 </div>
 

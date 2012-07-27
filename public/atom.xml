@@ -4,7 +4,7 @@
   <title><![CDATA[Just Another Linux Blog]]></title>
   <link href="http://http://warm-sword-7449.herokuapp.com//atom.xml" rel="self"/>
   <link href="http://http://warm-sword-7449.herokuapp.com//"/>
-  <updated>2012-07-18T10:09:38+01:00</updated>
+  <updated>2012-07-27T16:26:06+01:00</updated>
   <id>http://http://warm-sword-7449.herokuapp.com//</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -12,6 +12,27 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Isle of Wight Ride]]></title>
+    <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/07/27/isle-of-wight-ride/"/>
+    <updated>2012-07-27T16:02:00+01:00</updated>
+    <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/07/27/isle-of-wight-ride</id>
+    <content type="html"><![CDATA[<p>Last week I successfully did my first 65 mile ride. Of course it was not a race, but that never stopped a group of men being over competitive - I won by the way.</p>
+
+<p>I do not own a cycle computer, nor did I remember to run My Tracks. However, a colleague did record it on his Garmin GPS:</p>
+
+<iframe width='465' height='548' frameborder='0' src='http://connect.garmin.com:80/activity/embed/203587506'></iframe>
+
+
+
+
+<object width="400" height="300"> <param name="flashvars" value="offsite=true&lang=en-us&page_show_url=%2Fphotos%2F83132329%40N04%2Fsets%2F72157630749918206%2Fshow%2F&page_show_back_url=%2Fphotos%2F83132329%40N04%2Fsets%2F72157630749918206%2F&set_id=72157630749918206&jump_to="></param> <param name="movie" value="http://www.flickr.com/apps/slideshow/show.swf?v=109615"></param> <param name="allowFullScreen" value="true"></param><embed type="application/x-shockwave-flash" src="http://www.flickr.com/apps/slideshow/show.swf?v=109615" allowFullScreen="true" flashvars="offsite=true&lang=en-us&page_show_url=%2Fphotos%2F83132329%40N04%2Fsets%2F72157630749918206%2Fshow%2F&page_show_back_url=%2Fphotos%2F83132329%40N04%2Fsets%2F72157630749918206%2F&set_id=72157630749918206&jump_to=" width="400" height="300"></embed></object>
+
+
+<p>There are a few photos of it <a href="http://flic.kr/s/aHsjAVaZgu">here</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Mirror a Subversion repo with svnsync]]></title>
@@ -172,6 +193,18 @@ index 678775a..8b79dad 100644
 
 <iframe src="http://player.vimeo.com/video/44618744?title=0&amp;byline=0&amp;portrait=0&amp;color=ff9933" width="400" height="300" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
 
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[The move to Jekyll]]></title>
+    <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/06/23/the-move-to-jekyll/"/>
+    <updated>2012-06-23T21:10:00+01:00</updated>
+    <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/06/23/the-move-to-jekyll</id>
+    <content type="html"><![CDATA[<p><img class="right" src="http://http://warm-sword-7449.herokuapp.com//images/agent-smith.jpg">
+&#8220;That Mr Anderson is the sound of inevitability&#8221;</p>
+
+<p>Well it had to happen eventually. I am a professional geek and now (like all the other geeks it seems) I have left the safe world of Wordpress/Drupal et al. I have joined the world of Jekyll (and hopefully not Hyde).</p>
 ]]></content>
   </entry>
   
