@@ -4,7 +4,7 @@
   <title><![CDATA[Just Another Linux Blog]]></title>
   <link href="http://http://warm-sword-7449.herokuapp.com//atom.xml" rel="self"/>
   <link href="http://http://warm-sword-7449.herokuapp.com//"/>
-  <updated>2012-07-27T16:31:25+01:00</updated>
+  <updated>2012-08-04T21:57:11+02:00</updated>
   <id>http://http://warm-sword-7449.herokuapp.com//</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -14,9 +14,22 @@
 
   
   <entry>
+    <title type="html"><![CDATA[I have a Raspberry Pi]]></title>
+    <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/08/04/i-have-a-raspberry-pi/"/>
+    <updated>2012-08-04T21:47:00+02:00</updated>
+    <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/08/04/i-have-a-raspberry-pi</id>
+    <content type="html"><![CDATA[<p>Just got my new toy! I have to admit that I am not completely certain what I will do with it yet though.</p>
+
+<p>It will certainly start by running <a href="http://mpd.wikia.com/wiki/Music_Player_Daemon_Wiki" target="_blank">Music Player Daemon</a>.</p>
+
+<p><a href="http://www.flickr.com/photos/chriscowleyunix/7705281518/" title="Raspberry Pi by chriscowleysound, on Flickr"><img src="http://farm9.staticflickr.com/8023/7705281518_73c2ee8c18.jpg" width="500" height="375" alt="Raspberry Pi"></a></p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Isle of Wight Ride]]></title>
     <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/07/27/isle-of-wight-ride/"/>
-    <updated>2012-07-27T16:02:00+01:00</updated>
+    <updated>2012-07-27T16:02:00+02:00</updated>
     <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/07/27/isle-of-wight-ride</id>
     <content type="html"><![CDATA[<p>Last week I successfully did my first 65 mile ride. Of course it was not a race, but that never stopped a group of men being over competitive - I won by the way.</p>
 
@@ -37,7 +50,7 @@
   <entry>
     <title type="html"><![CDATA[Mirror a Subversion repo with svnsync]]></title>
     <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/07/17/mirror-a-subversion-repo-with-svnsync/"/>
-    <updated>2012-07-17T12:03:00+01:00</updated>
+    <updated>2012-07-17T12:03:00+02:00</updated>
     <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/07/17/mirror-a-subversion-repo-with-svnsync</id>
     <content type="html"><![CDATA[<p>The basic idea is that everytime a change happens on the master, it gets pushed to the slave. In this set up it will <em>not</em> get you any more capacity; you cannot commit back to the slave. If you do it will get out of sync, resulting in a <em>split brain</em> situation. This is what we sysadmins call a &#8220;bad thing&#8221;. I am doing this in order to have <a href="http://www.atlassian.com/software/fisheye/overview" target="_blank">Atlassian Fisheye</a> can scan the repository without having to go over the network. The basic layout is:</p>
 
@@ -144,7 +157,7 @@
   <entry>
     <title type="html"><![CDATA[Fixed my gihub repo list]]></title>
     <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/07/03/fixed-my-gihub-repo-list/"/>
-    <updated>2012-07-03T20:54:00+01:00</updated>
+    <updated>2012-07-03T20:54:00+02:00</updated>
     <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/07/03/fixed-my-gihub-repo-list</id>
     <content type="html"><![CDATA[<p>My Github repo list has not worked as all since I moved over to Octopress. This evening I though I would have a little look into it.</p>
 
@@ -185,7 +198,7 @@ index 678775a..8b79dad 100644
   <entry>
     <title type="html"><![CDATA[Excellent seminar given by a friend of mine]]></title>
     <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/07/03/excellent-seminar-given-by-a-friend-of-mine/"/>
-    <updated>2012-07-03T15:01:00+01:00</updated>
+    <updated>2012-07-03T15:01:00+02:00</updated>
     <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/07/03/excellent-seminar-given-by-a-friend-of-mine</id>
     <content type="html"><![CDATA[<p>My friend <a target="_blank" href="http://twitter.com/#!/bobscape">Rob Borley</a> was talking at this year&#8217;s <a href="http://iwmw.ukoln.ac.uk/" target="_blank">International Web Management Workshow</a>. He actually got voted &#8220;best talk&#8221; - which was nice.</p>
 
@@ -199,7 +212,7 @@ index 678775a..8b79dad 100644
   <entry>
     <title type="html"><![CDATA[Installing PostgreSQL on Fedora 17]]></title>
     <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/06/23/installing-postgresql-on-fedora-17/"/>
-    <updated>2012-06-23T13:02:00+01:00</updated>
+    <updated>2012-06-23T13:02:00+02:00</updated>
     <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/06/23/installing-postgresql-on-fedora-17</id>
     <content type="html"><![CDATA[<p>With the new systemd this now requires a couple of manual steps.</p>
 
@@ -246,7 +259,7 @@ index 678775a..8b79dad 100644
   <entry>
     <title type="html"><![CDATA[Skype video on Fedora 64bit]]></title>
     <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/04/18/skype-video-on-fedora-64bit/"/>
-    <updated>2012-04-18T15:53:00+01:00</updated>
+    <updated>2012-04-18T15:53:00+02:00</updated>
     <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/04/18/skype-video-on-fedora-64bit</id>
     <content type="html"><![CDATA[<p>Install Skype – I used <a href="http://slayachronicles.blogspot.co.uk/2012/03/installing-skype-on-fedora-16-64-bit.html" target="_blank" >these</a> instructions. This will seem to get everything working, but video will just give you a black screen and no error message. This is because Skype is 32 bit and you webcam driver is 64 bit. Make sure you have libv4l.i686 installed.</p>
 
@@ -271,7 +284,7 @@ index 678775a..8b79dad 100644
   <entry>
     <title type="html"><![CDATA[A Learning Experience]]></title>
     <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/04/16/a-learning-experience/"/>
-    <updated>2012-04-16T20:30:00+01:00</updated>
+    <updated>2012-04-16T20:30:00+02:00</updated>
     <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/04/16/a-learning-experience</id>
     <content type="html"><![CDATA[<p>How many times have you installed/updated a bit of software and read the line “Please take a back up” or something to that effect? 99 times out of a hundred, you will just continue and ignore it.</p>
 
@@ -286,7 +299,7 @@ index 678775a..8b79dad 100644
   <entry>
     <title type="html"><![CDATA[PyCurl and self-signed SSL certificates]]></title>
     <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/04/05/pycurl-and-self-signed-ssl-certificates/"/>
-    <updated>2012-04-05T16:50:00+01:00</updated>
+    <updated>2012-04-05T16:50:00+02:00</updated>
     <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/04/05/pycurl-and-self-signed-ssl-certificates</id>
     <content type="html"><![CDATA[<p>At <a href="http://www.snellgroup.com" target="_blank">Snell</a> we make heavy use of self-signed certificates for internal websites, such as the R&amp;D wiki. Active Directory makes it easy for us to make this transparent to the users, those that use Firefox/Chrome can find our well-published instructions to add the CA certificate to their own browsers.</p>
 
@@ -329,7 +342,7 @@ index 678775a..8b79dad 100644
   <entry>
     <title type="html"><![CDATA[Highly Available NFS/NAS]]></title>
     <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/03/19/highly-available-nfs-slash-nas/"/>
-    <updated>2012-03-19T16:59:00+00:00</updated>
+    <updated>2012-03-19T16:59:00+01:00</updated>
     <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/03/19/highly-available-nfs-slash-nas</id>
     <content type="html"><![CDATA[<p>Take 2 Centos Servers (nfs1 and nfs2 will do nicely) and install ELrepo and EPEL on them both:</p>
 
@@ -608,7 +621,7 @@ index 678775a..8b79dad 100644
   <entry>
     <title type="html"><![CDATA[Music Player Daemon in Fedora]]></title>
     <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/03/16/music-player-daemon-in-fedora/"/>
-    <updated>2012-03-16T22:04:00+00:00</updated>
+    <updated>2012-03-16T22:04:00+01:00</updated>
     <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/03/16/music-player-daemon-in-fedora</id>
     <content type="html"><![CDATA[<p>This should have nice and simple, but there was a little gotcha (for me anyway).</p>
 
@@ -643,7 +656,7 @@ index 678775a..8b79dad 100644
   <entry>
     <title type="html"><![CDATA[Back to basics]]></title>
     <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/02/22/back-to-basics/"/>
-    <updated>2012-02-22T13:00:00+00:00</updated>
+    <updated>2012-02-22T13:00:00+01:00</updated>
     <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/02/22/back-to-basics</id>
     <content type="html"><![CDATA[<p>I have been a Sys Admin for quite a while now. Specialising in Linux means that I am often called upon to be a “jack of all trades, master of many”. In the last week I have touched upon storage, multiple programming languages (Bash, PHP, Python, Ruby and Java), Linux, Exchange, Tomcat, Virtualization and Systems architecture. I am sure the list could go on … and on … and on …</p>
 
@@ -664,7 +677,7 @@ index 678775a..8b79dad 100644
   <entry>
     <title type="html"><![CDATA[Add SAN functions to Highly Available NFS/NAS]]></title>
     <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/02/20/add-san-functions-to-highly-available-nfs-slash-nas/"/>
-    <updated>2012-02-20T21:07:00+00:00</updated>
+    <updated>2012-02-20T21:07:00+01:00</updated>
     <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/02/20/add-san-functions-to-highly-available-nfs-slash-nas</id>
     <content type="html"><![CDATA[<p>This based on my last post where I documented building a Highly Available NFS/NAS server.</p>
 
@@ -845,7 +858,7 @@ index 678775a..8b79dad 100644
   <entry>
     <title type="html"><![CDATA[Home-made Redundant Thin-provisioned SAN]]></title>
     <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/02/08/home-made-redundant-thin-provisioned-san/"/>
-    <updated>2012-02-08T20:02:00+00:00</updated>
+    <updated>2012-02-08T20:02:00+01:00</updated>
     <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/02/08/home-made-redundant-thin-provisioned-san</id>
     <content type="html"><![CDATA[<p>The inspiration for this came from a mixture of problems I was having with my HP P2000, ideas that have been floating around my head for a while, plus a post over at Bauer-power.net. Basically I got given a bunch of warranty returned Supermicro servers from our Customer Service guys  and got tasked with making it our secondary VMware store and DR snapshot storage. Incidentally, the Supermicro servers are used for our Channel-in-a-box product for those you in the broadcast world. They are not ideal, the 2U 12 disk models that Pablo uses are far more suitable.</p>
 
@@ -1067,7 +1080,7 @@ index 678775a..8b79dad 100644
   <entry>
     <title type="html"><![CDATA[VMware CLI installation woes on Centos 6]]></title>
     <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/02/06/vmware-cli-installation-woes-on-centos-6/"/>
-    <updated>2012-02-06T13:09:00+00:00</updated>
+    <updated>2012-02-06T13:09:00+01:00</updated>
     <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/02/06/vmware-cli-installation-woes-on-centos-6</id>
     <content type="html"><![CDATA[<p>Installing the VMware CLI should have been simple, but it was a bit of a fiddle.</p>
 
@@ -1118,7 +1131,7 @@ index 678775a..8b79dad 100644
   <entry>
     <title type="html"><![CDATA[Open Source Storage]]></title>
     <link href="http://http://warm-sword-7449.herokuapp.com//blog/2011/11/10/open-source-storage/"/>
-    <updated>2011-11-10T13:12:00+00:00</updated>
+    <updated>2011-11-10T13:12:00+01:00</updated>
     <id>http://http://warm-sword-7449.herokuapp.com//blog/2011/11/10/open-source-storage</id>
     <content type="html"><![CDATA[<p>I have searchstorage.co.uk send me potentially interesting white-papers regularly. If I am honest, most of them or thinly veiled press-releases. However occasionally one is interesting.</p>
 
@@ -1133,7 +1146,7 @@ index 678775a..8b79dad 100644
   <entry>
     <title type="html"><![CDATA[Ubuntu upgrade problems]]></title>
     <link href="http://http://warm-sword-7449.herokuapp.com//blog/2011/10/16/ubuntu-upgrade-problems/"/>
-    <updated>2011-10-16T13:24:00+01:00</updated>
+    <updated>2011-10-16T13:24:00+02:00</updated>
     <id>http://http://warm-sword-7449.herokuapp.com//blog/2011/10/16/ubuntu-upgrade-problems</id>
     <content type="html"><![CDATA[<p>Usually the release upgrade is relatively trouble-free, but this time I had a minor problem. After the upgrade I had no X Windows. It turned out that the NVidia driver not loading.</p>
 
@@ -1162,7 +1175,7 @@ index 678775a..8b79dad 100644
   <entry>
     <title type="html"><![CDATA[SMS from Icinga or Nagios]]></title>
     <link href="http://http://warm-sword-7449.herokuapp.com//blog/2010/05/04/sms-from-icinga-or-nagios/"/>
-    <updated>2010-05-04T13:26:00+01:00</updated>
+    <updated>2010-05-04T13:26:00+02:00</updated>
     <id>http://http://warm-sword-7449.herokuapp.com//blog/2010/05/04/sms-from-icinga-or-nagios</id>
     <content type="html"><![CDATA[<p>Finding out how to have Nagios (or in my case Icinga) send SMS alerts is easy. However, from my point of view it fell down in 2 ways.</p>
 
@@ -1343,7 +1356,7 @@ Icinga/Nagios configuration</p>
   <entry>
     <title type="html"><![CDATA[Some great new SAN gear]]></title>
     <link href="http://http://warm-sword-7449.herokuapp.com//blog/2010/01/12/some-great-new-san-gear/"/>
-    <updated>2010-01-12T13:35:00+00:00</updated>
+    <updated>2010-01-12T13:35:00+01:00</updated>
     <id>http://http://warm-sword-7449.herokuapp.com//blog/2010/01/12/some-great-new-san-gear</id>
     <content type="html"><![CDATA[<p>Just before Christmas I was up at a storage seminar run by a company called <a href="http://www.dothill.com/" target="_blank">Dot Hill</a>. Until I was pointed to them when I spoke to our storage supplier about replacing an aging array I had never heard of them. However, it turns out that they make the hardware used by HP, NetApp and others – quite a pedigree then.</p>
 

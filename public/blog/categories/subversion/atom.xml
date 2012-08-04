@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Subversion | Just Another Linux Blog]]></title>
   <link href="http://http://warm-sword-7449.herokuapp.com//blog/categories/subversion/atom.xml" rel="self"/>
   <link href="http://http://warm-sword-7449.herokuapp.com//"/>
-  <updated>2012-07-27T16:31:25+01:00</updated>
+  <updated>2012-08-04T21:57:11+02:00</updated>
   <id>http://http://warm-sword-7449.herokuapp.com//</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Mirror a Subversion repo with svnsync]]></title>
     <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/07/17/mirror-a-subversion-repo-with-svnsync/"/>
-    <updated>2012-07-17T12:03:00+01:00</updated>
+    <updated>2012-07-17T12:03:00+02:00</updated>
     <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/07/17/mirror-a-subversion-repo-with-svnsync</id>
     <content type="html"><![CDATA[<p>The basic idea is that everytime a change happens on the master, it gets pushed to the slave. In this set up it will <em>not</em> get you any more capacity; you cannot commit back to the slave. If you do it will get out of sync, resulting in a <em>split brain</em> situation. This is what we sysadmins call a "bad thing". I am doing this in order to have <a href="http://www.atlassian.com/software/fisheye/overview" target="_blank">Atlassian Fisheye</a> can scan the repository without having to go over the network. The basic layout is:</p>
 

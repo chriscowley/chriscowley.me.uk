@@ -4,7 +4,7 @@
   <title><![CDATA[Category: virtualisation | Just Another Linux Blog]]></title>
   <link href="http://http://warm-sword-7449.herokuapp.com//blog/categories/virtualisation/atom.xml" rel="self"/>
   <link href="http://http://warm-sword-7449.herokuapp.com//"/>
-  <updated>2012-07-27T16:31:25+01:00</updated>
+  <updated>2012-08-04T21:57:11+02:00</updated>
   <id>http://http://warm-sword-7449.herokuapp.com//</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[VMware CLI installation woes on Centos 6]]></title>
     <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/02/06/vmware-cli-installation-woes-on-centos-6/"/>
-    <updated>2012-02-06T13:09:00+00:00</updated>
+    <updated>2012-02-06T13:09:00+01:00</updated>
     <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/02/06/vmware-cli-installation-woes-on-centos-6</id>
     <content type="html"><![CDATA[<p>Installing the VMware CLI should have been simple, but it was a bit of a fiddle.</p>
 

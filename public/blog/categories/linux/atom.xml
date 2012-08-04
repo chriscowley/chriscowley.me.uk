@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linux | Just Another Linux Blog]]></title>
   <link href="http://http://warm-sword-7449.herokuapp.com//blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://http://warm-sword-7449.herokuapp.com//"/>
-  <updated>2012-07-27T16:31:25+01:00</updated>
+  <updated>2012-08-04T21:57:11+02:00</updated>
   <id>http://http://warm-sword-7449.herokuapp.com//</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -14,9 +14,22 @@
 
   
   <entry>
+    <title type="html"><![CDATA[I have a Raspberry Pi]]></title>
+    <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/08/04/i-have-a-raspberry-pi/"/>
+    <updated>2012-08-04T21:47:00+02:00</updated>
+    <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/08/04/i-have-a-raspberry-pi</id>
+    <content type="html"><![CDATA[<p>Just got my new toy! I have to admit that I am not completely certain what I will do with it yet though.</p>
+
+<p>It will certainly start by running <a href="http://mpd.wikia.com/wiki/Music_Player_Daemon_Wiki" target="_blank">Music Player Daemon</a>.</p>
+
+<p><a href="http://www.flickr.com/photos/chriscowleyunix/7705281518/" title="Raspberry Pi by chriscowleysound, on Flickr"><img src="http://farm9.staticflickr.com/8023/7705281518_73c2ee8c18.jpg" width="500" height="375" alt="Raspberry Pi"></a></p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Installing PostgreSQL on Fedora 17]]></title>
     <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/06/23/installing-postgresql-on-fedora-17/"/>
-    <updated>2012-06-23T13:02:00+01:00</updated>
+    <updated>2012-06-23T13:02:00+02:00</updated>
     <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/06/23/installing-postgresql-on-fedora-17</id>
     <content type="html"><![CDATA[<p>With the new systemd this now requires a couple of manual steps.</p>
 
@@ -52,7 +65,7 @@ CREATE DATABASE "testDB" WITH ENCODING='UTF8' OWNER="testAdmin";
   <entry>
     <title type="html"><![CDATA[Skype video on Fedora 64bit]]></title>
     <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/04/18/skype-video-on-fedora-64bit/"/>
-    <updated>2012-04-18T15:53:00+01:00</updated>
+    <updated>2012-04-18T15:53:00+02:00</updated>
     <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/04/18/skype-video-on-fedora-64bit</id>
     <content type="html"><![CDATA[<p>Install Skype – I used <a href="http://slayachronicles.blogspot.co.uk/2012/03/installing-skype-on-fedora-16-64-bit.html" target="_blank" >these</a> instructions. This will seem to get everything working, but video will just give you a black screen and no error message. This is because Skype is 32 bit and you webcam driver is 64 bit. Make sure you have libv4l.i686 installed.</p>
 
@@ -75,7 +88,7 @@ CREATE DATABASE "testDB" WITH ENCODING='UTF8' OWNER="testAdmin";
   <entry>
     <title type="html"><![CDATA[Ubuntu upgrade problems]]></title>
     <link href="http://http://warm-sword-7449.herokuapp.com//blog/2011/10/16/ubuntu-upgrade-problems/"/>
-    <updated>2011-10-16T13:24:00+01:00</updated>
+    <updated>2011-10-16T13:24:00+02:00</updated>
     <id>http://http://warm-sword-7449.herokuapp.com//blog/2011/10/16/ubuntu-upgrade-problems</id>
     <content type="html"><![CDATA[<p>Usually the release upgrade is relatively trouble-free, but this time I had a minor problem. After the upgrade I had no X Windows. It turned out that the NVidia driver not loading.</p>
 
