@@ -9,10 +9,7 @@
   <meta name="author" content="Chris Cowley">
 
   
-  <meta name="description" content="This should have nice and simple, but there was a little gotcha (for me anyway). First install the RPMFusion repositories: 1
-2
-3
-yum localinstall -- &hellip;">
+  <meta name="description" content="This based on my last post where I documented building a Highly Available NFS/NAS server. There is not a huge amount that needs to be done in order &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -100,7 +97,7 @@ yum localinstall -- &hellip;">
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2012/03/16/music-player-daemon-in-fedora/">Music Player Daemon in Fedora</a></h1>
+      <h1 class="entry-title"><a href="/blog/2012/03/20/add-san-functions-to-highly-available-nfs-slash-nas/">Add SAN Functions to Highly Available NFS/NAS</a></h1>
     
     
       <p class="meta">
@@ -116,123 +113,9 @@ yum localinstall -- &hellip;">
   
 
 
-<time datetime="2012-03-16T22:04:00+01:00" pubdate data-updated="true">Friday 16 March 2012</time>
+<time datetime="2012-03-20T21:07:00+01:00" pubdate data-updated="true">Tuesday 20 March 2012</time>
         
-         | <a href="/blog/2012/03/16/music-player-daemon-in-fedora/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>This should have nice and simple, but there was a little gotcha (for me anyway).</p>
-
-<p>First install the RPMFusion repositories:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>yum localinstall --nogpgcheck \
-</span><span class='line'>    http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-stable.noarch.rpm \
-</span><span class='line'>    http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-stable.noarch.rpm</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now you can install MPD and a simple client with</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>yum install mpd mpc</span></code></pre></td></tr></table></div></figure>
-
-
-<p>By default it looks in <em>/var/lib/mpd/music</em> which strikes me as reasonable, so copy some music there. Now comes the bit that caught me out; you will need to update is library:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>mpc update</span></code></pre></td></tr></table></div></figure>
-
-
-<p>A lot of documentation on the net talks about running <code>mpd –create-db</code>, but this is now depreciated. I eventually found this out on Arch Linux’s wiki.</p>
-
-<p>Connect a client and listen to your music – I’m using gmpc (<code>yum install gmpc</code>) which is very feature rich, but if you want something simpler, try Sonata (<code>yum install sonata</code>) or even <em>mpc</em> itself. Finally you can also use you MPDroid on your phone.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/02/22/back-to-basics/">Back to Basics</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-02-22T13:00:00+01:00" pubdate data-updated="true">Wednesday 22 February 2012</time>
-        
-         | <a href="/blog/2012/02/22/back-to-basics/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I have been a Sys Admin for quite a while now. Specialising in Linux means that I am often called upon to be a “jack of all trades, master of many”. In the last week I have touched upon storage, multiple programming languages (Bash, PHP, Python, Ruby and Java), Linux, Exchange, Tomcat, Virtualization and Systems architecture. I am sure the list could go on … and on … and on …</p>
-
-<p>There is however something that I feel I am missing. Before I was in my current post, I was more of a developer. I did a lot of Shell scripting, but also ADA and C/C++. Nowadays I do not do that, which is a shame. Virtually all modern programming languages trace their roots back to C and C++. The whole of Linux/UNIX traces its roots back to C. Our world is built on C/C++!</p>
-
-<p>This is something I have neglected over recent years, so I’m going to change that. A bit of Google-fu just now has bought me some interesting resources:</p>
-
-<pre><code>&lt;a href="http://www.cplusplus.com/doc/tutorial/" target="_blank" &gt;http://www.cplusplus.com/doc/tutorial/&lt;/a&gt;
-&lt;a href="http://www.howtoforge.com/howtos/programming/c-cplusplus" target="_blank" &gt;http://www.howtoforge.com/howtos/programming/c-cplusplus&lt;/a&gt;
-&lt;a href="http://www.gtk.org/tutorial1.2/" target="_blank" &gt;http://www.gtk.org/tutorial1.2/&lt;/a&gt;
-&lt;a href="http://zetcode.com/tutorials/qt4tutorial/" target="_blank" &gt;http://zetcode.com/tutorials/qt4tutorial/&lt;/a&gt;
-</code></pre>
-
-<p>I have not looked at any of these in detail yet, but I will be over the next few days. At the end I hope to have dragged this hard-earned knowledge kicking and screaming from the back of my mind.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/02/20/add-san-functions-to-highly-available-nfs-slash-nas/">Add SAN Functions to Highly Available NFS/NAS</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-02-20T21:07:00+01:00" pubdate data-updated="true">Monday 20 February 2012</time>
-        
-         | <a href="/blog/2012/02/20/add-san-functions-to-highly-available-nfs-slash-nas/#disqus_thread">Comments</a>
+         | <a href="/blog/2012/03/20/add-san-functions-to-highly-available-nfs-slash-nas/#disqus_thread">Comments</a>
         
       </p>
     
@@ -412,6 +295,428 @@ yum localinstall -- &hellip;">
 
 
 <p>If you run <code>cat /proc/partitions</code> you will see an new partition has appeared. You can do whatever you want with it.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/03/19/highly-available-nfs-slash-nas/">Highly Available NFS/NAS</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-03-19T16:59:00+01:00" pubdate data-updated="true">Monday 19 March 2012</time>
+        
+         | <a href="/blog/2012/03/19/highly-available-nfs-slash-nas/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Take 2 Centos Servers (nfs1 and nfs2 will do nicely) and install ELrepo and EPEL on them both:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>yum install \
+</span><span class='line'>    http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-5.noarch.rpm \
+</span><span class='line'>    http://elrepo.org/elrepo-release-6-4.el6.elrepo.noarch.rpm --nogpgcheck</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Each of them should ideally have 2 NICS, with the secondary ones just used for DRBD sync purposes. We’ll give these the address 10.0.0.1/32 and 10.0.0.2/32.</p>
+
+<p>I am also assuming that you have disabled the firewall and SELinux – I do not recommend that for production, but for testing it is fine.</p>
+
+<h2>DRBD Configuration</h2>
+
+<p>Install DRBD 8.4 on the both:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>yum install drbd84-utils kmod-drbd84</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On each node the file /etc/drbd.d/global_common.conf should contain:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>global {
+</span><span class='line'>  usage-count yes;
+</span><span class='line'>}
+</span><span class='line'>common {
+</span><span class='line'>  net {
+</span><span class='line'>    protocol C;
+</span><span class='line'>  }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>and /etc/drbd.d/main.res should contain:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>resource main {
+</span><span class='line'>  on nfs1 {
+</span><span class='line'>    device    /dev/drbd0;
+</span><span class='line'>    disk      /dev/sdb;
+</span><span class='line'>    address   10.0.0.1:7788;
+</span><span class='line'>    meta-disk internal;
+</span><span class='line'>  }
+</span><span class='line'>  on nfs2 {
+</span><span class='line'>    device    /dev/drbd0;
+</span><span class='line'>    disk      /dev/sdb;
+</span><span class='line'>    address   10.0.0.2:7788;
+</span><span class='line'>    meta-disk internal;
+</span><span class='line'>  }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>On both nodes you will need to create the resource metadata:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>drbdadm create-md main</span></code></pre></td></tr></table></div></figure>
+
+
+<p>and start the daemons</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>service drbd start
+</span><span class='line'>chkconfig drbd on</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now <code>service drbd status</code> will give you:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>drbd driver loaded OK; device status:
+</span><span class='line'>version: 8.4.1 (api:1/proto:86-100)
+</span><span class='line'>GIT-hash: 91b4c048c1a0e06777b5f65d312b38d47abaea80 build by dag@Build64R6, 2011-12-21 06:08:50
+</span><span class='line'>m:res   cs         ro                   ds                         p  mounted  fstype
+</span><span class='line'>0:main  Connected  Secondary/Secondary  Inconsistent/Inconsistent  C</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Both devices or secondary and inconsistent, this is normal at this stage. Choose a node to be your primary and run:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>drbdadm primary --force main</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And it start sync’ing, which will take a long time. You can temporarily make it faster with (on one node:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>drbdadm disk-options --resync-rate=110M main</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Put it back again with drbdadm adjust main</p>
+
+<p>On your primary node you can now create a fiiesystem. I’m using ext4 for no good reason other than it being the default. Use whatever you are most comfortable with.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mkfs.ext4 /dev/drbd0</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Configure NFS</h2>
+
+<p>If you diid a minimal Centos install, then you willl need to install the nfs-utils package (yum install nfs-utils). Prepare your mount points and exports on both servers:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mkdir /drbd
+</span><span class='line'>echo "/drbd/main *(rw)" >> /etc/exports</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now we do the actual NFS set up. We previously choose nfs1 as our master when you used it to trigger the initial sync. On nfs1 mount the replicated volumes, move the NFS data to it, then create symlinks to our replicated data.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mount /dev/drbd0 /drbd
+</span><span class='line'>mkdir /drbd/main
+</span><span class='line'>mv /var/lib/nfs/ /drbd/
+</span><span class='line'>ln -s /drbd/nfs/ /var/lib/nfs
+</span><span class='line'>umount /drbd</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you get errors about not bring able to remove directories in /var/lib/nfs do not worry.</p>
+
+<p>Now a little preparation on nfs2:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mv /var/lib/nfs /var/lib/nfs.bak
+</span><span class='line'>ln -s /drbd/nfs/ /var/lib/nfs</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This will create a broken symbolic link, but it will be fixed when everything fails over.</p>
+
+<h2>Heartbeat Configuration</h2>
+
+<p>Heartbeat is in the EPEL repository, so enable that and install it on both nodes:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>yum -y install heartbeat</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Make sure that <em>/etc/ha.d/ha.cf</em> contains:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>keepalive 2
+</span><span class='line'>deadtime 30
+</span><span class='line'>bcast eth0
+</span><span class='line'>node nfs1 nfs2</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The values in node should be whatever <code>uname -n</code> returns.</p>
+
+<p>Now create <em>/etc/ha.d/haresources</em>:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>nfs1 IPaddr::10.0.0.100/24/eth0 drbddisk::main Filesystem::/dev/drbd0::/drbd::ext4 nfslock nfs</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That is a little cryptic, so I’ll explain; nfs1 is the primary node, IPaddr sets up a floating address on eth0 that our clients will connect to. This has a resource drbddisk::main bound to it, which sets our main to resource to primary on nfs1. Filesystem mounts /dev/drbd0 at /drbd on nfs1. Finally the the services nfslock and nfs are started on nfs1.</p>
+
+<p>Finally, it needs an authentication file in /etc/ha.d/authkeys, which should be chmod’ed to 600 to be only readable by root.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>auth 3
+</span><span class='line'>3 md5 mypassword123</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You should also make sure that nfslock and nfs do not start up by themselves:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>chkconfig nfs off
+</span><span class='line'>chkconfig nfslock off</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now you can start heartbeat and check it is working:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>service heartbeat start
+</span><span class='line'>chkconfig heartbeat on</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Testing</h2>
+
+<p>Running <code>ifconfig</code> on nfs1 should give you something like:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>eth0      Link encap:Ethernet  HWaddr 52:54:00:84:73:BD  
+</span><span class='line'>          inet addr:10.0.0.1  Bcast:10.0.0.255  Mask:255.255.255.0
+</span><span class='line'>          inet6 addr: fe80::5054:ff:fe84:73bd/64 Scope:Link
+</span><span class='line'>          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+</span><span class='line'>          RX packets:881922 errors:0 dropped:0 overruns:0 frame:0
+</span><span class='line'>          TX packets:1302012 errors:0 dropped:0 overruns:0 carrier:0
+</span><span class='line'>          collisions:0 txqueuelen:1000
+</span><span class='line'>          RX bytes:239440621 (228.3 MiB)  TX bytes:5791818459 (5.3 GiB)
+</span><span class='line'>
+</span><span class='line'>eth0:0    Link encap:Ethernet  HWaddr 52:54:00:84:73:BD  
+</span><span class='line'>          inet addr:10.0.0.100  Bcast:10.0.0.255  Mask:255.255.255.0
+</span><span class='line'>          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+</span><span class='line'>
+</span><span class='line'>lo        Link encap:Local Loopback  
+</span><span class='line'>          inet addr:127.0.0.1  Mask:255.0.0.0
+</span><span class='line'>          inet6 addr: ::1/128 Scope:Host
+</span><span class='line'>          UP LOOPBACK RUNNING  MTU:16436  Metric:1
+</span><span class='line'>          RX packets:2 errors:0 dropped:0 overruns:0 frame:0
+</span><span class='line'>          TX packets:2 errors:0 dropped:0 overruns:0 carrier:0
+</span><span class='line'>          collisions:0 txqueuelen:0
+</span><span class='line'>          RX bytes:224 (224.0 b)  TX bytes:224 (224.0 b)</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Note an entry for <em>eth0:0</em> has miraculously appeared.</p>
+
+<p>Also <code>df</code> should include the entry:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>/dev/drbd0             20G  172M   19G   1% /drbd</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Reboot nfs1 and the services should appear on nfs2.</p>
+
+<p>Connect an NFS client to you floating address (10.0.0.100) and you should be able to kill the live node and it will carry on.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/03/16/music-player-daemon-in-fedora/">Music Player Daemon in Fedora</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-03-16T22:04:00+01:00" pubdate data-updated="true">Friday 16 March 2012</time>
+        
+         | <a href="/blog/2012/03/16/music-player-daemon-in-fedora/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>This should have nice and simple, but there was a little gotcha (for me anyway).</p>
+
+<p>First install the RPMFusion repositories:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>yum localinstall --nogpgcheck \
+</span><span class='line'>    http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-stable.noarch.rpm \
+</span><span class='line'>    http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-stable.noarch.rpm</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now you can install MPD and a simple client with</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>yum install mpd mpc</span></code></pre></td></tr></table></div></figure>
+
+
+<p>By default it looks in <em>/var/lib/mpd/music</em> which strikes me as reasonable, so copy some music there. Now comes the bit that caught me out; you will need to update is library:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mpc update</span></code></pre></td></tr></table></div></figure>
+
+
+<p>A lot of documentation on the net talks about running <code>mpd –create-db</code>, but this is now depreciated. I eventually found this out on Arch Linux’s wiki.</p>
+
+<p>Connect a client and listen to your music – I’m using gmpc (<code>yum install gmpc</code>) which is very feature rich, but if you want something simpler, try Sonata (<code>yum install sonata</code>) or even <em>mpc</em> itself. Finally you can also use you MPDroid on your phone.</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/02/22/back-to-basics/">Back to Basics</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-02-22T13:00:00+01:00" pubdate data-updated="true">Wednesday 22 February 2012</time>
+        
+         | <a href="/blog/2012/02/22/back-to-basics/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I have been a Sys Admin for quite a while now. Specialising in Linux means that I am often called upon to be a “jack of all trades, master of many”. In the last week I have touched upon storage, multiple programming languages (Bash, PHP, Python, Ruby and Java), Linux, Exchange, Tomcat, Virtualization and Systems architecture. I am sure the list could go on … and on … and on …</p>
+
+<p>There is however something that I feel I am missing. Before I was in my current post, I was more of a developer. I did a lot of Shell scripting, but also ADA and C/C++. Nowadays I do not do that, which is a shame. Virtually all modern programming languages trace their roots back to C and C++. The whole of Linux/UNIX traces its roots back to C. Our world is built on C/C++!</p>
+
+<p>This is something I have neglected over recent years, so I’m going to change that. A bit of Google-fu just now has bought me some interesting resources:</p>
+
+<pre><code>&lt;a href="http://www.cplusplus.com/doc/tutorial/" target="_blank" &gt;http://www.cplusplus.com/doc/tutorial/&lt;/a&gt;
+&lt;a href="http://www.howtoforge.com/howtos/programming/c-cplusplus" target="_blank" &gt;http://www.howtoforge.com/howtos/programming/c-cplusplus&lt;/a&gt;
+&lt;a href="http://www.gtk.org/tutorial1.2/" target="_blank" &gt;http://www.gtk.org/tutorial1.2/&lt;/a&gt;
+&lt;a href="http://zetcode.com/tutorials/qt4tutorial/" target="_blank" &gt;http://zetcode.com/tutorials/qt4tutorial/&lt;/a&gt;
+</code></pre>
+
+<p>I have not looked at any of these in detail yet, but I will be over the next few days. At the end I hope to have dragged this hard-earned knowledge kicking and screaming from the back of my mind.</p>
 </div>
   
   

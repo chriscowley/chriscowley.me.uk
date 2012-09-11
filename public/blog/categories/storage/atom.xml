@@ -4,7 +4,7 @@
   <title><![CDATA[Category: storage | Just Another Linux Blog]]></title>
   <link href="http://http://warm-sword-7449.herokuapp.com//blog/categories/storage/atom.xml" rel="self"/>
   <link href="http://http://warm-sword-7449.herokuapp.com//"/>
-  <updated>2012-08-04T21:57:11+02:00</updated>
+  <updated>2012-09-11T22:02:10+02:00</updated>
   <id>http://http://warm-sword-7449.herokuapp.com//</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -12,6 +12,140 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Add SAN functions to Highly Available NFS/NAS]]></title>
+    <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/03/20/add-san-functions-to-highly-available-nfs-slash-nas/"/>
+    <updated>2012-03-20T21:07:00+01:00</updated>
+    <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/03/20/add-san-functions-to-highly-available-nfs-slash-nas</id>
+    <content type="html"><![CDATA[<p>This based on my last post where I documented building a Highly Available NFS/NAS server.</p>
+
+<p>There is not a huge amount that needs to be done in order to add iSCSI functionality as well.</p>
+
+<p>Add a file called <em>/etc/drbd/iscsi.res</em> containing:</p>
+
+<p>```
+resource iscsi {</p>
+
+<pre><code>on nfs1 {
+    device /dev/drbd1;
+    disk   /dev/vdc;
+    meta-disk internal;
+    address   10.0.0.1:7789;
+}
+on nfs2 {
+    device /dev/drbd1;
+    disk   /dev/vdc;
+    meta-disk internal;
+    address   10.0.0.2:7789;
+}
+</code></pre>
+
+<p>}
+```</p>
+
+<p>This differs from the previous resource in 2 ways. Obviously it using a different physical disk. Also the port number of the address is incremented; each resource has to have its own port to communicate on.</p>
+
+<h2>Configure Heartbeat</h2>
+
+<p>Add a new resource to <em>/etc/ha.d/haresources</em>:</p>
+
+<p><code>
+iscsi1.snellwilcox.local IPaddr::10.0.0.101/24/eth0 drbddisk::iscsi tgtd
+</code></p>
+
+<p>Same primary host, new IP address, new drbd resource and of course the service to be controlled (tgtd in this case).</p>
+
+<p>I also made a couple of changes to <em>/etc/ha.d/ha.cf</em>:</p>
+
+<p><code>
+keepalive 500ms
+deadtime 5
+warntime 10
+initdead 120
+</code></p>
+
+<p>This changes the regularity of the heartbeat packets from every 2 seconds to 2 every second. We also say that a node is dead after only 5 seconds rather than after 30.</p>
+
+<h2>Configure an iSCSI Target</h2>
+
+<p>Tgtd has a config file that you can use in <em>/etc/tgt/targets.conf</em>. It is an XML file, so add entry like:</p>
+
+<p>```
+<target iqn.2011-07.world.server:target0></p>
+
+<pre><code>    # provided devicce as a iSCSI target
+    backing-store /dev/vg_matthew/lv_iscsi1
+    # iSCSI Initiator's IP address you allow to connect
+    initiator-address 192.168.1.20
+    # authentication info ( set anyone you like for "username", "password" )
+</code></pre>
+
+<p></target>
+```</p>
+
+<p>The target name is by convention <em>iqn.year-month.reverse-domainname:hostname.targetname</em>. Each backing store will be a seperate LUN. A discussion of this is out of the scope of this article.</p>
+
+<p>By default, this config file is disabled. Enable it by un-commenting the line <code>#TGTD_CONFIG=/etc/tgt/targets.conf</code> in <em>/etc/sysconfig/tgtd</em>. You can now enable the target with service tgtd reload.</p>
+
+<p>Now when you run <code>tgtadm –mode target –op show</code> you should get something like:</p>
+
+<p>```
+Target 1: iqn.2012-03.com.example:iscsi.target1</p>
+
+<pre><code>System information:
+    Driver: iscsi
+    State: ready
+I_T nexus information:
+LUN information:
+    LUN: 0
+        Type: controller
+        SCSI ID: IET     00010000
+        SCSI SN: beaf10
+        Size: 0 MB, Block size: 1
+        Online: Yes
+        Removable media: No
+        Readonly: No
+        Backing store type: null
+        Backing store path: None
+        Backing store flags:
+    LUN: 1
+        Type: disk
+        SCSI ID: IET     00010001
+        SCSI SN: beaf11
+        Size: 8590 MB, Block size: 512
+        Online: Yes
+        Removable media: No
+        Readonly: No
+        Backing store type: rdwr
+        Backing store path: /dev/drbd/by-res/iscsi
+        Backing store flags:
+Account information:
+ACL information:
+    ALL
+</code></pre>
+
+<p>```</p>
+
+<h2>Connect An Initiator</h2>
+
+<p>Install the iscsi utils:</p>
+
+<p><code>
+yum install iscsi-initiator-utils
+chkconfig iscsi on
+chkconfig iscsid on
+</code></p>
+
+<p>Discover the targets on the host and login to the target.
+<code>
+iscsiadm -m discovery -t sendtargets -p 10.0.0.101
+iscsiadm -m node --login
+</code></p>
+
+<p>If you run <code>cat /proc/partitions</code> you will see an new partition has appeared. You can do whatever you want with it.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Highly Available NFS/NAS]]></title>
@@ -279,140 +413,6 @@ Now you can start heartbeat and check it is working:
 Reboot nfs1 and the services should appear on nfs2.</p>
 
 <p>Connect an NFS client to you floating address (10.0.0.100) and you should be able to kill the live node and it will carry on.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Add SAN functions to Highly Available NFS/NAS]]></title>
-    <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/02/20/add-san-functions-to-highly-available-nfs-slash-nas/"/>
-    <updated>2012-02-20T21:07:00+01:00</updated>
-    <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/02/20/add-san-functions-to-highly-available-nfs-slash-nas</id>
-    <content type="html"><![CDATA[<p>This based on my last post where I documented building a Highly Available NFS/NAS server.</p>
-
-<p>There is not a huge amount that needs to be done in order to add iSCSI functionality as well.</p>
-
-<p>Add a file called <em>/etc/drbd/iscsi.res</em> containing:</p>
-
-<p>```
-resource iscsi {</p>
-
-<pre><code>on nfs1 {
-    device /dev/drbd1;
-    disk   /dev/vdc;
-    meta-disk internal;
-    address   10.0.0.1:7789;
-}
-on nfs2 {
-    device /dev/drbd1;
-    disk   /dev/vdc;
-    meta-disk internal;
-    address   10.0.0.2:7789;
-}
-</code></pre>
-
-<p>}
-```</p>
-
-<p>This differs from the previous resource in 2 ways. Obviously it using a different physical disk. Also the port number of the address is incremented; each resource has to have its own port to communicate on.</p>
-
-<h2>Configure Heartbeat</h2>
-
-<p>Add a new resource to <em>/etc/ha.d/haresources</em>:</p>
-
-<p><code>
-iscsi1.snellwilcox.local IPaddr::10.0.0.101/24/eth0 drbddisk::iscsi tgtd
-</code></p>
-
-<p>Same primary host, new IP address, new drbd resource and of course the service to be controlled (tgtd in this case).</p>
-
-<p>I also made a couple of changes to <em>/etc/ha.d/ha.cf</em>:</p>
-
-<p><code>
-keepalive 500ms
-deadtime 5
-warntime 10
-initdead 120
-</code></p>
-
-<p>This changes the regularity of the heartbeat packets from every 2 seconds to 2 every second. We also say that a node is dead after only 5 seconds rather than after 30.</p>
-
-<h2>Configure an iSCSI Target</h2>
-
-<p>Tgtd has a config file that you can use in <em>/etc/tgt/targets.conf</em>. It is an XML file, so add entry like:</p>
-
-<p>```
-<target iqn.2011-07.world.server:target0></p>
-
-<pre><code>    # provided devicce as a iSCSI target
-    backing-store /dev/vg_matthew/lv_iscsi1
-    # iSCSI Initiator's IP address you allow to connect
-    initiator-address 192.168.1.20
-    # authentication info ( set anyone you like for "username", "password" )
-</code></pre>
-
-<p></target>
-```</p>
-
-<p>The target name is by convention <em>iqn.year-month.reverse-domainname:hostname.targetname</em>. Each backing store will be a seperate LUN. A discussion of this is out of the scope of this article.</p>
-
-<p>By default, this config file is disabled. Enable it by un-commenting the line <code>#TGTD_CONFIG=/etc/tgt/targets.conf</code> in <em>/etc/sysconfig/tgtd</em>. You can now enable the target with service tgtd reload.</p>
-
-<p>Now when you run <code>tgtadm –mode target –op show</code> you should get something like:</p>
-
-<p>```
-Target 1: iqn.2012-03.com.example:iscsi.target1</p>
-
-<pre><code>System information:
-    Driver: iscsi
-    State: ready
-I_T nexus information:
-LUN information:
-    LUN: 0
-        Type: controller
-        SCSI ID: IET     00010000
-        SCSI SN: beaf10
-        Size: 0 MB, Block size: 1
-        Online: Yes
-        Removable media: No
-        Readonly: No
-        Backing store type: null
-        Backing store path: None
-        Backing store flags:
-    LUN: 1
-        Type: disk
-        SCSI ID: IET     00010001
-        SCSI SN: beaf11
-        Size: 8590 MB, Block size: 512
-        Online: Yes
-        Removable media: No
-        Readonly: No
-        Backing store type: rdwr
-        Backing store path: /dev/drbd/by-res/iscsi
-        Backing store flags:
-Account information:
-ACL information:
-    ALL
-</code></pre>
-
-<p>```</p>
-
-<h2>Connect An Initiator</h2>
-
-<p>Install the iscsi utils:</p>
-
-<p><code>
-yum install iscsi-initiator-utils
-chkconfig iscsi on
-chkconfig iscsid on
-</code></p>
-
-<p>Discover the targets on the host and login to the target.
-<code>
-iscsiadm -m discovery -t sendtargets -p 10.0.0.101
-iscsiadm -m node --login
-</code></p>
-
-<p>If you run <code>cat /proc/partitions</code> you will see an new partition has appeared. You can do whatever you want with it.</p>
 ]]></content>
   </entry>
   
