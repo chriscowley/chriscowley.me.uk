@@ -9,7 +9,7 @@
   <meta name="author" content="Chris Cowley">
 
   
-  <meta name="description" content="This based on my last post where I documented building a Highly Available NFS/NAS server. There is not a huge amount that needs to be done in order &hellip;">
+  <meta name="description" content="How many times have you installed/updated a bit of software and read the line “Please take a back up” or something to that effect? 99 times out of a &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -91,6 +91,122 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/04/16/a-learning-experience/">A Learning Experience</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-04-16T20:30:00+02:00" pubdate data-updated="true">Monday 16 April 2012</time>
+        
+         | <a href="/blog/2012/04/16/a-learning-experience/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>How many times have you installed/updated a bit of software and read the line “Please take a back up” or something to that effect? 99 times out of a hundred, you will just continue and ignore it.</p>
+
+<p>Today I had a reminder of why it is import to do so. I did a routine plug-in upgrade on our Jira installation (Customware Salesforce connector for those who want to know). I have done this several times, I had tested it in our Dev installation I was 100% confident it would work as expected. However, I actually decided to take a backup anyway.</p>
+
+<p>I ran the upgrade in the production environment and re-indexed. Nothing out of the ordinary. 10% of the way into the index it fell over. Jira’s database was gone! Fortunately I was able to restore from my backup and at worst a comment or two was lost, but that still caused significant downtime.</p>
+
+<p>I had done everything I could to make sure the upgrade would go smoothly, but it still did not. That is why software vendors always tell you to take a backup before even the smallest change – DO IT!</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/04/05/pycurl-and-self-signed-ssl-certificates/">PyCurl and Self-signed SSL Certificates</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-04-05T16:50:00+02:00" pubdate data-updated="true">Thursday 05 April 2012</time>
+        
+         | <a href="/blog/2012/04/05/pycurl-and-self-signed-ssl-certificates/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>At <a href="http://www.snellgroup.com" target="_blank">Snell</a> we make heavy use of self-signed certificates for internal websites, such as the R&amp;D wiki. Active Directory makes it easy for us to make this transparent to the users, those that use Firefox/Chrome can find our well-published instructions to add the CA certificate to their own browsers.</p>
+
+<p>Today I was writing a script to that pulls lots of attachments off our Confluence wiki, which we access through SSL using one of those certificates. Of course PyCurl  moaned that it could not verify the host, but I did not care – I know it is the right host!</p>
+
+<p>Finding documentation both on SSL and PyCurl is problematic at best. OpenSSL’s documentation it complete, but could not be more unreadable if written by a right-handed doctor using a broken crayon with his left-hand; pyCurl’s documentation is non-existent.</p>
+
+<p>After an hour of Google-Fu and DuckDuckGo-Fu I finally managed to do what I wanted:</p>
+
+<figure class='code'><figcaption><span> (pycurl_ssl.py)</span> <a href='/downloads/code/pycurl_ssl.py'>download</a></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='py'><span class='line'><span class="c">#!/usr/bin/env python</span>
+</span><span class='line'><span class="n">downloadedFile</span> <span class="o">=</span> <span class="s">&quot;/tmp/stuff&quot;</span>
+</span><span class='line'><span class="n">outfile</span> <span class="o">=</span> <span class="nb">file</span><span class="p">(</span><span class="n">downloadedFile</span><span class="p">,</span> <span class="s">&#39;wb&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="n">url</span> <span class="o">=</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">someurl</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span>
+</span><span class='line'><span class="n">c</span> <span class="o">=</span> <span class="n">pycurl</span><span class="o">.</span><span class="n">Curl</span><span class="p">()</span>
+</span><span class='line'><span class="n">c</span><span class="o">.</span><span class="n">setopt</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">URL</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+</span><span class='line'><span class="n">c</span><span class="o">.</span><span class="n">setopt</span><span class="p">(</span><span class="n">pycurl</span><span class="o">.</span><span class="n">USERPWD</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">:</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">))</span>
+</span><span class='line'><span class="n">c</span><span class="o">.</span><span class="n">setopt</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">WRITEFUNCTION</span><span class="p">,</span> <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">)</span>
+</span><span class='line'><span class="n">c</span><span class="o">.</span><span class="n">setopt</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">SSL_VERIFYPEER</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="c"># That is you key line for this purpose!</span>
+</span><span class='line'><span class="n">c</span><span class="o">.</span><span class="n">perform</span><span class="p">()</span>
+</span><span class='line'><span class="n">c</span><span class="o">.</span><span class="n">close</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>There you go!</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1157,259 +1273,9 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2010/05/04/sms-from-icinga-or-nagios/">SMS From Icinga or Nagios</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-05-04T13:26:00+02:00" pubdate data-updated="true">Tuesday 04 May 2010</time>
-        
-         | <a href="/blog/2010/05/04/sms-from-icinga-or-nagios/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Finding out how to have Nagios (or in my case Icinga) send SMS alerts is easy. However, from my point of view it fell down in 2 ways.</p>
-
-<ol>
-<li>Most of these guides are Debian specific, I am using Centos.</li>
-<li>The SMS alerts are all or nothing, I only want SMS alerts for specific services (such as the corporate website).</li>
-</ol>
-
-
-<h2>Hardware</h2>
-
-<p>First things first you need something to send the SMS. I am using a brand new Vodaphone USB dongle taped to the side of the rack . I also had it working with a Nokia E51 using the same tools – obviously this would the require constant charging.</p>
-
-<p>Ideally I would have prefered to use an internal card. PCI -> PC card bridges do exist, but I had no joy on my Icinga server, although it did work in a Dell Optiplex we had lying around, but it caused an HP XW4600 not to switch on at all.</p>
-
-<h2>Software</h2>
-
-<p>I am using <a href="http://smstools3.kekekasvi.com/" target="_blank">SMS Server Tools 3</a> which are available for Centos/RHEL in <a href="https://fedoraproject.org/wiki/EPEL" target="_blank">EPEL</a>. This gives you an smsd daemon that watches a folder for text messages in a particular format.</p>
-
-<p>When you have enabled EPEL run</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>yum install smstools
-</span><span class='line'>chkconfig –levels 35 smsd on</span></code></pre></td></tr></table></div></figure>
-
-
-<p>When I plugged in the USB dongle I got a pair of USB ttys at /dev/ttyUSB0 and /dev/ttyUSB1</p>
-
-<p>Add the following to /etc/smsd.conf</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>devices = GSM1
-</span><span class='line'>logfile = /var/log/smsd.log
-</span><span class='line'>loglevel = 7
-</span><span class='line'>
-</span><span class='line'>ARVE Error: no video ID
-</span><span class='line'>device = /dev/ttyUSB0
-</span><span class='line'>smsc = 447785016005 # I am using Vodaphone, your’s may vary.
-</span><span class='line'>incoming = no</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now you can start the daemon</p>
-
-<pre><code>/etc/init.d/smsd start
-</code></pre>
-
-<p>Finally, for reasons explained later, you need an entry in icinga’s cron.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>* * * * * if [[ `ls /tmp/ | grep 'sms-icinga' | wc -l` -gt 0 ]];then /bin/mv /tmp/sms-icinga* /var/spool/sms/outgoing/;fi</span></code></pre></td></tr></table></div></figure>
-
-
-<p>What does this do? It checks “/tmp/” for any files that contain the name “sms-icinga” every minute. If any exist it moves them to “/var/spool/sms/outgoing/”. That last folder is watched by smsd for those special text files mentioned above.
-Icinga/Nagios configuration</p>
-
-<p>First add the commands, for which I use the file /etc/icinga/objects/commands.conf</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>define command {
-</span><span class='line'>    command_name notify-host-by-sms
-</span><span class='line'>    command_line /usr/bin/printf “%b” “To: $CONTACTPAGER$\n\n$NOTIFICATIONTYPE$\nHost Alert: $HOSTNAME$ is $HOSTSTATE$\n” &gt; /tmp/sms-icinga.$HOSTNAME$.$HOSTSTATE$.$CONTACTPAGER$
-</span><span class='line'>}
-</span><span class='line'>
-</span><span class='line'>define command {
-</span><span class='line'>    command_name notify-service-by-sms
-</span><span class='line'>    command_line /usr/bin/printf “%b” “To: $CONTACTPAGER$\n\n$NOTIFICATIONTYPE$\nService Alert:     $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$” &gt; /tmp/sms-icinga.$SERVICEDESC$.$HOSTNAME$.$CONTACTPAGER$
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<p>These commands write a file in /tmp that includes the string sms-icinga that our cron script looks for. The rest of it is to endure we do not accidentally overwrite an alert that has not been sent yet. The reason we need to write it into tmp, and the mv it to the outgoing folder is a little weird. I found that if I wrote directly to the outgoing folder, then smsd seemed picked it up too early and failed to parse the file correctly – strange, but not to worry.</p>
-
-<p>Now is where need to fiddle things a little bit if we only want to send messages for certain critical services. If you want SMS alerts for all your services you can just add a pager entry to all you contacts. We need to create an SMS user and a couple of templates to base our critical stuff on.</p>
-
-<p>The templates:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>define contact {
-</span><span class='line'>    name sms-contact
-</span><span class='line'>    use generic-contact
-</span><span class='line'>    service_notification_commands notify-service-by-sms, notify-service-by-email
-</span><span class='line'>    host_notification_commands notify-host-by-sms, notify-host-by-email
-</span><span class='line'>    register 0
-</span><span class='line'>}
-</span><span class='line'>
-</span><span class='line'>define service {
-</span><span class='line'>    use generic-service
-</span><span class='line'>    name critical-service
-</span><span class='line'>    contact_groups admins-sms,linux-admin
-</span><span class='line'>}
-</span><span class='line'>
-</span><span class='line'>define host {
-</span><span class='line'>    name critical-host
-</span><span class='line'>    use generic-host
-</span><span class='line'>    contact_groups admins-sms,linux-admin
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<p>my user:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>define contact {
-</span><span class='line'>    contact_name ChrisCowley-SMS
-</span><span class='line'>    use sms-contact
-</span><span class='line'>    pager &lt;my-mobile-number&gt;
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<p>a contact group:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>define contactgroup {
-</span><span class='line'>    contactgroup_name admins-sms
-</span><span class='line'>    members ChrisCowley-SMS
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Finally we can create our essential service:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>define service {
-</span><span class='line'>    use critical-service
-</span><span class='line'>    service_description Website-content
-</span><span class='line'>    check_command check_http_content!-U http://www.snellgroup.com -m Snell
-</span><span class='line'>    host_name www.snellgroup.com
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2010/01/12/some-great-new-san-gear/">Some Great New SAN Gear</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-01-12T13:35:00+01:00" pubdate data-updated="true">Tuesday 12 January 2010</time>
-        
-         | <a href="/blog/2010/01/12/some-great-new-san-gear/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Just before Christmas I was up at a storage seminar run by a company called <a href="http://www.dothill.com/" target="_blank">Dot Hill</a>. Until I was pointed to them when I spoke to our storage supplier about replacing an aging array I had never heard of them. However, it turns out that they make the hardware used by HP, NetApp and others – quite a pedigree then.</p>
-
-<p>All their products are completely modular, based on the same chassis. If you have an iSCSI unit, then you can later change it into a FC one and you do not have to migrate anything as the array config is not stored on the controllers.</p>
-
-<p>They have some very clever technologies as well. In most arrays, the cache on the controllers need to be kept in sync. This generally goes through the backplane. In the Dot Hill arrays, there is dedicated circuitry that goes directly between the controllers – much faster! I also like the fact that they no longer use batteries, but instead use supercapacitors which are much greener.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
+    
+      <a class="prev" href="/blog/page/3/">&larr; Older</a>
     
     <a href="/blog/archives">Blog Archives</a>
     
@@ -1424,6 +1290,14 @@ Icinga/Nagios configuration</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2012/10/01/my-new-job/">My new job</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/10/01/my-new-life/">My new life</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2012/08/04/i-have-a-raspberry-pi/">I have a Raspberry Pi</a>
       </li>
     
@@ -1433,14 +1307,6 @@ Icinga/Nagios configuration</p>
     
       <li class="post">
         <a href="/blog/2012/07/17/mirror-a-subversion-repo-with-svnsync/">Mirror a Subversion repo with svnsync</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/07/03/fixed-my-gihub-repo-list/">Fixed my gihub repo list</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/07/03/excellent-seminar-given-by-a-friend-of-mine/">Excellent seminar given by a friend of mine</a>
       </li>
     
   </ul>
