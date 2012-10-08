@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linux | Just Another Linux Blog]]></title>
   <link href="http://http://warm-sword-7449.herokuapp.com//blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://http://warm-sword-7449.herokuapp.com//"/>
-  <updated>2012-10-02T21:48:35+02:00</updated>
+  <updated>2012-10-08T22:34:03+02:00</updated>
   <id>http://http://warm-sword-7449.herokuapp.com//</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -20,6 +20,9 @@
     <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/08/04/i-have-a-raspberry-pi</id>
     <content type="html"><![CDATA[<p>Just got my new toy! I have to admit that I am not completely certain what I will do with it yet though.</p>
 
+<!-- more -->
+
+
 <p>It will certainly start by running <a href="http://mpd.wikia.com/wiki/Music_Player_Daemon_Wiki" target="_blank">Music Player Daemon</a>.</p>
 
 <p><a href="http://www.flickr.com/photos/chriscowleyunix/7705281518/" title="Raspberry Pi by chriscowleysound, on Flickr"><img src="http://farm9.staticflickr.com/8023/7705281518_73c2ee8c18.jpg" width="500" height="375" alt="Raspberry Pi"></a></p>
@@ -33,8 +36,12 @@
     <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/06/23/installing-postgresql-on-fedora-17</id>
     <content type="html"><![CDATA[<p>With the new systemd this now requires a couple of manual steps.</p>
 
-<p>Obviously we start by installing the RPMS themselves:
-<code>
+<p>Obviously we start by installing the RPMS themselves:</p>
+
+<!-- more -->
+
+
+<p><code>
 sudo yum install postgresql-server postgresql
 </code></p>
 
@@ -69,6 +76,9 @@ CREATE DATABASE "testDB" WITH ENCODING='UTF8' OWNER="testAdmin";
     <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/04/18/skype-video-on-fedora-64bit</id>
     <content type="html"><![CDATA[<p>Install Skype – I used <a href="http://slayachronicles.blogspot.co.uk/2012/03/installing-skype-on-fedora-16-64-bit.html" target="_blank" >these</a> instructions. This will seem to get everything working, but video will just give you a black screen and no error message. This is because Skype is 32 bit and you webcam driver is 64 bit. Make sure you have libv4l.i686 installed.</p>
 
+<!-- more -->
+
+
 <p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>sudo yum install libv4l.i686</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
@@ -93,6 +103,9 @@ CREATE DATABASE "testDB" WITH ENCODING='UTF8' OWNER="testAdmin";
     <content type="html"><![CDATA[<p>Usually the release upgrade is relatively trouble-free, but this time I had a minor problem. After the upgrade I had no X Windows. It turned out that the NVidia driver not loading.</p>
 
 <p>I had to boot it up in rescue mode, which is selectable from the Grub menu. From there I could drop to a root console.</p>
+
+<!-- more -->
+
 
 <p>The first step is to remount / as read-write and then mount my boot partition (/dev/sda1).
 <code>

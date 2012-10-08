@@ -7,6 +7,7 @@ categories: System Administration
 ---
 
 How many times have you installed/updated a bit of software and read the line “Please take a back up” or something to that effect? 99 times out of a hundred, you will just continue and ignore it.
+<!-- more -->
 
 Today I had a reminder of why it is import to do so. I did a routine plug-in upgrade on our Jira installation (Customware Salesforce connector for those who want to know). I have done this several times, I had tested it in our Dev installation I was 100% confident it would work as expected. However, I actually decided to take a backup anyway.
 

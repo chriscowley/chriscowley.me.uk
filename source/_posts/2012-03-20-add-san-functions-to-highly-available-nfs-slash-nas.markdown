@@ -10,6 +10,7 @@ categories: storage
 This based on my last post where I documented building a Highly Available NFS/NAS server.
 
 There is not a huge amount that needs to be done in order to add iSCSI functionality as well.
+<!-- more -->
 
 Add a file called _/etc/drbd/iscsi.res_ containing:
 

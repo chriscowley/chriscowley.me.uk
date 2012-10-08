@@ -4,7 +4,7 @@
   <title><![CDATA[Category: storage | Just Another Linux Blog]]></title>
   <link href="http://http://warm-sword-7449.herokuapp.com//blog/categories/storage/atom.xml" rel="self"/>
   <link href="http://http://warm-sword-7449.herokuapp.com//"/>
-  <updated>2012-10-02T21:48:35+02:00</updated>
+  <updated>2012-10-08T22:34:03+02:00</updated>
   <id>http://http://warm-sword-7449.herokuapp.com//</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -21,6 +21,9 @@
     <content type="html"><![CDATA[<p>This based on my last post where I documented building a Highly Available NFS/NAS server.</p>
 
 <p>There is not a huge amount that needs to be done in order to add iSCSI functionality as well.</p>
+
+<!-- more -->
+
 
 <p>Add a file called <em>/etc/drbd/iscsi.res</em> containing:</p>
 
@@ -153,6 +156,9 @@ iscsiadm -m node --login
     <updated>2012-03-19T16:59:00+01:00</updated>
     <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/03/19/highly-available-nfs-slash-nas</id>
     <content type="html"><![CDATA[<p>Take 2 Centos Servers (nfs1 and nfs2 will do nicely) and install ELrepo and EPEL on them both:</p>
+
+<!-- more -->
+
 
 <p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -423,6 +429,9 @@ Reboot nfs1 and the services should appear on nfs2.</p>
     <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/02/08/home-made-redundant-thin-provisioned-san</id>
     <content type="html"><![CDATA[<p>The inspiration for this came from a mixture of problems I was having with my HP P2000, ideas that have been floating around my head for a while, plus a post over at Bauer-power.net. Basically I got given a bunch of warranty returned Supermicro servers from our Customer Service guys  and got tasked with making it our secondary VMware store and DR snapshot storage. Incidentally, the Supermicro servers are used for our Channel-in-a-box product for those you in the broadcast world. They are not ideal, the 2U 12 disk models that Pablo uses are far more suitable.</p>
 
+<!-- more -->
+
+
 <p>Plenty of companies already build their arrays on commodity hardware like these, so I am not doing anything new:</p>
 
 <ul>
@@ -621,6 +630,9 @@ Now you can add create a pool of servers:</p>
 
 <p>Today I received one entitled <a href="/downloads/ITinEU_Storage_autumn11_final.pdf">Break free of vendor lock-in with open source storage</a>. Being a FLOSS fan and a storage specialist, that obviously intrigued me.</p>
 
+<!-- more -->
+
+
 <p>The article of interest starts on page 8 and is pretty good. It mentions all the main players; unusually it is not condescending towards Open Source (i.e. it will get you by until you can afford to buy a proper/stupidly-over-priced solution).</p>
 
 <p>It also mentions <a href="http://www.gluster.org" target="_blank">GlusterFS</a>, which is particularly interesting. I have just built a solution at work built around this and it excellent. I will be putting more info up soon as a complete how-to on building a full-featured, high availability SAN/NAS.</p>
@@ -633,6 +645,9 @@ Now you can add create a pool of servers:</p>
     <updated>2010-01-12T13:35:00+01:00</updated>
     <id>http://http://warm-sword-7449.herokuapp.com//blog/2010/01/12/some-great-new-san-gear</id>
     <content type="html"><![CDATA[<p>Just before Christmas I was up at a storage seminar run by a company called <a href="http://www.dothill.com/" target="_blank">Dot Hill</a>. Until I was pointed to them when I spoke to our storage supplier about replacing an aging array I had never heard of them. However, it turns out that they make the hardware used by HP, NetApp and others – quite a pedigree then.</p>
+
+<!-- more -->
+
 
 <p>All their products are completely modular, based on the same chassis. If you have an iSCSI unit, then you can later change it into a FC one and you do not have to migrate anything as the array config is not stored on the controllers.</p>
 

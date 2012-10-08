@@ -4,7 +4,7 @@
   <title><![CDATA[Category: virtualisation | Just Another Linux Blog]]></title>
   <link href="http://http://warm-sword-7449.herokuapp.com//blog/categories/virtualisation/atom.xml" rel="self"/>
   <link href="http://http://warm-sword-7449.herokuapp.com//"/>
-  <updated>2012-10-02T21:48:35+02:00</updated>
+  <updated>2012-10-08T22:34:03+02:00</updated>
   <id>http://http://warm-sword-7449.herokuapp.com//</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -20,8 +20,12 @@
     <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/02/06/vmware-cli-installation-woes-on-centos-6</id>
     <content type="html"><![CDATA[<p>Installing the VMware CLI should have been simple, but it was a bit of a fiddle.</p>
 
-<p>Use yum  all the bits it needs:
-<code>
+<p>Use yum  all the bits it needs:</p>
+
+<!-- more -->
+
+
+<p><code>
 yum install make autoconf automake openssl-devel gcc gcc-c++ make uuid-perl libuuid-devel uuid-devel  perl-Data-Dump perl-SOAP-Lite perl-XML-SAX perl-XML-NamespaceSupport perl-XML-LibXML perl-XML-LibXML-Common perl-CPAN
 </code></p>
 

@@ -121,6 +121,9 @@
 
 <div class="entry-content"><p>The basic idea is that everytime a change happens on the master, it gets pushed to the slave. In this set up it will <em>not</em> get you any more capacity; you cannot commit back to the slave. If you do it will get out of sync, resulting in a <em>split brain</em> situation. This is what we sysadmins call a &#8220;bad thing&#8221;. I am doing this in order to have <a href="http://www.atlassian.com/software/fisheye/overview" target="_blank">Atlassian Fisheye</a> can scan the repository without having to go over the network. The basic layout is:</p>
 
+<!-- more -->
+
+
 <p><img class="center" src="/images/svnsync.png"></p>
 
 <p>First the master needs to be able to send the data to the slave without any user interaction. On both the slave create a user to perform the sync:</p>

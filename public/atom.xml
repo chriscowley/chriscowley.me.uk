@@ -4,7 +4,7 @@
   <title><![CDATA[Just Another Linux Blog]]></title>
   <link href="http://http://warm-sword-7449.herokuapp.com//atom.xml" rel="self"/>
   <link href="http://http://warm-sword-7449.herokuapp.com//"/>
-  <updated>2012-10-02T21:48:35+02:00</updated>
+  <updated>2012-10-08T22:34:03+02:00</updated>
   <id>http://http://warm-sword-7449.herokuapp.com//</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -19,8 +19,12 @@
     <updated>2012-10-01T22:16:00+02:00</updated>
     <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/10/01/my-new-job</id>
     <content type="html"><![CDATA[<p>I have now got new challenges and am designing much bigger systems. Whereas before I would have take one of these:
-<img class="center" src="http://http://warm-sword-7449.herokuapp.com//images/p2000-g3-sff.png" width="250" height="400">
-Plugged it into a pair of these:
+<img class="center" src="http://http://warm-sword-7449.herokuapp.com//images/p2000-g3-sff.png" width="250" height="400"></p>
+
+<!-- more -->
+
+
+<p>Plugged it into a pair of these:
 <img class="center" src="http://http://warm-sword-7449.herokuapp.com//images/silkworm.jpg" width="250" height="450">
 And finally plugged in a pair of these:
 <img class="center" src="http://http://warm-sword-7449.herokuapp.com//images/dl380g7.jpg" width="200" height="400"></p>
@@ -40,13 +44,16 @@ And finally plugged in a pair of these:
     <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/10/01/my-new-life</id>
     <content type="html"><![CDATA[<p>I am now a month in to life in France. Make no mistake I am so far very happy that we have made the right decision, even though not everything is perfect. The biggest beef is without a doubt the paperwork!</p>
 
-<p>For example, it took us a month to get a phone line and the stumbling block was not having the right piece of paper. To get onto the system you have to have a bill, but to get a bill you need a bill. Call it a catch-22 or a chicken-egg take your pick, but french beaurocrats love that.</p>
+<!-- more -->
 
-<h2>Work</h2>
+
+<p>For example, it took us a month to get a phone line and the stumbling block was not having the right piece of paper. To get onto the system you have to have a bill, but to get a bill you need a bill. Call it a catch-22 or a chicken-egg take your pick, but french beaurocrats love that.</p>
 
 <p>Working in France is a little different to England. Add to that the fact that I am going from a <a href="http://www.snellgroup.com" target="_blank">small company</a> to working on a project for a <b>much</b> <a href="http://www.orange-business.com" target="_blank">larger one</a> and you have quite a culture shock.</p>
 
-<p>The attitude to lunch is probably the biggest single change of all that can only be attributed to country. All my colleagues take a 2 hour lunch religiously, during which they go elsewhere. I am used to taking a 30 minute break to read the Register with a sandwhich/salad at my desk. For now, past an hour, I get bored an return to work. Maybe I will extend my lunch as I get used to it, but maybe not - shorter lunch means I get to go home earlier.</p>
+<p><span class='pullquote-right' data-pullquote='All my colleagues take a 2 hour lunch'>
+The attitude to lunch is probably the biggest single change of all that can only be attributed to country. All my colleagues take a 2 hour lunch religiously, during which they go elsewhere. I am used to taking a 30 minute break to read the Register with a sandwhich/salad at my desk. For now, past an hour, I get bored an return to work. Maybe I will extend my lunch as I get used to it, but maybe not - shorter lunch means I get to go home earlier.
+</span></p>
 
 <h2>Commuting</h2>
 
@@ -74,6 +81,9 @@ And finally plugged in a pair of these:
     <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/08/04/i-have-a-raspberry-pi</id>
     <content type="html"><![CDATA[<p>Just got my new toy! I have to admit that I am not completely certain what I will do with it yet though.</p>
 
+<!-- more -->
+
+
 <p>It will certainly start by running <a href="http://mpd.wikia.com/wiki/Music_Player_Daemon_Wiki" target="_blank">Music Player Daemon</a>.</p>
 
 <p><a href="http://www.flickr.com/photos/chriscowleyunix/7705281518/" title="Raspberry Pi by chriscowleysound, on Flickr"><img src="http://farm9.staticflickr.com/8023/7705281518_73c2ee8c18.jpg" width="500" height="375" alt="Raspberry Pi"></a></p>
@@ -86,6 +96,9 @@ And finally plugged in a pair of these:
     <updated>2012-07-27T16:02:00+02:00</updated>
     <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/07/27/isle-of-wight-ride</id>
     <content type="html"><![CDATA[<p>Last week I successfully did my first 65 mile ride. Of course it was not a race, but that never stopped a group of men being over competitive - I won by the way.</p>
+
+<!-- more -->
+
 
 <p>I do not own a cycle computer, nor did I remember to run My Tracks. However, a colleague did record it on his Garmin GPS:</p>
 
@@ -107,6 +120,9 @@ And finally plugged in a pair of these:
     <updated>2012-07-17T12:03:00+02:00</updated>
     <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/07/17/mirror-a-subversion-repo-with-svnsync</id>
     <content type="html"><![CDATA[<p>The basic idea is that everytime a change happens on the master, it gets pushed to the slave. In this set up it will <em>not</em> get you any more capacity; you cannot commit back to the slave. If you do it will get out of sync, resulting in a <em>split brain</em> situation. This is what we sysadmins call a &#8220;bad thing&#8221;. I am doing this in order to have <a href="http://www.atlassian.com/software/fisheye/overview" target="_blank">Atlassian Fisheye</a> can scan the repository without having to go over the network. The basic layout is:</p>
+
+<!-- more -->
+
 
 <p><img class="center" src="http://http://warm-sword-7449.herokuapp.com//images/svnsync.png"></p>
 
@@ -215,6 +231,9 @@ And finally plugged in a pair of these:
     <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/07/03/fixed-my-gihub-repo-list</id>
     <content type="html"><![CDATA[<p>My Github repo list has not worked as all since I moved over to Octopress. This evening I though I would have a little look into it.</p>
 
+<!-- more -->
+
+
 <p>It turned out that GitHub has <a href="https://github.com/blog/1160-github-api-v2-end-of-life" target="_blank">depreciated the version 1 and 2 APIs</a>. Octopress was using version 2, so I have made a little change.</p>
 
 <div><script src='https://gist.github.com/3042647.js?file='></script>
@@ -256,10 +275,30 @@ index 678775a..8b79dad 100644
     <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/07/03/excellent-seminar-given-by-a-friend-of-mine</id>
     <content type="html"><![CDATA[<p>My friend <a target="_blank" href="http://twitter.com/#!/bobscape">Rob Borley</a> was talking at this year&#8217;s <a href="http://iwmw.ukoln.ac.uk/" target="_blank">International Web Management Workshow</a>. He actually got voted &#8220;best talk&#8221; - which was nice.</p>
 
+<!-- more -->
+
+
 <p>Anyone who even touches on Web vs mobile development should really watch it. His comes out with some very good idea.</p>
 
 <iframe src="http://player.vimeo.com/video/44618744?title=0&amp;byline=0&amp;portrait=0&amp;color=ff9933" width="400" height="300" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
 
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[The move to Jekyll]]></title>
+    <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/06/23/the-move-to-jekyll/"/>
+    <updated>2012-06-23T21:10:00+02:00</updated>
+    <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/06/23/the-move-to-jekyll</id>
+    <content type="html"><![CDATA[<p><img class="center" src="http://http://warm-sword-7449.herokuapp.com//images/agent-smith.jpg">
+&#8220;That Mr Anderson is the sound of inevitability&#8221;</p>
+
+<!--more -->
+
+
+<p><span class='pullquote-right' data-pullquote='I have left the safe world of Wordpress/Drupal et al'>
+Well it had to happen eventually. I am a professional geek and now (like all the other geeks it seems) I have left the safe world of Wordpress/Drupal et al. I have joined the world of Jekyll (and hopefully not Hyde).
+</span></p>
 ]]></content>
   </entry>
   
@@ -271,6 +310,9 @@ index 678775a..8b79dad 100644
     <content type="html"><![CDATA[<p>With the new systemd this now requires a couple of manual steps.</p>
 
 <p>Obviously we start by installing the RPMS themselves:</p>
+
+<!-- more -->
+
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>sudo yum install postgresql-server postgresql</span></code></pre></td></tr></table></div></figure>
@@ -317,6 +359,11 @@ index 678775a..8b79dad 100644
     <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/04/18/skype-video-on-fedora-64bit</id>
     <content type="html"><![CDATA[<p>Install Skype – I used <a href="http://slayachronicles.blogspot.co.uk/2012/03/installing-skype-on-fedora-16-64-bit.html" target="_blank" >these</a> instructions. This will seem to get everything working, but video will just give you a black screen and no error message. This is because Skype is 32 bit and you webcam driver is 64 bit. Make sure you have libv4l.i686 installed.</p>
 
+<!-- more -->
+
+
+
+
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>sudo yum install libv4l.i686</span></code></pre></td></tr></table></div></figure>
 
@@ -342,6 +389,9 @@ index 678775a..8b79dad 100644
     <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/04/16/a-learning-experience</id>
     <content type="html"><![CDATA[<p>How many times have you installed/updated a bit of software and read the line “Please take a back up” or something to that effect? 99 times out of a hundred, you will just continue and ignore it.</p>
 
+<!-- more -->
+
+
 <p>Today I had a reminder of why it is import to do so. I did a routine plug-in upgrade on our Jira installation (Customware Salesforce connector for those who want to know). I have done this several times, I had tested it in our Dev installation I was 100% confident it would work as expected. However, I actually decided to take a backup anyway.</p>
 
 <p>I ran the upgrade in the production environment and re-indexed. Nothing out of the ordinary. 10% of the way into the index it fell over. Jira’s database was gone! Fortunately I was able to restore from my backup and at worst a comment or two was lost, but that still caused significant downtime.</p>
@@ -356,6 +406,9 @@ index 678775a..8b79dad 100644
     <updated>2012-04-05T16:50:00+02:00</updated>
     <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/04/05/pycurl-and-self-signed-ssl-certificates</id>
     <content type="html"><![CDATA[<p>At <a href="http://www.snellgroup.com" target="_blank">Snell</a> we make heavy use of self-signed certificates for internal websites, such as the R&amp;D wiki. Active Directory makes it easy for us to make this transparent to the users, those that use Firefox/Chrome can find our well-published instructions to add the CA certificate to their own browsers.</p>
+
+<!-- more -->
+
 
 <p>Today I was writing a script to that pulls lots of attachments off our Confluence wiki, which we access through SSL using one of those certificates. Of course PyCurl  moaned that it could not verify the host, but I did not care – I know it is the right host!</p>
 
@@ -401,6 +454,9 @@ index 678775a..8b79dad 100644
     <content type="html"><![CDATA[<p>This based on my last post where I documented building a Highly Available NFS/NAS server.</p>
 
 <p>There is not a huge amount that needs to be done in order to add iSCSI functionality as well.</p>
+
+<!-- more -->
+
 
 <p>Add a file called <em>/etc/drbd/iscsi.res</em> containing:</p>
 
@@ -580,6 +636,11 @@ index 678775a..8b79dad 100644
     <updated>2012-03-19T16:59:00+01:00</updated>
     <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/03/19/highly-available-nfs-slash-nas</id>
     <content type="html"><![CDATA[<p>Take 2 Centos Servers (nfs1 and nfs2 will do nicely) and install ELrepo and EPEL on them both:</p>
+
+<!-- more -->
+
+
+
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -862,6 +923,9 @@ index 678775a..8b79dad 100644
 
 <p>First install the RPMFusion repositories:</p>
 
+<!-- more -->
+
+
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
@@ -895,6 +959,9 @@ index 678775a..8b79dad 100644
     <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/02/22/back-to-basics</id>
     <content type="html"><![CDATA[<p>I have been a Sys Admin for quite a while now. Specialising in Linux means that I am often called upon to be a “jack of all trades, master of many”. In the last week I have touched upon storage, multiple programming languages (Bash, PHP, Python, Ruby and Java), Linux, Exchange, Tomcat, Virtualization and Systems architecture. I am sure the list could go on … and on … and on …</p>
 
+<!-- more -->
+
+
 <p>There is however something that I feel I am missing. Before I was in my current post, I was more of a developer. I did a lot of Shell scripting, but also ADA and C/C++. Nowadays I do not do that, which is a shame. Virtually all modern programming languages trace their roots back to C and C++. The whole of Linux/UNIX traces its roots back to C. Our world is built on C/C++!</p>
 
 <p>This is something I have neglected over recent years, so I’m going to change that. A bit of Google-fu just now has bought me some interesting resources:</p>
@@ -915,6 +982,9 @@ index 678775a..8b79dad 100644
     <updated>2012-02-08T20:02:00+01:00</updated>
     <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/02/08/home-made-redundant-thin-provisioned-san</id>
     <content type="html"><![CDATA[<p>The inspiration for this came from a mixture of problems I was having with my HP P2000, ideas that have been floating around my head for a while, plus a post over at Bauer-power.net. Basically I got given a bunch of warranty returned Supermicro servers from our Customer Service guys  and got tasked with making it our secondary VMware store and DR snapshot storage. Incidentally, the Supermicro servers are used for our Channel-in-a-box product for those you in the broadcast world. They are not ideal, the 2U 12 disk models that Pablo uses are far more suitable.</p>
+
+<!-- more -->
+
 
 <p>Plenty of companies already build their arrays on commodity hardware like these, so I am not doing anything new:</p>
 
@@ -1140,6 +1210,9 @@ index 678775a..8b79dad 100644
 
 <p>Use yum  all the bits it needs:</p>
 
+<!-- more -->
+
+
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>yum install make autoconf automake openssl-devel gcc gcc-c++ make uuid-perl libuuid-devel uuid-devel  perl-Data-Dump perl-SOAP-Lite perl-XML-SAX perl-XML-NamespaceSupport perl-XML-LibXML perl-XML-LibXML-Common perl-CPAN</span></code></pre></td></tr></table></div></figure>
 
@@ -1191,6 +1264,9 @@ index 678775a..8b79dad 100644
 
 <p>Today I received one entitled <a href="http://http://warm-sword-7449.herokuapp.com//downloads/ITinEU_Storage_autumn11_final.pdf">Break free of vendor lock-in with open source storage</a>. Being a FLOSS fan and a storage specialist, that obviously intrigued me.</p>
 
+<!-- more -->
+
+
 <p>The article of interest starts on page 8 and is pretty good. It mentions all the main players; unusually it is not condescending towards Open Source (i.e. it will get you by until you can afford to buy a proper/stupidly-over-priced solution).</p>
 
 <p>It also mentions <a href="http://www.gluster.org" target="_blank">GlusterFS</a>, which is particularly interesting. I have just built a solution at work built around this and it excellent. I will be putting more info up soon as a complete how-to on building a full-featured, high availability SAN/NAS.</p>
@@ -1205,6 +1281,9 @@ index 678775a..8b79dad 100644
     <content type="html"><![CDATA[<p>Usually the release upgrade is relatively trouble-free, but this time I had a minor problem. After the upgrade I had no X Windows. It turned out that the NVidia driver not loading.</p>
 
 <p>I had to boot it up in rescue mode, which is selectable from the Grub menu. From there I could drop to a root console.</p>
+
+<!-- more -->
+
 
 <p>The first step is to remount / as read-write and then mount my boot partition (/dev/sda1).</p>
 
@@ -1223,187 +1302,6 @@ index 678775a..8b79dad 100644
 
 
 <p>After a reboot it should come up all fine and dandy.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[SMS from Icinga or Nagios]]></title>
-    <link href="http://http://warm-sword-7449.herokuapp.com//blog/2010/05/04/sms-from-icinga-or-nagios/"/>
-    <updated>2010-05-04T13:26:00+02:00</updated>
-    <id>http://http://warm-sword-7449.herokuapp.com//blog/2010/05/04/sms-from-icinga-or-nagios</id>
-    <content type="html"><![CDATA[<p>Finding out how to have Nagios (or in my case Icinga) send SMS alerts is easy. However, from my point of view it fell down in 2 ways.</p>
-
-<ol>
-<li>Most of these guides are Debian specific, I am using Centos.</li>
-<li>The SMS alerts are all or nothing, I only want SMS alerts for specific services (such as the corporate website).</li>
-</ol>
-
-
-<h2>Hardware</h2>
-
-<p>First things first you need something to send the SMS. I am using a brand new Vodaphone USB dongle taped to the side of the rack . I also had it working with a Nokia E51 using the same tools – obviously this would the require constant charging.</p>
-
-<p>Ideally I would have prefered to use an internal card. PCI -> PC card bridges do exist, but I had no joy on my Icinga server, although it did work in a Dell Optiplex we had lying around, but it caused an HP XW4600 not to switch on at all.</p>
-
-<h2>Software</h2>
-
-<p>I am using <a href="http://smstools3.kekekasvi.com/" target="_blank">SMS Server Tools 3</a> which are available for Centos/RHEL in <a href="https://fedoraproject.org/wiki/EPEL" target="_blank">EPEL</a>. This gives you an smsd daemon that watches a folder for text messages in a particular format.</p>
-
-<p>When you have enabled EPEL run</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>yum install smstools
-</span><span class='line'>chkconfig –levels 35 smsd on</span></code></pre></td></tr></table></div></figure>
-
-
-<p>When I plugged in the USB dongle I got a pair of USB ttys at /dev/ttyUSB0 and /dev/ttyUSB1</p>
-
-<p>Add the following to /etc/smsd.conf</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>devices = GSM1
-</span><span class='line'>logfile = /var/log/smsd.log
-</span><span class='line'>loglevel = 7
-</span><span class='line'>
-</span><span class='line'>ARVE Error: no video ID
-</span><span class='line'>device = /dev/ttyUSB0
-</span><span class='line'>smsc = 447785016005 # I am using Vodaphone, your’s may vary.
-</span><span class='line'>incoming = no</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now you can start the daemon</p>
-
-<pre><code>/etc/init.d/smsd start
-</code></pre>
-
-<p>Finally, for reasons explained later, you need an entry in icinga’s cron.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>* * * * * if [[ `ls /tmp/ | grep 'sms-icinga' | wc -l` -gt 0 ]];then /bin/mv /tmp/sms-icinga* /var/spool/sms/outgoing/;fi</span></code></pre></td></tr></table></div></figure>
-
-
-<p>What does this do? It checks “/tmp/” for any files that contain the name “sms-icinga” every minute. If any exist it moves them to “/var/spool/sms/outgoing/”. That last folder is watched by smsd for those special text files mentioned above.
-Icinga/Nagios configuration</p>
-
-<p>First add the commands, for which I use the file /etc/icinga/objects/commands.conf</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>define command {
-</span><span class='line'>    command_name notify-host-by-sms
-</span><span class='line'>    command_line /usr/bin/printf “%b” “To: $CONTACTPAGER$\n\n$NOTIFICATIONTYPE$\nHost Alert: $HOSTNAME$ is $HOSTSTATE$\n” &gt; /tmp/sms-icinga.$HOSTNAME$.$HOSTSTATE$.$CONTACTPAGER$
-</span><span class='line'>}
-</span><span class='line'>
-</span><span class='line'>define command {
-</span><span class='line'>    command_name notify-service-by-sms
-</span><span class='line'>    command_line /usr/bin/printf “%b” “To: $CONTACTPAGER$\n\n$NOTIFICATIONTYPE$\nService Alert:     $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$” &gt; /tmp/sms-icinga.$SERVICEDESC$.$HOSTNAME$.$CONTACTPAGER$
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<p>These commands write a file in /tmp that includes the string sms-icinga that our cron script looks for. The rest of it is to endure we do not accidentally overwrite an alert that has not been sent yet. The reason we need to write it into tmp, and the mv it to the outgoing folder is a little weird. I found that if I wrote directly to the outgoing folder, then smsd seemed picked it up too early and failed to parse the file correctly – strange, but not to worry.</p>
-
-<p>Now is where need to fiddle things a little bit if we only want to send messages for certain critical services. If you want SMS alerts for all your services you can just add a pager entry to all you contacts. We need to create an SMS user and a couple of templates to base our critical stuff on.</p>
-
-<p>The templates:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>define contact {
-</span><span class='line'>    name sms-contact
-</span><span class='line'>    use generic-contact
-</span><span class='line'>    service_notification_commands notify-service-by-sms, notify-service-by-email
-</span><span class='line'>    host_notification_commands notify-host-by-sms, notify-host-by-email
-</span><span class='line'>    register 0
-</span><span class='line'>}
-</span><span class='line'>
-</span><span class='line'>define service {
-</span><span class='line'>    use generic-service
-</span><span class='line'>    name critical-service
-</span><span class='line'>    contact_groups admins-sms,linux-admin
-</span><span class='line'>}
-</span><span class='line'>
-</span><span class='line'>define host {
-</span><span class='line'>    name critical-host
-</span><span class='line'>    use generic-host
-</span><span class='line'>    contact_groups admins-sms,linux-admin
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<p>my user:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>define contact {
-</span><span class='line'>    contact_name ChrisCowley-SMS
-</span><span class='line'>    use sms-contact
-</span><span class='line'>    pager &lt;my-mobile-number&gt;
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<p>a contact group:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>define contactgroup {
-</span><span class='line'>    contactgroup_name admins-sms
-</span><span class='line'>    members ChrisCowley-SMS
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Finally we can create our essential service:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>define service {
-</span><span class='line'>    use critical-service
-</span><span class='line'>    service_description Website-content
-</span><span class='line'>    check_command check_http_content!-U http://www.snellgroup.com -m Snell
-</span><span class='line'>    host_name www.snellgroup.com
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-
 ]]></content>
   </entry>
   

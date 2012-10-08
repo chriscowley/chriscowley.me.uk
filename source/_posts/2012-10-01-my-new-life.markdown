@@ -6,13 +6,14 @@ comments: true
 categories: france
 ---
 I am now a month in to life in France. Make no mistake I am so far very happy that we have made the right decision, even though not everything is perfect. The biggest beef is without a doubt the paperwork!
-
+<!-- more -->
 For example, it took us a month to get a phone line and the stumbling block was not having the right piece of paper. To get onto the system you have to have a bill, but to get a bill you need a bill. Call it a catch-22 or a chicken-egg take your pick, but french beaurocrats love that.
 
-##Work
 Working in France is a little different to England. Add to that the fact that I am going from a <a href="http://www.snellgroup.com" target="_blank">small company</a> to working on a project for a <b>much</b> <a href="http://www.orange-business.com" target="_blank">larger one</a> and you have quite a culture shock.
 
-The attitude to lunch is probably the biggest single change of all that can only be attributed to country. All my colleagues take a 2 hour lunch religiously, during which they go elsewhere. I am used to taking a 30 minute break to read the Register with a sandwhich/salad at my desk. For now, past an hour, I get bored an return to work. Maybe I will extend my lunch as I get used to it, but maybe not - shorter lunch means I get to go home earlier.
+{% pullquote %}
+The attitude to lunch is probably the biggest single change of all that can only be attributed to country. {" All my colleagues take a 2 hour lunch "} religiously, during which they go elsewhere. I am used to taking a 30 minute break to read the Register with a sandwhich/salad at my desk. For now, past an hour, I get bored an return to work. Maybe I will extend my lunch as I get used to it, but maybe not - shorter lunch means I get to go home earlier.
+{% endpullquote %}
 
 ##Commuting
 My commute is quite a lot further than when I was at Snell:

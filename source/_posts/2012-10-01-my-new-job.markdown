@@ -7,6 +7,7 @@ categories: france
 ---
 I have now got new challenges and am designing much bigger systems. Whereas before I would have take one of these:
 {% img center /images/p2000-g3-sff.png 250 400 %}
+<!-- more -->
 Plugged it into a pair of these:
 {% img center /images/silkworm.jpg 250 450 %}
 And finally plugged in a pair of these:

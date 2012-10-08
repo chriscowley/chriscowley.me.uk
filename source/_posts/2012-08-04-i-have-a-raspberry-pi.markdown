@@ -6,6 +6,7 @@ comments: true
 categories: linux
 ---
 Just got my new toy! I have to admit that I am not completely certain what I will do with it yet though.
+<!-- more -->
 
 It will certainly start by running <a href="http://mpd.wikia.com/wiki/Music_Player_Daemon_Wiki" target="_blank">Music Player Daemon</a>.
 

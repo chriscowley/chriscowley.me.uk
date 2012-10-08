@@ -8,6 +8,7 @@ categories: linux
 With the new systemd this now requires a couple of manual steps.
 
 Obviously we start by installing the RPMS themselves:
+<!-- more -->
 ```
 sudo yum install postgresql-server postgresql
 ```

@@ -10,6 +10,7 @@ categories: media
 This should have nice and simple, but there was a little gotcha (for me anyway).
 
 First install the RPMFusion repositories:
+<!-- more -->
 ```
 yum localinstall --nogpgcheck \
     http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-stable.noarch.rpm \

@@ -6,6 +6,7 @@ comments: true
 categories: Subversion
 ---
 The basic idea is that everytime a change happens on the master, it gets pushed to the slave. In this set up it will *not* get you any more capacity; you cannot commit back to the slave. If you do it will get out of sync, resulting in a _split brain_ situation. This is what we sysadmins call a "bad thing". I am doing this in order to have <a href="http://www.atlassian.com/software/fisheye/overview" target="_blank">Atlassian Fisheye</a> can scan the repository without having to go over the network. The basic layout is:
+<!-- more -->
 
 {% img  center /images/svnsync.png %}
 

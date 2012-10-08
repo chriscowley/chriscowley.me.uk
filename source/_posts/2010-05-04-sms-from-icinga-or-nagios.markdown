@@ -11,6 +11,7 @@ Finding out how to have Nagios (or in my case Icinga) send SMS alerts is easy. H
 
 1. Most of these guides are Debian specific, I am using Centos.
 1. The SMS alerts are all or nothing, I only want SMS alerts for specific services (such as the corporate website).
+<!-- more -->
 
 ## Hardware
 

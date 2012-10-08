@@ -11,6 +11,7 @@ categories: virtualisation
 Installing the VMware CLI should have been simple, but it was a bit of a fiddle.
 
 Use yum  all the bits it needs:
+<!-- more -->
 ```
 yum install make autoconf automake openssl-devel gcc gcc-c++ make uuid-perl libuuid-devel uuid-devel  perl-Data-Dump perl-SOAP-Lite perl-XML-SAX perl-XML-NamespaceSupport perl-XML-LibXML perl-XML-LibXML-Common perl-CPAN
 ```

@@ -6,7 +6,7 @@ comments: true
 categories: cycling
 ---
 Last week I successfully did my first 65 mile ride. Of course it was not a race, but that never stopped a group of men being over competitive - I won by the way.
-
+<!-- more -->
 I do not own a cycle computer, nor did I remember to run My Tracks. However, a colleague did record it on his Garmin GPS:
 
 <iframe width='465' height='548' frameborder='0' src='http://connect.garmin.com:80/activity/embed/203587506'></iframe>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: monitoring | Just Another Linux Blog]]></title>
   <link href="http://http://warm-sword-7449.herokuapp.com//blog/categories/monitoring/atom.xml" rel="self"/>
   <link href="http://http://warm-sword-7449.herokuapp.com//"/>
-  <updated>2012-10-02T21:48:35+02:00</updated>
+  <updated>2012-10-08T22:34:03+02:00</updated>
   <id>http://http://warm-sword-7449.herokuapp.com//</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -24,6 +24,9 @@
 <li>Most of these guides are Debian specific, I am using Centos.</li>
 <li>The SMS alerts are all or nothing, I only want SMS alerts for specific services (such as the corporate website).</li>
 </ol>
+
+
+<!-- more -->
 
 
 <h2>Hardware</h2>

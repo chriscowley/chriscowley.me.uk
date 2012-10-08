@@ -7,6 +7,7 @@ categories: storage
 published: true
 ---
 Take 2 Centos Servers (nfs1 and nfs2 will do nicely) and install ELrepo and EPEL on them both:
+<!-- more -->
 
 {% codeblock %}
 yum install \
