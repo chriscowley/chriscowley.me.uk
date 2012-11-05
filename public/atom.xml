@@ -4,7 +4,7 @@
   <title><![CDATA[Just Another Linux Blog]]></title>
   <link href="http://http://warm-sword-7449.herokuapp.com//atom.xml" rel="self"/>
   <link href="http://http://warm-sword-7449.herokuapp.com//"/>
-  <updated>2012-10-23T22:03:42+02:00</updated>
+  <updated>2012-11-05T18:58:49+01:00</updated>
   <id>http://http://warm-sword-7449.herokuapp.com//</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -14,21 +14,137 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Installing Adito/OpenVPN-ALS on CentOS]]></title>
+    <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/10/26/installing-adito-slash-openvpn-als-on-centos/"/>
+    <updated>2012-10-26T21:19:00+02:00</updated>
+    <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/10/26/installing-adito-slash-openvpn-als-on-centos</id>
+    <content type="html"><![CDATA[<p><a href="http://sourceforge.net/projects/openvpn-als">OpenVPN-ALS</a>, formerly known as Adito, is not to be confused with OpenVPN. They both work in completely different things, but in a similar way. Confused? Excellent&#8230;</p>
+
+<!-- more -->
+
+
+<p>OpenVPN-ALS (from now on known as Adito, because I find it less confusing) is a browser based SSL VPN that enables you to acess resources on your own network, even if you are behind a restrictive proxy and/or firewall.</p>
+
+<p>First you need a basic install of CentOS. The absolute base system is plenty. One thing to note is that to get the best from this it cannot share space with another web server as it takes up port 443. Make sure Apache/Nginx et al are not installed.</p>
+
+<p>The next step is to install a couple of essentials. OpenVPN-ALS is a java applications, so obviously you need a JRE (in fact you need a JDK), plus it uses Ant for building. The Adito project work purely in branches, to the trunk should be stable.</p>
+
+<p>First get <a href="www.oracle.com">Oracle Java</a> and install it. You can use the instructions <a href="http://www.if-not-true-then-false.com/2010/install-sun-oracle-java-jdk-jre-6-on-fedora-centos-red-hat-rhel/">here</a> to help you. You will need to configure <code>javac</code> and <code>jar</code> as well.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo yum install subversion ant </span></code></pre></td></tr></table></div></figure>
+
+
+<p>Just to be sure run <code>sudo update-alternatives -config java</code> to make sure you are using the latest one:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[chris@adito ~]$ sudo update-alternatives --config java
+</span><span class='line'>
+</span><span class='line'>There is 3 program that provides 'java'.
+</span><span class='line'>
+</span><span class='line'>  Selection    Command
+</span><span class='line'>-----------------------------------------------
+</span><span class='line'> + 1           /usr/lib/jvm/jre-1.5.0-gcj/bin/java
+</span><span class='line'>   2           /usr/lib/jvm/jre-1.6.0-openjdk.x86_64/bin/java
+</span><span class='line'>*  3           /usr/java/jdk1.7.0_07/jre/bin/java
+</span><span class='line'>
+</span><span class='line'>Enter to keep the current selection[+], or type selection number: 3  </span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now check out the current trunk:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo svn co https://openvpn-als.svn.sourceforge.net/svnroot/openvpn-als/adito/trunk /opt/openvpn-als</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Adito needs the tools.jar file that is bundles with the JDK, so copy that into place. You can then go ahead and build.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo cp /usr/java/jdk1.7.0_07/lib/tools.jar /opt/openvpn-als/adito/lib/
+</span><span class='line'>cd /opt/openvpn-als
+</span><span class='line'>sudo ant install</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This will generate a lot of output, but will eventually print something like:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'> [java] Starting installation wizard........................Point your browser to http://adito.chriscowley.local:28080. 
+</span><span class='line'> [java] 
+</span><span class='line'> [java] Press CTRL+C or use the 'Shutdown' option from the web interface to leave the installation wizard.</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Go to the address it gives you and work your way through the wizard. At the end it will exit and tell you to restart the service.</p>
+
+<p>You can return to your console and run</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo ant install-agent
+</span><span class='line'>sudo ant install-service
+</span><span class='line'>sudo /etc/init.d/adito start
+</span><span class='line'>sudo chkconfig adito on</span></code></pre></td></tr></table></div></figure>
+
+
+
+
+<iframe class="imgur-album" width="100%" height="550" frameborder="0" src="http://imgur.com/a/yIVhT/embed"></iframe>
+
+
+<p>You can now log into it, but it will not do much as there are no applications installed. You need to check them out of Subversion, compile and upload them. You can do this on your local machine.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>svn co https://openvpn-als.svn.sourceforge.net/svnroot/openvpn-als/adito-applications/
+</span><span class='line'>cd adito-aplications</span></code></pre></td></tr></table></div></figure>
+
+
+<p>There are quite a few there, but we will just do the portable Putty application.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cd adito-application-putty-portable-ssh
+</span><span class='line'>ant</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The output will tell you the Zip file it has built which you can now upload. Go to the &#8220;Extension Manger&#8221; from the menu on the left. On the right you wil see &#8220;Upload Extension&#8221;. Choose the Zip file and you can configure it to connect to whatever Linux machine you want. &#8220;Putty SSH&#8221; will now be available in the list of installed applications.</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[A Cycling Related Review]]></title>
     <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/10/23/a-cycling-related-review/"/>
     <updated>2012-10-23T20:31:00+02:00</updated>
     <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/10/23/a-cycling-related-review</id>
-    <content type="html"><![CDATA[<p><img class="right" src="http://www.arkon.com/images/slimgrip/sm532.jpg" width="300" height="300"> A little bit if a move away from computers and related subjects today. I was recently contacted by <a href="http://www.gearzap.com">Gearzap</a> who had seen that I had a Raspberry Pi. They asked if I would like to review a case and I cheekily asked if they could also give me something to mount my phone on the handlebars of my bike. Much to my pleasant surprise, they said yes.</p>
+    <content type="html"><![CDATA[<p><img class="right" src="http://www.arkon.com/images/slimgrip/sm532.jpg" width="300" height="300"> A little bit if a move away from computers and related subjects today. I was recently contacted by <a href="http://www.gearzap.com">Gearzap</a>/<a href="http://www.mobilefun.co.uk">MobileFun</a> who had seen that I had a Raspberry Pi. They asked if I would like to review a case and I cheekily asked if they could also give me something to mount my phone on the handlebars of my bike. Much to my pleasant surprise, they said yes.</p>
+
+<!-- more -->
+
 
 <p>The sent me the <a href="http://www.arkon.com/slimgrip/slimgrip-bike-mount.html">Arkon SM532</a>. Unsurprisingly it is made in China, but then what is not nowadays. Having said that, the build quality is pretty good and the instructions pretty clear.</p>
 
 <p>I mounted it on my beloved <a href="http://flic.kr/p/cDCcFd">Felt</a> road bike as it is what I am currently using day to day. This unfortunately highlighted the only real problem I found. Modern road bikes have thicker handle bars than many other types of bike. This meant that fitting the bracket to them was tight. It comes with several rubber shims, that a) protect you handlebars, b) stop it from slipping around. It was not possible to use those. It has to be said that is pretty ugly as well, but if that worries you then buy a Garmin.</p>
 
-<p>Any way, I persevered and attached it without the shims and prayed that it would not do any damage. As I said, the instructions were very clear and this only took a few minutes.  Once on it all seemed perfectly secure, so the next day I put my phone in it. The clips keep it in place pretty well and the you also have the bungie cord as an extra, so I was not worried it would fall out at all. The route I took is a collection of French farm lanes. Some are very smooth, but some are horrible. Also, it is harvest time, so there is plenty of dried mud on the road to give it a bit more of a shaking. It held up very well, nothing shifted at all and I could easily angle the phone so it was just right.</p>
+<p>Anyway, I persevered and attached it without the shims and prayed that it would not do any damage. As I said, the instructions were very clear and this only took a few minutes.  Once on it all seemed perfectly secure, so the next day I put my phone in it. The clips keep it in place pretty well and the you also have the bungie cord as an extra, so I was not worried it would fall out at all. The route I took is a collection of French farm lanes. Some are very smooth, but some are horrible. Also, it is harvest time, so there is plenty of dried mud on the road to give it a bit more of a shaking. It held up very well, nothing shifted at all and I could easily angle the phone so it was just right.</p>
 
 <p>Later I took it off to ensure that it would fit properly on a &#8220;normal&#8221; sized handlebar by putting it on my mountain bike - it was fine. Also, there was absolutely no scratches on my Felt&#8217;s bars at all, despite my concerns about not having any shims to protect them.</p>
 
-<p>All in all it is a pretty good piece of kit</p>
+<p>All in all it is a pretty good piece of kit. It can be had from <a href="http://www.mobilefun.co.uk">MobileFun</a> for £13.95, which strikes me as pretty good value.</p>
 ]]></content>
   </entry>
   
@@ -1272,38 +1388,6 @@ index 678775a..8b79dad 100644
 <p>The article of interest starts on page 8 and is pretty good. It mentions all the main players; unusually it is not condescending towards Open Source (i.e. it will get you by until you can afford to buy a proper/stupidly-over-priced solution).</p>
 
 <p>It also mentions <a href="http://www.gluster.org" target="_blank">GlusterFS</a>, which is particularly interesting. I have just built a solution at work built around this and it excellent. I will be putting more info up soon as a complete how-to on building a full-featured, high availability SAN/NAS.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Ubuntu upgrade problems]]></title>
-    <link href="http://http://warm-sword-7449.herokuapp.com//blog/2011/10/16/ubuntu-upgrade-problems/"/>
-    <updated>2011-10-16T13:24:00+02:00</updated>
-    <id>http://http://warm-sword-7449.herokuapp.com//blog/2011/10/16/ubuntu-upgrade-problems</id>
-    <content type="html"><![CDATA[<p>Usually the release upgrade is relatively trouble-free, but this time I had a minor problem. After the upgrade I had no X Windows. It turned out that the NVidia driver not loading.</p>
-
-<p>I had to boot it up in rescue mode, which is selectable from the Grub menu. From there I could drop to a root console.</p>
-
-<!-- more -->
-
-
-<p>The first step is to remount / as read-write and then mount my boot partition (/dev/sda1).</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>mount -o rw,remount /
-</span><span class='line'>mount /dev/sda1 /boot</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now I just need to move the xorg.conf to one side and reinstall the nvidia driver</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>mv /etc/X11/xorg.conf /etc/X11/xorg.conf.bak
-</span><span class='line'>apt-get remove nvidia-current && apt-get install nvidia-current</span></code></pre></td></tr></table></div></figure>
-
-
-<p>After a reboot it should come up all fine and dandy.</p>
 ]]></content>
   </entry>
   
