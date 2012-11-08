@@ -1,0 +1,31 @@
+@font-face {
+  font-family: 'Museo';
+  src: url('/assets/fontface/Museo300-Regular.otf');
+  src: url('/assets/fontface/Museo300-Regular.ott?#iefix') format('embedded-opentype'),
+       url('/assets/fontface/Museo300-Regular.woff') format('woff'),
+       url('/assets/fontface/Museo300-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Museo';
+  src: url('/assets/fontface/24BAEB_0_0.eot');
+  src: url('/assets/fontface/24BAEB_0_0.eot?#iefix') format('embedded-opentype'),
+       url('/assets/fontface/24BAEB_0_0.woff') format('woff'),
+       url('/assets/fontface/24BAEB_0_0.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Museo';
+  src: url('/assets/fontface/24BAEB_1_0.eot');
+  src: url('/assets/fontface/24BAEB_1_0.eot?#iefix') format('embedded-opentype'),
+       url('/assets/fontface/24BAEB_1_0.woff') format('woff'),
+       url('/assets/fontface/24BAEB_1_0.ttf') format('truetype');
+  font-weight: bold;
+  font-style: italic;
+}
+
+
