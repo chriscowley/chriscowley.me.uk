@@ -4,7 +4,7 @@
   <title><![CDATA[Just Another Linux Blog]]></title>
   <link href="http://http://warm-sword-7449.herokuapp.com//atom.xml" rel="self"/>
   <link href="http://http://warm-sword-7449.herokuapp.com//"/>
-  <updated>2012-11-08T23:44:47+01:00</updated>
+  <updated>2012-11-19T21:30:14+01:00</updated>
   <id>http://http://warm-sword-7449.herokuapp.com//</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -12,6 +12,97 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[SFTP Chroot on CentOS]]></title>
+    <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/11/19/sftp-chroot-on-centos/"/>
+    <updated>2012-11-19T19:59:00+01:00</updated>
+    <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/11/19/sftp-chroot-on-centos</id>
+    <content type="html"><![CDATA[<p>This came up today where I needed to give secure file transfer to customers. To complicate things I had to use an out-of-the-box RHEL6 system. The obvious answer was to use SSH and limit those users to SFTP only. Locking them into a chroot was not a requirement, but it seemed like a good idea to me. I found plenty of docs that got 80% of the way, or took a shortcut, but this should be complete.</p>
+
+<!-- more -->
+
+
+<p>The basic steps are:</p>
+
+<ol>
+<li>Create a group and the users to that group</li>
+<li>Modify the SSH daemon configuration to limit a group to sftp only</li>
+<li>Setup file system permissions</li>
+<li>Configure SELinux</li>
+<li>Test (of course)</li>
+</ol>
+
+
+<p>Without further ado, lets get started. It should only take about 10 minutes, nothing here is especially complex.</p>
+
+<p>Create a group that is limited to SFTP only and a user to be in that group.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>groupadd sftponly
+</span><span class='line'>useradd sftptest
+</span><span class='line'>usermod -aG sftponly  sftptest</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now you need to make a little change to <code>/etc/ssh/sshd_config</code>. There will be a <em>Subsystem</em> line for <code>sftp</code> which you need to change to read:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Subsystem       sftp    internal-sftp</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now you need to create a block at the end to limit members of a group (ie the sftponly group you created above) and chroot them. Simply add the following to the end of the file:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Match Group sftponly
+</span><span class='line'>    ChrootDirectory %h
+</span><span class='line'>    ForceCommand internal-sftp
+</span><span class='line'>    X11Forwarding no
+</span><span class='line'>    AllowTcpForwarding no</span></code></pre></td></tr></table></div></figure>
+
+
+<p>These changes will require a reload of the SSH daemon: <code>service sshd reload</code></p>
+
+<p>Now you need to make some file permission changes. For some reason which I cannot work out for now, the home directory must be owned by root and have the permissions 755. So we will also need to make a folder in the home directory to upload to and make that owned by the user.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo -u sftptest mkdir -pv /home/sftptest/upload
+</span><span class='line'>chown root. /home/sftptest
+</span><span class='line'>chmod 755 /home/sftptest
+</span><span class='line'>chgrp -R sftponly /home/sftptest</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The last thing we need to do is tell SELinux that we want to upload files via SFTP to a chroot as it is read-only by default. Of course you are running SELinux in enforcing mode aren&#8217;t you :)</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>setsebool -P ssh_chroot_rw_homedirs on</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now from another console you can sftp to your server</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sftp sftptest@&lt;server&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You should then be able to put a file in your upload folder. However if you try to ssh to the server as the user <em>sftptest</em> it should tell you to go away. Of course you should be able to <em>ssh</em> as your normal user with no problem. Pro tip: make sure to leave a root terminal open just in case.</p>
+
+<p>Required reading:</p>
+
+<ul>
+<li><a href="http://wiki.centos.org/HowTos/SELinux">CentOS Wiki SELinux</a></li>
+<li><a href="http://wiki.centos.org/TipsAndTricks/SelinuxBooleans">CentOS Wiki SELinuxBooleans</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Installing Adito/OpenVPN-ALS on CentOS]]></title>
@@ -417,6 +508,23 @@ index 678775a..8b79dad 100644
 
 <iframe src="http://player.vimeo.com/video/44618744?title=0&amp;byline=0&amp;portrait=0&amp;color=ff9933" width="400" height="300" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
 
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[The move to Jekyll]]></title>
+    <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/06/23/the-move-to-jekyll/"/>
+    <updated>2012-06-23T21:10:00+02:00</updated>
+    <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/06/23/the-move-to-jekyll</id>
+    <content type="html"><![CDATA[<p><img class="center" src="http://http://warm-sword-7449.herokuapp.com//images/agent-smith.jpg">
+&#8220;That Mr Anderson is the sound of inevitability&#8221;</p>
+
+<!--more -->
+
+
+<p><span class='pullquote-right' data-pullquote='I have left the safe world of Wordpress/Drupal et al'>
+Well it had to happen eventually. I am a professional geek and now (like all the other geeks it seems) I have left the safe world of Wordpress/Drupal et al. I have joined the world of Jekyll (and hopefully not Hyde).
+</span></p>
 ]]></content>
   </entry>
   
@@ -1316,78 +1424,6 @@ index 678775a..8b79dad 100644
 <h2>Conclusion</h2>
 
 <p>Nothing here is particularly complicated, but it does give you a lot of storage for a very low price, using a very enterprise friendly OS.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[VMware CLI installation woes on Centos 6]]></title>
-    <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/02/06/vmware-cli-installation-woes-on-centos-6/"/>
-    <updated>2012-02-06T13:09:00+01:00</updated>
-    <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/02/06/vmware-cli-installation-woes-on-centos-6</id>
-    <content type="html"><![CDATA[<p>Installing the VMware CLI should have been simple, but it was a bit of a fiddle.</p>
-
-<p>Use yum  all the bits it needs:</p>
-
-<!-- more -->
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>yum install make autoconf automake openssl-devel gcc gcc-c++ make uuid-perl libuuid-devel uuid-devel  perl-Data-Dump perl-SOAP-Lite perl-XML-SAX perl-XML-NamespaceSupport perl-XML-LibXML perl-XML-LibXML-Common perl-CPAN</span></code></pre></td></tr></table></div></figure>
-
-
-<p>You should now be able to run the installer, but I had another problem though. The installer script would not believe me that I had a direct internet connection and insisted that I gave some proxy server settings. As a simple workaround I just commented out that code in the installation script:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>if ( direct_command("env | grep -i http_proxy") ) {
-</span><span class='line'> $httpproxy = 1;
-</span><span class='line'>} else {
-</span><span class='line'> print wrap("http_proxy not set. please set environment variable 'http_proxy' e.g. export http_proxy=http://myproxy.mydomain.com:0000 . \n\n", 0);
-</span><span class='line'>}
-</span><span class='line'>if ( direct_command("env | grep -i ftp_proxy") ) {
-</span><span class='line'> $ftpproxy = 1;
-</span><span class='line'>} else {
-</span><span class='line'> print wrap("ftp_proxy not set. please set environment variable 'ftp_proxy' e.g. export ftp_proxy=http://myproxy.mydomain.com:0000 . \n\n", 0);
-</span><span class='line'>}
-</span><span class='line'>
-</span><span class='line'>if ( !( $ftpproxy && $httpproxy)) {
-</span><span class='line'>    uninstall_file($gInstallerMainDB);
-</span><span class='line'>    exit 1;
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<p>After this I was able to run the installer with no problems. Of course, there is still the problem I have VMware about them putting their files under <em>/usr</em>. If it is not under control of my package manager, the default should be <em>/opt</em> or <em>/usr/local</em>.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Open Source Storage]]></title>
-    <link href="http://http://warm-sword-7449.herokuapp.com//blog/2011/11/10/open-source-storage/"/>
-    <updated>2011-11-10T13:12:00+01:00</updated>
-    <id>http://http://warm-sword-7449.herokuapp.com//blog/2011/11/10/open-source-storage</id>
-    <content type="html"><![CDATA[<p>I have searchstorage.co.uk send me potentially interesting white-papers regularly. If I am honest, most of them or thinly veiled press-releases. However occasionally one is interesting.</p>
-
-<p>Today I received one entitled <a href="http://http://warm-sword-7449.herokuapp.com//downloads/ITinEU_Storage_autumn11_final.pdf">Break free of vendor lock-in with open source storage</a>. Being a FLOSS fan and a storage specialist, that obviously intrigued me.</p>
-
-<!-- more -->
-
-
-<p>The article of interest starts on page 8 and is pretty good. It mentions all the main players; unusually it is not condescending towards Open Source (i.e. it will get you by until you can afford to buy a proper/stupidly-over-priced solution).</p>
-
-<p>It also mentions <a href="http://www.gluster.org" target="_blank">GlusterFS</a>, which is particularly interesting. I have just built a solution at work built around this and it excellent. I will be putting more info up soon as a complete how-to on building a full-featured, high availability SAN/NAS.</p>
 ]]></content>
   </entry>
   

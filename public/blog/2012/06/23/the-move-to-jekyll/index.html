@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Fixed my gihub repo list - Just Another Linux Blog</title>
+  <title>The move to Jekyll - Just Another Linux Blog</title>
   <meta name="author" content="Chris Cowley">
 
   
-  <meta name="description" content="My Github repo list has not worked as all since I moved over to Octopress. This evening I though I would have a little look into it. It turned out &hellip;">
+  <meta name="description" content="&#8220;That Mr Anderson is the sound of inevitability&#8221; Well it had to happen eventually. I am a professional geek and now (like all the other &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://http://warm-sword-7449.herokuapp.com//blog/2012/07/03/fixed-my-gihub-repo-list/">
+  <link rel="canonical" href="http://http://warm-sword-7449.herokuapp.com//blog/2012/06/23/the-move-to-jekyll/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -94,7 +94,7 @@
   
   <header>
     
-      <h1 class="entry-title">Fixed My Gihub Repo List</h1>
+      <h1 class="entry-title">The Move to Jekyll</h1>
     
     
       <p class="meta">
@@ -110,7 +110,7 @@
   
 
 
-<time datetime="2012-07-03T20:54:00+02:00" pubdate data-updated="true">Tuesday 03 July 2012</time>
+<time datetime="2012-06-23T21:10:00+02:00" pubdate data-updated="true">Saturday 23 June 2012</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -119,42 +119,15 @@
   </header>
 
 
-<div class="entry-content"><p>My Github repo list has not worked as all since I moved over to Octopress. This evening I though I would have a little look into it.</p>
+<div class="entry-content"><p><img class="center" src="/images/agent-smith.jpg">
+&#8220;That Mr Anderson is the sound of inevitability&#8221;</p>
 
-<!-- more -->
-
-
-<p>It turned out that GitHub has <a href="https://github.com/blog/1160-github-api-v2-end-of-life" target="_blank">depreciated the version 1 and 2 APIs</a>. Octopress was using version 2, so I have made a little change.</p>
-
-<div><script src='https://gist.github.com/3042647.js?file='></script>
-<noscript><pre><code>diff --git a/source/javascripts/github.js b/source/javascripts/github.js
-index 678775a..8b79dad 100644
---- a/source/javascripts/github.js
-+++ b/source/javascripts/github.js
-@@ -10,15 +10,15 @@ var github = (function(){
-   return {
-     showRepos: function(options){
-       $.ajax({
--          url: &quot;http://github.com/api/v2/json/repos/show/&quot;+options.user+&quot;?callback=?&quot;
-+          url: &quot;https://api.github.com/users/&quot;+options.user+&quot;/repos?callback=?&quot;
-         , type: 'jsonp'
-         , error: function (err) { $(options.target + ' li.loading').addClass('error').text(&quot;Error loading feed&quot;); }
-         , success: function(data) {
-           var repos = [];
--          if (!data || !data.repositories) { return; }
--          for (var i = 0; i &lt; data.repositories.length; i++) {
--            if (options.skip_forks &amp;&amp; data.repositories[i].fork) { continue; }
--            repos.push(data.repositories[i]);
-+          if (!data || !data.data) { return; }
-+          for (var i = 0; i &lt; data.data.length; i++) {
-+            if (options.skip_forks &amp;&amp; data.data[i].fork) { continue; }
-+            repos.push(data.data[i]);
-           }
-           repos.sort(function(a, b) {
-             var aDate = new Date(a.pushed_at).valueOf(),</code></pre></noscript></div>
+<!--more -->
 
 
-<p>According to <a href="https://github.com/imathis/octopress/issues/620" target="_blank">this issue</a> there will be a fix in <a href="https://github.com/imathis/octopress/tree/2.1" target="_blank" >Octopress 2.1</a>. However, this patch will keep things working until Brandon Mathis moves it into the master branch. Of course that issue also highlighted the fact that I had just re-invented the wheel :(</p>
+<p><span class='pullquote-right' data-pullquote='I have left the safe world of Wordpress/Drupal et al'>
+Well it had to happen eventually. I am a professional geek and now (like all the other geeks it seems) I have left the safe world of Wordpress/Drupal et al. I have joined the world of Jekyll (and hopefully not Hyde).
+</span></p>
 </div>
 
 
@@ -177,12 +150,12 @@ index 678775a..8b79dad 100644
   
 
 
-<time datetime="2012-07-03T20:54:00+02:00" pubdate data-updated="true">Tuesday 03 July 2012</time>
+<time datetime="2012-06-23T21:10:00+02:00" pubdate data-updated="true">Saturday 23 June 2012</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/programming/'>programming</a>
+    <a class='category' href='/blog/categories/general/'>general</a>
   
 </span>
 
@@ -191,7 +164,7 @@ index 678775a..8b79dad 100644
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://http://warm-sword-7449.herokuapp.com//blog/2012/07/03/fixed-my-gihub-repo-list/" data-via="chriscowleyunix" data-counturl="http://http://warm-sword-7449.herokuapp.com//blog/2012/07/03/fixed-my-gihub-repo-list/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://http://warm-sword-7449.herokuapp.com//blog/2012/06/23/the-move-to-jekyll/" data-via="chriscowleyunix" data-counturl="http://http://warm-sword-7449.herokuapp.com//blog/2012/06/23/the-move-to-jekyll/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -202,10 +175,10 @@ index 678775a..8b79dad 100644
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2012/07/03/excellent-seminar-given-by-a-friend-of-mine/" title="Previous Post: Excellent seminar given by a friend of mine">&laquo; Excellent seminar given by a friend of mine</a>
+        <a class="basic-alignment left" href="/blog/2012/06/23/installing-postgresql-on-fedora-17/" title="Previous Post: Installing PostgreSQL on Fedora 17">&laquo; Installing PostgreSQL on Fedora 17</a>
       
       
-        <a class="basic-alignment right" href="/blog/2012/07/17/mirror-a-subversion-repo-with-svnsync/" title="Next Post: Mirror a Subversion repo with svnsync">Mirror a Subversion repo with svnsync &raquo;</a>
+        <a class="basic-alignment right" href="/blog/2012/07/03/excellent-seminar-given-by-a-friend-of-mine/" title="Next Post: Excellent seminar given by a friend of mine">Excellent seminar given by a friend of mine &raquo;</a>
       
     </p>
   </footer>
