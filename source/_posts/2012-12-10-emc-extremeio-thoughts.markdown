@@ -6,6 +6,7 @@ comments: true
 categories:  storage
 ---
 There has been quite a bit of musing recently on the web about EMC and what will come out of their ExtremeIO acquisition. They have recently (finally) started demonstrating an all-flash array. The name says it all: Extreme-IO. It is for super high IOPS applications - Virtual desktops, enormous DBs, that sort of thing.
+<!-- more -->
 
 It is a bit of a depature from traditional EMC, in that it [appears](http://storagenewsletter.com/news/systems/all-ssd-system-from-emc-xtremio-) that it is going to be a true scale-out architecture. This is has more in common with Isilion (not developed at EMC) than VMAX (developed at EMC).
 
