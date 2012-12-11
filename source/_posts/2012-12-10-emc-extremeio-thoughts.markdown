@@ -1,11 +1,11 @@
 ---
 layout: post
-title: "EMC ExtremeIO Thoughts"
+title: "EMC ExtremIO Thoughts"
 date: 2012-12-10 16:39
 comments: true
 categories:  storage
 ---
-There has been quite a bit of musing recently on the web about EMC and what will come out of their ExtremeIO acquisition. They have recently (finally) started demonstrating an all-flash array. The name says it all: Extreme-IO. It is for super high IOPS applications - Virtual desktops, enormous DBs, that sort of thing.
+There has been quite a bit of musing recently on the web about EMC and what will come out of their ExtremIO acquisition. They have recently (finally) started demonstrating an all-flash array. The name says it all: ExtremIO. It is for super high IOPS applications - Virtual desktops, enormous DBs, that sort of thing.
 <!-- more -->
 
 It is a bit of a depature from traditional EMC, in that it [appears](http://storagenewsletter.com/news/systems/all-ssd-system-from-emc-xtremio-) that it is going to be a true scale-out architecture. This is has more in common with Isilion (not developed at EMC) than VMAX (developed at EMC).
@@ -21,10 +21,10 @@ Over at [The Storage Architect](http://blog.thestoragearchitect.com/2012/12/10/x
 I hate to say it, but EMC have one HUGE advantage over all the startups. Quite simply they are EMC! As experts we know that Violin (for example) have a more mature product than EMC do.
 
 {% pullquote %}
-{"When the guy with the credit card sees the name "EMC" it will be hard to persuade him that such a mature brand has the more immature product"}. This won't be the case everywhere, but in a lot of large enterprise they would go to their storage experts (like me) and ask for advice on which flash array to go for; they then stipulate that it has to come from EMC's portfolio. At which point I through my hands up in despair, tell the to buy Extreme-IO, the guy who has the better, more mature, solution loses the business that was rightfully theirs.
+{"When the guy with the credit card sees the name "EMC" it will be hard to persuade him that such a mature brand has the more immature product"}. This won't be the case everywhere, but in a lot of large enterprise they would go to their storage experts (like me) and ask for advice on which flash array to go for; they then stipulate that it has to come from EMC's portfolio. At which point I through my hands up in despair, tell the to buy ExtremIO, the guy who has the better, more mature, solution loses the business that was rightfully theirs.
 {% endpullquote %}
 
-It is not a 1.0 product, I can not accept that EMC acquired Extreme-IO based on stuff that was only on paper. At best this is a 1.5 product, but realistically it is a 2.0 product. From a company with the resources of EMC, this should be coming out of the blocks running - it should be the best in class. OK, Extreme-IO were further from version 1.0 than EMC were maybe lead to believe at the time, but they have got a lot of resources. After a year, they should not be in damage control mode.
+It is not a 1.0 product, I can not accept that EMC acquired ExtremIO based on stuff that was only on paper. At best this is a 1.5 product, but realistically it is a 2.0 product. From a company with the resources of EMC, this should be coming out of the blocks running - it should be the best in class. OK, ExtremIO were further from version 1.0 than EMC were maybe lead to believe at the time, but they have got a lot of resources. After a year, they should not be in damage control mode.
 
 Does it really give the customers choice? I would go one step further than what Chris has said - that an all-flash VMAX or VNX would have made sense. I agree with him, but I also think that they have actually removed choice.
 
