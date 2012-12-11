@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: media | Just Another Linux Blog]]></title>
-  <link href="http://http://warm-sword-7449.herokuapp.com//blog/categories/media/atom.xml" rel="self"/>
-  <link href="http://http://warm-sword-7449.herokuapp.com//"/>
-  <updated>2012-12-10T20:44:08+01:00</updated>
-  <id>http://http://warm-sword-7449.herokuapp.com//</id>
+  <link href="http://www.chriscowley.me.uk/blog/categories/media/atom.xml" rel="self"/>
+  <link href="http://www.chriscowley.me.uk/"/>
+  <updated>2012-12-11T19:25:42+01:00</updated>
+  <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Music Player Daemon in Fedora]]></title>
-    <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/03/16/music-player-daemon-in-fedora/"/>
+    <link href="http://www.chriscowley.me.uk/blog/2012/03/16/music-player-daemon-in-fedora/"/>
     <updated>2012-03-16T22:04:00+01:00</updated>
-    <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/03/16/music-player-daemon-in-fedora</id>
+    <id>http://www.chriscowley.me.uk/blog/2012/03/16/music-player-daemon-in-fedora</id>
     <content type="html"><![CDATA[<p>This should have nice and simple, but there was a little gotcha (for me anyway).</p>
 
 <p>First install the RPMFusion repositories:</p>

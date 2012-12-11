@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Subversion | Just Another Linux Blog]]></title>
-  <link href="http://http://warm-sword-7449.herokuapp.com//blog/categories/subversion/atom.xml" rel="self"/>
-  <link href="http://http://warm-sword-7449.herokuapp.com//"/>
-  <updated>2012-12-10T20:44:08+01:00</updated>
-  <id>http://http://warm-sword-7449.herokuapp.com//</id>
+  <link href="http://www.chriscowley.me.uk/blog/categories/subversion/atom.xml" rel="self"/>
+  <link href="http://www.chriscowley.me.uk/"/>
+  <updated>2012-12-11T19:25:42+01:00</updated>
+  <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Mirror a Subversion repo with svnsync]]></title>
-    <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/07/17/mirror-a-subversion-repo-with-svnsync/"/>
+    <link href="http://www.chriscowley.me.uk/blog/2012/07/17/mirror-a-subversion-repo-with-svnsync/"/>
     <updated>2012-07-17T12:03:00+02:00</updated>
-    <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/07/17/mirror-a-subversion-repo-with-svnsync</id>
+    <id>http://www.chriscowley.me.uk/blog/2012/07/17/mirror-a-subversion-repo-with-svnsync</id>
     <content type="html"><![CDATA[<p>The basic idea is that everytime a change happens on the master, it gets pushed to the slave. In this set up it will <em>not</em> get you any more capacity; you cannot commit back to the slave. If you do it will get out of sync, resulting in a <em>split brain</em> situation. This is what we sysadmins call a "bad thing". I am doing this in order to have <a href="http://www.atlassian.com/software/fisheye/overview" target="_blank">Atlassian Fisheye</a> can scan the repository without having to go over the network. The basic layout is:</p>
 
 <!-- more -->

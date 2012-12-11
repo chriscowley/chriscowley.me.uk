@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: monitoring | Just Another Linux Blog]]></title>
-  <link href="http://http://warm-sword-7449.herokuapp.com//blog/categories/monitoring/atom.xml" rel="self"/>
-  <link href="http://http://warm-sword-7449.herokuapp.com//"/>
-  <updated>2012-12-10T20:44:08+01:00</updated>
-  <id>http://http://warm-sword-7449.herokuapp.com//</id>
+  <link href="http://www.chriscowley.me.uk/blog/categories/monitoring/atom.xml" rel="self"/>
+  <link href="http://www.chriscowley.me.uk/"/>
+  <updated>2012-12-11T19:25:42+01:00</updated>
+  <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[SMS from Icinga or Nagios]]></title>
-    <link href="http://http://warm-sword-7449.herokuapp.com//blog/2010/05/04/sms-from-icinga-or-nagios/"/>
+    <link href="http://www.chriscowley.me.uk/blog/2010/05/04/sms-from-icinga-or-nagios/"/>
     <updated>2010-05-04T13:26:00+02:00</updated>
-    <id>http://http://warm-sword-7449.herokuapp.com//blog/2010/05/04/sms-from-icinga-or-nagios</id>
+    <id>http://www.chriscowley.me.uk/blog/2010/05/04/sms-from-icinga-or-nagios</id>
     <content type="html"><![CDATA[<p>Finding out how to have Nagios (or in my case Icinga) send SMS alerts is easy. However, from my point of view it fell down in 2 ways.</p>
 
 <ol>

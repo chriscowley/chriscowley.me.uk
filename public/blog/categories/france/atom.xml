@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: france | Just Another Linux Blog]]></title>
-  <link href="http://http://warm-sword-7449.herokuapp.com//blog/categories/france/atom.xml" rel="self"/>
-  <link href="http://http://warm-sword-7449.herokuapp.com//"/>
-  <updated>2012-12-10T20:44:08+01:00</updated>
-  <id>http://http://warm-sword-7449.herokuapp.com//</id>
+  <link href="http://www.chriscowley.me.uk/blog/categories/france/atom.xml" rel="self"/>
+  <link href="http://www.chriscowley.me.uk/"/>
+  <updated>2012-12-11T19:25:42+01:00</updated>
+  <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[My new job]]></title>
-    <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/10/01/my-new-job/"/>
+    <link href="http://www.chriscowley.me.uk/blog/2012/10/01/my-new-job/"/>
     <updated>2012-10-01T22:16:00+02:00</updated>
-    <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/10/01/my-new-job</id>
+    <id>http://www.chriscowley.me.uk/blog/2012/10/01/my-new-job</id>
     <content type="html"><![CDATA[<p>I have now got new challenges and am designing much bigger systems. Whereas before I would have take one of these:
 <img class="center" src="/images/p2000-g3-sff.png" width="250" height="400"></p>
 
@@ -39,9 +39,9 @@ And finally plugged in a pair of these:
   
   <entry>
     <title type="html"><![CDATA[My new life]]></title>
-    <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/10/01/my-new-life/"/>
+    <link href="http://www.chriscowley.me.uk/blog/2012/10/01/my-new-life/"/>
     <updated>2012-10-01T22:06:00+02:00</updated>
-    <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/10/01/my-new-life</id>
+    <id>http://www.chriscowley.me.uk/blog/2012/10/01/my-new-life</id>
     <content type="html"><![CDATA[<p>I am now a month in to life in France. Make no mistake I am so far very happy that we have made the right decision, even though not everything is perfect. The biggest beef is without a doubt the paperwork!</p>
 
 <!-- more -->

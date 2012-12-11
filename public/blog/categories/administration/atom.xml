@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Administration | Just Another Linux Blog]]></title>
-  <link href="http://http://warm-sword-7449.herokuapp.com//blog/categories/administration/atom.xml" rel="self"/>
-  <link href="http://http://warm-sword-7449.herokuapp.com//"/>
-  <updated>2012-12-10T20:44:08+01:00</updated>
-  <id>http://http://warm-sword-7449.herokuapp.com//</id>
+  <link href="http://www.chriscowley.me.uk/blog/categories/administration/atom.xml" rel="self"/>
+  <link href="http://www.chriscowley.me.uk/"/>
+  <updated>2012-12-11T19:25:42+01:00</updated>
+  <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[A Learning Experience]]></title>
-    <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/04/16/a-learning-experience/"/>
+    <link href="http://www.chriscowley.me.uk/blog/2012/04/16/a-learning-experience/"/>
     <updated>2012-04-16T20:30:00+02:00</updated>
-    <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/04/16/a-learning-experience</id>
+    <id>http://www.chriscowley.me.uk/blog/2012/04/16/a-learning-experience</id>
     <content type="html"><![CDATA[<p>How many times have you installed/updated a bit of software and read the line “Please take a back up” or something to that effect? 99 times out of a hundred, you will just continue and ignore it.</p>
 
 <!-- more -->

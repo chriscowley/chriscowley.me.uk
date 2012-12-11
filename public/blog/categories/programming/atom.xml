@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: Programming | Just Another Linux Blog]]></title>
-  <link href="http://http://warm-sword-7449.herokuapp.com//blog/categories/programming/atom.xml" rel="self"/>
-  <link href="http://http://warm-sword-7449.herokuapp.com//"/>
-  <updated>2012-12-10T20:44:08+01:00</updated>
-  <id>http://http://warm-sword-7449.herokuapp.com//</id>
+  <link href="http://www.chriscowley.me.uk/blog/categories/programming/atom.xml" rel="self"/>
+  <link href="http://www.chriscowley.me.uk/"/>
+  <updated>2012-12-11T19:25:42+01:00</updated>
+  <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[PyCurl and self-signed SSL certificates]]></title>
-    <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/04/05/pycurl-and-self-signed-ssl-certificates/"/>
+    <link href="http://www.chriscowley.me.uk/blog/2012/04/05/pycurl-and-self-signed-ssl-certificates/"/>
     <updated>2012-04-05T16:50:00+02:00</updated>
-    <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/04/05/pycurl-and-self-signed-ssl-certificates</id>
+    <id>http://www.chriscowley.me.uk/blog/2012/04/05/pycurl-and-self-signed-ssl-certificates</id>
     <content type="html"><![CDATA[<p>At <a href="http://www.snellgroup.com" target="_blank">Snell</a> we make heavy use of self-signed certificates for internal websites, such as the R&amp;D wiki. Active Directory makes it easy for us to make this transparent to the users, those that use Firefox/Chrome can find our well-published instructions to add the CA certificate to their own browsers.</p>
 
 <!-- more -->

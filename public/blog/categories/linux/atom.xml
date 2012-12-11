@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: linux | Just Another Linux Blog]]></title>
-  <link href="http://http://warm-sword-7449.herokuapp.com//blog/categories/linux/atom.xml" rel="self"/>
-  <link href="http://http://warm-sword-7449.herokuapp.com//"/>
-  <updated>2012-12-10T20:44:08+01:00</updated>
-  <id>http://http://warm-sword-7449.herokuapp.com//</id>
+  <link href="http://www.chriscowley.me.uk/blog/categories/linux/atom.xml" rel="self"/>
+  <link href="http://www.chriscowley.me.uk/"/>
+  <updated>2012-12-11T19:25:42+01:00</updated>
+  <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[SFTP Chroot on CentOS]]></title>
-    <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/11/19/sftp-chroot-on-centos/"/>
+    <link href="http://www.chriscowley.me.uk/blog/2012/11/19/sftp-chroot-on-centos/"/>
     <updated>2012-11-19T19:59:00+01:00</updated>
-    <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/11/19/sftp-chroot-on-centos</id>
+    <id>http://www.chriscowley.me.uk/blog/2012/11/19/sftp-chroot-on-centos</id>
     <content type="html"><![CDATA[<p>This came up today where I needed to give secure file transfer to customers. To complicate things I had to use an out-of-the-box RHEL6 system. The obvious answer was to use SSH and limit those users to SFTP only. Locking them into a chroot was not a requirement, but it seemed like a good idea to me. I found plenty of docs that got 80% of the way, or took a shortcut, but this should be complete.</p>
 
 <!-- more -->
@@ -100,9 +100,9 @@ sftp sftptest@&lt;server&gt;
   
   <entry>
     <title type="html"><![CDATA[I have a Raspberry Pi]]></title>
-    <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/08/04/i-have-a-raspberry-pi/"/>
+    <link href="http://www.chriscowley.me.uk/blog/2012/08/04/i-have-a-raspberry-pi/"/>
     <updated>2012-08-04T21:47:00+02:00</updated>
-    <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/08/04/i-have-a-raspberry-pi</id>
+    <id>http://www.chriscowley.me.uk/blog/2012/08/04/i-have-a-raspberry-pi</id>
     <content type="html"><![CDATA[<p>Just got my new toy! I have to admit that I am not completely certain what I will do with it yet though.</p>
 
 <!-- more -->
@@ -116,9 +116,9 @@ sftp sftptest@&lt;server&gt;
   
   <entry>
     <title type="html"><![CDATA[Installing PostgreSQL on Fedora 17]]></title>
-    <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/06/23/installing-postgresql-on-fedora-17/"/>
+    <link href="http://www.chriscowley.me.uk/blog/2012/06/23/installing-postgresql-on-fedora-17/"/>
     <updated>2012-06-23T13:02:00+02:00</updated>
-    <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/06/23/installing-postgresql-on-fedora-17</id>
+    <id>http://www.chriscowley.me.uk/blog/2012/06/23/installing-postgresql-on-fedora-17</id>
     <content type="html"><![CDATA[<p>With the new systemd this now requires a couple of manual steps.</p>
 
 <p>Obviously we start by installing the RPMS themselves:</p>
@@ -156,9 +156,9 @@ CREATE DATABASE "testDB" WITH ENCODING='UTF8' OWNER="testAdmin";
   
   <entry>
     <title type="html"><![CDATA[Skype video on Fedora 64bit]]></title>
-    <link href="http://http://warm-sword-7449.herokuapp.com//blog/2012/04/18/skype-video-on-fedora-64bit/"/>
+    <link href="http://www.chriscowley.me.uk/blog/2012/04/18/skype-video-on-fedora-64bit/"/>
     <updated>2012-04-18T15:53:00+02:00</updated>
-    <id>http://http://warm-sword-7449.herokuapp.com//blog/2012/04/18/skype-video-on-fedora-64bit</id>
+    <id>http://www.chriscowley.me.uk/blog/2012/04/18/skype-video-on-fedora-64bit</id>
     <content type="html"><![CDATA[<p>Install Skype – I used <a href="http://slayachronicles.blogspot.co.uk/2012/03/installing-skype-on-fedora-16-64-bit.html" target="_blank" >these</a> instructions. This will seem to get everything working, but video will just give you a black screen and no error message. This is because Skype is 32 bit and you webcam driver is 64 bit. Make sure you have libv4l.i686 installed.</p>
 
 <!-- more -->
@@ -182,9 +182,9 @@ CREATE DATABASE "testDB" WITH ENCODING='UTF8' OWNER="testAdmin";
   
   <entry>
     <title type="html"><![CDATA[Ubuntu upgrade problems]]></title>
-    <link href="http://http://warm-sword-7449.herokuapp.com//blog/2011/10/16/ubuntu-upgrade-problems/"/>
+    <link href="http://www.chriscowley.me.uk/blog/2011/10/16/ubuntu-upgrade-problems/"/>
     <updated>2011-10-16T13:24:00+02:00</updated>
-    <id>http://http://warm-sword-7449.herokuapp.com//blog/2011/10/16/ubuntu-upgrade-problems</id>
+    <id>http://www.chriscowley.me.uk/blog/2011/10/16/ubuntu-upgrade-problems</id>
     <content type="html"><![CDATA[<p>Usually the release upgrade is relatively trouble-free, but this time I had a minor problem. After the upgrade I had no X Windows. It turned out that the NVidia driver not loading.</p>
 
 <p>I had to boot it up in rescue mode, which is selectable from the Grub menu. From there I could drop to a root console.</p>
