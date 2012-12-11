@@ -4,7 +4,7 @@
   <title><![CDATA[Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2012-12-11T20:54:35+01:00</updated>
+  <updated>2012-12-11T21:49:41+01:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[EMC ExtremIO Thoughts]]></title>
-    <link href="http://www.chriscowley.me.uk/blog/2012/12/10/emc-extremeio-thoughts/"/>
+    <link href="http://www.chriscowley.me.uk/blog/2012/12/10/emc-extremio-thoughts/"/>
     <updated>2012-12-10T16:39:00+01:00</updated>
-    <id>http://www.chriscowley.me.uk/blog/2012/12/10/emc-extremeio-thoughts</id>
+    <id>http://www.chriscowley.me.uk/blog/2012/12/10/emc-extremio-thoughts</id>
     <content type="html"><![CDATA[<p>There has been quite a bit of musing recently on the web about EMC and what will come out of their ExtremIO acquisition. They have recently (finally) started demonstrating an all-flash array. The name says it all: ExtremIO. It is for super high IOPS applications - Virtual desktops, enormous DBs, that sort of thing.</p>
 
 <!-- more -->

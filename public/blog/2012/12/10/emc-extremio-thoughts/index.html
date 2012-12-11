@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Just Another Linux Blog</title>
+  <title>EMC ExtremIO Thoughts - Just Another Linux Blog</title>
   <meta name="author" content="Chris Cowley">
 
   
-  <meta name="description" content="Installing the VMware CLI should have been simple, but it was a bit of a fiddle. Use yum all the bits it needs: ">
+  <meta name="description" content="There has been quite a bit of musing recently on the web about EMC and what will come out of their ExtremIO acquisition. They have recently (finally &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.chriscowley.me.uk/blog/page/3/">
+  <link rel="canonical" href="http://www.chriscowley.me.uk/blog/2012/12/10/emc-extremio-thoughts/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -89,15 +89,12 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2012/02/06/vmware-cli-installation-woes-on-centos-6/">VMware CLI Installation Woes on Centos 6</a></h1>
+      <h1 class="entry-title">EMC ExtremIO Thoughts</h1>
     
     
       <p class="meta">
@@ -113,179 +110,59 @@
   
 
 
-<time datetime="2012-02-06T13:09:00+01:00" pubdate data-updated="true">Monday 06 February 2012</time>
+<time datetime="2012-12-10T16:39:00+01:00" pubdate data-updated="true">Monday 10 December 2012</time>
         
-         | <a href="/blog/2012/02/06/vmware-cli-installation-woes-on-centos-6/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Installing the VMware CLI should have been simple, but it was a bit of a fiddle.</p>
-
-<p>Use yum  all the bits it needs:</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2012/02/06/vmware-cli-installation-woes-on-centos-6/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2011/11/10/open-source-storage/">Open Source Storage</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-11-10T13:12:00+01:00" pubdate data-updated="true">Thursday 10 November 2011</time>
-        
-         | <a href="/blog/2011/11/10/open-source-storage/#disqus_thread">Comments</a>
+         | <a href="#disqus_thread">Comments</a>
         
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>I have searchstorage.co.uk send me potentially interesting white-papers regularly. If I am honest, most of them or thinly veiled press-releases. However occasionally one is interesting.</p>
+<div class="entry-content"><p>There has been quite a bit of musing recently on the web about EMC and what will come out of their ExtremIO acquisition. They have recently (finally) started demonstrating an all-flash array. The name says it all: ExtremIO. It is for super high IOPS applications - Virtual desktops, enormous DBs, that sort of thing.</p>
 
-<p>Today I received one entitled <a href="/downloads/ITinEU_Storage_autumn11_final.pdf">Break free of vendor lock-in with open source storage</a>. Being a FLOSS fan and a storage specialist, that obviously intrigued me.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2011/11/10/open-source-storage/">Read on &rarr;</a>
-    </footer>
-  
+<!-- more -->
 
 
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2011/10/16/ubuntu-upgrade-problems/">Ubuntu Upgrade Problems</a></h1>
-    
-    
-      <p class="meta">
-        
+<p>It is a bit of a depature from traditional EMC, in that it <a href="http://storagenewsletter.com/news/systems/all-ssd-system-from-emc-xtremio-">appears</a> that it is going to be a true scale-out architecture. This is has more in common with Isilion (not developed at EMC) than VMAX (developed at EMC).</p>
 
+<p>The problem is that EMC are <em>extremely</em> late to the market this time around. VMAX was ahead of the curve by adding flash. In the all flash arena there are several options already there, <a href="http://violin-memory.com">Violin</a>, <a href="http://whiptail.com/">Whiptail</a> spring straight to mind.</p>
 
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-10-16T13:24:00+02:00" pubdate data-updated="true">Sunday 16 October 2011</time>
-        
-         | <a href="/blog/2011/10/16/ubuntu-upgrade-problems/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Usually the release upgrade is relatively trouble-free, but this time I had a minor problem. After the upgrade I had no X Windows. It turned out that the NVidia driver not loading.</p>
-
-<p>I had to boot it up in rescue mode, which is selectable from the Grub menu. From there I could drop to a root console.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2011/10/16/ubuntu-upgrade-problems/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2010/05/04/sms-from-icinga-or-nagios/">SMS From Icinga or Nagios</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2010-05-04T13:26:00+02:00" pubdate data-updated="true">Tuesday 04 May 2010</time>
-        
-         | <a href="/blog/2010/05/04/sms-from-icinga-or-nagios/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Finding out how to have Nagios (or in my case Icinga) send SMS alerts is easy. However, from my point of view it fell down in 2 ways.</p>
+<p>Over at <a href="http://blog.thestoragearchitect.com/2012/12/10/xtremio-aka-project-x-wheres-the-innovation/">The Storage Architect</a> Chris Evans gives the standard counter-arguments to EMC&#8217;s marketing spin. Namely:</p>
 
 <ol>
-<li>Most of these guides are Debian specific, I am using Centos.</li>
-<li>The SMS alerts are all or nothing, I only want SMS alerts for specific services (such as the corporate website).</li>
+<li>Other vendor solutions aren&#8217;t as resilient</li>
+<li>It&#8217;s a 1.0 product, expect more from 2.0 and beyond</li>
+<li>It gives our customers choice</li>
 </ol>
 
 
+<p>I hate to say it, but EMC have one HUGE advantage over all the startups. Quite simply they are EMC! As experts we know that Violin (for example) have a more mature product than EMC do.</p>
+
+<p><span class='pullquote-right' data-pullquote='When the guy with the credit card sees the name &#8220;EMC&#8221; it will be hard to persuade him that such a mature brand has the more immature product'>
+When the guy with the credit card sees the name &#8220;EMC&#8221; it will be hard to persuade him that such a mature brand has the more immature product. This won&#8217;t be the case everywhere, but in a lot of large enterprise they would go to their storage experts (like me) and ask for advice on which flash array to go for; they then stipulate that it has to come from EMC&#8217;s portfolio. At which point I through my hands up in despair, tell the to buy ExtremIO, the guy who has the better, more mature, solution loses the business that was rightfully theirs.
+</span></p>
+
+<p>It is not a 1.0 product, I can not accept that EMC acquired ExtremIO based on stuff that was only on paper. At best this is a 1.5 product, but realistically it is a 2.0 product. From a company with the resources of EMC, this should be coming out of the blocks running - it should be the best in class. OK, ExtremIO were further from version 1.0 than EMC were maybe lead to believe at the time, but they have got a lot of resources. After a year, they should not be in damage control mode.</p>
+
+<p>Does it really give the customers choice? I would go one step further than what Chris has said - that an all-flash VMAX or VNX would have made sense. I agree with him, but I also think that they have actually removed choice.</p>
+
+<p>I would say that EMC have cocked-up here. They under-estimated the market for all-flash arrays. Even my <a href="http://www.violin-memory.com/news/press-releases/nats-selects-violin-memory-flash-storage-for-virtual-desktop-infrastructure/">old employer have got some</a> and that is in Air Traffic control - there is no-one else who relies more on &#8220;tried and tested&#8221; technology than them. They then rushed to through some money at the problem, but like of Violin were already happy where they were.</p>
+
+<p><span class='pullquote-right' data-pullquote='I wish that EMC would be punished for this'>
+Robin Harris at <a href="http://storagemojo.com/2012/12/05/emcs-xtreme-embarrassment/">StorageMojo</a> thinks this will be a costly mistake for EMC. I disagree, I think by announcing that this is coming EMC will stall the market and thus come out of this fine. Unfortunately there is too much latency in the enterprise storage space for it to be otherwise. I wish it were a bit more dynamic and I wish that EMC would be punished for this, thus rewarding one of the underdogs. That does not happen enough in the enterprise space, especially for an Englishman like me (we do love the underdogs).
+</span></p>
 </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2010/05/04/sms-from-icinga-or-nagios/">Read on &rarr;</a>
-    </footer>
-  
 
 
-    </article>
-  
-  
-    <article>
+  <footer>
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2010/01/12/some-great-new-san-gear/">Some Great New SAN Gear</a></h1>
-    
-    
-      <p class="meta">
-        
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Chris Cowley</span></span>
+
+      
 
 
 
@@ -297,36 +174,46 @@
   
 
 
-<time datetime="2010-01-12T13:35:00+01:00" pubdate data-updated="true">Tuesday 12 January 2010</time>
-        
-         | <a href="/blog/2010/01/12/some-great-new-san-gear/#disqus_thread">Comments</a>
-        
-      </p>
+<time datetime="2012-12-10T16:39:00+01:00" pubdate data-updated="true">Monday 10 December 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/storage/'>storage</a>
+  
+</span>
+
+
+    </p>
     
-  </header>
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.chriscowley.me.uk/blog/2012/12/10/emc-extremio-thoughts/" data-via="chriscowleyunix" data-counturl="http://www.chriscowley.me.uk/blog/2012/12/10/emc-extremio-thoughts/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
 
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/11/19/sftp-chroot-on-centos/" title="Previous Post: SFTP Chroot on CentOS">&laquo; SFTP Chroot on CentOS</a>
+      
+      
+    </p>
+  </footer>
+</article>
 
-  <div class="entry-content"><p>Just before Christmas I was up at a storage seminar run by a company called <a href="http://www.dothill.com/" target="_blank">Dot Hill</a>. Until I was pointed to them when I spoke to our storage supplier about replacing an aging array I had never heard of them. However, it turns out that they make the hardware used by HP, NetApp and others – quite a pedigree then.</p>
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2010/01/12/some-great-new-san-gear/">Read on &rarr;</a>
-    </footer>
-  
 
-
-    </article>
-  
-  <div class="pagination">
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-    <a class="next" href="/blog/page/2/">Newer &rarr;</a>
-    
-  </div>
-</div>
 <aside class="sidebar">
   
     <section>
@@ -359,7 +246,7 @@
 <section>
   <h1>GitHub Repos</h1>
   <ul id="gh_repos">
-    <li class="loading">Status updating&#8230;</li>
+    <li class="loading">Status updating...</li>
   </ul>
   
   <a href="https://github.com/chriscowley">@chriscowley</a> on GitHub
@@ -389,7 +276,7 @@
 <section>
   <h1>Latest Tweets</h1>
   <ul id="tweets">
-    <li class="loading">Status updating&#8230;</li>
+    <li class="loading">Status updating...</li>
   </ul>
   <script type="text/javascript">
     $.domReady(function(){
@@ -417,6 +304,7 @@
 
   
 </aside>
+
 
     </div>
   </div>
