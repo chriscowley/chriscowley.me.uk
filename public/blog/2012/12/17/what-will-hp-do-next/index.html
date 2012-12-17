@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>EMC ExtremIO Thoughts - Just Another Linux Blog</title>
+  <title>What will HP do next? - Just Another Linux Blog</title>
   <meta name="author" content="Chris Cowley">
 
   
-  <meta name="description" content="There has been quite a bit of musing recently on the web about EMC and what will come out of their ExtremIO acquisition. They have recently (finally &hellip;">
+  <meta name="description" content="HP recently announced a new range of 3Par based arrays that are aimed at mid-range enterprise. There now appear to be 2 ranges for the future: HP &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.chriscowley.me.uk/blog/2012/12/10/emc-extremeio-thoughts/">
+  <link rel="canonical" href="http://www.chriscowley.me.uk/blog/2012/12/17/what-will-hp-do-next/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -94,7 +94,7 @@
   
   <header>
     
-      <h1 class="entry-title">EMC ExtremIO Thoughts</h1>
+      <h1 class="entry-title">What Will HP Do Next?</h1>
     
     
       <p class="meta">
@@ -110,7 +110,7 @@
   
 
 
-<time datetime="2012-12-10T16:39:00+01:00" pubdate data-updated="true">Monday 10 December 2012</time>
+<time datetime="2012-12-17T15:16:00+01:00" pubdate data-updated="true">Monday 17 December 2012</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -119,39 +119,29 @@
   </header>
 
 
-<div class="entry-content"><p>There has been quite a bit of musing recently on the web about EMC and what will come out of their ExtremIO acquisition. They have recently (finally) started demonstrating an all-flash array. The name says it all: ExtremIO. It is for super high IOPS applications - Virtual desktops, enormous DBs, that sort of thing.</p>
+<div class="entry-content"><p>HP recently announced a new range of 3Par based arrays that are aimed at mid-range enterprise. There now appear to be 2 ranges for the future:</p>
 
-<!-- more -->
-
-
-<p>It is a bit of a depature from traditional EMC, in that it <a href="http://storagenewsletter.com/news/systems/all-ssd-system-from-emc-xtremio-">appears</a> that it is going to be a true scale-out architecture. This is has more in common with Isilion (not developed at EMC) than VMAX (developed at EMC).</p>
-
-<p>The problem is that EMC are <em>extremely</em> late to the market this time around. VMAX was ahead of the curve by adding flash. In the all flash arena there are several options already there, <a href="http://violin-memory.com">Violin</a>, <a href="http://whiptail.com/">Whiptail</a> spring straight to mind.</p>
-
-<p>Over at <a href="http://blog.thestoragearchitect.com/2012/12/10/xtremio-aka-project-x-wheres-the-innovation/">The Storage Architect</a> Chris Evans gives the standard counter-arguments to EMC&#8217;s marketing spin. Namely:</p>
-
-<ol>
-<li>Other vendor solutions aren&#8217;t as resilient</li>
-<li>It&#8217;s a 1.0 product, expect more from 2.0 and beyond</li>
-<li>It gives our customers choice</li>
-</ol>
+<ul>
+<li>HP StoreServ 10000 is the big boy, scales up to 1.6PB, 192 FC ports, 32 10Gb iSCSI - the works.</li>
+<li>HP StoreServ 7000 is the mid-range one, with <em>only</em> 24 FC and 8 1-Gb iSCSI. This split into the 7200 (2U) and 7400 (4U)</li>
+</ul>
 
 
-<p>I hate to say it, but EMC have one HUGE advantage over all the startups. Quite simply they are EMC! As experts we know that Violin (for example) have a more mature product than EMC do.</p>
+<p>With the entry level <a href="http://www8.hp.com/us/en/hp-news/press-release.html?id=1332554#.UM8Mm3eTW01">7200 starting at $20k</a> that does not leave a lot of room at the low end for both the P4000 and the P2000 ranges. At the higher end the 7400 starts at $32k, which certainly leaves no space for the venerable EVA.</p>
 
-<p><span class='pullquote-right' data-pullquote='When the guy with the credit card sees the name &#8220;EMC&#8221; it will be hard to persuade him that such a mature brand has the more immature product'>
-When the guy with the credit card sees the name &#8220;EMC&#8221; it will be hard to persuade him that such a mature brand has the more immature product. This won&#8217;t be the case everywhere, but in a lot of large enterprise they would go to their storage experts (like me) and ask for advice on which flash array to go for; they then stipulate that it has to come from EMC&#8217;s portfolio. At which point I through my hands up in despair, tell the to buy ExtremIO, the guy who has the better, more mature, solution loses the business that was rightfully theirs.
-</span></p>
+<p>In <a href="http://h30507.www3.hp.com/t5/Around-the-Storage-Block-Blog/Blogger-Q-amp-A-with-David-Scott/ba-p/128097">an interview with Around the Storage Block</a> HP Storage GM David Scott is quite critical of EMC who have a range of different and fairly unrelated product lines (Atmos, VMAX, VNX/VNXe, Isilion). For now HP is fairly similar: P9000 (Hitachi), P4000 (Lefthand, P2000 (Dot Hill). When you look at where they have priced the 3Par gear, it does appear that they are betting the farm on it.</p>
 
-<p>It is not a 1.0 product, I can not accept that EMC acquired ExtremIO based on stuff that was only on paper. At best this is a 1.5 product, but realistically it is a 2.0 product. From a company with the resources of EMC, this should be coming out of the blocks running - it should be the best in class. OK, ExtremIO were further from version 1.0 than EMC were maybe lead to believe at the time, but they have got a lot of resources. After a year, they should not be in damage control mode.</p>
+<p>Something I have been quite vocal about over the last 5 years or so is that fact that HP&#8217;s storage portfolio is all over the place. Compared to Netapp, who have a very homogenous portfolio (everything runs OnTAP, you know one Netapp product, you can jump on to the rest), HP have got a one interface for P2000, another for P4000, another for EVA. Nothing sits together. HP needs to get all this in line. EMC have already started with Unisphere, but they still have multiple product architectures (VMAX, VNX, Isilion for example).</p>
 
-<p>Does it really give the customers choice? I would go one step further than what Chris has said - that an all-flash VMAX or VNX would have made sense. I agree with him, but I also think that they have actually removed choice.</p>
+<p>I personally think that these other ranges will drop by the wayside, although I am reading a bit between the lines here. Dot Hill do seem to be setting themselves up to be more than just an OEM supplier to HP. Maybe it is wishful thinking as I am a <a href="http://www.chriscowley.me.uk/blog/2010/01/12/some-great-new-san-gear/">huge fan of Dot Hill</a>, but they have some very interesting products. I hope/expect to see a lot more of Dot Hill themselves over the next few years, rather than just being behind Oracle/Netapp/HP badges.</p>
 
-<p>I would say that EMC have cocked-up here. They under-estimated the market for all-flash arrays. Even my <a href="http://www.violin-memory.com/news/press-releases/nats-selects-violin-memory-flash-storage-for-virtual-desktop-infrastructure/">old employer have got some</a> and that is in Air Traffic control - there is no-one else who relies more on &#8220;tried and tested&#8221; technology than them. They then rushed to through some money at the problem, but like of Violin were already happy where they were.</p>
+<p>The P9000 range is a similar story at the other end of the market. The Storserve 10k seems to be very similar, pretty much the same capacity and number of ports. Feature set is also close enough. I also have the impression that Hitachi are starting to push a bit harder in their own right as well.</p>
 
-<p><span class='pullquote-right' data-pullquote='I wish that EMC would be punished for this'>
-Robin Harris at <a href="http://storagemojo.com/2012/12/05/emcs-xtreme-embarrassment/">StorageMojo</a> thinks this will be a costly mistake for EMC. I disagree, I think by announcing that this is coming EMC will stall the market and thus come out of this fine. Unfortunately there is too much latency in the enterprise storage space for it to be otherwise. I wish it were a bit more dynamic and I wish that EMC would be punished for this, thus rewarding one of the underdogs. That does not happen enough in the enterprise space, especially for an Englishman like me (we do love the underdogs).
-</span></p>
+<p>Essentially I think 3Par will become HP&#8217;s own architecture. It has the flexibity to  cover everything from a single bay with 12 SATA disks at the low end (perhaps on DL hardware) all the way up to PB+ scales, taking in all-flash on the way.</p>
+
+<p>This leaves the P4000, which has been re-branded the <a href="http://www8.hp.com/us/en/products/disk-storage/product-detail.html?oid=4118659">StoreVirtual 4000</a>. This seems to me to be a no-brainer. It is already running on commodity DL180 hardware and includes an appliance option. My guess is the physical implementation of this will be phased out. It will become the Virtual Appliance front-end to all this new 3Par based physical goodness.</p>
+
+<p>Finally, I have skipped over the EVA. What does the future hold in store for HP&#8217;s venerable high-end platform. I think nothing. It will go into maintenance mode and be quietly end-of-life&#8217;d. Existing customers will be pushed to <a href="http://h30507.www3.hp.com/t5/Around-the-Storage-Block-Blog/EVA-to-HP-3PAR-StoreServ-online-import/ba-p/128391">migrate</a> over to Storeserv 7000.</p>
 </div>
 
 
@@ -174,7 +164,7 @@ Robin Harris at <a href="http://storagemojo.com/2012/12/05/emcs-xtreme-embarrass
   
 
 
-<time datetime="2012-12-10T16:39:00+01:00" pubdate data-updated="true">Monday 10 December 2012</time>
+<time datetime="2012-12-17T15:16:00+01:00" pubdate data-updated="true">Monday 17 December 2012</time>
       
 
 <span class="categories">
@@ -188,7 +178,7 @@ Robin Harris at <a href="http://storagemojo.com/2012/12/05/emcs-xtreme-embarrass
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.chriscowley.me.uk/blog/2012/12/10/emc-extremeio-thoughts/" data-via="chriscowleyunix" data-counturl="http://www.chriscowley.me.uk/blog/2012/12/10/emc-extremeio-thoughts/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.chriscowley.me.uk/blog/2012/12/17/what-will-hp-do-next/" data-via="chriscowleyunix" data-counturl="http://www.chriscowley.me.uk/blog/2012/12/17/what-will-hp-do-next/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -199,7 +189,7 @@ Robin Harris at <a href="http://storagemojo.com/2012/12/05/emcs-xtreme-embarrass
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2012/11/19/sftp-chroot-on-centos/" title="Previous Post: SFTP Chroot on CentOS">&laquo; SFTP Chroot on CentOS</a>
+        <a class="basic-alignment left" href="/blog/2012/12/10/emc-extremio-thoughts/" title="Previous Post: EMC ExtremIO Thoughts">&laquo; EMC ExtremIO Thoughts</a>
       
       
     </p>
@@ -221,7 +211,11 @@ Robin Harris at <a href="http://storagemojo.com/2012/12/05/emcs-xtreme-embarrass
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2012/12/10/emc-extremeio-thoughts/">EMC ExtremIO Thoughts</a>
+        <a href="/blog/2012/12/17/what-will-hp-do-next/">What will HP do next?</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/12/10/emc-extremio-thoughts/">EMC ExtremIO Thoughts</a>
       </li>
     
       <li class="post">
@@ -234,10 +228,6 @@ Robin Harris at <a href="http://storagemojo.com/2012/12/05/emcs-xtreme-embarrass
     
       <li class="post">
         <a href="/blog/2012/10/23/a-cycling-related-review/">A Cycling Related Review</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/10/01/my-new-job/">My new job</a>
       </li>
     
   </ul>
