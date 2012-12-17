@@ -7,6 +7,7 @@ categories: storage
 ---
 
 HP recently announced a new range of 3Par based arrays that are aimed at mid-range enterprise. There now appear to be 2 ranges for the future:
+<!--more -->
 
 - HP StoreServ 10000 is the big boy, scales up to 1.6PB, 192 FC ports, 32 10Gb iSCSI - the works.
 - HP StoreServ 7000 is the mid-range one, with _only_ 24 FC and 8 1-Gb iSCSI. This split into the 7200 (2U) and 7400 (4U)

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: storage | Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/blog/categories/storage/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2012-12-17T15:20:00+01:00</updated>
+  <updated>2012-12-17T15:24:00+01:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -19,6 +19,9 @@
     <updated>2012-12-17T15:16:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2012/12/17/what-will-hp-do-next</id>
     <content type="html"><![CDATA[<p>HP recently announced a new range of 3Par based arrays that are aimed at mid-range enterprise. There now appear to be 2 ranges for the future:</p>
+
+<!--more -->
+
 
 <ul>
 <li>HP StoreServ 10000 is the big boy, scales up to 1.6PB, 192 FC ports, 32 10Gb iSCSI - the works.</li>
