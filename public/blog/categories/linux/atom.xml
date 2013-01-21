@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linux | Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2012-12-28T20:51:30+01:00</updated>
+  <updated>2013-01-21T16:14:20+01:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -12,6 +12,128 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Trac with Nginx on Centos]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2013/01/21/trac-with-nginx-on-centos/"/>
+    <updated>2013-01-21T11:53:00+01:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2013/01/21/trac-with-nginx-on-centos</id>
+    <content type="html"><![CDATA[<p><a href="tac.edgewall.org">Trac</a> is an excellent online project management tool. Nginx us a great web server. Surely the combination of the two should be a match made in heaven. I would say so, although there are a couple problems. The easiest way to deploy Trac is on Apache using mod_wsgi or FastCGI. This option does not really exist for Nginx. Okay, it can do FastCGI, but I have not get that set up on my server.</p>
+
+<!-- more -->
+
+
+<p>What Nginx does do extremely well is Proxy stuff. Use this with Trac's built in web server (tracd) and you have  a very nice little set up. Ruby people, before you get all upset, Trac's server is not just for dev (a la WEBrick). It is fine for production use.</p>
+
+<p>The first thing to do (obviously) is to install Trac. I get it from Pip, although a slightly older version is in <a href="http://fedoraproject.org/wiki/EPEL">EPEL</a> if you prefer to stick with native packages.</p>
+
+<p><code>
+sudo yum install python-setuptools
+sudo pip install Trac
+sudo useradd -r -d /var/local/trac trac
+sudo -u trac trac-admin /var/local/trac/trac.example.com initenv
+sudo -u trac htpasswd -c /var/local/trac/.htpasswd example-realm chris
+</code></p>
+
+<p>Answer the little question it asks you - this includes the VCS you want to use, but that is for another day. I use the TracGit plugin to link to my Git repos.</p>
+
+<p>Create an init script (<code>/etc/init.d/trac</code>) that contains something like:</p>
+
+<p><div><script src='https://gist.github.com/4586539.js?file='></script>
+<noscript><pre><code>#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          trac
+# Required-Start:    $local_fs $remote_fs
+# Required-Stop:     $local_fs $remote_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      S 0 1 6
+# Short-Description: trac initscript
+# Description:       trac
+### END INIT INFO
+
+# Original author: Chris Cowley
+
+# Do NOT &quot;set -e&quot;
+
+DAEMON=/usr/bin/tracd
+SCRIPT_NAME=/etc/rc.d/trac
+CONFIG_PATH=/etc/trac
+PIDFILE=&quot;/tmp/trac.3050&quot;
+USER=&quot;trac&quot;
+TRACHOME=&quot;/var/local/trac&quot;
+REALM=&quot;example-realm&quot;
+
+# Exit if the package is not installed
+[ -x &quot;$DAEMON&quot; ] || exit 0
+
+case &quot;$1&quot; in
+  start)
+        echo &quot;starting trac&quot;
+        su - $USER -c &quot;$DAEMON -d --basic-auth=*,$TRACHOME/.htpasswd,$REALM -e $TRACHOME -p 3050 --protocol=http --pidfile=$PIDFILE&quot;
+        ;;
+  stop)
+        echo &quot;stoping trac&quot;
+        kill `cat $PIDFILE`
+        ;;
+  restart)
+        echo &quot;stoping trac&quot;
+        kill `cat $PIDFILE`
+        echo &quot;starting trac&quot;
+        su - $USER -c &quot;$DAEMON -d --basic-auth=*,$TRACHOME/.htpasswd,$REALM -e $TRACHOME -p 3050 --protocol=http --pidfile=$PIDFILE&quot;
+        ;;
+  *)
+        echo &quot;Usage: $SCRIPT_NAME {start|stop|restart}&quot; &gt;&amp;2
+        exit 3
+        ;;
+esac
+
+</code></pre></noscript></div>
+</p>
+
+<p>Start up the Trac daemon and enable it on boot up</p>
+
+<p><code>
+sudo chmod +x /etc/init.d/trac
+sudo chkconfig trac on
+sudo /etc/init.d/trac start
+</code></p>
+
+<p>Open it up and have a look at least. You will probably want to modify it to use your authentication realm.</p>
+
+<p>Now you need to configure Nginx. I use the package from <a href="http://fedoraproject.org/wiki/EPEL">EPEL</a>. Enable that if you have not already and run</p>
+
+<p><code>
+sudo yum install nginx
+</code></p>
+
+<p>Create the file <code>/etc/nginx/conf.d/trac.conf</code> containing something like:</p>
+
+<p><div><script src='https://gist.github.com/4586630.js?file='></script>
+<noscript><pre><code>upstream trac.example.com {
+    server  127.0.0.1:3050;
+}
+server {
+    listen          80;
+    server_name     trac.example.com;
+
+    access_log      /var/log/nginx/trac.access.log;
+    error_log       /var/log/nginx/trac.error_log;
+
+    location / {
+        proxy_pass      http://trac.example.com;
+        proxy_set_header  X-Real-IP  $remote_addr;
+    }
+}</code></pre></noscript></div>
+</p>
+
+<p>Finally enable Nginx on boot up and start it:</p>
+
+<p><code>
+sudo chkconfig nginx on
+sudo server nginx start
+</code></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[SFTP Chroot on CentOS]]></title>
@@ -177,32 +299,6 @@ CREATE DATABASE "testDB" WITH ENCODING='UTF8' OWNER="testAdmin";
 </span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>This will now get loaded before the main Skype executable and you will have a working video device.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Ubuntu upgrade problems]]></title>
-    <link href="http://www.chriscowley.me.uk/blog/2011/10/16/ubuntu-upgrade-problems/"/>
-    <updated>2011-10-16T13:24:00+02:00</updated>
-    <id>http://www.chriscowley.me.uk/blog/2011/10/16/ubuntu-upgrade-problems</id>
-    <content type="html"><![CDATA[<p>Usually the release upgrade is relatively trouble-free, but this time I had a minor problem. After the upgrade I had no X Windows. It turned out that the NVidia driver not loading.</p>
-
-<p>I had to boot it up in rescue mode, which is selectable from the Grub menu. From there I could drop to a root console.</p>
-
-<!-- more -->
-
-
-<p>The first step is to remount / as read-write and then mount my boot partition (/dev/sda1).
-<code>
-mount -o rw,remount /
-mount /dev/sda1 /boot
-</code>
-Now I just need to move the xorg.conf to one side and reinstall the nvidia driver
-<code>
-mv /etc/X11/xorg.conf /etc/X11/xorg.conf.bak
-apt-get remove nvidia-current &amp;&amp; apt-get install nvidia-current
-</code>
-After a reboot it should come up all fine and dandy.</p>
 ]]></content>
   </entry>
   

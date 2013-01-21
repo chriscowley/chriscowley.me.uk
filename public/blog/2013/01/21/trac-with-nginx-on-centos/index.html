@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: cycling - Just Another Linux Blog</title>
+  <title>Trac with Nginx on Centos - Just Another Linux Blog</title>
   <meta name="author" content="Chris Cowley">
 
   
-  <meta name="description" content="Category: cycling">
+  <meta name="description" content="Trac is an excellent online project management tool. Nginx us a great web server. Surely the combination of the two should be a match made in heaven &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.chriscowley.me.ukblog/categories/cycling/">
+  <link rel="canonical" href="http://www.chriscowley.me.uk/blog/2013/01/21/trac-with-nginx-on-centos/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -89,50 +89,217 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Category: Cycling</h1>
+    
+      <h1 class="entry-title">Trac With Nginx on Centos</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-21T11:53:00+01:00" pubdate data-updated="true">Monday 21 January 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><p><a href="tac.edgewall.org">Trac</a> is an excellent online project management tool. Nginx us a great web server. Surely the combination of the two should be a match made in heaven. I would say so, although there are a couple problems. The easiest way to deploy Trac is on Apache using mod_wsgi or FastCGI. This option does not really exist for Nginx. Okay, it can do FastCGI, but I have not get that set up on my server.</p>
 
-  
-  <h2>2012</h2>
-
-<article>
-  
-<h1><a href="/blog/2012/10/23/a-cycling-related-review/">A Cycling Related Review</a></h1>
-<time datetime="2012-10-23T20:31:00+02:00" pubdate><span class='month'>Oct</span> <span class='day'>23</span> <span class='year'>2012</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/cycling/'>cycling</a></span>
-</footer>
+<!-- more -->
 
 
-</article>
+<p>What Nginx does do extremely well is Proxy stuff. Use this with Trac&#8217;s built in web server (tracd) and you have  a very nice little set up. Ruby people, before you get all upset, Trac&#8217;s server is not just for dev (a la WEBrick). It is fine for production use.</p>
+
+<p>The first thing to do (obviously) is to install Trac. I get it from Pip, although a slightly older version is in <a href="http://fedoraproject.org/wiki/EPEL">EPEL</a> if you prefer to stick with native packages.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo yum install python-setuptools
+</span><span class='line'>sudo pip install Trac
+</span><span class='line'>sudo useradd -r -d /var/local/trac trac
+</span><span class='line'>sudo -u trac trac-admin /var/local/trac/trac.example.com initenv
+</span><span class='line'>sudo -u trac htpasswd -c /var/local/trac/.htpasswd example-realm chris</span></code></pre></td></tr></table></div></figure>
 
 
+<p>Answer the little question it asks you - this includes the VCS you want to use, but that is for another day. I use the TracGit plugin to link to my Git repos.</p>
 
-<article>
-  
-<h1><a href="/blog/2012/07/27/isle-of-wight-ride/">Isle of Wight Ride</a></h1>
-<time datetime="2012-07-27T16:02:00+02:00" pubdate><span class='month'>Jul</span> <span class='day'>27</span> <span class='year'>2012</span></time>
+<p>Create an init script (<code>/etc/init.d/trac</code>) that contains something like:</p>
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/cycling/'>cycling</a></span>
-</footer>
+<div><script src='https://gist.github.com/4586539.js?file='></script>
+<noscript><pre><code>#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          trac
+# Required-Start:    $local_fs $remote_fs
+# Required-Stop:     $local_fs $remote_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      S 0 1 6
+# Short-Description: trac initscript
+# Description:       trac
+### END INIT INFO
+
+# Original author: Chris Cowley
+
+# Do NOT &quot;set -e&quot;
+
+DAEMON=/usr/bin/tracd
+SCRIPT_NAME=/etc/rc.d/trac
+CONFIG_PATH=/etc/trac
+PIDFILE=&quot;/tmp/trac.3050&quot;
+USER=&quot;trac&quot;
+TRACHOME=&quot;/var/local/trac&quot;
+REALM=&quot;example-realm&quot;
+
+# Exit if the package is not installed
+[ -x &quot;$DAEMON&quot; ] || exit 0
+
+case &quot;$1&quot; in
+  start)
+        echo &quot;starting trac&quot;
+        su - $USER -c &quot;$DAEMON -d --basic-auth=*,$TRACHOME/.htpasswd,$REALM -e $TRACHOME -p 3050 --protocol=http --pidfile=$PIDFILE&quot;
+        ;;
+  stop)
+        echo &quot;stoping trac&quot;
+        kill `cat $PIDFILE`
+        ;;
+  restart)
+        echo &quot;stoping trac&quot;
+        kill `cat $PIDFILE`
+        echo &quot;starting trac&quot;
+        su - $USER -c &quot;$DAEMON -d --basic-auth=*,$TRACHOME/.htpasswd,$REALM -e $TRACHOME -p 3050 --protocol=http --pidfile=$PIDFILE&quot;
+        ;;
+  *)
+        echo &quot;Usage: $SCRIPT_NAME {start|stop|restart}&quot; &gt;&amp;2
+        exit 3
+        ;;
+esac
+
+</code></pre></noscript></div>
 
 
-</article>
+<p>Start up the Trac daemon and enable it on boot up</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo chmod +x /etc/init.d/trac
+</span><span class='line'>sudo chkconfig trac on
+</span><span class='line'>sudo /etc/init.d/trac start</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Open it up and have a look at least. You will probably want to modify it to use your authentication realm.</p>
+
+<p>Now you need to configure Nginx. I use the package from <a href="http://fedoraproject.org/wiki/EPEL">EPEL</a>. Enable that if you have not already and run</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo yum install nginx</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Create the file <code>/etc/nginx/conf.d/trac.conf</code> containing something like:</p>
+
+<div><script src='https://gist.github.com/4586630.js?file='></script>
+<noscript><pre><code>upstream trac.example.com {
+    server  127.0.0.1:3050;
+}
+server {
+    listen          80;
+    server_name     trac.example.com;
+
+    access_log      /var/log/nginx/trac.access.log;
+    error_log       /var/log/nginx/trac.error_log;
+
+    location / {
+        proxy_pass      http://trac.example.com;
+        proxy_set_header  X-Real-IP  $remote_addr;
+    }
+}</code></pre></noscript></div>
+
+
+<p>Finally enable Nginx on boot up and start it:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo chkconfig nginx on
+</span><span class='line'>sudo server nginx start</span></code></pre></td></tr></table></div></figure>
+
+
 
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Chris Cowley</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-01-21T11:53:00+01:00" pubdate data-updated="true">Monday 21 January 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/linux/'>linux</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.chriscowley.me.uk/blog/2013/01/21/trac-with-nginx-on-centos/" data-via="chriscowleyunix" data-counturl="http://www.chriscowley.me.uk/blog/2013/01/21/trac-with-nginx-on-centos/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/12/17/what-will-hp-do-next/" title="Previous Post: What will HP do next?">&laquo; What will HP do next?</a>
+      
+      
+    </p>
+  </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
 
