@@ -5,12 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>VMware CLI installation woes on Centos 6 - Just Another Linux Blog</title>
+  <title>In praise of old school UNIX - Just Another Linux Blog</title>
   <meta name="author" content="Chris Cowley">
 
   
-  <meta name="description" content="Installing the VMware CLI should have been simple, but it was a bit of a fiddle. Use yum all the bits it needs: 1
-yum install make autoconf automake &hellip;">
+  <meta name="description" content="What am I doing today? Documentation that is what. I am writing a document on how to do this. To any Linux user it is a very simple process and I &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +18,7 @@ yum install make autoconf automake &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.chriscowley.me.uk/blog/2012/02/06/vmware-cli-installation-woes-on-centos-6/">
+  <link rel="canonical" href="http://www.chriscowley.me.uk/blog/2013/02/05/in-praise-of-old-school-unix/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -94,7 +93,7 @@ yum install make autoconf automake &hellip;">
   
   <header>
     
-      <h1 class="entry-title">VMware CLI Installation Woes on Centos 6</h1>
+      <h1 class="entry-title">In Praise of Old School UNIX</h1>
     
     
       <p class="meta">
@@ -110,7 +109,7 @@ yum install make autoconf automake &hellip;">
   
 
 
-<time datetime="2012-02-06T13:09:00+01:00" pubdate data-updated="true">Monday 06 February 2012</time>
+<time datetime="2013-02-05T16:13:00+01:00" pubdate data-updated="true">Tuesday 05 February 2013</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -119,18 +118,28 @@ yum install make autoconf automake &hellip;">
   </header>
 
 
-<div class="entry-content"><p>Installing the VMware CLI should have been simple, but it was a bit of a fiddle.</p>
+<div class="entry-content"><p>What am I doing today? Documentation that is what. I am writing a document on how to do <a href="http://www.chriscowley.me.uk/blog/2012/11/19/sftp-chroot-on-centos/">this</a>. To any Linux user it is a very simple process and I could just give them a link to my own website.</p>
 
-<p>Use yum  all the bits it needs:</p>
+<!--more-->
 
-<!-- more -->
 
+<p>I am not writing this for a techinical audience though. The people who are going to perform this work will be the &#8216;Level 1 operatives&#8217;. This translates roughly to &#8220;anyone we can find on the street corners of some Far East city&#8221;. If I tell them to press the red button labelled &#8220;press me&#8221; and it turns out to be orange, they will stop. I cannot assume the ability to edit a file in Vi. How can you work around this, well you need to make everything a copy and paste operation. This is easily done in Bash thanks to IO redirection and of course Sed.</p>
+
+<p>Now, a brief recap may be in order, as there are some perfectly knowledgable Linux users who do not know what Sed is. Really, one of them sits behind me. Sed stands for Stream EDitor, and it parses text and applies transformations to it. It was one of the first UNIX utilities. It kind of sits between <a href="https://en.wikipedia.org/wiki/Grep">Grep</a> and <a href="https://en.wikipedia.org/wiki/AWK_programming_language">Awk</a> and is <a href="http://uuner.doslash.org/forfun/">surprisingly powerful</a>.</p>
+
+<p>Anyway, I need to edit a line in a file then add a block of code at the end.</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>yum install make autoconf automake openssl-devel gcc gcc-c++ make uuid-perl libuuid-devel uuid-devel  perl-Data-Dump perl-SOAP-Lite perl-XML-SAX perl-XML-NamespaceSupport perl-XML-LibXML perl-XML-LibXML-Common perl-CPAN</span></code></pre></td></tr></table></div></figure>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cp -v /etc/ssh/sshd_config{,.dist}
+</span><span class='line'>sed -i '/^Subsystem/s/\/usr\/libexec\/openssh\/sftp-server/internal-sftp/g' /etc/ssh/sshd_config</span></code></pre></td></tr></table></div></figure>
 
 
-<p>You should now be able to run the installer, but I had another problem though. The installer script would not believe me that I had a direct internet connection and insisted that I gave some proxy server settings. As a simple workaround I just commented out that code in the installation script:</p>
+<p>First line obviously is a contracted cp line which puts the suffix <em>.dist</em> on the copy.</p>
+
+<p>The basic idea is that it runs through the file (/etc/ssh/sshd_config) and looks for any line that starts with &#8220;Subsystem&#8221; (<code>/^Subsystem/</code>). If it finds a line that matches it then will perform a &#8220;substituion&#8221; (<code>/s/</code>). The next 2 blocks tell it what the substitution will be in the order &#8220;/From/To/&#8221;. The reason for all the &#8220;&#34; is because &#8220;/&#8221; is the seperator used by Sed, so you have to escape them in your regular expression. The &#8220;/g&#8221; tells Sed to perform the substituion on every instance it finds on the line, rather than just the first one. It is completely superfluous in this example, but I tend to put it in from force of habit. Finally the &#8220;-i&#8221; tells Sed to perform the edit in place, rather than outputing to Stdout.</p>
+
+<p>The next bit is a bit cleverer. With a single command I want to add a block of text to the file.</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -140,31 +149,19 @@ yum install make autoconf automake &hellip;">
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>if ( direct_command("env | grep -i http_proxy") ) {
-</span><span class='line'> $httpproxy = 1;
-</span><span class='line'>} else {
-</span><span class='line'> print wrap("http_proxy not set. please set environment variable 'http_proxy' e.g. export http_proxy=http://myproxy.mydomain.com:0000 . \n\n", 0);
-</span><span class='line'>}
-</span><span class='line'>if ( direct_command("env | grep -i ftp_proxy") ) {
-</span><span class='line'> $ftpproxy = 1;
-</span><span class='line'>} else {
-</span><span class='line'> print wrap("ftp_proxy not set. please set environment variable 'ftp_proxy' e.g. export ftp_proxy=http://myproxy.mydomain.com:0000 . \n\n", 0);
-</span><span class='line'>}
+</pre></td><td class='code'><pre><code class=''><span class='line'>cat &lt;&lt;EOF | while read inrec; do echo $inrec &gt;&gt; /etc/ssh/sshd_config; done
+</span><span class='line'>Match Group transfer
+</span><span class='line'>ChrootDirectory /var/local/
+</span><span class='line'>ForceCommmand internal-sftp
+</span><span class='line'>X11Forwarding no
+</span><span class='line'>AllowTcpForwarding no
 </span><span class='line'>
-</span><span class='line'>if ( !( $ftpproxy && $httpproxy)) {
-</span><span class='line'>    uninstall_file($gInstallerMainDB);
-</span><span class='line'>    exit 1;
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>EOF</span></code></pre></td></tr></table></div></figure>
 
 
-<p>After this I was able to run the installer with no problems. Of course, there is still the problem I have VMware about them putting their files under <em>/usr</em>. If it is not under control of my package manager, the default should be <em>/opt</em> or <em>/usr/local</em>.</p>
+<p>Here <code>cat &lt;&lt;EOF</code> tells it send everything you type to Stdout until it sees the string EOF. This then gets piped to a <code>while</code> loop that appends each line of that Stdout to the file we want to extend (<em>/etc/ssh/sshd_config</em> in this case).</p>
+
+<p>Using these old tools and a bit of knowledge of how redirection works has enabled me to make a document that anyone who can copy/paste can follow. It is very easy for technical people to forget that not everyone has the knowledge we have. To us opening Vi is perfectly obvious, but to others maybe it isn&#8217;t and they are not being paid enough to know. They are just being paid to follow a script. I may not like it, but it is the case - it also helped turn a boring documentation session into something a little more interesting. Which is nice!</p>
 </div>
 
 
@@ -187,12 +184,12 @@ yum install make autoconf automake &hellip;">
   
 
 
-<time datetime="2012-02-06T13:09:00+01:00" pubdate data-updated="true">Monday 06 February 2012</time>
+<time datetime="2013-02-05T16:13:00+01:00" pubdate data-updated="true">Tuesday 05 February 2013</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/virtualisation/'>virtualisation</a>
+    <a class='category' href='/blog/categories/linux/'>linux</a>
   
 </span>
 
@@ -201,7 +198,7 @@ yum install make autoconf automake &hellip;">
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.chriscowley.me.uk/blog/2012/02/06/vmware-cli-installation-woes-on-centos-6/" data-via="chriscowleyunix" data-counturl="http://www.chriscowley.me.uk/blog/2012/02/06/vmware-cli-installation-woes-on-centos-6/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.chriscowley.me.uk/blog/2013/02/05/in-praise-of-old-school-unix/" data-via="chriscowleyunix" data-counturl="http://www.chriscowley.me.uk/blog/2013/02/05/in-praise-of-old-school-unix/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -212,10 +209,8 @@ yum install make autoconf automake &hellip;">
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2011/11/10/open-source-storage/" title="Previous Post: Open Source Storage">&laquo; Open Source Storage</a>
+        <a class="basic-alignment left" href="/blog/2013/01/21/trac-with-nginx-on-centos/" title="Previous Post: Trac with Nginx on Centos">&laquo; Trac with Nginx on Centos</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2012/02/08/home-made-redundant-thin-provisioned-san/" title="Next Post: Home-made Redundant Thin-provisioned SAN">Home-made Redundant Thin-provisioned SAN &raquo;</a>
       
     </p>
   </footer>

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linux | Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-02-04T21:14:30+01:00</updated>
+  <updated>2013-02-05T22:19:56+01:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -12,6 +12,50 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[In praise of old school UNIX]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2013/02/05/in-praise-of-old-school-unix/"/>
+    <updated>2013-02-05T16:13:00+01:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2013/02/05/in-praise-of-old-school-unix</id>
+    <content type="html"><![CDATA[<p>What am I doing today? Documentation that is what. I am writing a document on how to do <a href="http://www.chriscowley.me.uk/blog/2012/11/19/sftp-chroot-on-centos/">this</a>. To any Linux user it is a very simple process and I could just give them a link to my own website.</p>
+
+<!--more-->
+
+
+<p>I am not writing this for a techinical audience though. The people who are going to perform this work will be the 'Level 1 operatives'. This translates roughly to "anyone we can find on the street corners of some Far East city". If I tell them to press the red button labelled "press me" and it turns out to be orange, they will stop. I cannot assume the ability to edit a file in Vi. How can you work around this, well you need to make everything a copy and paste operation. This is easily done in Bash thanks to IO redirection and of course Sed.</p>
+
+<p>Now, a brief recap may be in order, as there are some perfectly knowledgable Linux users who do not know what Sed is. Really, one of them sits behind me. Sed stands for Stream EDitor, and it parses text and applies transformations to it. It was one of the first UNIX utilities. It kind of sits between <a href="https://en.wikipedia.org/wiki/Grep">Grep</a> and <a href="https://en.wikipedia.org/wiki/AWK_programming_language">Awk</a> and is <a href="http://uuner.doslash.org/forfun/">surprisingly powerful</a>.</p>
+
+<p>Anyway, I need to edit a line in a file then add a block of code at the end.</p>
+
+<p><code>
+cp -v /etc/ssh/sshd_config{,.dist}
+sed -i '/^Subsystem/s/\/usr\/libexec\/openssh\/sftp-server/internal-sftp/g' /etc/ssh/sshd_config
+</code></p>
+
+<p>First line obviously is a contracted cp line which puts the suffix <em>.dist</em> on the copy.</p>
+
+<p>The basic idea is that it runs through the file (/etc/ssh/sshd_config) and looks for any line that starts with "Subsystem" (<code>/^Subsystem/</code>). If it finds a line that matches it then will perform a "substituion" (<code>/s/</code>). The next 2 blocks tell it what the substitution will be in the order "/From/To/". The reason for all the "\" is because "/" is the seperator used by Sed, so you have to escape them in your regular expression. The "/g" tells Sed to perform the substituion on every instance it finds on the line, rather than just the first one. It is completely superfluous in this example, but I tend to put it in from force of habit. Finally the "-i" tells Sed to perform the edit in place, rather than outputing to Stdout.</p>
+
+<p>The next bit is a bit cleverer. With a single command I want to add a block of text to the file.</p>
+
+<p>```
+cat &lt;<EOF | while read inrec; do echo $inrec >> /etc/ssh/sshd_config; done
+Match Group transfer
+ChrootDirectory /var/local/
+ForceCommmand internal-sftp
+X11Forwarding no
+AllowTcpForwarding no</p>
+
+<p>EOF
+```</p>
+
+<p>Here <code>cat &lt;&lt;EOF</code> tells it send everything you type to Stdout until it sees the string EOF. This then gets piped to a <code>while</code> loop that appends each line of that Stdout to the file we want to extend (<em>/etc/ssh/sshd_config</em> in this case).</p>
+
+<p>Using these old tools and a bit of knowledge of how redirection works has enabled me to make a document that anyone who can copy/paste can follow. It is very easy for technical people to forget that not everyone has the knowledge we have. To us opening Vi is perfectly obvious, but to others maybe it isn't and they are not being paid enough to know. They are just being paid to follow a script. I may not like it, but it is the case - it also helped turn a boring documentation session into something a little more interesting. Which is nice!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Trac with Nginx on Centos]]></title>
@@ -273,32 +317,6 @@ CREATE ROLE "testAdmin" LOGIN PASSWORD 'testAdmin';
 CREATE DATABASE "testDB" WITH ENCODING='UTF8' OWNER="testAdmin";
 \q
 </code></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Skype video on Fedora 64bit]]></title>
-    <link href="http://www.chriscowley.me.uk/blog/2012/04/18/skype-video-on-fedora-64bit/"/>
-    <updated>2012-04-18T15:53:00+02:00</updated>
-    <id>http://www.chriscowley.me.uk/blog/2012/04/18/skype-video-on-fedora-64bit</id>
-    <content type="html"><![CDATA[<p>Install Skype – I used <a href="http://slayachronicles.blogspot.co.uk/2012/03/installing-skype-on-fedora-16-64-bit.html" target="_blank" >these</a> instructions. This will seem to get everything working, but video will just give you a black screen and no error message. This is because Skype is 32 bit and you webcam driver is 64 bit. Make sure you have libv4l.i686 installed.</p>
-
-<!-- more -->
-
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo yum install libv4l.i686</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Now create a wrapper script to launch it with a custom environment. I put it in <em>/usr/local/bin/skype</em></p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span> (skype)</span> <a href='/downloads/code/skype'>download</a></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c">#!/bin/bash</span>
-</span><span class='line'><span class="nv">LD_PRELOAD</span><span class="o">=</span>/usr/lib/libv4l/v4l1compat.so  /usr/bin/skype
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>This will now get loaded before the main Skype executable and you will have a working video device.</p>
 ]]></content>
   </entry>
   

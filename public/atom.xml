@@ -4,7 +4,7 @@
   <title><![CDATA[Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-02-04T21:14:30+01:00</updated>
+  <updated>2013-02-05T22:19:56+01:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -12,6 +12,58 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[In praise of old school UNIX]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2013/02/05/in-praise-of-old-school-unix/"/>
+    <updated>2013-02-05T16:13:00+01:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2013/02/05/in-praise-of-old-school-unix</id>
+    <content type="html"><![CDATA[<p>What am I doing today? Documentation that is what. I am writing a document on how to do <a href="http://www.chriscowley.me.uk/blog/2012/11/19/sftp-chroot-on-centos/">this</a>. To any Linux user it is a very simple process and I could just give them a link to my own website.</p>
+
+<!--more-->
+
+
+<p>I am not writing this for a techinical audience though. The people who are going to perform this work will be the &#8216;Level 1 operatives&#8217;. This translates roughly to &#8220;anyone we can find on the street corners of some Far East city&#8221;. If I tell them to press the red button labelled &#8220;press me&#8221; and it turns out to be orange, they will stop. I cannot assume the ability to edit a file in Vi. How can you work around this, well you need to make everything a copy and paste operation. This is easily done in Bash thanks to IO redirection and of course Sed.</p>
+
+<p>Now, a brief recap may be in order, as there are some perfectly knowledgable Linux users who do not know what Sed is. Really, one of them sits behind me. Sed stands for Stream EDitor, and it parses text and applies transformations to it. It was one of the first UNIX utilities. It kind of sits between <a href="https://en.wikipedia.org/wiki/Grep">Grep</a> and <a href="https://en.wikipedia.org/wiki/AWK_programming_language">Awk</a> and is <a href="http://uuner.doslash.org/forfun/">surprisingly powerful</a>.</p>
+
+<p>Anyway, I need to edit a line in a file then add a block of code at the end.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cp -v /etc/ssh/sshd_config{,.dist}
+</span><span class='line'>sed -i '/^Subsystem/s/\/usr\/libexec\/openssh\/sftp-server/internal-sftp/g' /etc/ssh/sshd_config</span></code></pre></td></tr></table></div></figure>
+
+
+<p>First line obviously is a contracted cp line which puts the suffix <em>.dist</em> on the copy.</p>
+
+<p>The basic idea is that it runs through the file (/etc/ssh/sshd_config) and looks for any line that starts with &#8220;Subsystem&#8221; (<code>/^Subsystem/</code>). If it finds a line that matches it then will perform a &#8220;substituion&#8221; (<code>/s/</code>). The next 2 blocks tell it what the substitution will be in the order &#8220;/From/To/&#8221;. The reason for all the &#8220;&#34; is because &#8220;/&#8221; is the seperator used by Sed, so you have to escape them in your regular expression. The &#8220;/g&#8221; tells Sed to perform the substituion on every instance it finds on the line, rather than just the first one. It is completely superfluous in this example, but I tend to put it in from force of habit. Finally the &#8220;-i&#8221; tells Sed to perform the edit in place, rather than outputing to Stdout.</p>
+
+<p>The next bit is a bit cleverer. With a single command I want to add a block of text to the file.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cat &lt;&lt;EOF | while read inrec; do echo $inrec &gt;&gt; /etc/ssh/sshd_config; done
+</span><span class='line'>Match Group transfer
+</span><span class='line'>ChrootDirectory /var/local/
+</span><span class='line'>ForceCommmand internal-sftp
+</span><span class='line'>X11Forwarding no
+</span><span class='line'>AllowTcpForwarding no
+</span><span class='line'>
+</span><span class='line'>EOF</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Here <code>cat &lt;&lt;EOF</code> tells it send everything you type to Stdout until it sees the string EOF. This then gets piped to a <code>while</code> loop that appends each line of that Stdout to the file we want to extend (<em>/etc/ssh/sshd_config</em> in this case).</p>
+
+<p>Using these old tools and a bit of knowledge of how redirection works has enabled me to make a document that anyone who can copy/paste can follow. It is very easy for technical people to forget that not everyone has the knowledge we have. To us opening Vi is perfectly obvious, but to others maybe it isn&#8217;t and they are not being paid enough to know. They are just being paid to follow a script. I may not like it, but it is the case - it also helped turn a boring documentation session into something a little more interesting. Which is nice!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Trac with Nginx on Centos]]></title>
@@ -1326,44 +1378,6 @@ index 678775a..8b79dad 100644
 <p>Reboot nfs1 and the services should appear on nfs2.</p>
 
 <p>Connect an NFS client to you floating address (10.0.0.100) and you should be able to kill the live node and it will carry on.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Music Player Daemon in Fedora]]></title>
-    <link href="http://www.chriscowley.me.uk/blog/2012/03/16/music-player-daemon-in-fedora/"/>
-    <updated>2012-03-16T22:04:00+01:00</updated>
-    <id>http://www.chriscowley.me.uk/blog/2012/03/16/music-player-daemon-in-fedora</id>
-    <content type="html"><![CDATA[<p>This should have nice and simple, but there was a little gotcha (for me anyway).</p>
-
-<p>First install the RPMFusion repositories:</p>
-
-<!-- more -->
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>yum localinstall --nogpgcheck \
-</span><span class='line'>    http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-stable.noarch.rpm \
-</span><span class='line'>    http://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-stable.noarch.rpm</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now you can install MPD and a simple client with</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>yum install mpd mpc</span></code></pre></td></tr></table></div></figure>
-
-
-<p>By default it looks in <em>/var/lib/mpd/music</em> which strikes me as reasonable, so copy some music there. Now comes the bit that caught me out; you will need to update is library:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>mpc update</span></code></pre></td></tr></table></div></figure>
-
-
-<p>A lot of documentation on the net talks about running <code>mpd –create-db</code>, but this is now depreciated. I eventually found this out on Arch Linux’s wiki.</p>
-
-<p>Connect a client and listen to your music – I’m using gmpc (<code>yum install gmpc</code>) which is very feature rich, but if you want something simpler, try Sonata (<code>yum install sonata</code>) or even <em>mpc</em> itself. Finally you can also use you MPDroid on your phone.</p>
 ]]></content>
   </entry>
   
