@@ -16,12 +16,13 @@ Anyway, I need to edit a line in a file then add a block of code at the end.
 
 ```
 cp -v /etc/ssh/sshd_config{,.dist}
-sed -i '/^Subsystem/s/\/usr\/libexec\/openssh\/sftp-server/internal-sftp/g' /etc/ssh/sshd_config
+sed -i ''/^Subsystem/s#/usr/libexec/openssh/sftp-server#internal-sftp#g' \ 
+    /etc/ssh/sshd_config
 ```
 
 First line obviously is a contracted cp line which puts the suffix *.dist* on the copy.
 
-The basic idea is that it runs through the file (/etc/ssh/sshd_config) and looks for any line that starts with "Subsystem" (`/^Subsystem/`). If it finds a line that matches it then will perform a "substituion" (`/s/`). The next 2 blocks tell it what the substitution will be in the order "/From/To/". The reason for all the "\" is because "/" is the seperator used by Sed, so you have to escape them in your regular expression. The "/g" tells Sed to perform the substituion on every instance it finds on the line, rather than just the first one. It is completely superfluous in this example, but I tend to put it in from force of habit. Finally the "-i" tells Sed to perform the edit in place, rather than outputing to Stdout.
+The basic idea is that it runs through the file (/etc/ssh/sshd_config) and looks for any line that starts with "Subsystem" (`/^Subsystem/`). If it finds a line that matches it then will perform a "substituion" (`/s#`). The next 2 blocks tell it what the substitution will be in the order "#From#To#". The reason for  the change from `/` to `#` is because of the / in the path name (thanks to [Z0nk](http://www.reddit.com/user/z0nk)  for reminding me that you can use arbitary seperators). The "#g" tells Sed to perform the substituion on every instance it finds on the line, rather than just the first one. It is completely superfluous in this example, but I tend to put it in from force of habit. Finally the "-i" tells Sed to perform the edit in place, rather than outputing to Stdout.
 
 The next bit is a bit cleverer. With a single command I want to add a block of text to the file.
 

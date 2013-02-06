@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linux | Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-02-05T22:19:56+01:00</updated>
+  <updated>2013-02-06T10:23:54+01:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -29,14 +29,18 @@
 
 <p>Anyway, I need to edit a line in a file then add a block of code at the end.</p>
 
-<p><code>
+<p>```
 cp -v /etc/ssh/sshd_config{,.dist}
-sed -i '/^Subsystem/s/\/usr\/libexec\/openssh\/sftp-server/internal-sftp/g' /etc/ssh/sshd_config
-</code></p>
+sed -i ''/<sup>Subsystem/s#/usr/libexec/openssh/sftp-server#internal-sftp#g'</sup> \</p>
+
+<pre><code>/etc/ssh/sshd_config
+</code></pre>
+
+<p>```</p>
 
 <p>First line obviously is a contracted cp line which puts the suffix <em>.dist</em> on the copy.</p>
 
-<p>The basic idea is that it runs through the file (/etc/ssh/sshd_config) and looks for any line that starts with "Subsystem" (<code>/^Subsystem/</code>). If it finds a line that matches it then will perform a "substituion" (<code>/s/</code>). The next 2 blocks tell it what the substitution will be in the order "/From/To/". The reason for all the "\" is because "/" is the seperator used by Sed, so you have to escape them in your regular expression. The "/g" tells Sed to perform the substituion on every instance it finds on the line, rather than just the first one. It is completely superfluous in this example, but I tend to put it in from force of habit. Finally the "-i" tells Sed to perform the edit in place, rather than outputing to Stdout.</p>
+<p>The basic idea is that it runs through the file (/etc/ssh/sshd_config) and looks for any line that starts with "Subsystem" (<code>/^Subsystem/</code>). If it finds a line that matches it then will perform a "substituion" (<code>/s#</code>). The next 2 blocks tell it what the substitution will be in the order "#From#To#". The reason for  the change from <code>/</code> to <code>#</code> is because of the / in the path name (thanks to <a href="http://www.reddit.com/user/z0nk">Z0nk</a>  for reminding me that you can use arbitary seperators). The "#g" tells Sed to perform the substituion on every instance it finds on the line, rather than just the first one. It is completely superfluous in this example, but I tend to put it in from force of habit. Finally the "-i" tells Sed to perform the edit in place, rather than outputing to Stdout.</p>
 
 <p>The next bit is a bit cleverer. With a single command I want to add a block of text to the file.</p>
 
