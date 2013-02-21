@@ -6,6 +6,7 @@ comments: true
 categories: storage
 ---
 An intriguing startup came out of stealth mode a few days ago. [Pernix Data](http://pernixdata.com/) was founded by Pookan Kumar and satyam Vaghani, both of who were pretty near top of the pile in VMware's storage team.
+<!--more -->
 
 What they are offering is, to me at least, a blinding flash of the obvious. It is a softweare layer that runs on a VMware hypervisor that uses local flash as a cache for whatevery is coming off your main storage array. {% img right http://pernixdata.com/images/home_graphic3.png 300 217 %}. That could be an SSD (or multiple) or a PCI-e card.
 

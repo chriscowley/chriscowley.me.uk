@@ -4,7 +4,7 @@
   <title><![CDATA[Category: storage | Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/blog/categories/storage/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-02-21T16:38:50+01:00</updated>
+  <updated>2013-02-21T16:43:36+01:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -19,6 +19,9 @@
     <updated>2013-02-21T16:06:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/02/21/something-from-the-shadows</id>
     <content type="html"><![CDATA[<p>An intriguing startup came out of stealth mode a few days ago. <a href="http://pernixdata.com/">Pernix Data</a> was founded by Pookan Kumar and satyam Vaghani, both of who were pretty near top of the pile in VMware's storage team.</p>
+
+<!--more -->
+
 
 <p>What they are offering is, to me at least, a blinding flash of the obvious. It is a softweare layer that runs on a VMware hypervisor that uses local flash as a cache for whatevery is coming off your main storage array. <img class="right" src="http://pernixdata.com/images/home_graphic3.png" width="300" height="217">. That could be an SSD (or multiple) or a PCI-e card.</p>
 
