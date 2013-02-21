@@ -4,7 +4,7 @@
   <title><![CDATA[Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-02-09T22:08:43+01:00</updated>
+  <updated>2013-02-21T16:38:50+01:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -12,6 +12,24 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Something from the shadows]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2013/02/21/something-from-the-shadows/"/>
+    <updated>2013-02-21T16:06:00+01:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2013/02/21/something-from-the-shadows</id>
+    <content type="html"><![CDATA[<p>An intriguing startup came out of stealth mode a few days ago. <a href="http://pernixdata.com/">Pernix Data</a> was founded by Pookan Kumar and satyam Vaghani, both of who were pretty near top of the pile in VMware&#8217;s storage team.</p>
+
+<p>What they are offering is, to me at least, a blinding flash of the obvious. It is a softweare layer that runs on a VMware hypervisor that uses local flash as a cache for whatevery is coming off your main storage array. <img class="right" src="http://pernixdata.com/images/home_graphic3.png" width="300" height="217">. That could be an SSD (or multiple) or a PCI-e card.</p>
+
+<p>Reading what they have to say, it is completely transparent to the hypervisor, so everything just works. Obviously me being an Open Source fanatic I imediately started thinking how I could do this with Linux; it took me about 5 minutes.</p>
+
+<p>You take your SAN array and give your LUN to your Hypervisors (running KVM obviously, and with a local SSD). Normally you would stick a clustered file system (such as GFS2) on that shared LUN. Instead you use a tiered block device on top of that LUN. There are two that come immediately to mind: <a href="https://github.com/facebook/flashcache/">Flashcache</a> and <a href="http://sourceforge.net/projects/tier/files/">Btier</a>.</p>
+
+<p>Finally, you can put your clustered file system on that tiered device. I do not have the time or facilities to test this, but I cannot see why it would not work. Maybe someone at Red Hat (seeing as they do the bulk of KVM and GFS2 development) can run with this and see what happens.
+What their plans are I do not know. It is very early days, maybe they will be a success maybe not. As they are both ex-VMware, I would not be at all surprised if they get bought back into the VMware fold. Certainly this is a functionality that I would have like to have seen in the past.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[How much should you spend on IT]]></title>
@@ -128,54 +146,7 @@ It is not always necessary to get the shiniest stuff, with the longest/quickest 
 <p>Create an init script (<code>/etc/init.d/trac</code>) that contains something like:</p>
 
 <div><script src='https://gist.github.com/4586539.js?file='></script>
-<noscript><pre><code>#!/bin/sh
-### BEGIN INIT INFO
-# Provides:          trac
-# Required-Start:    $local_fs $remote_fs
-# Required-Stop:     $local_fs $remote_fs
-# Default-Start:     2 3 4 5
-# Default-Stop:      S 0 1 6
-# Short-Description: trac initscript
-# Description:       trac
-### END INIT INFO
-
-# Original author: Chris Cowley
-
-# Do NOT &quot;set -e&quot;
-
-DAEMON=/usr/bin/tracd
-SCRIPT_NAME=/etc/rc.d/trac
-CONFIG_PATH=/etc/trac
-PIDFILE=&quot;/tmp/trac.3050&quot;
-USER=&quot;trac&quot;
-TRACHOME=&quot;/var/local/trac&quot;
-REALM=&quot;example-realm&quot;
-
-# Exit if the package is not installed
-[ -x &quot;$DAEMON&quot; ] || exit 0
-
-case &quot;$1&quot; in
-  start)
-        echo &quot;starting trac&quot;
-        su - $USER -c &quot;$DAEMON -d --basic-auth=*,$TRACHOME/.htpasswd,$REALM -e $TRACHOME -p 3050 --protocol=http --pidfile=$PIDFILE&quot;
-        ;;
-  stop)
-        echo &quot;stoping trac&quot;
-        kill `cat $PIDFILE`
-        ;;
-  restart)
-        echo &quot;stoping trac&quot;
-        kill `cat $PIDFILE`
-        echo &quot;starting trac&quot;
-        su - $USER -c &quot;$DAEMON -d --basic-auth=*,$TRACHOME/.htpasswd,$REALM -e $TRACHOME -p 3050 --protocol=http --pidfile=$PIDFILE&quot;
-        ;;
-  *)
-        echo &quot;Usage: $SCRIPT_NAME {start|stop|restart}&quot; &gt;&amp;2
-        exit 3
-        ;;
-esac
-
-</code></pre></noscript></div>
+<noscript><pre><code></code></pre></noscript></div>
 
 
 <p>Start up the Trac daemon and enable it on boot up</p>
@@ -199,21 +170,7 @@ esac
 <p>Create the file <code>/etc/nginx/conf.d/trac.conf</code> containing something like:</p>
 
 <div><script src='https://gist.github.com/4586630.js?file='></script>
-<noscript><pre><code>upstream trac.example.com {
-    server  127.0.0.1:3050;
-}
-server {
-    listen          80;
-    server_name     trac.example.com;
-
-    access_log      /var/log/nginx/trac.access.log;
-    error_log       /var/log/nginx/trac.error_log;
-
-    location / {
-        proxy_pass      http://trac.example.com;
-        proxy_set_header  X-Real-IP  $remote_addr;
-    }
-}</code></pre></noscript></div>
+<noscript><pre><code></code></pre></noscript></div>
 
 
 <p>Finally enable Nginx on boot up and start it:</p>
@@ -753,31 +710,7 @@ The attitude to lunch is probably the biggest single change of all that can only
 <p>It turned out that GitHub has <a href="https://github.com/blog/1160-github-api-v2-end-of-life" target="_blank">depreciated the version 1 and 2 APIs</a>. Octopress was using version 2, so I have made a little change.</p>
 
 <div><script src='https://gist.github.com/3042647.js?file='></script>
-<noscript><pre><code>diff --git a/source/javascripts/github.js b/source/javascripts/github.js
-index 678775a..8b79dad 100644
---- a/source/javascripts/github.js
-+++ b/source/javascripts/github.js
-@@ -10,15 +10,15 @@ var github = (function(){
-   return {
-     showRepos: function(options){
-       $.ajax({
--          url: &quot;http://github.com/api/v2/json/repos/show/&quot;+options.user+&quot;?callback=?&quot;
-+          url: &quot;https://api.github.com/users/&quot;+options.user+&quot;/repos?callback=?&quot;
-         , type: 'jsonp'
-         , error: function (err) { $(options.target + ' li.loading').addClass('error').text(&quot;Error loading feed&quot;); }
-         , success: function(data) {
-           var repos = [];
--          if (!data || !data.repositories) { return; }
--          for (var i = 0; i &lt; data.repositories.length; i++) {
--            if (options.skip_forks &amp;&amp; data.repositories[i].fork) { continue; }
--            repos.push(data.repositories[i]);
-+          if (!data || !data.data) { return; }
-+          for (var i = 0; i &lt; data.data.length; i++) {
-+            if (options.skip_forks &amp;&amp; data.data[i].fork) { continue; }
-+            repos.push(data.data[i]);
-           }
-           repos.sort(function(a, b) {
-             var aDate = new Date(a.pushed_at).valueOf(),</code></pre></noscript></div>
+<noscript><pre><code></code></pre></noscript></div>
 
 
 <p>According to <a href="https://github.com/imathis/octopress/issues/620" target="_blank">this issue</a> there will be a fix in <a href="https://github.com/imathis/octopress/tree/2.1" target="_blank" >Octopress 2.1</a>. However, this patch will keep things working until Brandon Mathis moves it into the master branch. Of course that issue also highlighted the fact that I had just re-invented the wheel :(</p>
@@ -942,190 +875,6 @@ index 678775a..8b79dad 100644
 
 
 <p>There you go!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Add SAN functions to Highly Available NFS/NAS]]></title>
-    <link href="http://www.chriscowley.me.uk/blog/2012/03/20/add-san-functions-to-highly-available-nfs-slash-nas/"/>
-    <updated>2012-03-20T21:07:00+01:00</updated>
-    <id>http://www.chriscowley.me.uk/blog/2012/03/20/add-san-functions-to-highly-available-nfs-slash-nas</id>
-    <content type="html"><![CDATA[<p>This based on my last post where I documented building a Highly Available NFS/NAS server.</p>
-
-<p>There is not a huge amount that needs to be done in order to add iSCSI functionality as well.</p>
-
-<!-- more -->
-
-
-<p>Add a file called <em>/etc/drbd/iscsi.res</em> containing:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>resource iscsi {
-</span><span class='line'>    on nfs1 {
-</span><span class='line'>        device /dev/drbd1;
-</span><span class='line'>        disk   /dev/vdc;
-</span><span class='line'>        meta-disk internal;
-</span><span class='line'>        address   10.0.0.1:7789;
-</span><span class='line'>    }
-</span><span class='line'>    on nfs2 {
-</span><span class='line'>        device /dev/drbd1;
-</span><span class='line'>        disk   /dev/vdc;
-</span><span class='line'>        meta-disk internal;
-</span><span class='line'>        address   10.0.0.2:7789;
-</span><span class='line'>    }
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This differs from the previous resource in 2 ways. Obviously it using a different physical disk. Also the port number of the address is incremented; each resource has to have its own port to communicate on.</p>
-
-<h2>Configure Heartbeat</h2>
-
-<p>Add a new resource to <em>/etc/ha.d/haresources</em>:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>iscsi1.snellwilcox.local IPaddr::10.0.0.101/24/eth0 drbddisk::iscsi tgtd</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Same primary host, new IP address, new drbd resource and of course the service to be controlled (tgtd in this case).</p>
-
-<p>I also made a couple of changes to <em>/etc/ha.d/ha.cf</em>:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>keepalive 500ms
-</span><span class='line'>deadtime 5
-</span><span class='line'>warntime 10
-</span><span class='line'>initdead 120</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This changes the regularity of the heartbeat packets from every 2 seconds to 2 every second. We also say that a node is dead after only 5 seconds rather than after 30.</p>
-
-<h2>Configure an iSCSI Target</h2>
-
-<p>Tgtd has a config file that you can use in <em>/etc/tgt/targets.conf</em>. It is an XML file, so add entry like:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;target iqn.2011-07.world.server:target0&gt;
-</span><span class='line'>        # provided devicce as a iSCSI target
-</span><span class='line'>        backing-store /dev/vg_matthew/lv_iscsi1
-</span><span class='line'>        # iSCSI Initiator's IP address you allow to connect
-</span><span class='line'>        initiator-address 192.168.1.20
-</span><span class='line'>        # authentication info ( set anyone you like for "username", "password" )
-</span><span class='line'>&lt;/target&gt;</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The target name is by convention <em>iqn.year-month.reverse-domainname:hostname.targetname</em>. Each backing store will be a seperate LUN. A discussion of this is out of the scope of this article.</p>
-
-<p>By default, this config file is disabled. Enable it by un-commenting the line <code>#TGTD_CONFIG=/etc/tgt/targets.conf</code> in <em>/etc/sysconfig/tgtd</em>. You can now enable the target with service tgtd reload.</p>
-
-<p>Now when you run <code>tgtadm –mode target –op show</code> you should get something like:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Target 1: iqn.2012-03.com.example:iscsi.target1
-</span><span class='line'>    System information:
-</span><span class='line'>        Driver: iscsi
-</span><span class='line'>        State: ready
-</span><span class='line'>    I_T nexus information:
-</span><span class='line'>    LUN information:
-</span><span class='line'>        LUN: 0
-</span><span class='line'>            Type: controller
-</span><span class='line'>            SCSI ID: IET     00010000
-</span><span class='line'>            SCSI SN: beaf10
-</span><span class='line'>            Size: 0 MB, Block size: 1
-</span><span class='line'>            Online: Yes
-</span><span class='line'>            Removable media: No
-</span><span class='line'>            Readonly: No
-</span><span class='line'>            Backing store type: null
-</span><span class='line'>            Backing store path: None
-</span><span class='line'>            Backing store flags:
-</span><span class='line'>        LUN: 1
-</span><span class='line'>            Type: disk
-</span><span class='line'>            SCSI ID: IET     00010001
-</span><span class='line'>            SCSI SN: beaf11
-</span><span class='line'>            Size: 8590 MB, Block size: 512
-</span><span class='line'>            Online: Yes
-</span><span class='line'>            Removable media: No
-</span><span class='line'>            Readonly: No
-</span><span class='line'>            Backing store type: rdwr
-</span><span class='line'>            Backing store path: /dev/drbd/by-res/iscsi
-</span><span class='line'>            Backing store flags:
-</span><span class='line'>    Account information:
-</span><span class='line'>    ACL information:
-</span><span class='line'>        ALL</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Connect An Initiator</h2>
-
-<p>Install the iscsi utils:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>yum install iscsi-initiator-utils
-</span><span class='line'>chkconfig iscsi on
-</span><span class='line'>chkconfig iscsid on</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Discover the targets on the host and login to the target.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>iscsiadm -m discovery -t sendtargets -p 10.0.0.101
-</span><span class='line'>iscsiadm -m node --login</span></code></pre></td></tr></table></div></figure>
-
-
-<p>If you run <code>cat /proc/partitions</code> you will see an new partition has appeared. You can do whatever you want with it.</p>
 ]]></content>
   </entry>
   

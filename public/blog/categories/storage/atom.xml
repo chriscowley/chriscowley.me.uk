@@ -4,7 +4,7 @@
   <title><![CDATA[Category: storage | Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/blog/categories/storage/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-02-09T22:08:43+01:00</updated>
+  <updated>2013-02-21T16:38:50+01:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -12,6 +12,24 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Something from the shadows]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2013/02/21/something-from-the-shadows/"/>
+    <updated>2013-02-21T16:06:00+01:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2013/02/21/something-from-the-shadows</id>
+    <content type="html"><![CDATA[<p>An intriguing startup came out of stealth mode a few days ago. <a href="http://pernixdata.com/">Pernix Data</a> was founded by Pookan Kumar and satyam Vaghani, both of who were pretty near top of the pile in VMware's storage team.</p>
+
+<p>What they are offering is, to me at least, a blinding flash of the obvious. It is a softweare layer that runs on a VMware hypervisor that uses local flash as a cache for whatevery is coming off your main storage array. <img class="right" src="http://pernixdata.com/images/home_graphic3.png" width="300" height="217">. That could be an SSD (or multiple) or a PCI-e card.</p>
+
+<p>Reading what they have to say, it is completely transparent to the hypervisor, so everything just works. Obviously me being an Open Source fanatic I imediately started thinking how I could do this with Linux; it took me about 5 minutes.</p>
+
+<p>You take your SAN array and give your LUN to your Hypervisors (running KVM obviously, and with a local SSD). Normally you would stick a clustered file system (such as GFS2) on that shared LUN. Instead you use a tiered block device on top of that LUN. There are two that come immediately to mind: <a href="https://github.com/facebook/flashcache/">Flashcache</a> and <a href="http://sourceforge.net/projects/tier/files/">Btier</a>.</p>
+
+<p>Finally, you can put your clustered file system on that tiered device. I do not have the time or facilities to test this, but I cannot see why it would not work. Maybe someone at Red Hat (seeing as they do the bulk of KVM and GFS2 development) can run with this and see what happens.
+What their plans are I do not know. It is very early days, maybe they will be a success maybe not. As they are both ex-VMware, I would not be at all surprised if they get bought back into the VMware fold. Certainly this is a functionality that I would have like to have seen in the past.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[What will HP do next?]]></title>
@@ -494,205 +512,6 @@ Now you can start heartbeat and check it is working:
 Reboot nfs1 and the services should appear on nfs2.</p>
 
 <p>Connect an NFS client to you floating address (10.0.0.100) and you should be able to kill the live node and it will carry on.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Home-made Redundant Thin-provisioned SAN]]></title>
-    <link href="http://www.chriscowley.me.uk/blog/2012/02/08/home-made-redundant-thin-provisioned-san/"/>
-    <updated>2012-02-08T20:02:00+01:00</updated>
-    <id>http://www.chriscowley.me.uk/blog/2012/02/08/home-made-redundant-thin-provisioned-san</id>
-    <content type="html"><![CDATA[<p>The inspiration for this came from a mixture of problems I was having with my HP P2000, ideas that have been floating around my head for a while, plus a post over at Bauer-power.net. Basically I got given a bunch of warranty returned Supermicro servers from our Customer Service guys  and got tasked with making it our secondary VMware store and DR snapshot storage. Incidentally, the Supermicro servers are used for our Channel-in-a-box product for those you in the broadcast world. They are not ideal, the 2U 12 disk models that Pablo uses are far more suitable.</p>
-
-<!-- more -->
-
-
-<p>Plenty of companies already build their arrays on commodity hardware like these, so I am not doing anything new:</p>
-
-<ul>
-<li> Dell Compellent (Supermicro, soon to be Dell)</li>
-<li> CoRAID (Supermicro)</li>
-<li> EMC  Clarion and VNX</li>
-<li> HP P4000 (HP DL180)</li>
-<li> 3Par</li>
-<li> Pure Storage</li>
-<li> Nutanix</li>
-<li> Solid Fire</li>
-</ul>
-
-
-<p>My set up is basically the same as that used by Pablo in the second iteration of his array:</p>
-
-<ul>
-<li> Linux</li>
-<li> GlusterFS</li>
-<li> Tgtd</li>
-<li> Heartbeat</li>
-</ul>
-
-
-<p>There are a couple of differences:</p>
-
-<ul>
-<li> Mine uses a new version of GlusterFS which is currently in beta. This has several new features, the one I am interested in is Granular Locking. As I am storing VM images, I do not want these being locked during a self-heal – a problem in 3.2 and before. There are also other things such as object-storage (Amazon S3 compatible) for use with Open Stack. I’d love that, but I am not using it in my environment :( .</li>
-<li> I am building on top of CentOS. I started with Red Hat and will continue to use it for server environments in the forceeable future.</li>
-<li> I do not have de-duplication as I am not using ZFS, I am running on top of Ext4 and will use XFS or BTRFS if I need to. I am only using 8x 1TB drives as that is what I got given for free.</li>
-</ul>
-
-
-<p>I have had to build a couple of custom RPMS which I have made available in my <a href="http://yum.chriscowley.me.uk/el/6/x86_64/repoview/" target="blank">Yum repository</a>.</p>
-
-<p>I did investigate de-duplication using LessFS, but sadly that is a no go as it does not currently support Extended Attributes, which are required by GlusterFS.</p>
-
-<h2>Installation</h2>
-
-<p>Install a basic CentOS 6 system on each node – the base system will be fine.</p>
-
-<p>The two servers are</p>
-
-<ul>
-<li>server1 192.168.1.1(eth0),10.0.0.1(eth1)</li>
-<li>server2 192.168.1.2(eth0),10.0.0.2(eth1)</li>
-</ul>
-
-
-<p>They connect to the rest of your network using eth0 and eth1 is a dedicated link between the 2. I would put them via a seperate switches/vLANs rather than a direct link, that way you can scale out your pool easily.</p>
-
-<p>In the hosts file add:
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>10.0.0.1 server1.example.com
-</span><span class='line'>10.0.0.2 server2.example.com</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Add my repository:
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>rpm --import http://yum.chriscowley.me.uk/RPM-GPG-KEY-ChrisCowley
-</span><span class='line'>yum install http://yum.chriscowley.me.uk/el/6/x86_64/RPMS/chriscowley-release-1-1.noarch.rpm
-</span><span class='line'>rpm --import https://fedoraproject.org/static/0608B895.txt
-</span><span class='line'>yum install http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-5.noarch.rpm</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Now you can install the necessary packages, which is not many. :</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>yum install glusterfs-core glusterfs-fuse heartbeat scsi-target-utils</span></code></pre></td></tr></table></div></figure></notextile></div>
-Now you can add create a pool of servers:</p>
-
-<h2>GlusterFS</h2>
-
-<p>From server1:
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>gluster peer probe server2</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>You next step is to configure a Gluster Volume. Gluster’s documentation for this is excellent. For our simple 2-node cluster we just want a simple replicated volume. As you grow, you can simple add extra pairs of nodes to expand your storage pool.</p>
-
-<p>On each node create a folder to store the data and a mount-point for the replicated data:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>mkdir /exp1
-</span><span class='line'>mkdir /mnt/test-volume</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Now create your volume and activate it(on a single node):
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>gluster volume create test-volume replica 2 transport tcp server1:/exp1 server2:/exp1
-</span><span class='line'>gluster volume start test-volume</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Now you need to mount that volume on each of your nodes.</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>echo "&lt;code>hostname&lt;/code>:/test-volume /mnt/test-volume glusterfs defaults,noauto,_netdev 0 0" >> /etc/fstab
-</span><span class='line'>echo "mount /mnt/test-volume" >> /etc/rc.local
-</span><span class='line'>mount /mnt/test-volume</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<h2>Heartbeat</h2>
-
-<p>Now you need to configure heartbeat to control a floating IP address and the associated TGTD service. You need to create a few files on each node.</p>
-
-<p>/etc/ha.d/authkeys:
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>auth 2
-</span><span class='line'>2 crc</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>/etc/ha.d/ha.cf
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>logfacility     local0
-</span><span class='line'>keepalive 500ms
-</span><span class='line'>deadtime 5
-</span><span class='line'>warntime 10
-</span><span class='line'>initdead 120
-</span><span class='line'>bcast eth1
-</span><span class='line'>node server1
-</span><span class='line'>node server2
-</span><span class='line'>auto_failback no</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>/etc/ha.d/haresources:
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>server1 IPaddr::192.168.1.3/24/eth0 tgtd</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>There are a couple of considerations. The Gluster filesystems need to be mounted before tgtd starts. Tgtd is in turn controled by Heartbeat (see the above haresources file). To this end make sure both heartbeat and tgtd are disabled and start heartbeat from /etc/rc.local.
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>echo "/etc/init.d/heartbeat start" >> /etc/rc.local</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>With all this done on both nodes, you can now start heartbeat on each node:
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>/etc/init.d/heartbeat start</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Checking ifconfig will show that one of your nodes now has an <em>eth0:0</em> address.You will also find that tgtd is also running on that same node.</p>
-
-<h2>iSCSI Target</h2>
-
-<p>First create yourself a file to use as the backend for your iSCSI target:
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>dd if=/dev/zero bs=1M count=40000 of=/mnt/test-volume/test.img</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>or, if you prefer thin provisioned:
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>dd if=/dev/zero bs=1M seek=40000 count=0 of=/mnt/test-volume/test.img</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>You now need to define this file as a target. This requires the editting of 2 files.</p>
-
-<p>/etc/sysconfig/tgtd:
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>TGTD_CONFIG=/etc/tgt/targets.conf</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>/etc/tgtd/targets.conf, make sure there is an entry such as:
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;target iqn.2012-02.com.example.gluster:isci>&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;pre>&lt;code>backing-store /mnt/test-volume/test.img
-</span><span class='line'>initiator-address 192.168.1.10
-</span><span class='line'>&lt;/code>&lt;/pre>
-</span><span class='line'>
-</span><span class='line'>&lt;p>&lt;/target></span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>This will make that image file you created available to the client with the address 192.168.1.10. This targets.conf file is extremely well commented, so have a read. Now just tell tgtd to reload its configuration from the live node:
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>/etc/init.d/tgtd reload</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<h2>Conclusion</h2>
-
-<p>Nothing here is particularly complicated, but it does give you a lot of storage for a very low price, using a very enterprise friendly OS.</p>
 ]]></content>
   </entry>
   

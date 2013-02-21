@@ -9,7 +9,7 @@
   <meta name="author" content="Chris Cowley">
 
   
-  <meta name="description" content="A recent discussion/argument I had on Reddit got me thinking about the cost of solutions we put in. In an ideal world everything would did have full &hellip;">
+  <meta name="description" content="An intriguing startup came out of stealth mode a few days ago. Pernix Data was founded by Pookan Kumar and satyam Vaghani, both of who were pretty &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -90,6 +90,53 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/02/21/something-from-the-shadows/">Something From the Shadows</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-02-21T16:06:00+01:00" pubdate data-updated="true">Thursday 21 February 2013</time>
+        
+         | <a href="/blog/2013/02/21/something-from-the-shadows/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>An intriguing startup came out of stealth mode a few days ago. <a href="http://pernixdata.com/">Pernix Data</a> was founded by Pookan Kumar and satyam Vaghani, both of who were pretty near top of the pile in VMware&#8217;s storage team.</p>
+
+<p>What they are offering is, to me at least, a blinding flash of the obvious. It is a softweare layer that runs on a VMware hypervisor that uses local flash as a cache for whatevery is coming off your main storage array. <img class="right" src="http://pernixdata.com/images/home_graphic3.png" width="300" height="217">. That could be an SSD (or multiple) or a PCI-e card.</p>
+
+<p>Reading what they have to say, it is completely transparent to the hypervisor, so everything just works. Obviously me being an Open Source fanatic I imediately started thinking how I could do this with Linux; it took me about 5 minutes.</p>
+
+<p>You take your SAN array and give your LUN to your Hypervisors (running KVM obviously, and with a local SSD). Normally you would stick a clustered file system (such as GFS2) on that shared LUN. Instead you use a tiered block device on top of that LUN. There are two that come immediately to mind: <a href="https://github.com/facebook/flashcache/">Flashcache</a> and <a href="http://sourceforge.net/projects/tier/files/">Btier</a>.</p>
+
+<p>Finally, you can put your clustered file system on that tiered device. I do not have the time or facilities to test this, but I cannot see why it would not work. Maybe someone at Red Hat (seeing as they do the bulk of KVM and GFS2 development) can run with this and see what happens.
+What their plans are I do not know. It is very early days, maybe they will be a success maybe not. As they are both ex-VMware, I would not be at all surprised if they get bought back into the VMware fold. Certainly this is a functionality that I would have like to have seen in the past.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -481,49 +528,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/10/01/my-new-life/">My New Life</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-10-01T22:06:00+02:00" pubdate data-updated="true">Monday 01 October 2012</time>
-        
-         | <a href="/blog/2012/10/01/my-new-life/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I am now a month in to life in France. Make no mistake I am so far very happy that we have made the right decision, even though not everything is perfect. The biggest beef is without a doubt the paperwork!</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2012/10/01/my-new-life/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -546,6 +550,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/02/21/something-from-the-shadows/">Something from the shadows</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/02/06/how-much-should-you-spend-on-it/">How much should you spend on IT</a>
       </li>
     
@@ -559,10 +567,6 @@
     
       <li class="post">
         <a href="/blog/2012/12/17/what-will-hp-do-next/">What will HP do next?</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2012/12/10/emc-extremio-thoughts/">EMC ExtremIO Thoughts</a>
       </li>
     
   </ul>

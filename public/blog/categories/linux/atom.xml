@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linux | Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-02-09T22:08:43+01:00</updated>
+  <updated>2013-02-21T16:38:50+01:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -88,54 +88,7 @@ sudo -u trac htpasswd -c /var/local/trac/.htpasswd example-realm chris
 <p>Create an init script (<code>/etc/init.d/trac</code>) that contains something like:</p>
 
 <p><div><script src='https://gist.github.com/4586539.js?file='></script>
-<noscript><pre><code>#!/bin/sh
-### BEGIN INIT INFO
-# Provides:          trac
-# Required-Start:    $local_fs $remote_fs
-# Required-Stop:     $local_fs $remote_fs
-# Default-Start:     2 3 4 5
-# Default-Stop:      S 0 1 6
-# Short-Description: trac initscript
-# Description:       trac
-### END INIT INFO
-
-# Original author: Chris Cowley
-
-# Do NOT &quot;set -e&quot;
-
-DAEMON=/usr/bin/tracd
-SCRIPT_NAME=/etc/rc.d/trac
-CONFIG_PATH=/etc/trac
-PIDFILE=&quot;/tmp/trac.3050&quot;
-USER=&quot;trac&quot;
-TRACHOME=&quot;/var/local/trac&quot;
-REALM=&quot;example-realm&quot;
-
-# Exit if the package is not installed
-[ -x &quot;$DAEMON&quot; ] || exit 0
-
-case &quot;$1&quot; in
-  start)
-        echo &quot;starting trac&quot;
-        su - $USER -c &quot;$DAEMON -d --basic-auth=*,$TRACHOME/.htpasswd,$REALM -e $TRACHOME -p 3050 --protocol=http --pidfile=$PIDFILE&quot;
-        ;;
-  stop)
-        echo &quot;stoping trac&quot;
-        kill `cat $PIDFILE`
-        ;;
-  restart)
-        echo &quot;stoping trac&quot;
-        kill `cat $PIDFILE`
-        echo &quot;starting trac&quot;
-        su - $USER -c &quot;$DAEMON -d --basic-auth=*,$TRACHOME/.htpasswd,$REALM -e $TRACHOME -p 3050 --protocol=http --pidfile=$PIDFILE&quot;
-        ;;
-  *)
-        echo &quot;Usage: $SCRIPT_NAME {start|stop|restart}&quot; &gt;&amp;2
-        exit 3
-        ;;
-esac
-
-</code></pre></noscript></div>
+<noscript><pre><code></code></pre></noscript></div>
 </p>
 
 <p>Start up the Trac daemon and enable it on boot up</p>
@@ -157,21 +110,7 @@ sudo yum install nginx
 <p>Create the file <code>/etc/nginx/conf.d/trac.conf</code> containing something like:</p>
 
 <p><div><script src='https://gist.github.com/4586630.js?file='></script>
-<noscript><pre><code>upstream trac.example.com {
-    server  127.0.0.1:3050;
-}
-server {
-    listen          80;
-    server_name     trac.example.com;
-
-    access_log      /var/log/nginx/trac.access.log;
-    error_log       /var/log/nginx/trac.error_log;
-
-    location / {
-        proxy_pass      http://trac.example.com;
-        proxy_set_header  X-Real-IP  $remote_addr;
-    }
-}</code></pre></noscript></div>
+<noscript><pre><code></code></pre></noscript></div>
 </p>
 
 <p>Finally enable Nginx on boot up and start it:</p>
