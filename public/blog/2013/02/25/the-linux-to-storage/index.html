@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>What will HP do next? - Just Another Linux Blog</title>
+  <title>The Linux to Storage - Just Another Linux Blog</title>
   <meta name="author" content="Chris Cowley">
 
   
-  <meta name="description" content="HP recently announced a new range of 3Par based arrays that are aimed at mid-range enterprise. There now appear to be 2 ranges for the future: HP &hellip;">
+  <meta name="description" content="Martin &#8220;Storagebod&#8221; Glassborow recently wrote an interesting article where he asked &#8220;Who&#8217;ll do a Linux to Storage?&#8221;. As &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.chriscowley.me.uk/blog/2012/12/17/what-will-hp-do-next/">
+  <link rel="canonical" href="http://www.chriscowley.me.uk/blog/2013/02/25/the-linux-to-storage/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -93,7 +93,7 @@
   
   <header>
     
-      <h1 class="entry-title">What Will HP Do Next?</h1>
+      <h1 class="entry-title">The Linux to Storage</h1>
     
     
       <p class="meta">
@@ -109,7 +109,7 @@
   
 
 
-<time datetime="2012-12-17T15:16:00+01:00" pubdate data-updated="true">Monday 17 December 2012</time>
+<time datetime="2013-02-25T13:09:00+01:00" pubdate data-updated="true">Monday 25 February 2013</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -118,32 +118,20 @@
   </header>
 
 
-<div class="entry-content"><p>HP recently announced a new range of 3Par based arrays that are aimed at mid-range enterprise. There now appear to be 2 ranges for the future:</p>
+<div class="entry-content"><p>Martin &#8220;Storagebod&#8221; Glassborow recently wrote an interesting article where he asked &#8220;Who&#8217;ll do a Linux to Storage?&#8221;. As someone who is equal parts Storage and Linux, the same question runs around my head quite often. Not just that, but how to do it. It is safe to say that all the constituent parts are already in the Open Source Ecosystem. It just needs someone to pull them all together wrap them up in an integrated interface (be that a GUI, CLI, an API or all).</p>
 
 <!--more -->
 
 
-<ul>
-<li>HP StoreServ 10000 is the big boy, scales up to 1.6PB, 192 FC ports, 32 10Gb iSCSI - the works.</li>
-<li>HP StoreServ 7000 is the mid-range one, with <em>only</em> 24 FC and 8 1-Gb iSCSI. This split into the 7200 (2U) and 7400 (4U)</li>
-</ul>
+<p>Linux, obviously, has excellent NFS support. Until recently it was a little lacking in terms of block support. <a href="http://sourceforge.net/projects/iscsitarget/">iSCSI Enterprise Target</a> is ok, but is not packaged for RHEL, which for most shops makes it a big no-no. Likewise <a href="http://stgt.sourceforge.net/">TGT</a> is not bad, I have certainly used it to to good effect, but administering it is a bit like pulling teeth. Additionally, neither are VMware certified and I am pretty sure that TGT at  least is missing a required feature for certification as well (may be persistent reservations). There is a third SCSI target in Linux though: <a href="http://www.linux-iscsi.org/">LIO Kernel Target</a> by Rising Tide Systems. This is a lot newer, but is already VMware Ready certified. Red Hat used it in RHEL6 for FCoE target support, but not for iSCSI. in RHEL7 they will be <a href="http://groveronline.com/2012/11/tgtd-lio-in-rhel-7/">using it for all block storage</a>. It has a much nicer interface than the other targets on Linux, using a very intuitive CLI, nice JSON config files and a rather handy API. Rising Tide are a bit of an unknown however, or at least I thought so. It turns our that both QNAP and Netgear use LIO Kernel Target in their larger devices - hence the VMware certification. In any case, Red Hat are behind it, although I think they are working on a fork of at least the CLI, so I think success is assured there. That solves the problem of block storage, be it iSCSI, Fibre-Channel, FCoE, Infiniband or even USB.</p>
 
+<p>Another important building block in an enterprise storage system is some way of distributing the data for both redunancy and performance. Marin mentions <a href="http://ceph.com/">Ceph</a> which is an excellent system. Personally I would put my money on <a href="http://www.gluster.org/">GlusterFS</a> though. I have had slightly better performance from it. Red Hat bought Gluster about a year ago, and have put some serious development effort into it. As well as POSIX access via Fuse, it has Object storage for use with OpenStack, a native Qemu connector is coming in the next versions. Hadoop can also access it directly. There is also a very good Puppet module for it, which gets around one of Martin&#8217;s critisms of Ceph.</p>
 
-<p>With the entry level <a href="http://www8.hp.com/us/en/hp-news/press-release.html?id=1332554#.UM8Mm3eTW01">7200 starting at $20k</a> that does not leave a lot of room at the low end for both the P4000 and the P2000 ranges. At the higher end the 7400 starts at $32k, which certainly leaves no space for the venerable EVA.</p>
+<p>Which brings me nicely to managing this theoretical system. Embedding Puppet in this sort of solution would also make sense. There will be need to a way of keep config sync&#8217;ed on all the nodes (I mentioned that this disruptive product will be scale-out didn&#8217;t I? NO? OK, it will be - prediction for the day). Puppet does this already very well, so why re-invent the wheel.</p>
 
-<p>In <a href="http://h30507.www3.hp.com/t5/Around-the-Storage-Block-Blog/Blogger-Q-amp-A-with-David-Scott/ba-p/128097">an interview with Around the Storage Block</a> HP Storage GM David Scott is quite critical of EMC who have a range of different and fairly unrelated product lines (Atmos, VMAX, VNX/VNXe, Isilion). For now HP is fairly similar: P9000 (Hitachi), P4000 (Lefthand, P2000 (Dot Hill). When you look at where they have priced the 3Par gear, it does appear that they are betting the farm on it.</p>
+<p>All this can sit on top of Btrfs allowing each node to have up to 16 exabytes of local storage. For now I am not convinced by it, at least on RHEL 6 as I have seen numerous kernel panics, nor did I have a huge amount of joy on Fedora 17, but there is no doubt that it will get there. Alternatively, there is always the combination of XFS and LVM. XFS is getting on a bit now, but it has been revived by Red Hat in recent years and it is a proven performer with plenty of life left in it yet.</p>
 
-<p>Something I have been quite vocal about over the last 5 years or so is that fact that HP&#8217;s storage portfolio is all over the place. Compared to Netapp, who have a very homogenous portfolio (everything runs OnTAP, you know one Netapp product, you can jump on to the rest), HP have got a one interface for P2000, another for P4000, another for EVA. Nothing sits together. HP needs to get all this in line. EMC have already started with Unisphere, but they still have multiple product architectures (VMAX, VNX, Isilion for example).</p>
-
-<p>I personally think that these other ranges will drop by the wayside, although I am reading a bit between the lines here. Dot Hill do seem to be setting themselves up to be more than just an OEM supplier to HP. Maybe it is wishful thinking as I am a <a href="http://www.chriscowley.me.uk/blog/2010/01/12/some-great-new-san-gear/">huge fan of Dot Hill</a>, but they have some very interesting products. I hope/expect to see a lot more of Dot Hill themselves over the next few years, rather than just being behind Oracle/Netapp/HP badges.</p>
-
-<p>The P9000 range is a similar story at the other end of the market. The Storserve 10k seems to be very similar, pretty much the same capacity and number of ports. Feature set is also close enough. I also have the impression that Hitachi are starting to push a bit harder in their own right as well.</p>
-
-<p>Essentially I think 3Par will become HP&#8217;s own architecture. It has the flexibity to  cover everything from a single bay with 12 SATA disks at the low end (perhaps on DL hardware) all the way up to PB+ scales, taking in all-flash on the way.</p>
-
-<p>This leaves the P4000, which has been re-branded the <a href="http://www8.hp.com/us/en/products/disk-storage/product-detail.html?oid=4118659">StoreVirtual 4000</a>. This seems to me to be a no-brainer. It is already running on commodity DL180 hardware and includes an appliance option. My guess is the physical implementation of this will be phased out. It will become the Virtual Appliance front-end to all this new 3Par based physical goodness.</p>
-
-<p>Finally, I have skipped over the EVA. What does the future hold in store for HP&#8217;s venerable high-end platform. I think nothing. It will go into maintenance mode and be quietly end-of-life&#8217;d. Existing customers will be pushed to <a href="http://h30507.www3.hp.com/t5/Around-the-Storage-Block-Blog/EVA-to-HP-3PAR-StoreServ-online-import/ba-p/128391">migrate</a> over to Storeserv 7000.</p>
+<p>After all that, who do I think is ripe to do some serious disrupting in the storage market? Who will &#8220;Do a Red Hat&#8221; as Martin puts it? Simple: it will be Red Hat! Look at the best of breed tools at every level of the storage stack on Linux and you will find it is either from Red Hat (Gluster) or they are heavily involved (LIO target). They have the resources and the market/mind share to do it. Also they have a long history of working with and feeding back to the community, so the fortuitous circle will continue.</p>
 </div>
 
 
@@ -166,7 +154,7 @@
   
 
 
-<time datetime="2012-12-17T15:16:00+01:00" pubdate data-updated="true">Monday 17 December 2012</time>
+<time datetime="2013-02-25T13:09:00+01:00" pubdate data-updated="true">Monday 25 February 2013</time>
       
 
 <span class="categories">
@@ -180,7 +168,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.chriscowley.me.uk/blog/2012/12/17/what-will-hp-do-next/" data-via="chriscowleyunix" data-counturl="http://www.chriscowley.me.uk/blog/2012/12/17/what-will-hp-do-next/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.chriscowley.me.uk/blog/2013/02/25/the-linux-to-storage/" data-via="chriscowleyunix" data-counturl="http://www.chriscowley.me.uk/blog/2013/02/25/the-linux-to-storage/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -191,10 +179,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2012/12/10/emc-extremio-thoughts/" title="Previous Post: EMC ExtremIO Thoughts">&laquo; EMC ExtremIO Thoughts</a>
+        <a class="basic-alignment left" href="/blog/2013/02/21/something-from-the-shadows/" title="Previous Post: Something from the shadows">&laquo; Something from the shadows</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/01/21/trac-with-nginx-on-centos/" title="Next Post: Trac with Nginx on Centos">Trac with Nginx on Centos &raquo;</a>
       
     </p>
   </footer>

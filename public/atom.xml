@@ -4,7 +4,7 @@
   <title><![CDATA[Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-02-21T16:43:36+01:00</updated>
+  <updated>2013-02-25T21:38:16+01:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -14,11 +14,33 @@
 
   
   <entry>
+    <title type="html"><![CDATA[The Linux to Storage]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2013/02/25/the-linux-to-storage/"/>
+    <updated>2013-02-25T13:09:00+01:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2013/02/25/the-linux-to-storage</id>
+    <content type="html"><![CDATA[<p>Martin &#8220;Storagebod&#8221; Glassborow recently wrote an interesting article where he asked &#8220;Who&#8217;ll do a Linux to Storage?&#8221;. As someone who is equal parts Storage and Linux, the same question runs around my head quite often. Not just that, but how to do it. It is safe to say that all the constituent parts are already in the Open Source Ecosystem. It just needs someone to pull them all together wrap them up in an integrated interface (be that a GUI, CLI, an API or all).</p>
+
+<!--more -->
+
+
+<p>Linux, obviously, has excellent NFS support. Until recently it was a little lacking in terms of block support. <a href="http://sourceforge.net/projects/iscsitarget/">iSCSI Enterprise Target</a> is ok, but is not packaged for RHEL, which for most shops makes it a big no-no. Likewise <a href="http://stgt.sourceforge.net/">TGT</a> is not bad, I have certainly used it to to good effect, but administering it is a bit like pulling teeth. Additionally, neither are VMware certified and I am pretty sure that TGT at  least is missing a required feature for certification as well (may be persistent reservations). There is a third SCSI target in Linux though: <a href="http://www.linux-iscsi.org/">LIO Kernel Target</a> by Rising Tide Systems. This is a lot newer, but is already VMware Ready certified. Red Hat used it in RHEL6 for FCoE target support, but not for iSCSI. in RHEL7 they will be <a href="http://groveronline.com/2012/11/tgtd-lio-in-rhel-7/">using it for all block storage</a>. It has a much nicer interface than the other targets on Linux, using a very intuitive CLI, nice JSON config files and a rather handy API. Rising Tide are a bit of an unknown however, or at least I thought so. It turns our that both QNAP and Netgear use LIO Kernel Target in their larger devices - hence the VMware certification. In any case, Red Hat are behind it, although I think they are working on a fork of at least the CLI, so I think success is assured there. That solves the problem of block storage, be it iSCSI, Fibre-Channel, FCoE, Infiniband or even USB.</p>
+
+<p>Another important building block in an enterprise storage system is some way of distributing the data for both redunancy and performance. Marin mentions <a href="http://ceph.com/">Ceph</a> which is an excellent system. Personally I would put my money on <a href="http://www.gluster.org/">GlusterFS</a> though. I have had slightly better performance from it. Red Hat bought Gluster about a year ago, and have put some serious development effort into it. As well as POSIX access via Fuse, it has Object storage for use with OpenStack, a native Qemu connector is coming in the next versions. Hadoop can also access it directly. There is also a very good Puppet module for it, which gets around one of Martin&#8217;s critisms of Ceph.</p>
+
+<p>Which brings me nicely to managing this theoretical system. Embedding Puppet in this sort of solution would also make sense. There will be need to a way of keep config sync&#8217;ed on all the nodes (I mentioned that this disruptive product will be scale-out didn&#8217;t I? NO? OK, it will be - prediction for the day). Puppet does this already very well, so why re-invent the wheel.</p>
+
+<p>All this can sit on top of Btrfs allowing each node to have up to 16 exabytes of local storage. For now I am not convinced by it, at least on RHEL 6 as I have seen numerous kernel panics, nor did I have a huge amount of joy on Fedora 17, but there is no doubt that it will get there. Alternatively, there is always the combination of XFS and LVM. XFS is getting on a bit now, but it has been revived by Red Hat in recent years and it is a proven performer with plenty of life left in it yet.</p>
+
+<p>After all that, who do I think is ripe to do some serious disrupting in the storage market? Who will &#8220;Do a Red Hat&#8221; as Martin puts it? Simple: it will be Red Hat! Look at the best of breed tools at every level of the storage stack on Linux and you will find it is either from Red Hat (Gluster) or they are heavily involved (LIO target). They have the resources and the market/mind share to do it. Also they have a long history of working with and feeding back to the community, so the fortuitous circle will continue.</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Something from the shadows]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/02/21/something-from-the-shadows/"/>
     <updated>2013-02-21T16:06:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/02/21/something-from-the-shadows</id>
-    <content type="html"><![CDATA[<p>An intriguing startup came out of stealth mode a few days ago. <a href="http://pernixdata.com/">Pernix Data</a> was founded by Pookan Kumar and satyam Vaghani, both of who were pretty near top of the pile in VMware&#8217;s storage team.</p>
+    <content type="html"><![CDATA[<p>An intriguing startup came out of stealth mode a few days ago. <a href="http://pernixdata.com/">Pernix Data</a> was founded by Pookan Kumar and Satyam Vaghani, both of who were pretty near top of the pile in VMware&#8217;s storage team.</p>
 
 <!--more -->
 
@@ -832,52 +854,6 @@ The attitude to lunch is probably the biggest single change of all that can only
 <p>I ran the upgrade in the production environment and re-indexed. Nothing out of the ordinary. 10% of the way into the index it fell over. Jira’s database was gone! Fortunately I was able to restore from my backup and at worst a comment or two was lost, but that still caused significant downtime.</p>
 
 <p>I had done everything I could to make sure the upgrade would go smoothly, but it still did not. That is why software vendors always tell you to take a backup before even the smallest change – DO IT!</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[PyCurl and self-signed SSL certificates]]></title>
-    <link href="http://www.chriscowley.me.uk/blog/2012/04/05/pycurl-and-self-signed-ssl-certificates/"/>
-    <updated>2012-04-05T16:50:00+02:00</updated>
-    <id>http://www.chriscowley.me.uk/blog/2012/04/05/pycurl-and-self-signed-ssl-certificates</id>
-    <content type="html"><![CDATA[<p>At <a href="http://www.snellgroup.com" target="_blank">Snell</a> we make heavy use of self-signed certificates for internal websites, such as the R&amp;D wiki. Active Directory makes it easy for us to make this transparent to the users, those that use Firefox/Chrome can find our well-published instructions to add the CA certificate to their own browsers.</p>
-
-<!-- more -->
-
-
-<p>Today I was writing a script to that pulls lots of attachments off our Confluence wiki, which we access through SSL using one of those certificates. Of course PyCurl  moaned that it could not verify the host, but I did not care – I know it is the right host!</p>
-
-<p>Finding documentation both on SSL and PyCurl is problematic at best. OpenSSL’s documentation it complete, but could not be more unreadable if written by a right-handed doctor using a broken crayon with his left-hand; pyCurl’s documentation is non-existent.</p>
-
-<p>After an hour of Google-Fu and DuckDuckGo-Fu I finally managed to do what I wanted:</p>
-
-<figure class='code'><figcaption><span> (pycurl_ssl.py)</span> <a href='http://www.chriscowley.me.uk/downloads/code/pycurl_ssl.py'>download</a></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='py'><span class='line'><span class="c">#!/usr/bin/env python</span>
-</span><span class='line'><span class="n">downloadedFile</span> <span class="o">=</span> <span class="s">&quot;/tmp/stuff&quot;</span>
-</span><span class='line'><span class="n">outfile</span> <span class="o">=</span> <span class="nb">file</span><span class="p">(</span><span class="n">downloadedFile</span><span class="p">,</span> <span class="s">&#39;wb&#39;</span><span class="p">)</span>
-</span><span class='line'><span class="n">url</span> <span class="o">=</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">someurl</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span>
-</span><span class='line'><span class="n">c</span> <span class="o">=</span> <span class="n">pycurl</span><span class="o">.</span><span class="n">Curl</span><span class="p">()</span>
-</span><span class='line'><span class="n">c</span><span class="o">.</span><span class="n">setopt</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">URL</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
-</span><span class='line'><span class="n">c</span><span class="o">.</span><span class="n">setopt</span><span class="p">(</span><span class="n">pycurl</span><span class="o">.</span><span class="n">USERPWD</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">:</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">))</span>
-</span><span class='line'><span class="n">c</span><span class="o">.</span><span class="n">setopt</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">WRITEFUNCTION</span><span class="p">,</span> <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">)</span>
-</span><span class='line'><span class="n">c</span><span class="o">.</span><span class="n">setopt</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">SSL_VERIFYPEER</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="c"># That is you key line for this purpose!</span>
-</span><span class='line'><span class="n">c</span><span class="o">.</span><span class="n">perform</span><span class="p">()</span>
-</span><span class='line'><span class="n">c</span><span class="o">.</span><span class="n">close</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>There you go!</p>
 ]]></content>
   </entry>
   

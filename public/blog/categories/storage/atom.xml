@@ -4,7 +4,7 @@
   <title><![CDATA[Category: storage | Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/blog/categories/storage/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-02-21T16:43:36+01:00</updated>
+  <updated>2013-02-25T21:38:16+01:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -14,11 +14,33 @@
 
   
   <entry>
+    <title type="html"><![CDATA[The Linux to Storage]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2013/02/25/the-linux-to-storage/"/>
+    <updated>2013-02-25T13:09:00+01:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2013/02/25/the-linux-to-storage</id>
+    <content type="html"><![CDATA[<p>Martin "Storagebod" Glassborow recently wrote an interesting article where he asked "Who'll do a Linux to Storage?". As someone who is equal parts Storage and Linux, the same question runs around my head quite often. Not just that, but how to do it. It is safe to say that all the constituent parts are already in the Open Source Ecosystem. It just needs someone to pull them all together wrap them up in an integrated interface (be that a GUI, CLI, an API or all).</p>
+
+<!--more -->
+
+
+<p>Linux, obviously, has excellent NFS support. Until recently it was a little lacking in terms of block support. <a href="http://sourceforge.net/projects/iscsitarget/">iSCSI Enterprise Target</a> is ok, but is not packaged for RHEL, which for most shops makes it a big no-no. Likewise <a href="http://stgt.sourceforge.net/">TGT</a> is not bad, I have certainly used it to to good effect, but administering it is a bit like pulling teeth. Additionally, neither are VMware certified and I am pretty sure that TGT at  least is missing a required feature for certification as well (may be persistent reservations). There is a third SCSI target in Linux though: <a href="http://www.linux-iscsi.org/">LIO Kernel Target</a> by Rising Tide Systems. This is a lot newer, but is already VMware Ready certified. Red Hat used it in RHEL6 for FCoE target support, but not for iSCSI. in RHEL7 they will be <a href="http://groveronline.com/2012/11/tgtd-lio-in-rhel-7/">using it for all block storage</a>. It has a much nicer interface than the other targets on Linux, using a very intuitive CLI, nice JSON config files and a rather handy API. Rising Tide are a bit of an unknown however, or at least I thought so. It turns our that both QNAP and Netgear use LIO Kernel Target in their larger devices - hence the VMware certification. In any case, Red Hat are behind it, although I think they are working on a fork of at least the CLI, so I think success is assured there. That solves the problem of block storage, be it iSCSI, Fibre-Channel, FCoE, Infiniband or even USB.</p>
+
+<p>Another important building block in an enterprise storage system is some way of distributing the data for both redunancy and performance. Marin mentions <a href="http://ceph.com/">Ceph</a> which is an excellent system. Personally I would put my money on <a href="http://www.gluster.org/">GlusterFS</a> though. I have had slightly better performance from it. Red Hat bought Gluster about a year ago, and have put some serious development effort into it. As well as POSIX access via Fuse, it has Object storage for use with OpenStack, a native Qemu connector is coming in the next versions. Hadoop can also access it directly. There is also a very good Puppet module for it, which gets around one of Martin's critisms of Ceph.</p>
+
+<p>Which brings me nicely to managing this theoretical system. Embedding Puppet in this sort of solution would also make sense. There will be need to a way of keep config sync'ed on all the nodes (I mentioned that this disruptive product will be scale-out didn't I? NO? OK, it will be - prediction for the day). Puppet does this already very well, so why re-invent the wheel.</p>
+
+<p>All this can sit on top of Btrfs allowing each node to have up to 16 exabytes of local storage. For now I am not convinced by it, at least on RHEL 6 as I have seen numerous kernel panics, nor did I have a huge amount of joy on Fedora 17, but there is no doubt that it will get there. Alternatively, there is always the combination of XFS and LVM. XFS is getting on a bit now, but it has been revived by Red Hat in recent years and it is a proven performer with plenty of life left in it yet.</p>
+
+<p>After all that, who do I think is ripe to do some serious disrupting in the storage market? Who will "Do a Red Hat" as Martin puts it? Simple: it will be Red Hat! Look at the best of breed tools at every level of the storage stack on Linux and you will find it is either from Red Hat (Gluster) or they are heavily involved (LIO target). They have the resources and the market/mind share to do it. Also they have a long history of working with and feeding back to the community, so the fortuitous circle will continue.</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Something from the shadows]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/02/21/something-from-the-shadows/"/>
     <updated>2013-02-21T16:06:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/02/21/something-from-the-shadows</id>
-    <content type="html"><![CDATA[<p>An intriguing startup came out of stealth mode a few days ago. <a href="http://pernixdata.com/">Pernix Data</a> was founded by Pookan Kumar and satyam Vaghani, both of who were pretty near top of the pile in VMware's storage team.</p>
+    <content type="html"><![CDATA[<p>An intriguing startup came out of stealth mode a few days ago. <a href="http://pernixdata.com/">Pernix Data</a> was founded by Pookan Kumar and Satyam Vaghani, both of who were pretty near top of the pile in VMware's storage team.</p>
 
 <!--more -->
 
@@ -243,278 +265,6 @@ iscsiadm -m node --login
 </code></p>
 
 <p>If you run <code>cat /proc/partitions</code> you will see an new partition has appeared. You can do whatever you want with it.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Highly Available NFS/NAS]]></title>
-    <link href="http://www.chriscowley.me.uk/blog/2012/03/19/highly-available-nfs-slash-nas/"/>
-    <updated>2012-03-19T16:59:00+01:00</updated>
-    <id>http://www.chriscowley.me.uk/blog/2012/03/19/highly-available-nfs-slash-nas</id>
-    <content type="html"><![CDATA[<p>Take 2 Centos Servers (nfs1 and nfs2 will do nicely) and install ELrepo and EPEL on them both:</p>
-
-<!-- more -->
-
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>yum install \&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;pre>&lt;code>http://download.fedoraproject.org/pub/epel/6/i386/epel-release-6-5.noarch.rpm \
-</span><span class='line'>http://elrepo.org/elrepo-release-6-4.el6.elrepo.noarch.rpm --nogpgcheck
-</span><span class='line'>&lt;/code>&lt;/pre>
-</span><span class='line'>
-</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Each of them should ideally have 2 NICS, with the secondary ones just used for DRBD sync purposes. We’ll give these the address 10.0.0.1/32 and 10.0.0.2/32.</p>
-
-<p>I am also assuming that you have disabled the firewall and SELinux – I do not recommend that for production, but for testing it is fine.</p>
-
-<h2>DRBD Configuration</h2>
-
-<p>Install DRBD 8.4 on the both:
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>yum install drbd84-utils kmod-drbd84</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>On each node the file /etc/drbd.d/global_common.conf should contain:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>global {
-</span><span class='line'>  usage-count yes;
-</span><span class='line'>}
-</span><span class='line'>common {
-</span><span class='line'>  net {&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;pre>&lt;code>protocol C;
-</span><span class='line'>&lt;/code>&lt;/pre>
-</span><span class='line'>
-</span><span class='line'>&lt;p>  }
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>and /etc/drbd.d/main.res should contain:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>resource main {
-</span><span class='line'>  on nfs1 {&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;pre>&lt;code>device    /dev/drbd0;
-</span><span class='line'>disk      /dev/sdb;
-</span><span class='line'>address   10.0.0.1:7788;
-</span><span class='line'>meta-disk internal;
-</span><span class='line'>&lt;/code>&lt;/pre>
-</span><span class='line'>
-</span><span class='line'>&lt;p>  }
-</span><span class='line'>  on nfs2 {&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;pre>&lt;code>device    /dev/drbd0;
-</span><span class='line'>disk      /dev/sdb;
-</span><span class='line'>address   10.0.0.2:7788;
-</span><span class='line'>meta-disk internal;
-</span><span class='line'>&lt;/code>&lt;/pre>
-</span><span class='line'>
-</span><span class='line'>&lt;p>  }
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>On both nodes you will need to create the resource metadata:
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>drbdadm create-md main</span></code></pre></td></tr></table></div></figure></notextile></div>
-and start the daemons
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>service drbd start
-</span><span class='line'>chkconfig drbd on</span></code></pre></td></tr></table></div></figure></notextile></div>
-Now <code>service drbd status</code> will give you:</p>
-
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>drbd driver loaded OK; device status:
-</span><span class='line'>version: 8.4.1 (api:1/proto:86-100)
-</span><span class='line'>GIT-hash: 91b4c048c1a0e06777b5f65d312b38d47abaea80 build by dag@Build64R6, 2011-12-21 06:08:50
-</span><span class='line'>m:res   cs         ro                   ds                         p  mounted  fstype
-</span><span class='line'>0:main  Connected  Secondary/Secondary  Inconsistent/Inconsistent  C</span></code></pre></td></tr></table></div></figure></notextile></div>
-Both devices or secondary and inconsistent, this is normal at this stage. Choose a node to be your primary and run:
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>drbdadm primary --force main</span></code></pre></td></tr></table></div></figure></notextile></div>
-And it start sync’ing, which will take a long time. You can temporarily make it faster with (on one node:
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>drbdadm disk-options --resync-rate=110M main</span></code></pre></td></tr></table></div></figure></notextile></div>
-Put it back again with drbdadm adjust main</p>
-
-<p>On your primary node you can now create a fiiesystem. I’m using ext4 for no good reason other than it being the default. Use whatever you are most comfortable with.
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>mkfs.ext4 /dev/drbd0</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<h2>Configure NFS</h2>
-
-<p>If you diid a minimal Centos install, then you willl need to install the nfs-utils package (yum install nfs-utils). Prepare your mount points and exports on both servers:
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>mkdir /drbd
-</span><span class='line'>echo "/drbd/main *(rw)" >> /etc/exports</span></code></pre></td></tr></table></div></figure></notextile></div>
-Now we do the actual NFS set up. We previously choose nfs1 as our master when you used it to trigger the initial sync. On nfs1 mount the replicated volumes, move the NFS data to it, then create symlinks to our replicated data.
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>mount /dev/drbd0 /drbd
-</span><span class='line'>mkdir /drbd/main
-</span><span class='line'>mv /var/lib/nfs/ /drbd/
-</span><span class='line'>ln -s /drbd/nfs/ /var/lib/nfs
-</span><span class='line'>umount /drbd</span></code></pre></td></tr></table></div></figure></notextile></div>
-If you get errors about not bring able to remove directories in /var/lib/nfs do not worry.</p>
-
-<p>Now a little preparation on nfs2:
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>mv /var/lib/nfs /var/lib/nfs.bak
-</span><span class='line'>ln -s /drbd/nfs/ /var/lib/nfs</span></code></pre></td></tr></table></div></figure></notextile></div>
-This will create a broken symbolic link, but it will be fixed when everything fails over.</p>
-
-<h2>Heartbeat Configuration</h2>
-
-<p>Heartbeat is in the EPEL repository, so enable that and install it on both nodes:
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>yum -y install heartbeat</span></code></pre></td></tr></table></div></figure></notextile></div>
-Make sure that <em>/etc/ha.d/ha.cf</em> contains:
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>keepalive 2
-</span><span class='line'>deadtime 30
-</span><span class='line'>bcast eth0
-</span><span class='line'>node nfs1 nfs2</span></code></pre></td></tr></table></div></figure></notextile></div>
-The values in node should be whatever <code>uname -n</code> returns.</p>
-
-<p>Now create <em>/etc/ha.d/haresources</em>:
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>nfs1 IPaddr::10.0.0.100/24/eth0 drbddisk::main Filesystem::/dev/drbd0::/drbd::ext4 nfslock nfs</span></code></pre></td></tr></table></div></figure></notextile></div>
-That is a little cryptic, so I’ll explain; nfs1 is the primary node, IPaddr sets up a floating address on eth0 that our clients will connect to. This has a resource drbddisk::main bound to it, which sets our main to resource to primary on nfs1. Filesystem mounts /dev/drbd0 at /drbd on nfs1. Finally the the services nfslock and nfs are started on nfs1.</p>
-
-<p>Finally, it needs an authentication file in /etc/ha.d/authkeys, which should be chmod’ed to 600 to be only readable by root.
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>auth 3
-</span><span class='line'>3 md5 mypassword123</span></code></pre></td></tr></table></div></figure></notextile></div>
-You should also make sure that nfslock and nfs do not start up by themselves:
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>chkconfig nfs off
-</span><span class='line'>chkconfig nfslock off</span></code></pre></td></tr></table></div></figure></notextile></div>
-Now you can start heartbeat and check it is working:
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>service heartbeat start
-</span><span class='line'>chkconfig heartbeat on</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<h2>Testing</h2>
-
-<p>Running <code>ifconfig</code> on nfs1 should give you something like:
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>eth0      Link encap:Ethernet  HWaddr 52:54:00:84:73:BD&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;pre>&lt;code>      inet addr:10.0.0.1  Bcast:10.0.0.255  Mask:255.255.255.0
-</span><span class='line'>      inet6 addr: fe80::5054:ff:fe84:73bd/64 Scope:Link
-</span><span class='line'>      UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
-</span><span class='line'>      RX packets:881922 errors:0 dropped:0 overruns:0 frame:0
-</span><span class='line'>      TX packets:1302012 errors:0 dropped:0 overruns:0 carrier:0
-</span><span class='line'>      collisions:0 txqueuelen:1000
-</span><span class='line'>      RX bytes:239440621 (228.3 MiB)  TX bytes:5791818459 (5.3 GiB)
-</span><span class='line'>&lt;/code>&lt;/pre>
-</span><span class='line'>
-</span><span class='line'>&lt;p>eth0:0    Link encap:Ethernet  HWaddr 52:54:00:84:73:BD&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;pre>&lt;code>      inet addr:10.0.0.100  Bcast:10.0.0.255  Mask:255.255.255.0
-</span><span class='line'>      UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
-</span><span class='line'>&lt;/code>&lt;/pre>
-</span><span class='line'>
-</span><span class='line'>&lt;p>lo        Link encap:Local Loopback&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;pre>&lt;code>      inet addr:127.0.0.1  Mask:255.0.0.0
-</span><span class='line'>      inet6 addr: ::1/128 Scope:Host
-</span><span class='line'>      UP LOOPBACK RUNNING  MTU:16436  Metric:1
-</span><span class='line'>      RX packets:2 errors:0 dropped:0 overruns:0 frame:0
-</span><span class='line'>      TX packets:2 errors:0 dropped:0 overruns:0 carrier:0
-</span><span class='line'>      collisions:0 txqueuelen:0
-</span><span class='line'>      RX bytes:224 (224.0 b)  TX bytes:224 (224.0 b)
-</span><span class='line'>&lt;/code>&lt;/pre>
-</span><span class='line'>
-</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
-<p>Note an entry for <em>eth0:0</em> has miraculously appeared.</p>
-
-<p>Also <code>df</code> should include the entry:
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>/dev/drbd0             20G  172M   19G   1% /drbd</span></code></pre></td></tr></table></div></figure></notextile></div>
-Reboot nfs1 and the services should appear on nfs2.</p>
-
-<p>Connect an NFS client to you floating address (10.0.0.100) and you should be able to kill the live node and it will carry on.</p>
 ]]></content>
   </entry>
   
