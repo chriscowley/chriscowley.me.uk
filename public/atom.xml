@@ -4,7 +4,7 @@
   <title><![CDATA[Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-02-27T10:46:44+01:00</updated>
+  <updated>2013-03-02T09:05:19+01:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -12,6 +12,41 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Thoughts on the shiney new VMAX]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2013/03/01/thoughts-on-the-shiney-new-vmax/"/>
+    <updated>2013-03-01T15:21:00+01:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2013/03/01/thoughts-on-the-shiney-new-vmax</id>
+    <content type="html"><![CDATA[<p><img class="right" src="http://www.emc.com/R1/images/EMC_Image_C_1310593327367_header-image-vmax-10k.png"> I&#8217;ve spent a significant amount of time recently swatting up on EMC&#8217;s new <a href="http://chucksblog.emc.com/chucks_blog/2013/02/introducing-vmax-cloud-edition.html">VMAX Cloud Edition</a>. It has to be said that this looks like one of the most interesting storage announcements I have seen in a long time. In fact I have a project coming up that I think it may well be a perfect fit for.</p>
+
+<!-- more -->
+
+
+<p>First a massive thanks to EMC&#8217;s Matthew Yeager (@mpyeager) who answered a couple of questions I had. He really went the extra mile to clarify a couple of things and the <a href="http://www.youtube.com/watch?v=WoElTAevLDs">video</a> he made is well worth a watch. Also Martin Glassborow (@storagebod) has <a href="http://www.storagebod.com/wordpress/?p=1293">interesting things to say</a> as well.</p>
+
+<p>This is a product that could put a lot of people out of a job. If you are the sort of person who likes to keep hold of your little castle&#8217;s of knowledge then you will not like this from what I can see. Finally we are able to be truly customer focused, balancing cost, performance and capacity to give them exactly what they want. EMC claim this is a world first and to my knowledge they are right.</p>
+
+<p><span class='pullquote-right' data-pullquote='With that amount of data the amount of art involved diminishes'>
+Storage architects put a lot of time and effort in to tweaking quotes and systems to balance price, capacity and performance for a given work load. However, most of this is just reading up on the best-practises for a given array and situation and applying them. There is nothing that clever to it - reading and practise is what it comes down to. However, it has alway been as much an art as a science because an individual architect does not have a very large dataset to refer to. On the other hand EMC have got 60 million hours of metrics across more than 7000 VMAX systems out in the field. With that amount of data the amount of art involved diminishes and it becomes purely a science.
+</span></p>
+
+<p>What you get is a <a href="http://www.emc.com/storage/symmetrix-vmax/vmax-10k.htm">VMAX 10k</a>, but instead of defining storage pools, tiering policies, RAID levels etc you balance 3 facters: Space, performance and cost. Need a certain performance level for a certain amount of space no matter the cost? Just dial it in and mail EMC a cheque. Have a certain budget, need a certain amount of space, but performance not a problem? Same again.</p>
+
+<p>No longer will we  be carefully balancing the number of SATA and FC spindles and the types of RAID level. No longer will be worrying about what percentage of our workload we need to keep on the SSD layer to assure the necessary number of IOPS. We will not even be calculating how much space we have after the RAID overheads.</p>
+
+<p><span class='pullquote-right' data-pullquote='Here we have the abilty to easily integrate a VMAX with the likes of OpenStack Cinder, Puppet, Libvirt, or whatever'>
+That is all very interesting, but so far it is just a new approach to the UI. It is an excellent approach, but nothing especially clever. One of things I gravitated towards was the white paper about integrating with <a href="http://www.emc.com/collateral/white-papers/h11468-vmax-cloud-edition-wp.pdf">vCloud</a>. Despite it being geared toward VMware (I wonder why? - not!) the principles equally apply to any situation where automation is required. I am a huge DevOps fan (Puppet in particular). Storage arrays have never been particularly automation friendly. In addition to the cloud portal, the VMAX CE also has a RESTful API. Now that is awesome! Here we have the abilty to easily integrate a VMAX with the likes of OpenStack Cinder, Puppet, Libvirt, or whatever you want.
+</span></p>
+
+<p>Finally <a href="http://virtualgeek.typepad.com">Chad Sakac</a> informs me that VMAX CE is just the first. EMC intend to roll this management style out to other product lines. Personally I think this would suit both Isilion and Atmos lines very nicely.</p>
+
+<p>I am really excited about this product. It brings a paradigm shift in storage management and automation. Also I am led to believe that the price is exceptional as well, to point that it seems EMC may even be pushing VNX down a market level (to where it should be perhaps?). I have been a bit nasty to EMC in the past</p>
+
+<iframe width="420" height="315" src="http://www.youtube.com/embed/WoElTAevLDs" frameborder="0" allowfullscreen></iframe>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[The Linux to Storage]]></title>
@@ -836,24 +871,6 @@ The attitude to lunch is probably the biggest single change of all that can only
 
 
 <p>This will now get loaded before the main Skype executable and you will have a working video device.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[A Learning Experience]]></title>
-    <link href="http://www.chriscowley.me.uk/blog/2012/04/16/a-learning-experience/"/>
-    <updated>2012-04-16T20:30:00+02:00</updated>
-    <id>http://www.chriscowley.me.uk/blog/2012/04/16/a-learning-experience</id>
-    <content type="html"><![CDATA[<p>How many times have you installed/updated a bit of software and read the line “Please take a back up” or something to that effect? 99 times out of a hundred, you will just continue and ignore it.</p>
-
-<!-- more -->
-
-
-<p>Today I had a reminder of why it is import to do so. I did a routine plug-in upgrade on our Jira installation (Customware Salesforce connector for those who want to know). I have done this several times, I had tested it in our Dev installation I was 100% confident it would work as expected. However, I actually decided to take a backup anyway.</p>
-
-<p>I ran the upgrade in the production environment and re-indexed. Nothing out of the ordinary. 10% of the way into the index it fell over. Jira’s database was gone! Fortunately I was able to restore from my backup and at worst a comment or two was lost, but that still caused significant downtime.</p>
-
-<p>I had done everything I could to make sure the upgrade would go smoothly, but it still did not. That is why software vendors always tell you to take a backup before even the smallest change – DO IT!</p>
 ]]></content>
   </entry>
   

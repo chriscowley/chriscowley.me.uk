@@ -4,7 +4,7 @@
   <title><![CDATA[Category: storage | Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/blog/categories/storage/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-02-27T10:46:44+01:00</updated>
+  <updated>2013-03-02T09:05:19+01:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -12,6 +12,41 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Thoughts on the shiney new VMAX]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2013/03/01/thoughts-on-the-shiney-new-vmax/"/>
+    <updated>2013-03-01T15:21:00+01:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2013/03/01/thoughts-on-the-shiney-new-vmax</id>
+    <content type="html"><![CDATA[<p><img class="right" src="http://www.emc.com/R1/images/EMC_Image_C_1310593327367_header-image-vmax-10k.png"> I've spent a significant amount of time recently swatting up on EMC's new <a href="http://chucksblog.emc.com/chucks_blog/2013/02/introducing-vmax-cloud-edition.html">VMAX Cloud Edition</a>. It has to be said that this looks like one of the most interesting storage announcements I have seen in a long time. In fact I have a project coming up that I think it may well be a perfect fit for.</p>
+
+<!-- more -->
+
+
+<p>First a massive thanks to EMC's Matthew Yeager (@mpyeager) who answered a couple of questions I had. He really went the extra mile to clarify a couple of things and the <a href="http://www.youtube.com/watch?v=WoElTAevLDs">video</a> he made is well worth a watch. Also Martin Glassborow (@storagebod) has <a href="http://www.storagebod.com/wordpress/?p=1293">interesting things to say</a> as well.</p>
+
+<p>This is a product that could put a lot of people out of a job. If you are the sort of person who likes to keep hold of your little castle's of knowledge then you will not like this from what I can see. Finally we are able to be truly customer focused, balancing cost, performance and capacity to give them exactly what they want. EMC claim this is a world first and to my knowledge they are right.</p>
+
+<p><span class='pullquote-right' data-pullquote='With that amount of data the amount of art involved diminishes'>
+Storage architects put a lot of time and effort in to tweaking quotes and systems to balance price, capacity and performance for a given work load. However, most of this is just reading up on the best-practises for a given array and situation and applying them. There is nothing that clever to it - reading and practise is what it comes down to. However, it has alway been as much an art as a science because an individual architect does not have a very large dataset to refer to. On the other hand EMC have got 60 million hours of metrics across more than 7000 VMAX systems out in the field. With that amount of data the amount of art involved diminishes and it becomes purely a science.
+</span></p>
+
+<p>What you get is a <a href="http://www.emc.com/storage/symmetrix-vmax/vmax-10k.htm">VMAX 10k</a>, but instead of defining storage pools, tiering policies, RAID levels etc you balance 3 facters: Space, performance and cost. Need a certain performance level for a certain amount of space no matter the cost? Just dial it in and mail EMC a cheque. Have a certain budget, need a certain amount of space, but performance not a problem? Same again.</p>
+
+<p>No longer will we  be carefully balancing the number of SATA and FC spindles and the types of RAID level. No longer will be worrying about what percentage of our workload we need to keep on the SSD layer to assure the necessary number of IOPS. We will not even be calculating how much space we have after the RAID overheads.</p>
+
+<p><span class='pullquote-right' data-pullquote='Here we have the abilty to easily integrate a VMAX with the likes of OpenStack Cinder, Puppet, Libvirt, or whatever'>
+That is all very interesting, but so far it is just a new approach to the UI. It is an excellent approach, but nothing especially clever. One of things I gravitated towards was the white paper about integrating with <a href="http://www.emc.com/collateral/white-papers/h11468-vmax-cloud-edition-wp.pdf">vCloud</a>. Despite it being geared toward VMware (I wonder why? - not!) the principles equally apply to any situation where automation is required. I am a huge DevOps fan (Puppet in particular). Storage arrays have never been particularly automation friendly. In addition to the cloud portal, the VMAX CE also has a RESTful API. Now that is awesome! Here we have the abilty to easily integrate a VMAX with the likes of OpenStack Cinder, Puppet, Libvirt, or whatever you want.
+</span></p>
+
+<p>Finally <a href="http://virtualgeek.typepad.com">Chad Sakac</a> informs me that VMAX CE is just the first. EMC intend to roll this management style out to other product lines. Personally I think this would suit both Isilion and Atmos lines very nicely.</p>
+
+<p>I am really excited about this product. It brings a paradigm shift in storage management and automation. Also I am led to believe that the price is exceptional as well, to point that it seems EMC may even be pushing VNX down a market level (to where it should be perhaps?). I have been a bit nasty to EMC in the past</p>
+
+<iframe width="420" height="315" src="http://www.youtube.com/embed/WoElTAevLDs" frameborder="0" allowfullscreen></iframe>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[The Linux to Storage]]></title>
@@ -128,143 +163,6 @@ When the guy with the credit card sees the name "EMC" it will be hard to persuad
 <p><span class='pullquote-right' data-pullquote='I wish that EMC would be punished for this'>
 Robin Harris at <a href="http://storagemojo.com/2012/12/05/emcs-xtreme-embarrassment/">StorageMojo</a> thinks this will be a costly mistake for EMC. I disagree, I think by announcing that this is coming EMC will stall the market and thus come out of this fine. Unfortunately there is too much latency in the enterprise storage space for it to be otherwise. I wish it were a bit more dynamic and I wish that EMC would be punished for this, thus rewarding one of the underdogs. That does not happen enough in the enterprise space, especially for an Englishman like me (we do love the underdogs).
 </span></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Add SAN functions to Highly Available NFS/NAS]]></title>
-    <link href="http://www.chriscowley.me.uk/blog/2012/03/20/add-san-functions-to-highly-available-nfs-slash-nas/"/>
-    <updated>2012-03-20T21:07:00+01:00</updated>
-    <id>http://www.chriscowley.me.uk/blog/2012/03/20/add-san-functions-to-highly-available-nfs-slash-nas</id>
-    <content type="html"><![CDATA[<p>This based on my last post where I documented building a Highly Available NFS/NAS server.</p>
-
-<p>There is not a huge amount that needs to be done in order to add iSCSI functionality as well.</p>
-
-<!-- more -->
-
-
-<p>Add a file called <em>/etc/drbd/iscsi.res</em> containing:</p>
-
-<p>```
-resource iscsi {</p>
-
-<pre><code>on nfs1 {
-    device /dev/drbd1;
-    disk   /dev/vdc;
-    meta-disk internal;
-    address   10.0.0.1:7789;
-}
-on nfs2 {
-    device /dev/drbd1;
-    disk   /dev/vdc;
-    meta-disk internal;
-    address   10.0.0.2:7789;
-}
-</code></pre>
-
-<p>}
-```</p>
-
-<p>This differs from the previous resource in 2 ways. Obviously it using a different physical disk. Also the port number of the address is incremented; each resource has to have its own port to communicate on.</p>
-
-<h2>Configure Heartbeat</h2>
-
-<p>Add a new resource to <em>/etc/ha.d/haresources</em>:</p>
-
-<p><code>
-iscsi1.snellwilcox.local IPaddr::10.0.0.101/24/eth0 drbddisk::iscsi tgtd
-</code></p>
-
-<p>Same primary host, new IP address, new drbd resource and of course the service to be controlled (tgtd in this case).</p>
-
-<p>I also made a couple of changes to <em>/etc/ha.d/ha.cf</em>:</p>
-
-<p><code>
-keepalive 500ms
-deadtime 5
-warntime 10
-initdead 120
-</code></p>
-
-<p>This changes the regularity of the heartbeat packets from every 2 seconds to 2 every second. We also say that a node is dead after only 5 seconds rather than after 30.</p>
-
-<h2>Configure an iSCSI Target</h2>
-
-<p>Tgtd has a config file that you can use in <em>/etc/tgt/targets.conf</em>. It is an XML file, so add entry like:</p>
-
-<p>```
-<target iqn.2011-07.world.server:target0></p>
-
-<pre><code>    # provided devicce as a iSCSI target
-    backing-store /dev/vg_matthew/lv_iscsi1
-    # iSCSI Initiator's IP address you allow to connect
-    initiator-address 192.168.1.20
-    # authentication info ( set anyone you like for "username", "password" )
-</code></pre>
-
-<p></target>
-```</p>
-
-<p>The target name is by convention <em>iqn.year-month.reverse-domainname:hostname.targetname</em>. Each backing store will be a seperate LUN. A discussion of this is out of the scope of this article.</p>
-
-<p>By default, this config file is disabled. Enable it by un-commenting the line <code>#TGTD_CONFIG=/etc/tgt/targets.conf</code> in <em>/etc/sysconfig/tgtd</em>. You can now enable the target with service tgtd reload.</p>
-
-<p>Now when you run <code>tgtadm –mode target –op show</code> you should get something like:</p>
-
-<p>```
-Target 1: iqn.2012-03.com.example:iscsi.target1</p>
-
-<pre><code>System information:
-    Driver: iscsi
-    State: ready
-I_T nexus information:
-LUN information:
-    LUN: 0
-        Type: controller
-        SCSI ID: IET     00010000
-        SCSI SN: beaf10
-        Size: 0 MB, Block size: 1
-        Online: Yes
-        Removable media: No
-        Readonly: No
-        Backing store type: null
-        Backing store path: None
-        Backing store flags:
-    LUN: 1
-        Type: disk
-        SCSI ID: IET     00010001
-        SCSI SN: beaf11
-        Size: 8590 MB, Block size: 512
-        Online: Yes
-        Removable media: No
-        Readonly: No
-        Backing store type: rdwr
-        Backing store path: /dev/drbd/by-res/iscsi
-        Backing store flags:
-Account information:
-ACL information:
-    ALL
-</code></pre>
-
-<p>```</p>
-
-<h2>Connect An Initiator</h2>
-
-<p>Install the iscsi utils:</p>
-
-<p><code>
-yum install iscsi-initiator-utils
-chkconfig iscsi on
-chkconfig iscsid on
-</code></p>
-
-<p>Discover the targets on the host and login to the target.
-<code>
-iscsiadm -m discovery -t sendtargets -p 10.0.0.101
-iscsiadm -m node --login
-</code></p>
-
-<p>If you run <code>cat /proc/partitions</code> you will see an new partition has appeared. You can do whatever you want with it.</p>
 ]]></content>
   </entry>
   
