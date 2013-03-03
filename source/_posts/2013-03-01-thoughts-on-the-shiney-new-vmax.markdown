@@ -26,6 +26,6 @@ That is all very interesting, but so far it is just a new approach to the UI. It
 
 Finally [Chad Sakac](http://virtualgeek.typepad.com) informs me that VMAX CE is just the first. EMC intend to roll this management style out to other product lines. Personally I think this would suit both Isilion and Atmos lines very nicely.
 
-I am really excited about this product. It brings a paradigm shift in storage management and automation. Also I am led to believe that the price is exceptional as well, to point that it seems EMC may even be pushing VNX down a market level (to where it should be perhaps?). I have been a bit nasty to EMC in the past
+I am really excited about this product. It brings a paradigm shift in storage management and automation. Also I am led to believe that the price is exceptional as well, to point that it seems EMC may even be pushing VNX down a market level (to where it should be perhaps?). I have been [a bit nasty]({{ root_url }}/blog/2012/12/10/emc-extremio-thoughts/) to EMC in the past, but recently they are doing some stuff that has really got me interested. This and [Razor](https://github.com/puppetlabs/Razor) are 2 projects that are definitely worth keeping an eye on. 
 
 <iframe width="420" height="315" src="http://www.youtube.com/embed/WoElTAevLDs" frameborder="0" allowfullscreen></iframe>
