@@ -15,6 +15,7 @@ Currently I am a Technical Expert for an IT consultancy in Rennes, France. I am 
 I have a wide range of skills inlcuding, but not limited to:
 
 - Linux system architecture
+- DevOps
 - Storage Systems
   - Enterprise SAN: HP, EMC, NetApp
   - Scale-out storage: Ceph, GlusterFS in particular
