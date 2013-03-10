@@ -58,7 +58,7 @@
     </url>
     <url>
         <loc>http://www.chriscowley.me.uk/blog/2012/04/18/skype-video-on-fedora-64bit/</loc>
-        <lastmod>2013-02-21T16:38:02+01:00</lastmod>
+        <lastmod>2013-03-10T08:37:49+01:00</lastmod>
     </url>
     <url>
         <loc>
@@ -145,7 +145,7 @@
         <lastmod>2013-03-03T09:26:41+01:00</lastmod>
     </url>
     <url>
-        <loc>http://www.chriscowley.me.uk/consulting/</loc>
+        <loc>http://www.chriscowley.me.uk/contact/</loc>
         <lastmod>2013-02-21T16:38:02+01:00</lastmod>
     </url>
     <url>
@@ -153,23 +153,23 @@
         <lastmod>2013-02-21T16:38:02+01:00</lastmod>
     </url>
     <url>
-        <loc>http://www.chriscowley.me.uk/blog/archives/</loc>
-        <lastmod>2013-03-03T09:26:41+01:00</lastmod>
+        <loc>http://www.chriscowley.me.uk/</loc>
+        <lastmod>2013-03-10T08:37:49+01:00</lastmod>
+    </url>
+    <url>
+        <loc>http://www.chriscowley.me.uk/consulting/</loc>
+        <lastmod>2013-02-21T16:38:02+01:00</lastmod>
+    </url>
+    <url>
+        <loc>http://www.chriscowley.me.uk/cv/</loc>
+        <lastmod>2013-02-21T16:38:02+01:00</lastmod>
     </url>
     <url>
         <loc>http://www.chriscowley.me.uk/about/</loc>
         <lastmod>2013-02-21T16:38:02+01:00</lastmod>
     </url>
     <url>
-        <loc>http://www.chriscowley.me.uk/contact/</loc>
-        <lastmod>2013-02-21T16:38:02+01:00</lastmod>
-    </url>
-    <url>
-        <loc>http://www.chriscowley.me.uk/</loc>
-        <lastmod>2013-03-03T09:26:41+01:00</lastmod>
-    </url>
-    <url>
-        <loc>http://www.chriscowley.me.uk/cv/</loc>
-        <lastmod>2013-02-21T16:38:02+01:00</lastmod>
+        <loc>http://www.chriscowley.me.uk/blog/archives/</loc>
+        <lastmod>2013-03-10T08:37:49+01:00</lastmod>
     </url>
 </urlset>
