@@ -5,7 +5,7 @@ date: 2013-03-18 20:47
 comments: true
 categories: general
 ---
-I recently had a conversation on Twitter with my friend [Rob Borley](http://www.robborley.com/) who runs a [mobile startup](http://www.dootrix.com/). He had asked what interesting perks he should be giving his [staff](https://twitter.com/bobscape/statuses/313610008535367680).
+{% img right /images/reputation-management-starts-with-trust.jpg %} I recently had a conversation on Twitter with my friend [Rob Borley](http://www.robborley.com/) who runs a [mobile startup](http://www.dootrix.com/). He had asked what interesting perks he should be giving his [staff](https://twitter.com/bobscape/statuses/313610008535367680).
 <!-- more -->
 
 {% pullquote %}
