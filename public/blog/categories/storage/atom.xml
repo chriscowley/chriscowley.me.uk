@@ -4,7 +4,7 @@
   <title><![CDATA[Category: storage | Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/blog/categories/storage/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-03-10T20:44:00+01:00</updated>
+  <updated>2013-03-13T16:54:11+01:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -18,7 +18,7 @@
     <link href="http://www.chriscowley.me.uk/blog/2013/03/01/thoughts-on-the-shiney-new-vmax/"/>
     <updated>2013-03-01T15:21:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/03/01/thoughts-on-the-shiney-new-vmax</id>
-    <content type="html"><![CDATA[<p><img class="right" src="http://www.emc.com/R1/images/EMC_Image_C_1310593327367_header-image-vmax-10k.png"> I've spent a significant amount of time recently swatting up on EMC's new <a href="http://chucksblog.emc.com/chucks_blog/2013/02/introducing-vmax-cloud-edition.html">VMAX Cloud Edition</a>. It has to be said that this looks like one of the most interesting storage announcements I have seen in a long time. In fact I have a project coming up that I think it may well be a perfect fit for.</p>
+    <content type="html"><![CDATA[<p>{% img right  http://www.emc.com/R1/images/EMC_Image_C_1310593327367_header-image-vmax-10k.png %} I've spent a significant amount of time recently swatting up on EMC's new <a href="http://chucksblog.emc.com/chucks_blog/2013/02/introducing-vmax-cloud-edition.html">VMAX Cloud Edition</a>. It has to be said that this looks like one of the most interesting storage announcements I have seen in a long time. In fact I have a project coming up that I think it may well be a perfect fit for.</p>
 
 <!-- more -->
 
@@ -27,21 +27,21 @@
 
 <p>This is a product that could put a lot of people out of a job. If you are the sort of person who likes to keep hold of your little castle's of knowledge then you will not like this from what I can see. Finally we are able to be truly customer focused, balancing cost, performance and capacity to give them exactly what they want. EMC claim this is a world first and to my knowledge they are right.</p>
 
-<p><span class='pullquote-right' data-pullquote='With that amount of data the amount of art involved diminishes'>
-Storage architects put a lot of time and effort in to tweaking quotes and systems to balance price, capacity and performance for a given work load. However, most of this is just reading up on the best-practises for a given array and situation and applying them. There is nothing that clever to it - reading and practise is what it comes down to. However, it has alway been as much an art as a science because an individual architect does not have a very large dataset to refer to. On the other hand EMC have got 60 million hours of metrics across more than 7000 VMAX systems out in the field. With that amount of data the amount of art involved diminishes and it becomes purely a science.
-</span></p>
+<p>{% pullquote %}
+Storage architects put a lot of time and effort in to tweaking quotes and systems to balance price, capacity and performance for a given work load. However, most of this is just reading up on the best-practises for a given array and situation and applying them. There is nothing that clever to it - reading and practise is what it comes down to. However, it has alway been as much an art as a science because an individual architect does not have a very large dataset to refer to. On the other hand EMC have got 60 million hours of metrics across more than 7000 VMAX systems out in the field. {" With that amount of data the amount of art involved diminishes "} and it becomes purely a science.
+{% endpullquote %}</p>
 
 <p>What you get is a <a href="http://www.emc.com/storage/symmetrix-vmax/vmax-10k.htm">VMAX 10k</a>, but instead of defining storage pools, tiering policies, RAID levels etc you balance 3 facters: Space, performance and cost. Need a certain performance level for a certain amount of space no matter the cost? Just dial it in and mail EMC a cheque. Have a certain budget, need a certain amount of space, but performance not a problem? Same again.</p>
 
 <p>No longer will we  be carefully balancing the number of SATA and FC spindles and the types of RAID level. No longer will be worrying about what percentage of our workload we need to keep on the SSD layer to assure the necessary number of IOPS. We will not even be calculating how much space we have after the RAID overheads.</p>
 
-<p><span class='pullquote-right' data-pullquote='Here we have the abilty to easily integrate a VMAX with the likes of OpenStack Cinder, Puppet, Libvirt, or whatever'>
-That is all very interesting, but so far it is just a new approach to the UI. It is an excellent approach, but nothing especially clever. One of things I gravitated towards was the white paper about integrating with <a href="http://www.emc.com/collateral/white-papers/h11468-vmax-cloud-edition-wp.pdf">vCloud</a>. Despite it being geared toward VMware (I wonder why? - not!) the principles equally apply to any situation where automation is required. I am a huge DevOps fan (Puppet in particular). Storage arrays have never been particularly automation friendly. In addition to the cloud portal, the VMAX CE also has a RESTful API. Now that is awesome! Here we have the abilty to easily integrate a VMAX with the likes of OpenStack Cinder, Puppet, Libvirt, or whatever you want.
-</span></p>
+<p>{% pullquote %}
+That is all very interesting, but so far it is just a new approach to the UI. It is an excellent approach, but nothing especially clever. One of things I gravitated towards was the white paper about integrating with <a href="http://www.emc.com/collateral/white-papers/h11468-vmax-cloud-edition-wp.pdf">vCloud</a>. Despite it being geared toward VMware (I wonder why? - not!) the principles equally apply to any situation where automation is required. I am a huge DevOps fan (Puppet in particular). Storage arrays have never been particularly automation friendly. In addition to the cloud portal, the VMAX CE also has a RESTful API. Now that is awesome! {" Here we have the abilty to easily integrate a VMAX with the likes of OpenStack Cinder, Puppet, Libvirt, or whatever "} you want.
+{% endpullquote %}</p>
 
 <p>Finally <a href="http://virtualgeek.typepad.com">Chad Sakac</a> informs me that VMAX CE is just the first. EMC intend to roll this management style out to other product lines. Personally I think this would suit both Isilion and Atmos lines very nicely.</p>
 
-<p>I am really excited about this product. It brings a paradigm shift in storage management and automation. Also I am led to believe that the price is exceptional as well, to point that it seems EMC may even be pushing VNX down a market level (to where it should be perhaps?). I have been <a href="/blog/2012/12/10/emc-extremio-thoughts/">a bit nasty</a> to EMC in the past, but recently they are doing some stuff that has really got me interested. This and <a href="https://github.com/puppetlabs/Razor">Razor</a> are 2 projects that are definitely worth keeping an eye on.</p>
+<p>I am really excited about this product. It brings a paradigm shift in storage management and automation. Also I am led to believe that the price is exceptional as well, to point that it seems EMC may even be pushing VNX down a market level (to where it should be perhaps?). I have been <a href="{{%20root_url%20}}/blog/2012/12/10/emc-extremio-thoughts/">a bit nasty</a> to EMC in the past, but recently they are doing some stuff that has really got me interested. This and <a href="https://github.com/puppetlabs/Razor">Razor</a> are 2 projects that are definitely worth keeping an eye on.</p>
 
 <iframe width="420" height="315" src="http://www.youtube.com/embed/WoElTAevLDs" frameborder="0" allowfullscreen></iframe>
 
@@ -80,7 +80,7 @@ That is all very interesting, but so far it is just a new approach to the UI. It
 <!--more -->
 
 
-<p>What they are offering is, to me at least, a blinding flash of the obvious. It is a softweare layer that runs on a VMware hypervisor that uses local flash as a cache for whatevery is coming off your main storage array. <img class="right" src="http://pernixdata.com/images/home_graphic3.png" width="300" height="217">. That could be an SSD (or multiple) or a PCI-e card.</p>
+<p>What they are offering is, to me at least, a blinding flash of the obvious. It is a softweare layer that runs on a VMware hypervisor that uses local flash as a cache for whatevery is coming off your main storage array. {% img right http://pernixdata.com/images/home_graphic3.png 300 217 %}. That could be an SSD (or multiple) or a PCI-e card.</p>
 
 <p>Reading what they have to say, it is completely transparent to the hypervisor, so everything just works. Obviously me being an Open Source fanatic I imediately started thinking how I could do this with Linux; it took me about 5 minutes.</p>
 
@@ -150,9 +150,9 @@ What their plans are I do not know. It is very early days, maybe they will be a 
 
 <p>I hate to say it, but EMC have one HUGE advantage over all the startups. Quite simply they are EMC! As experts we know that Violin (for example) have a more mature product than EMC do.</p>
 
-<p><span class='pullquote-right' data-pullquote='When the guy with the credit card sees the name &#8220;EMC&#8221; it will be hard to persuade him that such a mature brand has the more immature product'>
-When the guy with the credit card sees the name "EMC" it will be hard to persuade him that such a mature brand has the more immature product. This won't be the case everywhere, but in a lot of large enterprise they would go to their storage experts (like me) and ask for advice on which flash array to go for; they then stipulate that it has to come from EMC's portfolio. At which point I through my hands up in despair, tell the to buy ExtremIO, the guy who has the better, more mature, solution loses the business that was rightfully theirs.
-</span></p>
+<p>{% pullquote %}
+{"When the guy with the credit card sees the name "EMC" it will be hard to persuade him that such a mature brand has the more immature product"}. This won't be the case everywhere, but in a lot of large enterprise they would go to their storage experts (like me) and ask for advice on which flash array to go for; they then stipulate that it has to come from EMC's portfolio. At which point I through my hands up in despair, tell the to buy ExtremIO, the guy who has the better, more mature, solution loses the business that was rightfully theirs.
+{% endpullquote %}</p>
 
 <p>It is not a 1.0 product, I can not accept that EMC acquired ExtremIO based on stuff that was only on paper. At best this is a 1.5 product, but realistically it is a 2.0 product. From a company with the resources of EMC, this should be coming out of the blocks running - it should be the best in class. OK, ExtremIO were further from version 1.0 than EMC were maybe lead to believe at the time, but they have got a lot of resources. After a year, they should not be in damage control mode.</p>
 
@@ -160,9 +160,9 @@ When the guy with the credit card sees the name "EMC" it will be hard to persuad
 
 <p>I would say that EMC have cocked-up here. They under-estimated the market for all-flash arrays. Even my <a href="http://www.violin-memory.com/news/press-releases/nats-selects-violin-memory-flash-storage-for-virtual-desktop-infrastructure/">old employer have got some</a> and that is in Air Traffic control - there is no-one else who relies more on "tried and tested" technology than them. They then rushed to through some money at the problem, but like of Violin were already happy where they were.</p>
 
-<p><span class='pullquote-right' data-pullquote='I wish that EMC would be punished for this'>
-Robin Harris at <a href="http://storagemojo.com/2012/12/05/emcs-xtreme-embarrassment/">StorageMojo</a> thinks this will be a costly mistake for EMC. I disagree, I think by announcing that this is coming EMC will stall the market and thus come out of this fine. Unfortunately there is too much latency in the enterprise storage space for it to be otherwise. I wish it were a bit more dynamic and I wish that EMC would be punished for this, thus rewarding one of the underdogs. That does not happen enough in the enterprise space, especially for an Englishman like me (we do love the underdogs).
-</span></p>
+<p>{% pullquote %}
+Robin Harris at <a href="http://storagemojo.com/2012/12/05/emcs-xtreme-embarrassment/">StorageMojo</a> thinks this will be a costly mistake for EMC. I disagree, I think by announcing that this is coming EMC will stall the market and thus come out of this fine. Unfortunately there is too much latency in the enterprise storage space for it to be otherwise. I wish it were a bit more dynamic and {"I wish that EMC would be punished for this"}, thus rewarding one of the underdogs. That does not happen enough in the enterprise space, especially for an Englishman like me (we do love the underdogs).
+{% endpullquote %}</p>
 ]]></content>
   </entry>
   
