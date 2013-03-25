@@ -53,3 +53,5 @@ tftp localhost -c put test
 ```
 
 Your test file should now be in `var/lib/tftpboot`.
+
+One final note with regards to VMware. This does not work if you are using the VMXNET3 adapter, so make sure you are using the E1000. Gets will work and the file will be created, but no data will be put on the server.
