@@ -7,6 +7,8 @@ categories:  linux
 ---
 Well this caught me out for an embarassingly long time. There are [loads](http://blog.penumbra.be/tag/tftp/) [of](http://www.question-defense.com/2008/11/13/linux-setup-tftp-server-on-centos) [examples](http://wiki.centos.org/EdHeron/PXESetup) of setting up a TFTP server on the web. The vast majority of them assume that you are using them read-only for PXE booting.
 
+<!-- more -->
+
 I needed to make it writeable so that it could be used for storing switch/router backups. It is trivially simple once you have read the man page (pro tip: RTFM).
 
 I am doing this on RHEL6, it should be fine on Centos, Scientific Linux or Fedora as is. Any other distro it will require some modification. First install it (install the client as well to test at the end:
