@@ -9,7 +9,7 @@
   <meta name="author" content="Chris Cowley">
 
   
-  <meta name="description" content="I recently had a conversation on Twitter with my friend Rob Borley who runs a mobile startup. He had asked what interesting perks he should be &hellip;">
+  <meta name="description" content="Well this caught me out for an embarassingly long time. There are loads of examples of setting up a TFTP server on the web. The vast majority of them &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -90,6 +90,118 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/03/25/writeable-tftp-server-on-centos/">Writeable TFTP Server on CentOS</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-25T15:45:00+01:00" pubdate data-updated="true">Monday 25 March 2013</time>
+        
+         | <a href="/blog/2013/03/25/writeable-tftp-server-on-centos/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Well this caught me out for an embarassingly long time. There are <a href="http://blog.penumbra.be/tag/tftp/">loads</a> <a href="http://www.question-defense.com/2008/11/13/linux-setup-tftp-server-on-centos">of</a> <a href="http://wiki.centos.org/EdHeron/PXESetup">examples</a> of setting up a TFTP server on the web. The vast majority of them assume that you are using them read-only for PXE booting.</p>
+
+<p>I needed to make it writeable so that it could be used for storing switch/router backups. It is trivially simple once you have read the man page (pro tip: RTFM).</p>
+
+<p>I am doing this on RHEL6, it should be fine on Centos, Scientific Linux or Fedora as is. Any other distro it will require some modification. First install it (install the client as well to test at the end:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>yum install tftp tftp-server xinetd
+</span><span class='line'>chkconfig xinetd on</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now edit the file `/etc/xinetd.d/tftp to read:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>service tftp
+</span><span class='line'>{
+</span><span class='line'>    socket_type = dgram
+</span><span class='line'>    protocol    = udp
+</span><span class='line'>    wait        = yes
+</span><span class='line'>    user        = root
+</span><span class='line'>    server      = /usr/sbin/in.tftpd
+</span><span class='line'>    server_args = -c -s /var/lib/tftpboot
+</span><span class='line'>    disable     = no
+</span><span class='line'>    per_source  = 11
+</span><span class='line'>    cps         = 100 2
+</span><span class='line'>    flags       = IPv4
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>There are 2 changes to this file from the defaults. The <code>disable</code> line enables the service. Normally that is where you leave it. However, you cannot upload to the server in this case without pre-creating the files.</p>
+
+<p>The second change adds a <code>-c</code> flag to the <code>server_args</code> line. This tells the service to create the files as necessary.</p>
+
+<p>It still will not work though. You need to tweak the filesystem permissions and SELinux:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>chmod 777 /var/lib/tftpboot
+</span><span class='line'>setsebool -P tftp_anon_write 1</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Of course you&#8217;ll also need to open up the firewall. So add the following line to <code>/etc/sysconfig/iptables</code>:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>-A INPUT -m state --state NEW -m udp -p udp -m udp --dport 69 -j ACCEPT</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If your IPtables set up is what comes out of the box, there will be a similar line to allow SSH access (tcp:22), I would add this line just after that one. If you have something more complicated, then you will probably know how to add this one as well anyway.</p>
+
+<p>You should now be able to upload something to the server</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>echo "stuff" &gt; test
+</span><span class='line'>tftp localhost -c put test</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Your test file should now be in <code>var/lib/tftpboot</code>.</p>
+
+<p>One final note with regards to VMware. This does not work if you are using the VMXNET3 adapter, so make sure you are using the E1000. GETs will work and the file will be created, but no data will be put on the server. To annoy you even more, the test PUTting to localhost will work, but PUTs from a remote host will not.</p>
+
+<p>It has been noted in the VMware forums <a href="http://communities.vmware.com/thread/215456">here</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -399,118 +511,6 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2013/01/21/writeable-tftp-server-on-centos/">Writeable TFTP Server on Centos</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-01-21T10:39:00+01:00" pubdate data-updated="true">Monday 21 January 2013</time>
-        
-         | <a href="/blog/2013/01/21/writeable-tftp-server-on-centos/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Well this caught me out for an embarassingly long time. There are <a href="http://blog.penumbra.be/tag/tftp/">loads</a> <a href="http://www.question-defense.com/2008/11/13/linux-setup-tftp-server-on-centos">of</a> <a href="http://wiki.centos.org/EdHeron/PXESetup">examples</a> of setting up a TFTP server on the web. The vast majority of them assume that you are using them read-only for PXE booting.</p>
-
-<p>I needed to make it writeable so that it could be used for storing switch/router backups. It is trivially simple once you have read the man page (pro tip: RTFM).</p>
-
-<p>I am doing this on RHEL6, it should be fine on Centos, Scientific Linux or Fedora as is. Any other distro it will require some modification. First install it (install the client as well to test at the end:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>yum install tftp tftp-server xinetd
-</span><span class='line'>chkconfig xinetd on</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now edit the file `/etc/xinetd.d/tftp to read:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>service tftp
-</span><span class='line'>{
-</span><span class='line'>    socket_type = dgram
-</span><span class='line'>    protocol    = udp
-</span><span class='line'>    wait        = yes
-</span><span class='line'>    user        = root
-</span><span class='line'>    server      = /usr/sbin/in.tftpd
-</span><span class='line'>    server_args = -c -s /var/lib/tftpboot
-</span><span class='line'>    disable     = no
-</span><span class='line'>    per_source  = 11
-</span><span class='line'>    cps         = 100 2
-</span><span class='line'>    flags       = IPv4
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<p>There are 2 changes to this file from the defaults. The <code>disable</code> line enables the service. Normally that is where you leave it. However, you cannot upload to the server in this case without pre-creating the files.</p>
-
-<p>The second change adds a <code>-c</code> flag to the <code>server_args</code> line. This tells the service to create the files as necessary.</p>
-
-<p>It still will not work though. You need to tweak the filesystem permissions and SELinux:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>chmod 777 /var/lib/tftpboot
-</span><span class='line'>setsebool -P tftp_anon_write 1</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Of course you&#8217;ll also need to open up the firewall. So add the following line to <code>/etc/sysconfig/iptables</code>:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>-A INPUT -m state --state NEW -m udp -p udp -m udp --dport 69 -j ACCEPT</span></code></pre></td></tr></table></div></figure>
-
-
-<p>If your IPtables set up is what comes out of the box, there will be a similar line to allow SSH access (tcp:22), I would add this line just after that one. If you have something more complicated, then you will probably know how to add this one as well anyway.</p>
-
-<p>You should now be able to upload something to the server</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>echo "stuff" &gt; test
-</span><span class='line'>tftp localhost -c put test</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Your test file should now be in <code>var/lib/tftpboot</code>.</p>
-
-<p>One final note with regards to VMware. This does not work if you are using the VMXNET3 adapter, so make sure you are using the E1000. GETs will work and the file will be created, but no data will be put on the server. To annoy you even more, the test PUTting to localhost will work, but PUTs from a remote host will not.</p>
-
-<p>It has been noted in the VMware forums <a href="http://communities.vmware.com/thread/215456">here</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
       <h1 class="entry-title"><a href="/blog/2012/12/17/what-will-hp-do-next/">What Will HP Do Next?</a></h1>
     
     
@@ -614,6 +614,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/03/25/writeable-tftp-server-on-centos/">Writeable TFTP Server On CentOS</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/03/18/what-a-boss-owes-their-staff/">What a boss owes their staff</a>
       </li>
     
@@ -627,10 +631,6 @@
     
       <li class="post">
         <a href="/blog/2013/02/21/something-from-the-shadows/">Something from the shadows</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/02/06/how-much-should-you-spend-on-it/">How much should you spend on IT</a>
       </li>
     
   </ul>
