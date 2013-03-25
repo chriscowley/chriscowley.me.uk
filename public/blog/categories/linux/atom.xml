@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linux | Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-03-18T21:06:20+01:00</updated>
+  <updated>2013-03-25T13:26:20+01:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -123,6 +123,77 @@ sudo server nginx start
   </entry>
   
   <entry>
+    <title type="html"><![CDATA[Writeable TFTP Server On Centos]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2013/01/21/writeable-tftp-server-on-centos/"/>
+    <updated>2013-01-21T10:39:00+01:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2013/01/21/writeable-tftp-server-on-centos</id>
+    <content type="html"><![CDATA[<p>Well this caught me out for an embarassingly long time. There are <a href="http://blog.penumbra.be/tag/tftp/">loads</a> <a href="http://www.question-defense.com/2008/11/13/linux-setup-tftp-server-on-centos">of</a> <a href="http://wiki.centos.org/EdHeron/PXESetup">examples</a> of setting up a TFTP server on the web. The vast majority of them assume that you are using them read-only for PXE booting.</p>
+
+<p>I needed to make it writeable so that it could be used for storing switch/router backups. It is trivially simple once you have read the man page (pro tip: RTFM).</p>
+
+<p>I am doing this on RHEL6, it should be fine on Centos, Scientific Linux or Fedora as is. Any other distro it will require some modification. First install it (install the client as well to test at the end:</p>
+
+<p><code>
+yum install tftp tftp-server xinetd
+chkconfig xinetd on
+</code></p>
+
+<p>Now edit the file `/etc/xinetd.d/tftp to read:</p>
+
+<p>```
+service tftp
+{</p>
+
+<pre><code>socket_type = dgram
+protocol    = udp
+wait        = yes
+user        = root
+server      = /usr/sbin/in.tftpd
+server_args = -c -s /var/lib/tftpboot
+disable     = no
+per_source  = 11
+cps         = 100 2
+flags       = IPv4
+</code></pre>
+
+<p>}
+```</p>
+
+<p>There are 2 changes to this file from the defaults. The <code>disable</code> line enables the service. Normally that is where you leave it. However, you cannot upload to the server in this case without pre-creating the files.</p>
+
+<p>The second change adds a <code>-c</code> flag to the <code>server_args</code> line. This tells the service to create the files as necessary.</p>
+
+<p>It still will not work though. You need to tweak the filesystem permissions and SELinux:</p>
+
+<p><code>
+chmod 777 /var/lib/tftpboot
+setsebool -P tftp_anon_write 1
+</code></p>
+
+<p>Of course you'll also need to open up the firewall. So add the following line to <code>/etc/sysconfig/iptables</code>:</p>
+
+<p><code>
+-A INPUT -m state --state NEW -m udp -p udp -m udp --dport 69 -j ACCEPT
+</code></p>
+
+<p>If your IPtables set up is what comes out of the box, there will be a similar line to allow SSH access (tcp:22), I would add this line just after that one. If you have something more complicated, then you will probably know how to add this one as well anyway.</p>
+
+<p>You should now be able to upload something to the server</p>
+
+<p><code>
+echo "stuff" &gt; test
+tftp localhost -c put test
+</code></p>
+
+<p>Your test file should now be in <code>var/lib/tftpboot</code>.</p>
+
+<p>One final note with regards to VMware. This does not work if you are using the VMXNET3 adapter, so make sure you are using the E1000. GETs will work and the file will be created, but no data will be put on the server. To annoy you even more, the test PUTting to localhost will work, but PUTs from a remote host will not.</p>
+
+<p>It has been noted in the VMware forums <a href="http://communities.vmware.com/thread/215456">here</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[SFTP Chroot on CentOS]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2012/11/19/sftp-chroot-on-centos/"/>
     <updated>2012-11-19T19:59:00+01:00</updated>
@@ -220,46 +291,6 @@ sftp sftptest@&lt;server&gt;
 <p>It will certainly start by running <a href="http://mpd.wikia.com/wiki/Music_Player_Daemon_Wiki" target="_blank">Music Player Daemon</a>.</p>
 
 <p><a href="http://www.flickr.com/photos/chriscowleyunix/7705281518/" title="Raspberry Pi by chriscowleysound, on Flickr"><img src="http://farm9.staticflickr.com/8023/7705281518_73c2ee8c18.jpg" width="500" height="375" alt="Raspberry Pi"></a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Installing PostgreSQL on Fedora 17]]></title>
-    <link href="http://www.chriscowley.me.uk/blog/2012/06/23/installing-postgresql-on-fedora-17/"/>
-    <updated>2012-06-23T13:02:00+02:00</updated>
-    <id>http://www.chriscowley.me.uk/blog/2012/06/23/installing-postgresql-on-fedora-17</id>
-    <content type="html"><![CDATA[<p>With the new systemd this now requires a couple of manual steps.</p>
-
-<p>Obviously we start by installing the RPMS themselves:</p>
-
-<!-- more -->
-
-
-<p><code>
-sudo yum install postgresql-server postgresql
-</code></p>
-
-<p>If you were to now try and start the server it would fail as there is no database. The old SysV init script had an <em>initdb</em> option, but this no longer exists in the systemd service script. This means that you need to initialise the database manually:
-<code>
-sudo -u postrgres initdb -D /var/lib/pgsql/
-</code></p>
-
-<p>You can now start the service and enable it permanently
-<code>
-sudo service postgresql start
-sudo chkconfig postgresql on
-</code></p>
-
-<p>Now you can enter the database as the postgres <em>superuser</em>:
-<code>
-sudo -u postgres psql -d postgres
-</code>
-Finally create your user and associated database
-<code>
-CREATE ROLE "testAdmin" LOGIN PASSWORD 'testAdmin';
-CREATE DATABASE "testDB" WITH ENCODING='UTF8' OWNER="testAdmin";
-\q
-</code></p>
 ]]></content>
   </entry>
   

@@ -121,6 +121,10 @@
         <lastmod>2013-03-13T16:52:16+01:00</lastmod>
     </url>
     <url>
+        <loc>http://www.chriscowley.me.uk/blog/2013/01/21/writeable-tftp-server-on-centos/</loc>
+        <lastmod>2013-03-25T13:20:50+01:00</lastmod>
+    </url>
+    <url>
         <loc>http://www.chriscowley.me.uk/blog/2013/01/21/trac-with-nginx-on-centos/</loc>
         <lastmod>2013-03-13T16:52:16+01:00</lastmod>
     </url>
@@ -158,7 +162,7 @@
     </url>
     <url>
         <loc>http://www.chriscowley.me.uk/</loc>
-        <lastmod>2013-03-18T21:05:26+01:00</lastmod>
+        <lastmod>2013-03-25T13:20:50+01:00</lastmod>
     </url>
     <url>
         <loc>http://www.chriscowley.me.uk/consulting/</loc>
@@ -174,6 +178,6 @@
     </url>
     <url>
         <loc>http://www.chriscowley.me.uk/blog/archives/</loc>
-        <lastmod>2013-03-18T21:05:26+01:00</lastmod>
+        <lastmod>2013-03-25T13:20:50+01:00</lastmod>
     </url>
 </urlset>

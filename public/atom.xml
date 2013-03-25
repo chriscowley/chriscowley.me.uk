@@ -4,7 +4,7 @@
   <title><![CDATA[Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-03-18T21:06:20+01:00</updated>
+  <updated>2013-03-25T13:26:20+01:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -270,6 +270,89 @@ It is not always necessary to get the shiniest stuff, with the longest/quickest 
 
 
 
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Writeable TFTP Server On Centos]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2013/01/21/writeable-tftp-server-on-centos/"/>
+    <updated>2013-01-21T10:39:00+01:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2013/01/21/writeable-tftp-server-on-centos</id>
+    <content type="html"><![CDATA[<p>Well this caught me out for an embarassingly long time. There are <a href="http://blog.penumbra.be/tag/tftp/">loads</a> <a href="http://www.question-defense.com/2008/11/13/linux-setup-tftp-server-on-centos">of</a> <a href="http://wiki.centos.org/EdHeron/PXESetup">examples</a> of setting up a TFTP server on the web. The vast majority of them assume that you are using them read-only for PXE booting.</p>
+
+<p>I needed to make it writeable so that it could be used for storing switch/router backups. It is trivially simple once you have read the man page (pro tip: RTFM).</p>
+
+<p>I am doing this on RHEL6, it should be fine on Centos, Scientific Linux or Fedora as is. Any other distro it will require some modification. First install it (install the client as well to test at the end:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>yum install tftp tftp-server xinetd
+</span><span class='line'>chkconfig xinetd on</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now edit the file `/etc/xinetd.d/tftp to read:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>service tftp
+</span><span class='line'>{
+</span><span class='line'>    socket_type = dgram
+</span><span class='line'>    protocol    = udp
+</span><span class='line'>    wait        = yes
+</span><span class='line'>    user        = root
+</span><span class='line'>    server      = /usr/sbin/in.tftpd
+</span><span class='line'>    server_args = -c -s /var/lib/tftpboot
+</span><span class='line'>    disable     = no
+</span><span class='line'>    per_source  = 11
+</span><span class='line'>    cps         = 100 2
+</span><span class='line'>    flags       = IPv4
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>There are 2 changes to this file from the defaults. The <code>disable</code> line enables the service. Normally that is where you leave it. However, you cannot upload to the server in this case without pre-creating the files.</p>
+
+<p>The second change adds a <code>-c</code> flag to the <code>server_args</code> line. This tells the service to create the files as necessary.</p>
+
+<p>It still will not work though. You need to tweak the filesystem permissions and SELinux:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>chmod 777 /var/lib/tftpboot
+</span><span class='line'>setsebool -P tftp_anon_write 1</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Of course you&#8217;ll also need to open up the firewall. So add the following line to <code>/etc/sysconfig/iptables</code>:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>-A INPUT -m state --state NEW -m udp -p udp -m udp --dport 69 -j ACCEPT</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If your IPtables set up is what comes out of the box, there will be a similar line to allow SSH access (tcp:22), I would add this line just after that one. If you have something more complicated, then you will probably know how to add this one as well anyway.</p>
+
+<p>You should now be able to upload something to the server</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>echo "stuff" &gt; test
+</span><span class='line'>tftp localhost -c put test</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Your test file should now be in <code>var/lib/tftpboot</code>.</p>
+
+<p>One final note with regards to VMware. This does not work if you are using the VMXNET3 adapter, so make sure you are using the E1000. GETs will work and the file will be created, but no data will be put on the server. To annoy you even more, the test PUTting to localhost will work, but PUTs from a remote host will not.</p>
+
+<p>It has been noted in the VMware forums <a href="http://communities.vmware.com/thread/215456">here</a></p>
 ]]></content>
   </entry>
   
@@ -818,56 +901,6 @@ The attitude to lunch is probably the biggest single change of all that can only
 <p>Anyone who even touches on Web vs mobile development should really watch it. His comes out with some very good idea.</p>
 
 <iframe src="http://player.vimeo.com/video/44618744?title=0&amp;byline=0&amp;portrait=0&amp;color=ff9933" width="400" height="300" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Installing PostgreSQL on Fedora 17]]></title>
-    <link href="http://www.chriscowley.me.uk/blog/2012/06/23/installing-postgresql-on-fedora-17/"/>
-    <updated>2012-06-23T13:02:00+02:00</updated>
-    <id>http://www.chriscowley.me.uk/blog/2012/06/23/installing-postgresql-on-fedora-17</id>
-    <content type="html"><![CDATA[<p>With the new systemd this now requires a couple of manual steps.</p>
-
-<p>Obviously we start by installing the RPMS themselves:</p>
-
-<!-- more -->
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo yum install postgresql-server postgresql</span></code></pre></td></tr></table></div></figure>
-
-
-<p>If you were to now try and start the server it would fail as there is no database. The old SysV init script had an <em>initdb</em> option, but this no longer exists in the systemd service script. This means that you need to initialise the database manually:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo -u postrgres initdb -D /var/lib/pgsql/</span></code></pre></td></tr></table></div></figure>
-
-
-<p>You can now start the service and enable it permanently</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo service postgresql start
-</span><span class='line'>sudo chkconfig postgresql on</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now you can enter the database as the postgres <em>superuser</em>:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo -u postgres psql -d postgres</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Finally create your user and associated database</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>CREATE ROLE "testAdmin" LOGIN PASSWORD 'testAdmin';
-</span><span class='line'>CREATE DATABASE "testDB" WITH ENCODING='UTF8' OWNER="testAdmin";
-</span><span class='line'>\q</span></code></pre></td></tr></table></div></figure>
-
-
 
 ]]></content>
   </entry>
