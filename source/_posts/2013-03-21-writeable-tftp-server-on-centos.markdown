@@ -9,7 +9,7 @@ Well this caught me out for an embarassingly long time. There are [loads](http:/
 
 I needed to make it writeable so that it could be used for storing switch/router backups. It is trivially simple once you have read the man page (pro tip: RTFM).
 
-First install it (install the client as well to test at the end:
+I am doing this on RHEL6, it should be fine on Centos, Scientific Linux or Fedora as is. Any other distro it will require some modification. First install it (install the client as well to test at the end:
 
 ```
 yum install tftp tftp-server xinetd
@@ -45,6 +45,14 @@ chmod 777 /var/lib/tftpboot
 setsebool -P tftp_anon_write 1
 ```
 
+Of course you'll also need to open up the firewall. So add the following line to `/etc/sysconfig/iptables`:
+
+```
+-A INPUT -m state --state NEW -m udp -p udp -m udp --dport 69 -j ACCEPT
+```
+
+If your IPtables set up is what comes out of the box, there will be a similar line to allow SSH access (tcp:22), I would add this line just after that one. If you have something more complicated, then you will probably know how to add this one as well anyway.
+
 You should now be able to upload something to the server
 
 ```
@@ -55,3 +63,5 @@ tftp localhost -c put test
 Your test file should now be in `var/lib/tftpboot`.
 
 One final note with regards to VMware. This does not work if you are using the VMXNET3 adapter, so make sure you are using the E1000. GETs will work and the file will be created, but no data will be put on the server. To annoy you even more, the test PUTting to localhost will work, but PUTs from a remote host will not.
+
+It has been noted in the VMware forums [here](http://communities.vmware.com/thread/215456)
