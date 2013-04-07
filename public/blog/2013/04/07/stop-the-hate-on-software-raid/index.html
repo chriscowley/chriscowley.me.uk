@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>What a boss owes their staff - Just Another Linux Blog</title>
+  <title>Stop the hate on software RAID - Just Another Linux Blog</title>
   <meta name="author" content="Chris Cowley">
 
   
-  <meta name="description" content="I recently had a conversation on Twitter with my friend Rob Borley who runs a mobile startup. He had asked what interesting perks he should be &hellip;">
+  <meta name="description" content="I&#8217;ve had a another bee in my bonnet recently. Specifically, it has been to do with hardware vs software RAID, but I think it goes deeper than &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.chriscowley.me.uk/blog/2013/03/18/what-a-boss-owes-their-staff/">
+  <link rel="canonical" href="http://www.chriscowley.me.uk/blog/2013/04/07/stop-the-hate-on-software-raid/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -93,7 +93,7 @@
   
   <header>
     
-      <h1 class="entry-title">What a Boss Owes Their Staff</h1>
+      <h1 class="entry-title">Stop the Hate on Software RAID</h1>
     
     
       <p class="meta">
@@ -109,7 +109,7 @@
   
 
 
-<time datetime="2013-03-18T20:47:00+01:00" pubdate data-updated="true">Monday 18 March 2013</time>
+<time datetime="2013-04-07T20:21:00+02:00" pubdate data-updated="true">Sunday 07 April 2013</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -118,26 +118,74 @@
   </header>
 
 
-<div class="entry-content"><p><img class="right" src="/images/reputation-management-starts-with-trust.jpg"> I recently had a conversation on Twitter with my friend <a href="http://www.robborley.com/">Rob Borley</a> who runs a <a href="http://www.dootrix.com/">mobile startup</a>. He had asked what interesting perks he should be giving his <a href="https://twitter.com/bobscape/statuses/313610008535367680">staff</a>.</p>
+<div class="entry-content"><p><img class="right" src="/images/NetappClustering.jpg">I&#8217;ve had a another bee in my bonnet recently. Specifically, it has been to do with hardware vs software RAID, but I think it goes deeper than that. It started a couple of months back with a discussion on <a href="http://redd.it/18dp63">Reddit</a>. Some of the comments were:</p>
+
+<blockquote><p>Get out, get out now.</p>
+
+<p>while he still can..</p>
+
+<p>WHAT!?
+60 TB on software raid.
+Jeezus.</p>
+
+<p>Software raid? Get rid of it.</p></blockquote>
+
+<p>It then got re-awakened the other day when Matt Simmons (aka <a href="http://www.standalone-sysadmin.com/blog/">The Standalone Sysadmin</a>) asked the following question on Twitter:</p>
+
+<blockquote class="twitter-tweet"><p>So what are the modern arguments for / against hardware / software RAID? I don&#8217;t get out much. <a href="https://twitter.com/search/%23sysadmin">#sysadmin</a></p>&mdash; Matt Simmons (@standaloneSA) <a href="https://twitter.com/standaloneSA/status/319932013492703233">April 4, 2013</a></blockquote>
+
+
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
 
 <!-- more -->
 
 
-<p><span class='pullquote-right' data-pullquote='When you have a great work environment what is it that is at the root?'>
-My initial response was the standard IT answer. Training, certifications and a lab to play in, which they already have. I like to find the root cause of things, usually that means looking for the underlying reason something is broken. In this case I wanted to put a more positive spin on it. When you have a great work environment what is it that is at the root? The answer is simple: trust.
+<p>At the time of writing, 2 people replied: myself and <a href="http://utcc.utoronto.ca/~cks/space/blog/">Chris Siebenmann</a>. Both of us basically said software RAID is better, hardware is at best pointless.</p>
+
+<p>First of all, I need to define what I mean by hardware RAID. First, I do not care about what you are using for your c:\ drive in Windows, or your / partition in Linux. I am talking about the place where you store your business critical data. If you file server goes down, that is a bad day, but the business will live on. Lose your business data, then you will be out of a job (most likely alongside everyone else). Hardware RAID can thus fall into to categories:</p>
+
+<ul>
+<li>a bunch of disks attached to a PCI-e card in a big server</li>
+<li>an external storage array. This could be either SAN or NAS, once again I do not care in this instance.</li>
+</ul>
+
+
+<p>I am firmly of the opinion that hardware RAID cards should no longer exist. They are at best pointless and at worst a liability. Modern systems are so fast that there is no real performance hit. Also management is a lot easier; if you have a hardware array then you will need to load the manufacturer&#8217;s utilities in order to manage it. By manage, I mean to be told when a disk has failed. On Linux, there is no guarantee that will work. There is a couple of vendors that require packages from RHEL4 to be installed on RHEL6 systems to install their tools. Also, they are invariable closed source, will most likely taint my kernel with binary blobs and generally cause a mess on my previously clean system. By contrast, using software RAID means that I can do all the management with trivial little scripts that can easily be integrated with any monitoring system that I choose to use.</p>
+
+<p>I can understand why people are skeptical of software RAID. There have been performance reasons and practical reasons for it not to be trusted. I&#8217;m not going to address the performance argument, suffice to say that RAID is now 25 years old - CPUs have moved on a lot in that time. I remember when the first Promise IDE controllers came out, that used a kind of pseudo-hardware RAID - it was not pretty. The preconceptions are compounded by the plethora of nasty controllers built in to consumer motherboards and (possibly worst of all) Window&#8217;s built in RAID that was just bad.</p>
+
+<p>The thing is, those days are now a long way behind us. For Linux there is absolutely no need for hardware RAID, even Windows will be just fine with an motherboard based RAID for its c: drive.</p>
+
+<p><span class='pullquote-right' data-pullquote='I would say that hardware RAID is a liability'>
+In fact I would say that hardware RAID is a liability. You go to all that effort to safe-guard your data, but the card becomes a single-point-of-failure. It dies, then you spend your time searching Ebay for the same model of card. You buy it, then you pray that the RAID data is stored on the disks and not the controller (not always the case). By contrast, if you use software RAID and the motherboard dies, then you pull the disks and plug them into whatever box running Linux and you recover your data.
 </span></p>
 
-<p>By way of a silly example, if I were to put a cake in the middle of my son&#8217;s classroom, I can guarantee that the majority of the cake will go into the mouths of a few, while most will probably not get any. Why? They are children, that is why. However, if I give it to his teacher then she will make sure that it gets evenly distributed to everyone. She, like your staff, is an adult and she behaves as such.</p>
+<p>There is definitely a time and place for an external array. If you are using virtualisation properly, you need shared storage. The best way to do that, 9 times out of 10, is with an external array. However, even that may well not be as it seems. There are some that still develop dedicated hardware and come out with exciting gear (HP 3Par and Hitachi Data Systems spring to mind). However, the majority of storage is now on Software.</p>
 
-<p><span class='pullquote-right' data-pullquote='if someone is going to sit there surfing Engadget all day, you are powerless to stop them'>
-The has been a lot in the news recently about remote-working. Chiefly because of the new Yahoo CEO <a href="http://allthingsd.com/20130222/physically-together-heres-the-internal-yahoo-no-work-from-home-memo-which-extends-beyond-remote-workers/">putting a stop</a> to it. I have to fall in line with what Tony Schwartz <a href="http://www.businessinsider.com/want-productive-employees-treat-them-like-adults-2013-3">wrote in response</a> to that on Business Insider. Basically, if you cannot trust your staff to work when they are not in the office, you have hired the wrong people. You cannot be watching them all the time, nor can middle-management once you are past the start-up stage. Basically, if someone is going to sit there surfing Engadget all day, you are powerless to stop them. However, they will not be delivering, so they have to go. Likewise I have had colleagues who everytime I looked at their screen were surfing Ebay, or the Register. We hardly ever discussed computers, we mostly discussed trains and bikes. We delivered however, so who cares what was in our browser window and conversation? I myself got pulled to one side one day by my old boss to ask why I was playing around with an ESX server. We had no VMware servers, nor did we have any plans to. My response was that it would help make me better at my job. A year later we started rolling out a VMware infrastructrue, a project which I lead because I had taken the time to learn stuff. My boss had <em>trusted</em> me that I was not wasting my time and it paid off for him because we did not have to get in expensive consultants.
+<p>Let take a look at these things and see just how much &#8220;hardware&#8221; is actually involved.</p>
+
+<p><span class='pullquote-right' data-pullquote='Since the Clariion CX4 EMC has been using Windows Storage Server'>
+The EMC VMAX is a big, big black box of storage. Even the &#8220;baby&#8221; 10k one scales up to 1.5PB and 4 engines. The 40k will go up to 3PB and 8 engines. Look a little deeper (one line further on the spec sheet) and you find that what those engines are: quad Xeons (dual on the 10/20k). The great big bad VMAX is a bunch of standard x86 servers running funky software to do all the management and RAID calculations. What is that funky software? Since the Clariion CX4 EMC has been using Windows Storage Server (based on XP).
 </span></p>
 
-<p><span class='pullquote-right' data-pullquote='Trust leads to everything else that we like about work.'>
-Trust leads to everything else that we like about work. Allowing your staff to work from home whenever they want is a question of trust. Perhaps one of them is spending time learning how to program in <a href="http://golang.org/">Go</a> even though you are a Dot Net house. Let them do so, trust them that they are going to make themselves a better programmer.
+<p>Like its big brother, the VNX also runs Windows Storage server on a pair of Xeon servers. Move along to EMC&#8217;s other lines we find Isilion is nothing more than a big pile of Supermicro servers running (IIRC) FreeBSD. That big box of backup (Avamar) is also a bunch of Supermicro servers, this time running SUSE Linux.</p>
+
+<p>Netapp&#8217;s famed FAS range similarly runs on commodity hardware,OnTAP is <a href="https://en.wikipedia.org/wiki/NetApp_filer">BSD</a> based.</p>
+
+<p>The list goes on, Dell Compellent? When I looked at it in early 2012, it was still running on Supermicro dual Xeons. The plan was to move it to Dell R-series servers as soon as possible. They were doing validation at the time, I suspect the move is complete now. Reading between the lines, I came away with the impression that it runs on FreeBSD, but I do not know for sure. CoRAID use Supermicro servers, they unusually run Plan9 as their OS. HP StoreVirtual (formerly Lefthand) runs or Proliant Gen8 servers or VMware. In all these cases, there is no extra hardware involved.</p>
+
+<p><span class='pullquote-right' data-pullquote='The people that write the MD stack in the Linux kernel are not cowboys'>
+The people that write the MD stack in the Linux kernel are not cowboys. It has proved over and over again that is both stable and fast. I have trusted some of the most important data under my care to their software:  for many years the ERP system at <a href="http://www.snellgroup.com">Snell</a> has been running on MD devices quite happily. We found it much faster than the P410 cards in the DL360G5 servers that host it. Additionally, you do not need to load in any funky modules or utilities - everything you need to manage the devices is there in the distribution.
 </span></p>
 
-<p>This stuff may pay off directly (as in my VMware example), may be it won&#8217;t. If you let people work from home, maybe at times you will wonder what they are doing. You will however have a happier employee. If that employee has no desire to go anywhere else, but wants to deliver the best they can for your company then you can only win.</p>
+<p>ZFS also recommends to bypass any RAID devices and let it do everything in software, as does Btrfs. With <em>Storage Spaces</em> in Server 2012 Microsoft is definitely angling towards software controlled storage as well.</p>
+
+<p>As with everything in IT, hardware is falling by the wayside in storage. Modern processors can do the processing so fast that there is no performance need for hardware in between your OS and the disks any more. The OS layers (Storage Spaces on Windows and especially MD/LVM on Linux) are so mature now that their reliability can be taken as a given. With the management advantages, there really is no technical reason to stick with hardware RAID. In fact the closer you can get the raw disks to your OS the better.</p>
+
+<p><span class='pullquote-right' data-pullquote='we need to know what is inside that magic black box, especially when it is in the spec sheet'>
+As I said at the start, the subject here is software vs hardware RAID, but my problem goes deeper than that particular argument. As technology professional, we are technical people. We need to understand what is going on under the bonnet - that is our job! It may be fine for a vendor to pull the wool over a CFO&#8217;s eyes, but we need to know what is inside that magic black box, especially when it is in the spec sheet.
+</span></p>
 </div>
 
 
@@ -160,12 +208,12 @@ Trust leads to everything else that we like about work. Allowing your staff to w
   
 
 
-<time datetime="2013-03-18T20:47:00+01:00" pubdate data-updated="true">Monday 18 March 2013</time>
+<time datetime="2013-04-07T20:21:00+02:00" pubdate data-updated="true">Sunday 07 April 2013</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/general/'>general</a>
+    <a class='category' href='/blog/categories/storage/'>storage</a>
   
 </span>
 
@@ -174,7 +222,7 @@ Trust leads to everything else that we like about work. Allowing your staff to w
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.chriscowley.me.uk/blog/2013/03/18/what-a-boss-owes-their-staff/" data-via="chriscowleyunix" data-counturl="http://www.chriscowley.me.uk/blog/2013/03/18/what-a-boss-owes-their-staff/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.chriscowley.me.uk/blog/2013/04/07/stop-the-hate-on-software-raid/" data-via="chriscowleyunix" data-counturl="http://www.chriscowley.me.uk/blog/2013/04/07/stop-the-hate-on-software-raid/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -187,10 +235,8 @@ Trust leads to everything else that we like about work. Allowing your staff to w
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/03/01/thoughts-on-the-shiney-new-vmax/" title="Previous Post: Thoughts on the shiney new VMAX">&laquo; Thoughts on the shiney new VMAX</a>
+        <a class="basic-alignment left" href="/blog/2013/03/25/writeable-tftp-server-on-centos/" title="Previous Post: Writeable TFTP Server On CentOS">&laquo; Writeable TFTP Server On CentOS</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/03/25/writeable-tftp-server-on-centos/" title="Next Post: Writeable TFTP Server On CentOS">Writeable TFTP Server On CentOS &raquo;</a>
       
     </p>
   </footer>
