@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Excellent seminar given by a friend of mine - Just Another Linux Blog</title>
+  <title>Using Hiera with Puppet - Just Another Linux Blog</title>
   <meta name="author" content="Chris Cowley">
 
   
-  <meta name="description" content="My friend Rob Borley was talking at this year&#8217;s International Web Management Workshow. He actually got voted &#8220;best talk&#8221; - which &hellip;">
+  <meta name="description" content="Using Hiera with Puppet is something I have struggled with a bit. I could see the benefits, namely decoupling my site configuration from my logic. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.chriscowley.me.uk/blog/2012/07/03/excellent-seminar-given-by-a-friend-of-mine/">
+  <link rel="canonical" href="http://www.chriscowley.me.uk/blog/2013/04/11/using-hiera-with-puppet/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -93,7 +93,7 @@
   
   <header>
     
-      <h1 class="entry-title">Excellent Seminar Given by a Friend of Mine</h1>
+      <h1 class="entry-title">Using Hiera With Puppet</h1>
     
     
       <p class="meta">
@@ -109,7 +109,7 @@
   
 
 
-<time datetime="2012-07-03T15:01:00+02:00" pubdate data-updated="true">Tuesday 03 July 2012</time>
+<time datetime="2013-04-11T20:24:00+02:00" pubdate data-updated="true">Thursday 11 April 2013</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -118,15 +118,106 @@
   </header>
 
 
-<div class="entry-content"><p>My friend <a target="_blank" href="http://twitter.com/#!/bobscape">Rob Borley</a> was talking at this year&#8217;s <a href="http://iwmw.ukoln.ac.uk/" target="_blank">International Web Management Workshow</a>. He actually got voted &#8220;best talk&#8221; - which was nice.</p>
+<div class="entry-content"><p>Using Hiera with Puppet is something I have struggled with a bit. I could see the benefits, namely decoupling my site configuration from my logic. However, for some reason I struggled a bit to really get my head around it. This was compounded by it being quite new (only really integrated in Puppet 3), so the docs are  little lacking.</p>
 
 <!-- more -->
 
 
-<p>Anyone who even touches on Web vs mobile development should really watch it. His comes out with some very good idea.</p>
+<p>There is some though, the <a href="http://docs.puppetlabs.com/hiera/latest/">documentation on PuppetLab&#8217;s site</a> is excellent, but a bit light. It explains the principles well, but is a little limited in real-world examples. Probably the best resource I found was Kelsey Hightower&#8217;s excellent presentation at <a href="http://youtu.be/z9TK-gUNFHk">PuppetConf 2012</a>:</p>
 
-<iframe src="http://player.vimeo.com/video/44618744?title=0&amp;byline=0&amp;portrait=0&amp;color=ff9933" width="400" height="300" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+<p>I learnt a lot from that, but it would be nice if there was an equivalent written down. I suppose that is what I am aiming at here.</p>
 
+<h1>Configuration</h1>
+
+<ul>
+<li>NFS Module: https://github.com/chriscowley/my-puppet/tree/master/modules/nfs</li>
+<li>Hiera Config: https://github.com/chriscowley/my-puppet/blob/master/hiera.yaml</li>
+<li>Hiera Data: https://github.com/chriscowley/my-puppet/tree/master/hieradata</li>
+</ul>
+
+
+<p>I am using Open Source Puppet 3. If you are using 2.7 or Puppet Enterprise, files will be in a slightly different place. That is all explained in the documentation linked above.</p>
+
+<p>The first thing you need to do is configure Hiera using the file <code>/etc/puppet/hiera.yaml</code>. Mine looks like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>---
+</span><span class='line'>:backends:
+</span><span class='line'>- yaml
+</span><span class='line'>:yaml:
+</span><span class='line'>:datadir: /etc/puppet/hieradata/
+</span><span class='line'>:hierarchy:
+</span><span class='line'>- %{::clientcert}
+</span><span class='line'>- common</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This tells Hiera to use only the YAML backend - I do not like JSON because it always looks messy to me. It will look for the data in the folder <code>/etc/puppet/hieradata</code>. Finally it will look in that folder for a file called <clientcert>.yaml, then common.yaml. The process it uses to apply the values is explained very nicely in this image:
+<img src="http://docs.puppetlabs.com/hiera/latest/images/hierarchy1.png"></p>
+
+<p>Next, create the file <code>/etc/puppet/hieradata/&lt;certname&gt;.yaml</code> that contains your NFS exports:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>---
+</span><span class='line'>exports:
+</span><span class='line'>- /srv/iso
+</span><span class='line'>- /srv/images</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, checkout my NFS module from Github links above. If you are not on RHEL6 or similar (I use Centos personally) you will have to modify it as needed.</p>
+
+<p>There are 2 files that are really interesting here. The manifest file (manifests/server.pp) and the template to build the <code>/etc/exports</code> file (templates/exports.erb). We&#8217;ll take apart the manifest, the template just iterates over the data passed to it from that.</p>
+
+<p>The first line creates an array variable called $exports from the Hiera data. Specifically, it looks for a key called <em>exports</em>. Hiera then goes through the hierarchy explained earlier looking for that key. In this case it will find it in the <certname>.yaml.</p>
+
+<p>This data is now used for 2 things. First it creates the necessary folders, then it build <code>/etc/exports</code>. Here there is a minor problem, because you cannot do a <em>for each</em> loop in a Puppet manifest. We can fiddle it a bit by using a <a href="http://docs.puppetlabs.com/puppet/3/reference/lang_defined_types.html">defined type</a>.</p>
+
+<p>The line <code>list_exports { $exports:; }</code> passes the <code>$exports</code> array to the type we define above it. This then goes ahead and creates the folders ready to be exported. The <code>-&gt;</code> builds an <a href="http://docs.puppetlabs.com/puppet/3/reference/lang_relationships.html#chaining-arrows">order relationship</a> with the File resource for <em>/etc/exports</em>. Specifically, that the directories need to be created before they are exported.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>  define list_exports {
+</span><span class='line'>    $export = $name
+</span><span class='line'>    file { $export:
+</span><span class='line'>      ensure =&gt; directory,
+</span><span class='line'>      mode =&gt; '0755',
+</span><span class='line'>      owner =&gt; 'root',
+</span><span class='line'>      group =&gt; 'root'
+</span><span class='line'>    }
+</span><span class='line'>  }
+</span><span class='line'>  list_exports { $exports:; } -&gt; File['/etc/exports']</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now it can go ahead and build the <code>/etc/exports</code> file using that same $exports array in the <code>templates/exports.erb</code> template:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>  &lt;% [exports].flatten.each do |export| -%&gt;
+</span><span class='line'>  &lt;%= export %&gt; 192.168.1.0/255.255.255.0(rw,no_root_squash,no_subtree_check)
+</span><span class='line'>  &lt;% end -%&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>There is nothing especially Hiera&#8217;y about this, other than where the data in that array came from.</p>
+
+<p>The rest of the manifest deals with installing the packages and configuring services. Once again, nothing especially linked with Hiera, but hopefully it will be useful for anyone wanting to Puppetize their NFS servers - which of course you should be.</p>
 </div>
 
 
@@ -149,12 +240,12 @@
   
 
 
-<time datetime="2012-07-03T15:01:00+02:00" pubdate data-updated="true">Tuesday 03 July 2012</time>
+<time datetime="2013-04-11T20:24:00+02:00" pubdate data-updated="true">Thursday 11 April 2013</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/mobile/'>mobile</a>, <a class='category' href='/blog/categories/web/'>web</a>
+    <a class='category' href='/blog/categories/devops/'>devops</a>
   
 </span>
 
@@ -163,7 +254,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.chriscowley.me.uk/blog/2012/07/03/excellent-seminar-given-by-a-friend-of-mine/" data-via="chriscowleyunix" data-counturl="http://www.chriscowley.me.uk/blog/2012/07/03/excellent-seminar-given-by-a-friend-of-mine/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.chriscowley.me.uk/blog/2013/04/11/using-hiera-with-puppet/" data-via="chriscowleyunix" data-counturl="http://www.chriscowley.me.uk/blog/2013/04/11/using-hiera-with-puppet/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -176,10 +267,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2012/06/23/installing-postgresql-on-fedora-17/" title="Previous Post: Installing PostgreSQL on Fedora 17">&laquo; Installing PostgreSQL on Fedora 17</a>
+        <a class="basic-alignment left" href="/blog/2013/04/07/stop-the-hate-on-software-raid/" title="Previous Post: Stop the hate on software RAID">&laquo; Stop the hate on software RAID</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2012/07/03/fixed-my-gihub-repo-list/" title="Next Post: Fixed my gihub repo list">Fixed my gihub repo list &raquo;</a>
       
     </p>
   </footer>

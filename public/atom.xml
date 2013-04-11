@@ -4,7 +4,7 @@
   <title><![CDATA[Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-04-07T21:26:19+02:00</updated>
+  <updated>2013-04-11T22:16:56+02:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -12,6 +12,114 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Using Hiera with Puppet]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2013/04/11/using-hiera-with-puppet/"/>
+    <updated>2013-04-11T20:24:00+02:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2013/04/11/using-hiera-with-puppet</id>
+    <content type="html"><![CDATA[<p>Using Hiera with Puppet is something I have struggled with a bit. I could see the benefits, namely decoupling my site configuration from my logic. However, for some reason I struggled a bit to really get my head around it. This was compounded by it being quite new (only really integrated in Puppet 3), so the docs are  little lacking.</p>
+
+<!-- more -->
+
+
+<p>There is some though, the <a href="http://docs.puppetlabs.com/hiera/latest/">documentation on PuppetLab&#8217;s site</a> is excellent, but a bit light. It explains the principles well, but is a little limited in real-world examples. Probably the best resource I found was Kelsey Hightower&#8217;s excellent presentation at <a href="http://youtu.be/z9TK-gUNFHk">PuppetConf 2012</a>:</p>
+
+<p>I learnt a lot from that, but it would be nice if there was an equivalent written down. I suppose that is what I am aiming at here.</p>
+
+<h1>Configuration</h1>
+
+<ul>
+<li>NFS Module: https://github.com/chriscowley/my-puppet/tree/master/modules/nfs</li>
+<li>Hiera Config: https://github.com/chriscowley/my-puppet/blob/master/hiera.yaml</li>
+<li>Hiera Data: https://github.com/chriscowley/my-puppet/tree/master/hieradata</li>
+</ul>
+
+
+<p>I am using Open Source Puppet 3. If you are using 2.7 or Puppet Enterprise, files will be in a slightly different place. That is all explained in the documentation linked above.</p>
+
+<p>The first thing you need to do is configure Hiera using the file <code>/etc/puppet/hiera.yaml</code>. Mine looks like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>---
+</span><span class='line'>:backends:
+</span><span class='line'>- yaml
+</span><span class='line'>:yaml:
+</span><span class='line'>:datadir: /etc/puppet/hieradata/
+</span><span class='line'>:hierarchy:
+</span><span class='line'>- %{::clientcert}
+</span><span class='line'>- common</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This tells Hiera to use only the YAML backend - I do not like JSON because it always looks messy to me. It will look for the data in the folder <code>/etc/puppet/hieradata</code>. Finally it will look in that folder for a file called <clientcert>.yaml, then common.yaml. The process it uses to apply the values is explained very nicely in this image:
+<img src="http://docs.puppetlabs.com/hiera/latest/images/hierarchy1.png"></p>
+
+<p>Next, create the file <code>/etc/puppet/hieradata/&lt;certname&gt;.yaml</code> that contains your NFS exports:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>---
+</span><span class='line'>exports:
+</span><span class='line'>- /srv/iso
+</span><span class='line'>- /srv/images</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, checkout my NFS module from Github links above. If you are not on RHEL6 or similar (I use Centos personally) you will have to modify it as needed.</p>
+
+<p>There are 2 files that are really interesting here. The manifest file (manifests/server.pp) and the template to build the <code>/etc/exports</code> file (templates/exports.erb). We&#8217;ll take apart the manifest, the template just iterates over the data passed to it from that.</p>
+
+<p>The first line creates an array variable called $exports from the Hiera data. Specifically, it looks for a key called <em>exports</em>. Hiera then goes through the hierarchy explained earlier looking for that key. In this case it will find it in the <certname>.yaml.</p>
+
+<p>This data is now used for 2 things. First it creates the necessary folders, then it build <code>/etc/exports</code>. Here there is a minor problem, because you cannot do a <em>for each</em> loop in a Puppet manifest. We can fiddle it a bit by using a <a href="http://docs.puppetlabs.com/puppet/3/reference/lang_defined_types.html">defined type</a>.</p>
+
+<p>The line <code>list_exports { $exports:; }</code> passes the <code>$exports</code> array to the type we define above it. This then goes ahead and creates the folders ready to be exported. The <code>-&gt;</code> builds an <a href="http://docs.puppetlabs.com/puppet/3/reference/lang_relationships.html#chaining-arrows">order relationship</a> with the File resource for <em>/etc/exports</em>. Specifically, that the directories need to be created before they are exported.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>  define list_exports {
+</span><span class='line'>    $export = $name
+</span><span class='line'>    file { $export:
+</span><span class='line'>      ensure =&gt; directory,
+</span><span class='line'>      mode =&gt; '0755',
+</span><span class='line'>      owner =&gt; 'root',
+</span><span class='line'>      group =&gt; 'root'
+</span><span class='line'>    }
+</span><span class='line'>  }
+</span><span class='line'>  list_exports { $exports:; } -&gt; File['/etc/exports']</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now it can go ahead and build the <code>/etc/exports</code> file using that same $exports array in the <code>templates/exports.erb</code> template:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>  &lt;% [exports].flatten.each do |export| -%&gt;
+</span><span class='line'>  &lt;%= export %&gt; 192.168.1.0/255.255.255.0(rw,no_root_squash,no_subtree_check)
+</span><span class='line'>  &lt;% end -%&gt;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>There is nothing especially Hiera&#8217;y about this, other than where the data in that array came from.</p>
+
+<p>The rest of the manifest deals with installing the packages and configuring services. Once again, nothing especially linked with Hiera, but hopefully it will be useful for anyone wanting to Puppetize their NFS servers - which of course you should be.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Stop the hate on software RAID]]></title>
@@ -944,26 +1052,6 @@ The attitude to lunch is probably the biggest single change of all that can only
 </span><span class='line'>    svn+ssh://svnsync@&lt;slave&gt;/var/local/svnsync/&lt;reponame&gt; $REV && \
 </span><span class='line'>    exit 0</span></code></pre></td></tr></table></div></figure>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Fixed my gihub repo list]]></title>
-    <link href="http://www.chriscowley.me.uk/blog/2012/07/03/fixed-my-gihub-repo-list/"/>
-    <updated>2012-07-03T20:54:00+02:00</updated>
-    <id>http://www.chriscowley.me.uk/blog/2012/07/03/fixed-my-gihub-repo-list</id>
-    <content type="html"><![CDATA[<p>My Github repo list has not worked as all since I moved over to Octopress. This evening I though I would have a little look into it.</p>
-
-<!-- more -->
-
-
-<p>It turned out that GitHub has <a href="https://github.com/blog/1160-github-api-v2-end-of-life" target="_blank">depreciated the version 1 and 2 APIs</a>. Octopress was using version 2, so I have made a little change.</p>
-
-<div><script src='https://gist.github.com/3042647.js?file='></script>
-<noscript><pre><code></code></pre></noscript></div>
-
-
-<p>According to <a href="https://github.com/imathis/octopress/issues/620" target="_blank">this issue</a> there will be a fix in <a href="https://github.com/imathis/octopress/tree/2.1" target="_blank" >Octopress 2.1</a>. However, this patch will keep things working until Brandon Mathis moves it into the master branch. Of course that issue also highlighted the fact that I had just re-invented the wheel :(</p>
 ]]></content>
   </entry>
   
