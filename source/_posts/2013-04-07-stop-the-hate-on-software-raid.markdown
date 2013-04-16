@@ -44,11 +44,12 @@ There is definitely a time and place for an external array. If you are using vir
 
 Let take a look at these things and see just how much "hardware" is actually involved.
 
-{% pullquote %}
-The EMC VMAX is a big, big black box of storage. Even the "baby" 10k one scales up to 1.5PB and 4 engines. The 40k will go up to 3PB and 8 engines. Look a little deeper (one line further on the spec sheet) and you find that what those engines are: quad Xeons (dual on the 10/20k). The great big bad VMAX is a bunch of standard x86 servers running funky software to do all the management and RAID calculations. What is that funky software? {" Since the Clariion CX4 EMC has been using Windows Storage Server "} (based on XP).
-{% endpullquote %}
 
-Like its big brother, the VNX also runs Windows Storage server on a pair of Xeon servers. Move along to EMC's other lines we find Isilion is nothing more than a big pile of Supermicro servers running (IIRC) FreeBSD. That big box of backup (Avamar) is also a bunch of Supermicro servers, this time running SUSE Linux.
+The EMC VMAX is a big, big black box of storage. Even the "baby" 10k one scales up to 1.5PB and 4 engines. The 40k will go up to 3PB and 8 engines. Look a little deeper (one line further on the spec sheet) and you find that what those engines are: quad Xeons (dual on the 10/20k). The great big bad VMAX is a bunch of standard x86 servers running funky software to do all the management and RAID calculations.
+
+{% pullquote %}
+Like its big brother, the VNX is also a pair of Xeon servers. Even more, it runs Windows. In fact {" since the Clariion CX4 EMC has been using Windows Storage Server "} (based on XP) Move along to EMC's other lines we find Isilion is nothing more than a big pile of Supermicro servers running (IIRC) FreeBSD.
+{% endpullquote %}
 
 Netapp's famed FAS range similarly runs on commodity hardware,OnTAP is [BSD](https://en.wikipedia.org/wiki/NetApp_filer) based.
 
@@ -63,5 +64,5 @@ ZFS also recommends to bypass any RAID devices and let it do everything in softw
 As with everything in IT, hardware is falling by the wayside in storage. Modern processors can do the processing so fast that there is no performance need for hardware in between your OS and the disks any more. The OS layers (Storage Spaces on Windows and especially MD/LVM on Linux) are so mature now that their reliability can be taken as a given. With the management advantages, there really is no technical reason to stick with hardware RAID. In fact the closer you can get the raw disks to your OS the better.
 
 {% pullquote %}
-As I said at the start, the subject here is software vs hardware RAID, but my problem goes deeper than that particular argument. As technology professional, we are technical people. We need to understand what is going on under the bonnet - that is our job! It may be fine for a vendor to pull the wool over a CFO's eyes, but {" we need to know what is inside that magic black box, especially when it is in the spec sheet"}.
+As I said at the start, the subject here is software vs hardware RAID, but my problem goes deeper than that particular argument. As technology professionals, we are technical people. We need to understand what is going on under the bonnet - that is our job! It may be fine for a vendor to pull the wool over a CFO's eyes, but {" we need to know what is inside that magic black box, especially when it is in the spec sheet"}.
 {% endpullquote %}
