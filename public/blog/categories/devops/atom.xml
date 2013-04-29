@@ -4,7 +4,7 @@
   <title><![CDATA[Category: devops | Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/blog/categories/devops/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-04-29T16:11:53+01:00</updated>
+  <updated>2013-04-29T21:01:10+02:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Using Hiera with Puppet]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/04/11/using-hiera-with-puppet/"/>
-    <updated>2013-04-11T20:24:00+01:00</updated>
+    <updated>2013-04-11T20:24:00+02:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/04/11/using-hiera-with-puppet</id>
     <content type="html"><![CDATA[<p>Using Hiera with Puppet is something I have struggled with a bit. I could see the benefits, namely decoupling my site configuration from my logic. However, for some reason I struggled a bit to really get my head around it. This was compounded by it being quite new (only really integrated in Puppet 3), so the docs are  little lacking.</p>
 

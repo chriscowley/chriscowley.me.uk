@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linux | Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-04-29T16:11:53+01:00</updated>
+  <updated>2013-04-29T21:01:10+02:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Writeable TFTP Server On CentOS]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/03/25/writeable-tftp-server-on-centos/"/>
-    <updated>2013-03-25T15:45:00+00:00</updated>
+    <updated>2013-03-25T15:45:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/03/25/writeable-tftp-server-on-centos</id>
     <content type="html"><![CDATA[<p>Well this caught me out for an embarassingly long time. There are <a href="http://blog.penumbra.be/tag/tftp/">loads</a> <a href="http://www.question-defense.com/2008/11/13/linux-setup-tftp-server-on-centos">of</a> <a href="http://wiki.centos.org/EdHeron/PXESetup">examples</a> of setting up a TFTP server on the web. The vast majority of them assume that you are using them read-only for PXE booting.</p>
 
@@ -90,7 +90,7 @@ tftp localhost -c put test
   <entry>
     <title type="html"><![CDATA[In praise of old school UNIX]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/02/05/in-praise-of-old-school-unix/"/>
-    <updated>2013-02-05T16:13:00+00:00</updated>
+    <updated>2013-02-05T16:13:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/02/05/in-praise-of-old-school-unix</id>
     <content type="html"><![CDATA[<p>What am I doing today? Documentation that is what. I am writing a document on how to do <a href="http://www.chriscowley.me.uk/blog/2012/11/19/sftp-chroot-on-centos/">this</a>. To any Linux user it is a very simple process and I could just give them a link to my own website.</p>
 
@@ -138,7 +138,7 @@ AllowTcpForwarding no</p>
   <entry>
     <title type="html"><![CDATA[Trac with Nginx on Centos]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/01/21/trac-with-nginx-on-centos/"/>
-    <updated>2013-01-21T11:53:00+00:00</updated>
+    <updated>2013-01-21T11:53:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/01/21/trac-with-nginx-on-centos</id>
     <content type="html"><![CDATA[<p><a href="tac.edgewall.org">Trac</a> is an excellent online project management tool. Nginx us a great web server. Surely the combination of the two should be a match made in heaven. I would say so, although there are a couple problems. The easiest way to deploy Trac is on Apache using mod_wsgi or FastCGI. This option does not really exist for Nginx. Okay, it can do FastCGI, but I have not get that set up on my server.</p>
 
@@ -199,7 +199,7 @@ sudo server nginx start
   <entry>
     <title type="html"><![CDATA[SFTP Chroot on CentOS]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2012/11/19/sftp-chroot-on-centos/"/>
-    <updated>2012-11-19T19:59:00+00:00</updated>
+    <updated>2012-11-19T19:59:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2012/11/19/sftp-chroot-on-centos</id>
     <content type="html"><![CDATA[<p>This came up today where I needed to give secure file transfer to customers. To complicate things I had to use an out-of-the-box RHEL6 system. The obvious answer was to use SSH and limit those users to SFTP only. Locking them into a chroot was not a requirement, but it seemed like a good idea to me. I found plenty of docs that got 80% of the way, or took a shortcut, but this should be complete.</p>
 
@@ -284,7 +284,7 @@ sftp sftptest@&lt;server&gt;
   <entry>
     <title type="html"><![CDATA[I have a Raspberry Pi]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2012/08/04/i-have-a-raspberry-pi/"/>
-    <updated>2012-08-04T21:47:00+01:00</updated>
+    <updated>2012-08-04T21:47:00+02:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2012/08/04/i-have-a-raspberry-pi</id>
     <content type="html"><![CDATA[<p>Just got my new toy! I have to admit that I am not completely certain what I will do with it yet though.</p>
 

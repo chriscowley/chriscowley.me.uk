@@ -30,4 +30,4 @@ I have a wide range of skills including, but not limited to:
 - Migrations
 - Implementations
 
-I maintain a copy of my CV in both [English|http://cv.chriscowley.me.uk/english.html] and [http://cv.chriscowley.me.uk/french.html|French].
+I maintain a copy of my CV in both [English](http://cv.chriscowley.me.uk/english.html) and [French](http://cv.chriscowley.me.uk/french.html).
