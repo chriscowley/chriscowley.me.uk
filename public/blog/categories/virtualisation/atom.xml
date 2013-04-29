@@ -4,7 +4,7 @@
   <title><![CDATA[Category: virtualisation | Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/blog/categories/virtualisation/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-04-16T21:42:08+02:00</updated>
+  <updated>2013-04-29T16:11:53+01:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[VMware CLI installation woes on Centos 6]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2012/02/06/vmware-cli-installation-woes-on-centos-6/"/>
-    <updated>2012-02-06T13:09:00+01:00</updated>
+    <updated>2012-02-06T13:09:00+00:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2012/02/06/vmware-cli-installation-woes-on-centos-6</id>
     <content type="html"><![CDATA[<p>Installing the VMware CLI should have been simple, but it was a bit of a fiddle.</p>
 

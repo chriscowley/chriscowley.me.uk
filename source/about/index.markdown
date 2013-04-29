@@ -12,7 +12,7 @@ I am an experienced system engineer with a special interest in open-source platf
 
 Currently I am a Technical Expert for an IT consultancy in Rennes, France. I am not fluent in French (yet), but am able to communicate quite comfortably.
 
-I have a wide range of skills inlcuding, but not limited to:
+I have a wide range of skills including, but not limited to:
 
 - Linux system architecture
 - DevOps
@@ -21,10 +21,13 @@ I have a wide range of skills inlcuding, but not limited to:
   - Scale-out storage: Ceph, GlusterFS in particular
 - Virtualisaton
   - VMware
-  - Red Hat Enterprise Virtualisation
+  - Citrix/Xen
+  - Red Hat Enterprise Virtualisation/KVM
 - Management (and Project Management)
 - Systems Architecture
 - Troubleshooting
 - Integration
 - Migrations
 - Implementations
+
+I maintain a copy of my CV in both [English|http://cv.chriscowley.me.uk/english.html] and [http://cv.chriscowley.me.uk/french.html|French].
