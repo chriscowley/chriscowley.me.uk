@@ -4,7 +4,7 @@
   <title><![CDATA[Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-04-29T21:01:10+02:00</updated>
+  <updated>2013-04-29T21:43:30+02:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -12,6 +12,186 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Bamboo Invoice on Centos with Nginx]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2013/04/29/bamboo-invoice-on-centos-with-nginx/"/>
+    <updated>2013-04-29T21:16:00+02:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2013/04/29/bamboo-invoice-on-centos-with-nginx</id>
+    <content type="html"><![CDATA[<p>BambooInvoice is free Open Source invoicing software intended for small businesses and independent contractors. It is easy to use and creates pretty good looking invoices.</p>
+
+<!-- more -->
+
+
+<p>It is a simple PHP application that is based on the CodeIgniter framework. This means it is really simple to install on a typically LAMP stack. I however use Nginx and could not find any notes on how to configure it. It is pretty typical you can get most of the way by reading any of the Nginx howto documents on the web. Personally, for PHP apps, I use PHP-FPM, so you could use <a href="http://www.howtoforge.com/installing-nginx-with-php5-and-php-fpm-and-mysql-support-on-centos-6.4">this on Howtoforge</a> to get most of the way. That will get you a working Nginx, PHP and MySQL system.</p>
+
+<p>Download the install file from [http://bambooinvoice.org/] an unzip is in your www folder:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> /var/www
+</span><span class='line'>wget http://bambooinvoice.org/img/bambooinvoice_089.zip
+</span><span class='line'>unzip bambooinvoice_089.zip
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You next step is to create a database for it along with a user:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='mysql'><span class='line'><span class="k">CREATE</span> <span class="k">DATABASE</span> <span class="n">bambooinvoice</span> <span class="k">DEFAULT</span> <span class="k">CHARACTER</span> <span class="kt">SET</span> <span class="n">utf8</span><span class="p">;</span>
+</span><span class='line'><span class="k">GRANT</span> <span class="k">ALL</span> <span class="k">ON</span> <span class="n">bambooinvoice</span><span class="p">.</span><span class="o">*</span> <span class="k">TO</span> <span class="s1">&#39;bambooinvoice&#39;</span><span class="o">@</span><span class="s1">&#39;localhost&#39;</span> <span class="n">IDENTIFIED</span> <span class="k">BY</span> <span class="s1">&#39;bambooinvoice&#39;</span><span class="p">;</span>
+</span><span class='line'><span class="n">FLUSH</span> <span class="n">PRIVILEGES</span><span class="p">;</span>
+</span><span class='line'><span class="k">exit</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now you can edit the config files to point at the database:</p>
+
+<figure class='code'><figcaption><span>/var/www/bambooinvoices/bamboo_system_files/application/config/database.php</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">defined</span><span class="p">(</span><span class="s1">&#39;BASEPATH&#39;</span><span class="p">))</span> <span class="k">exit</span><span class="p">(</span><span class="s1">&#39;No direct script access allowed&#39;</span><span class="p">);</span>
+</span><span class='line'><span class="nv">$active_group</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">$db</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">][</span><span class="s1">&#39;hostname&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;localhost&#39;</span><span class="p">;</span>
+</span><span class='line'><span class="nv">$db</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">][</span><span class="s1">&#39;username&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;bambooinvoice&#39;</span><span class="p">;</span>
+</span><span class='line'><span class="nv">$db</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">][</span><span class="s1">&#39;password&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;bambooinvoice&#39;</span><span class="p">;</span>
+</span><span class='line'><span class="nv">$db</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">][</span><span class="s1">&#39;database&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;bambooinvoice&#39;</span><span class="p">;</span>
+</span><span class='line'><span class="nv">$db</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">][</span><span class="s1">&#39;dbdriver&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;mysql&#39;</span><span class="p">;</span>
+</span><span class='line'><span class="nv">$db</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">][</span><span class="s1">&#39;dbprefix&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;bamboo_&#39;</span><span class="p">;</span>
+</span><span class='line'><span class="nv">$db</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">][</span><span class="s1">&#39;active_r&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">TRUE</span><span class="p">;</span>
+</span><span class='line'><span class="nv">$db</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">][</span><span class="s1">&#39;pconnect&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">FALSE</span><span class="p">;</span>
+</span><span class='line'><span class="nv">$db</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">][</span><span class="s1">&#39;db_debug&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">TRUE</span><span class="p">;</span>
+</span><span class='line'><span class="nv">$db</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">][</span><span class="s1">&#39;cache_on&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">FALSE</span><span class="p">;</span>
+</span><span class='line'><span class="nv">$db</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">][</span><span class="s1">&#39;cachedir&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+</span><span class='line'><span class="nv">$db</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">][</span><span class="s1">&#39;char_set&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;utf8&#39;</span><span class="p">;</span>
+</span><span class='line'><span class="nv">$db</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">][</span><span class="s1">&#39;dbcollat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;utf8_general_ci&#39;</span><span class="p">;</span>
+</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Next you need set the base_url in <code>/var/www/bambooinvoices/bamboo_system_files/application/config/config.php</code>. Nothing else is essential in that file, but read the docs in the ZIP file to see what else you want to change.</p>
+
+<p>Now the all important bit.</p>
+
+<figure class='code'><figcaption><span>/etc/nginx/conf.d/bamboo.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+</pre></td><td class='code'><pre><code class='nginx'><span class='line'><span class="k">server</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
+</span><span class='line'>    <span class="kn">server_name</span> <span class="s">bamboo.example</span><span class="p">;</span>
+</span><span class='line'>    <span class="kn">root</span> <span class="s">/var/www/bambooinvoice/</span><span class="p">;</span>
+</span><span class='line'>    <span class="kn">index</span> <span class="s">index.php</span> <span class="s">index.html</span><span class="p">;</span>
+</span><span class='line'>    <span class="kn">access_log</span>              <span class="s">/var/log/nginx/bamboo_access.log</span><span class="p">;</span>
+</span><span class='line'>    <span class="kn">error_log</span>               <span class="s">/var/log/nginx/bamboo_error.log</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kn">location</span> <span class="p">=</span> <span class="s">/robots.txt</span> <span class="p">{</span>
+</span><span class='line'>        <span class="kn">allow</span> <span class="s">all</span><span class="p">;</span>
+</span><span class='line'>        <span class="kn">log_not_found</span> <span class="no">off</span><span class="p">;</span>
+</span><span class='line'>        <span class="kn">access_log</span> <span class="no">off</span><span class="p">;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="c1"># Deny all attempts to access hidden files such as .htaccess, .htpasswd, .DS_Store (Mac).</span>
+</span><span class='line'>    <span class="kn">location</span> <span class="p">~</span> <span class="sr">/\.</span> <span class="p">{</span>
+</span><span class='line'>        <span class="kn">deny</span> <span class="s">all</span><span class="p">;</span>
+</span><span class='line'>        <span class="kn">access_log</span> <span class="no">off</span><span class="p">;</span>
+</span><span class='line'>        <span class="kn">log_not_found</span> <span class="no">off</span><span class="p">;</span>
+</span><span class='line'>     <span class="p">}</span>
+</span><span class='line'>     <span class="kn">location</span> <span class="s">/</span> <span class="p">{</span>
+</span><span class='line'>         <span class="kn">try_files</span> <span class="nv">$uri</span> <span class="nv">$uri/</span> <span class="s">/index.php</span><span class="nv">$request_uri</span> <span class="s">/index.php</span><span class="p">;</span>
+</span><span class='line'>     <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>     <span class="kn">location</span> <span class="p">~</span> <span class="sr">\.php($|/)</span> <span class="p">{</span>
+</span><span class='line'>         <span class="kn">try_files</span> <span class="nv">$uri</span> <span class="p">=</span><span class="mi">404</span><span class="p">;</span>
+</span><span class='line'>         <span class="kn">fastcgi_pass</span> <span class="n">127.0.0.1</span><span class="p">:</span><span class="mi">9000</span><span class="p">;</span>
+</span><span class='line'>         <span class="kn">include</span> <span class="s">/etc/nginx/fastcgi_params</span><span class="p">;</span>
+</span><span class='line'>         <span class="kn">fastcgi_index</span> <span class="s">index.php</span><span class="p">;</span>
+</span><span class='line'>         <span class="kn">set</span> <span class="nv">$script</span> <span class="nv">$uri</span><span class="p">;</span>
+</span><span class='line'>         <span class="kn">set</span> <span class="nv">$path_info</span> <span class="s">&quot;&quot;</span><span class="p">;</span>
+</span><span class='line'>         <span class="kn">if</span> <span class="s">(</span><span class="nv">$uri</span> <span class="p">~</span> <span class="sr">&quot;^(.+\.php)(/.+)&quot;)</span> <span class="p">{</span>
+</span><span class='line'>             <span class="kn">set</span> <span class="nv">$script</span> <span class="nv">$1</span><span class="p">;</span>
+</span><span class='line'>             <span class="kn">set</span> <span class="nv">$path_info</span> <span class="nv">$2</span><span class="p">;</span>
+</span><span class='line'>         <span class="p">}</span>
+</span><span class='line'>         <span class="kn">fastcgi_param</span> <span class="s">URI</span> <span class="nv">$uri</span><span class="p">;</span>
+</span><span class='line'>         <span class="c1"># Next two lines are fix the 502 (Bad gateway) error</span>
+</span><span class='line'>         <span class="kn">fastcgi_buffers</span> <span class="mi">8</span> <span class="mi">16k</span><span class="p">;</span>
+</span><span class='line'>         <span class="kn">fastcgi_buffer_size</span> <span class="mi">32k</span><span class="p">;</span>
+</span><span class='line'>
+</span><span class='line'>         <span class="kn">fastcgi_param</span> <span class="s">PATH_INFO</span> <span class="nv">$path_info</span><span class="p">;</span>
+</span><span class='line'>         <span class="kn">fastcgi_param</span> <span class="s">SCRIPT_NAME</span> <span class="nv">$script</span><span class="p">;</span>
+</span><span class='line'>         <span class="kn">fastcgi_param</span> <span class="s">SCRIPT_FILENAME</span> <span class="nv">$document_root$script</span><span class="p">;</span>
+</span><span class='line'>      <span class="p">}</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>At first glance, there is nothing out of the ordinary. This is pretty much what Howtoforge gives you. Look more closely and I have added the 3 lines 39-41. This solves a gateway problem I had when creating a client.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Using Hiera with Puppet]]></title>
@@ -941,116 +1121,6 @@ The attitude to lunch is probably the biggest single change of all that can only
 <object width="400" height="300"> <param name="flashvars" value="offsite=true&lang=en-us&page_show_url=%2Fphotos%2F83132329%40N04%2Fsets%2F72157630749918206%2Fshow%2F&page_show_back_url=%2Fphotos%2F83132329%40N04%2Fsets%2F72157630749918206%2F&set_id=72157630749918206&jump_to="></param> <param name="movie" value="http://www.flickr.com/apps/slideshow/show.swf?v=109615"></param> <param name="allowFullScreen" value="true"></param><embed type="application/x-shockwave-flash" src="http://www.flickr.com/apps/slideshow/show.swf?v=109615" allowFullScreen="true" flashvars="offsite=true&lang=en-us&page_show_url=%2Fphotos%2F83132329%40N04%2Fsets%2F72157630749918206%2Fshow%2F&page_show_back_url=%2Fphotos%2F83132329%40N04%2Fsets%2F72157630749918206%2F&set_id=72157630749918206&jump_to=" width="400" height="300"></embed></object>
 
 
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Mirror a Subversion repo with svnsync]]></title>
-    <link href="http://www.chriscowley.me.uk/blog/2012/07/17/mirror-a-subversion-repo-with-svnsync/"/>
-    <updated>2012-07-17T12:03:00+02:00</updated>
-    <id>http://www.chriscowley.me.uk/blog/2012/07/17/mirror-a-subversion-repo-with-svnsync</id>
-    <content type="html"><![CDATA[<p>The basic idea is that everytime a change happens on the master, it gets pushed to the slave. In this set up it will <em>not</em> get you any more capacity; you cannot commit back to the slave. If you do it will get out of sync, resulting in a <em>split brain</em> situation. This is what we sysadmins call a &#8220;bad thing&#8221;. I am doing this in order to have <a href="http://www.atlassian.com/software/fisheye/overview" target="_blank">Atlassian Fisheye</a> can scan the repository without having to go over the network. The basic layout is:</p>
-
-<!-- more -->
-
-
-<p><img class="center" src="http://www.chriscowley.me.uk/images/svnsync.png"></p>
-
-<p>First the master needs to be able to send the data to the slave without any user interaction. On both the slave create a user to perform the sync:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>useradd svnsync</span></code></pre></td></tr></table></div></figure>
-
-
-<p>On the master, I use https to access my repositories. This means that all my hook scripts run as the apache user. Change to that user with <code>sudo su -s /bin/bash - apache</code></p>
-
-<p>Create an ssh key-pair (<code>ssh-keygen</code>) and add the contents of <code>~apache\.ssh\id_rsa.pub</code> on the master to <code>~svnsync/.ssh/authorized_keys2</code> on the slave.</p>
-
-<p>Now you can push push data to the slave without a password. Test it by running:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>ssh svnsync@&lt;slave&gt;</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>On Slave</h2>
-
-<p>Create a new repository to store what gets pushed to it</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>svnadmin create --fs-type=fsfs /var/local/svnsync/&lt;reponame&gt;
-</span><span class='line'>chown -Rv svnsync:svnsync /var/local/svnsync/&lt;reponame&gt;</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The process will need to make modifications to the properties, so you need to enable that. Put the following into <code>/var/local/svnsync/&lt;reponame&gt;/hooks/pre-revprop-change</code></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>#!/bin/sh
-</span><span class='line'>USER="$3"
-</span><span class='line'>
-</span><span class='line'>if [ "$USER" = "svnsync" ]; then exit 0; fi
-</span><span class='line'>
-</span><span class='line'>echo "Only the svnsync user can change revprops" &gt;&2
-</span><span class='line'>exit 1</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Finally make it executable with</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>chmod +x /var/local/svnsync/&lt;reponame&gt;/hooks/pre-revprop-change</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>On Master</h2>
-
-<p>First initialize the transfer and do the initial population. Do all this as the apache user again.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>svnsync init --username svnsync \
-</span><span class='line'>    svn+ssh://svnsync@&lt;slave&gt;/var/local/svnsync/&lt;reponame&gt; \
-</span><span class='line'>    file:///var/svn/&lt;reponame&gt;</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now we need to configure the Master repo to push all changes to the slave. Create a post-commit hook script containing</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>#!/bin/bash
-</span><span class='line'>svnsync --username svnsync --non-interactive sync \
-</span><span class='line'>    svn+ssh://svnsync@&lt;slave&gt;/var/local/svnsync/&lt;reponame&gt;</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Finally create another hook script to keep revision properties in sync in <code>/var/svn/&lt;reponame&gt;/hooks/post-revprop-change</code></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>#!/bin/bash
-</span><span class='line'>REPOS="$1"
-</span><span class='line'>REV="$2"
-</span><span class='line'>USER="$3"
-</span><span class='line'>PROPNAME="$4"
-</span><span class='line'>ACTION="$5"
-</span><span class='line'>
-</span><span class='line'>svnsync --username svnsync --non-interactive copy-revprops \
-</span><span class='line'>    svn+ssh://svnsync@&lt;slave&gt;/var/local/svnsync/&lt;reponame&gt; $REV && \
-</span><span class='line'>    exit 0</span></code></pre></td></tr></table></div></figure>
 
 ]]></content>
   </entry>

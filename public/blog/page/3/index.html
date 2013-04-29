@@ -9,7 +9,7 @@
   <meta name="author" content="Chris Cowley">
 
   
-  <meta name="description" content="My Github repo list has not worked as all since I moved over to Octopress. This evening I though I would have a little look into it. ">
+  <meta name="description" content="The basic idea is that everytime a change happens on the master, it gets pushed to the slave. In this set up it will not get you any more capacity; &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -96,6 +96,49 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2012/07/17/mirror-a-subversion-repo-with-svnsync/">Mirror a Subversion Repo With Svnsync</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-17T12:03:00+02:00" pubdate data-updated="true">Tuesday 17 July 2012</time>
+        
+         | <a href="/blog/2012/07/17/mirror-a-subversion-repo-with-svnsync/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>The basic idea is that everytime a change happens on the master, it gets pushed to the slave. In this set up it will <em>not</em> get you any more capacity; you cannot commit back to the slave. If you do it will get out of sync, resulting in a <em>split brain</em> situation. This is what we sysadmins call a &#8220;bad thing&#8221;. I am doing this in order to have <a href="http://www.atlassian.com/software/fisheye/overview" target="_blank">Atlassian Fisheye</a> can scan the repository without having to go over the network. The basic layout is:</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/07/17/mirror-a-subversion-repo-with-svnsync/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2012/07/03/fixed-my-gihub-repo-list/">Fixed My Gihub Repo List</a></h1>
     
     
@@ -171,50 +214,6 @@
   
     <footer>
       <a rel="full-article" href="/blog/2012/07/03/excellent-seminar-given-by-a-friend-of-mine/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/06/23/the-move-to-jekyll/">The Move to Jekyll</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-06-23T21:10:00+02:00" pubdate data-updated="true">Saturday 23 June 2012</time>
-        
-         | <a href="/blog/2012/06/23/the-move-to-jekyll/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="center" src="/images/agent-smith.jpg">
-&#8220;That Mr Anderson is the sound of inevitability&#8221;</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2012/06/23/the-move-to-jekyll/">Read on &rarr;</a>
     </footer>
   
 
@@ -552,6 +551,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/04/29/bamboo-invoice-on-centos-with-nginx/">Bamboo Invoice on Centos with Nginx</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/04/11/using-hiera-with-puppet/">Using Hiera with Puppet</a>
       </li>
     
@@ -567,28 +570,9 @@
         <a href="/blog/2013/03/18/what-a-boss-owes-their-staff/">What a boss owes their staff</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2013/03/01/thoughts-on-the-shiney-new-vmax/">Thoughts on the shiney new VMAX</a>
-      </li>
-    
   </ul>
 </section>
 <a href="http://www.blogwithintegrity.com/"><img src="http://www.blogwithintegrity.com/badges/BWI_150sq.jpg" border="0" alt="BlogWithIntegrity.com"/></a>
-<iframe height='454' width='250' frameborder='0' allowtransparency='true' scrolling='no' src='http://app.strava.com/athletes/1988717/latest-rides/a36a00e7b429238653218b855633d03f5fd0e7ae'></iframe>
-<script type="text/javascript">
-//default banner house ad url 
-clicksor_default_url = '';
-clicksor_banner_border = '#252525'; clicksor_banner_ad_bg = '#FFFFFF';
-clicksor_banner_link_color = '#000000'; clicksor_banner_text_color = '#666666';
-clicksor_banner_image_banner = true; clicksor_banner_text_banner = true;
-clicksor_layer_border_color = '#252525';
-clicksor_layer_ad_bg = '#FFFFFF'; clicksor_layer_ad_link_color = '#000000';
-clicksor_layer_ad_text_color = '#666666'; clicksor_text_link_bg = '';
-clicksor_text_link_color = ''; clicksor_enable_text_link = false;
-clicksor_layer_banner = false;
-</script>
-<script type="text/javascript" src="http://ads.clicksor.com/newServing/showAd.php?nid=1&amp;pid=302576&amp;adtype=10&amp;sid=497364"></script>
-<noscript><a href="http://www.yesadvertising.com">affiliate marketing</a></noscript>
 
 <section>
   <h1>Latest Tweets</h1>
@@ -606,6 +590,21 @@ clicksor_layer_banner = false;
   
 </section>
 
+<iframe height='454' width='250' frameborder='0' allowtransparency='true' scrolling='no' src='http://app.strava.com/athletes/1988717/latest-rides/a36a00e7b429238653218b855633d03f5fd0e7ae'></iframe>
+<script type="text/javascript">
+//default banner house ad url 
+clicksor_default_url = '';
+clicksor_banner_border = '#252525'; clicksor_banner_ad_bg = '#FFFFFF';
+clicksor_banner_link_color = '#000000'; clicksor_banner_text_color = '#666666';
+clicksor_banner_image_banner = true; clicksor_banner_text_banner = true;
+clicksor_layer_border_color = '#252525';
+clicksor_layer_ad_bg = '#FFFFFF'; clicksor_layer_ad_link_color = '#000000';
+clicksor_layer_ad_text_color = '#666666'; clicksor_text_link_bg = '';
+clicksor_text_link_color = ''; clicksor_enable_text_link = false;
+clicksor_layer_banner = false;
+</script>
+<script type="text/javascript" src="http://ads.clicksor.com/newServing/showAd.php?nid=1&amp;pid=302576&amp;adtype=10&amp;sid=497364"></script>
+<noscript><a href="http://www.yesadvertising.com">affiliate marketing</a></noscript>
 
 <section>
   <h1>GitHub Repos</h1>

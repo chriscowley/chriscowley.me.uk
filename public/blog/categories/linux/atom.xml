@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linux | Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-04-29T21:01:10+02:00</updated>
+  <updated>2013-04-29T21:43:30+02:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -12,6 +12,118 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Bamboo Invoice on Centos with Nginx]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2013/04/29/bamboo-invoice-on-centos-with-nginx/"/>
+    <updated>2013-04-29T21:16:00+02:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2013/04/29/bamboo-invoice-on-centos-with-nginx</id>
+    <content type="html"><![CDATA[<p>BambooInvoice is free Open Source invoicing software intended for small businesses and independent contractors. It is easy to use and creates pretty good looking invoices.</p>
+
+<!-- more -->
+
+
+<p>It is a simple PHP application that is based on the CodeIgniter framework. This means it is really simple to install on a typically LAMP stack. I however use Nginx and could not find any notes on how to configure it. It is pretty typical you can get most of the way by reading any of the Nginx howto documents on the web. Personally, for PHP apps, I use PHP-FPM, so you could use <a href="http://www.howtoforge.com/installing-nginx-with-php5-and-php-fpm-and-mysql-support-on-centos-6.4">this on Howtoforge</a> to get most of the way. That will get you a working Nginx, PHP and MySQL system.</p>
+
+<p>Download the install file from [http://bambooinvoice.org/] an unzip is in your www folder:</p>
+
+<p><code>bash
+cd /var/www
+wget http://bambooinvoice.org/img/bambooinvoice_089.zip
+unzip bambooinvoice_089.zip
+</code></p>
+
+<p>You next step is to create a database for it along with a user:</p>
+
+<p><code>mysql
+CREATE DATABASE bambooinvoice DEFAULT CHARACTER SET utf8;
+GRANT ALL ON bambooinvoice.* TO 'bambooinvoice'@'localhost' IDENTIFIED BY 'bambooinvoice';
+FLUSH PRIVILEGES;
+exit
+</code></p>
+
+<p>Now you can edit the config files to point at the database:</p>
+
+<p>```php /var/www/bambooinvoices/bamboo_system_files/application/config/database.php
+&lt;?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
+$active_group = 'default';</p>
+
+<p>$db['default']['hostname'] = 'localhost';
+$db['default']['username'] = 'bambooinvoice';
+$db['default']['password'] = 'bambooinvoice';
+$db['default']['database'] = 'bambooinvoice';
+$db['default']['dbdriver'] = 'mysql';
+$db['default']['dbprefix'] = 'bamboo_';
+$db['default']['active_r'] = TRUE;
+$db['default']['pconnect'] = FALSE;
+$db['default']['db_debug'] = TRUE;
+$db['default']['cache_on'] = FALSE;
+$db['default']['cachedir'] = '';
+$db['default']['char_set'] = 'utf8';
+$db['default']['dbcollat'] = 'utf8_general_ci';
+?>
+```</p>
+
+<p>Next you need set the base_url in <code>/var/www/bambooinvoices/bamboo_system_files/application/config/config.php</code>. Nothing else is essential in that file, but read the docs in the ZIP file to see what else you want to change.</p>
+
+<p>Now the all important bit.</p>
+
+<p>```nginx /etc/nginx/conf.d/bamboo.conf
+server {</p>
+
+<pre><code>listen 80;
+server_name bamboo.example;
+root /var/www/bambooinvoice/;
+index index.php index.html;
+access_log              /var/log/nginx/bamboo_access.log;
+error_log               /var/log/nginx/bamboo_error.log;
+
+location = /robots.txt {
+    allow all;
+    log_not_found off;
+    access_log off;
+}
+
+
+# Deny all attempts to access hidden files such as .htaccess, .htpasswd, .DS_Store (Mac).
+location ~ /\. {
+    deny all;
+    access_log off;
+    log_not_found off;
+ }
+ location / {
+     try_files $uri $uri/ /index.php$request_uri /index.php;
+ }
+
+
+ location ~ \.php($|/) {
+     try_files $uri =404;
+     fastcgi_pass 127.0.0.1:9000;
+     include /etc/nginx/fastcgi_params;
+     fastcgi_index index.php;
+     set $script $uri;
+     set $path_info "";
+     if ($uri ~ "^(.+\.php)(/.+)") {
+         set $script $1;
+         set $path_info $2;
+     }
+     fastcgi_param URI $uri;
+     # Next two lines are fix the 502 (Bad gateway) error
+     fastcgi_buffers 8 16k;
+     fastcgi_buffer_size 32k;
+
+     fastcgi_param PATH_INFO $path_info;
+     fastcgi_param SCRIPT_NAME $script;
+     fastcgi_param SCRIPT_FILENAME $document_root$script;
+  }
+</code></pre>
+
+<p>}
+```</p>
+
+<p>At first glance, there is nothing out of the ordinary. This is pretty much what Howtoforge gives you. Look more closely and I have added the 3 lines 39-41. This solves a gateway problem I had when creating a client.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Writeable TFTP Server On CentOS]]></title>
@@ -278,22 +390,6 @@ sftp sftptest@&lt;server&gt;
 <li><a href="http://wiki.centos.org/TipsAndTricks/SelinuxBooleans">CentOS Wiki SELinuxBooleans</a></li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[I have a Raspberry Pi]]></title>
-    <link href="http://www.chriscowley.me.uk/blog/2012/08/04/i-have-a-raspberry-pi/"/>
-    <updated>2012-08-04T21:47:00+02:00</updated>
-    <id>http://www.chriscowley.me.uk/blog/2012/08/04/i-have-a-raspberry-pi</id>
-    <content type="html"><![CDATA[<p>Just got my new toy! I have to admit that I am not completely certain what I will do with it yet though.</p>
-
-<!-- more -->
-
-
-<p>It will certainly start by running <a href="http://mpd.wikia.com/wiki/Music_Player_Daemon_Wiki" target="_blank">Music Player Daemon</a>.</p>
-
-<p><a href="http://www.flickr.com/photos/chriscowleyunix/7705281518/" title="Raspberry Pi by chriscowleysound, on Flickr"><img src="http://farm9.staticflickr.com/8023/7705281518_73c2ee8c18.jpg" width="500" height="375" alt="Raspberry Pi"></a></p>
 ]]></content>
   </entry>
   

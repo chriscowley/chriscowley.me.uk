@@ -4,7 +4,7 @@
   <title><![CDATA[Category: general | Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/blog/categories/general/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-04-29T21:01:10+02:00</updated>
+  <updated>2013-04-29T21:43:30+02:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -38,23 +38,6 @@ Trust leads to everything else that we like about work. Allowing your staff to w
 </span></p>
 
 <p>This stuff may pay off directly (as in my VMware example), may be it won't. If you let people work from home, maybe at times you will wonder what they are doing. You will however have a happier employee. If that employee has no desire to go anywhere else, but wants to deliver the best they can for your company then you can only win.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[The move to Jekyll]]></title>
-    <link href="http://www.chriscowley.me.uk/blog/2012/06/23/the-move-to-jekyll/"/>
-    <updated>2012-06-23T21:10:00+02:00</updated>
-    <id>http://www.chriscowley.me.uk/blog/2012/06/23/the-move-to-jekyll</id>
-    <content type="html"><![CDATA[<p><img class="center" src="/images/agent-smith.jpg">
-"That Mr Anderson is the sound of inevitability"</p>
-
-<!--more -->
-
-
-<p><span class='pullquote-right' data-pullquote='I have left the safe world of Wordpress/Drupal et al'>
-Well it had to happen eventually. I am a professional geek and now (like all the other geeks it seems) I have left the safe world of Wordpress/Drupal et al. I have joined the world of Jekyll (and hopefully not Hyde).
-</span></p>
 ]]></content>
   </entry>
   
