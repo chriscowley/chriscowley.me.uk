@@ -4,7 +4,7 @@
   <title><![CDATA[Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-04-29T21:43:30+02:00</updated>
+  <updated>2013-05-13T21:53:56+02:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -12,6 +12,46 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[EMC ViPR thoughts]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2013/05/13/emc-vipr-thoughts/"/>
+    <updated>2013-05-13T21:45:00+02:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2013/05/13/emc-vipr-thoughts</id>
+    <content type="html"><![CDATA[<p>I have been a little slow on the uptake on this one. I would like to say it is because I was carefully digesting the information, but that is not true; the reality is that I have just had 2 5 day weekends in 2 weeks :-).</p>
+
+<!-- more -->
+
+
+<p>The big announcement at this years EMC World is ViPR. Plenty of people with far bigger reputations than me in the industry have already made their comments:</p>
+
+<ul>
+<li><a href="http://virtualgeek.typepad.com/virtual_geek/2013/05/storage-virtualization-platform-re-imagined.html">Chad Sakac</a> has really good and deep, but long.</li>
+<li><a href="http://chucksblog.emc.com/chucks_blog/2013/05/introducing-emc-vipr-a-breathtaking-approach-to-software-defined-storage.html">Chuck Hollis</a> is nowhere near as technical but (as is normal for Chuck) sells it beautifully</li>
+<li><a href="http://blog.scottlowe.org/2013/05/06/very-early-thoughts-about-emc-vipr/">Scott Lowe</a> has an excellent overview</li>
+<li><a href="http://h30507.www3.hp.com/t5/Around-the-Storage-Block-Blog/ViPR-or-Vapor-The-Software-Defined-Storage-saga-continues/ba-p/138013?utm_source=feedly#.UZCd_covj3w">Kate Davies</a> gives HP&#8217;s take on it, which I sort of agree with, but not completely. As she says, the StoreAll VSA is not really in the same market, but I think it is the closest thing HP have so comparisons will always be drawn.</li>
+</ul>
+
+
+<p>ViPR is EMC&#8217;s response to two major storage problems:
+1.   Storage is missing some sort of abstraction layer, particularly for management (the Control Plane).
+1.   There is more to storage than NFS and iSCSI. As well as NAS/SAN we now have multiple forms of object stores, plus important non-POSIX file systems such as HDFS.</p>
+
+<p>Another problem I would add is that of <em>Openness</em>. For now there is not really any protocols for managing multiple arrays from different manufacturers, even at a basic level. They have been attempts in the past (SMI-S), but they have never taken off. ViPR attacks that problem as well, sort of.</p>
+
+<p>In some respects I am quite excited about ViPR. The ability to completely abstract the management of my storage is potentially very powerful. For now it is not really possible to integrate storage with Configuration Management tools. ViPR gives all supported arrays a REST API, thus it would be very simple to create bindings for the scripting language of your choice. Low and behold, a Puppet module to manage all my storage arrays becomes possible. This very neatly solves problem #1.</p>
+
+<p>This is where my excitement ends however. The problem is that issue of <em>Openness</em> I mentioned above. EMC has gone to great lengths to describe ViPR as open, but the fact remains that it is not. EMC have published the specifications of the REST API, they have also created a plugin interface for third-parties to add their own arrays; this is where it ends however. All development of ViPR is at the mercy of EMC, so why would other vendors support it?</p>
+
+<p>A lot of the management tools in ViPR are already in Openstack Cinder, which supports a much wider range of backends than ViPR at present. In that vendors have a completely open source management layer to develop against. Why would they sell their souls to a competitor? Simple, they will not. EMC exclusive shops will find ViPR to be an excellent way integrating their storage with a DevOps style workflow. Unfortunately my experience is that the sort of organizations that buy EMC (especially the big ones like VMAX) are not really ready for DevOps yet.</p>
+
+<p>Another feature that EMC has been touted is multi-protocol access to your data. Block volumes can be accessed via both iSCSI and FC protocols - nothing really clever there I&#8217;m afraid. Dot Hill has been doing that for several years with the <a href="http://www.dothill.com/wp-content/uploads/2011/08/AssuredSAN-n-3920-3930-C-10.15.11.pdf">AssuredSAN 39x0</a> models (and by extension the the HP P2000 as well). That is also easy enough to do on commodity hardware using  <a href="http://linux-iscsi.org/wiki/Main_Page">LIO target</a> plus a whole lot more. On the file side, it gives you not only access to your data via both CIFS and NFS, but it does add object access to that. They touted this as being very clever, but once again you can already do this using well respected, production proven open source. Glusterfs has an object translator, so that covers that super clever feature. All the data abstraction features it has are already there in in the open source world. If you want object and NAS access to the same peta-byte storage system, you have it in both Glusterfs and Ceph, both of which can easily be managed by CM tools such as Puppet.</p>
+
+<p><span class='pullquote-right' data-pullquote='To be a universal standard it would need to be an open (source) standard'>
+EMC has really pushed ViPR in the last couple of weeks, but it fails to impress me. This is a shame, because in general I like EMC&#8217;s products. I don&#8217;t like their marketing, but in their gear does just work. ViPR will probably do well with large EMC/NetApp shops, but it is by no means the ground-breaking product that EMC would have people believe (to be honest, I&#8217;m not sure anything ever is). It can never be the universal gateway to manage our storage, it is too tied in to EMC. To be a universal standard it would need to be an open (source) standard, which is not really part of EMC&#8217;s culture (with the exception of the awesome Razor).
+</span></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Bamboo Invoice on Centos with Nginx]]></title>
@@ -1098,30 +1138,6 @@ The attitude to lunch is probably the biggest single change of all that can only
 <p>It will certainly start by running <a href="http://mpd.wikia.com/wiki/Music_Player_Daemon_Wiki" target="_blank">Music Player Daemon</a>.</p>
 
 <p><a href="http://www.flickr.com/photos/chriscowleyunix/7705281518/" title="Raspberry Pi by chriscowleysound, on Flickr"><img src="http://farm9.staticflickr.com/8023/7705281518_73c2ee8c18.jpg" width="500" height="375" alt="Raspberry Pi"></a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Isle of Wight Ride]]></title>
-    <link href="http://www.chriscowley.me.uk/blog/2012/07/27/isle-of-wight-ride/"/>
-    <updated>2012-07-27T16:02:00+02:00</updated>
-    <id>http://www.chriscowley.me.uk/blog/2012/07/27/isle-of-wight-ride</id>
-    <content type="html"><![CDATA[<p>Last week I successfully did my first 65 mile ride. Of course it was not a race, but that never stopped a group of men being over competitive - I won by the way.</p>
-
-<!-- more -->
-
-
-<p>I do not own a cycle computer, nor did I remember to run My Tracks. However, a colleague did record it on his Garmin GPS:</p>
-
-<iframe width='465' height='548' frameborder='0' src='http://connect.garmin.com:80/activity/embed/203587506'></iframe>
-
-
-
-
-<object width="400" height="300"> <param name="flashvars" value="offsite=true&lang=en-us&page_show_url=%2Fphotos%2F83132329%40N04%2Fsets%2F72157630749918206%2Fshow%2F&page_show_back_url=%2Fphotos%2F83132329%40N04%2Fsets%2F72157630749918206%2F&set_id=72157630749918206&jump_to="></param> <param name="movie" value="http://www.flickr.com/apps/slideshow/show.swf?v=109615"></param> <param name="allowFullScreen" value="true"></param><embed type="application/x-shockwave-flash" src="http://www.flickr.com/apps/slideshow/show.swf?v=109615" allowFullScreen="true" flashvars="offsite=true&lang=en-us&page_show_url=%2Fphotos%2F83132329%40N04%2Fsets%2F72157630749918206%2Fshow%2F&page_show_back_url=%2Fphotos%2F83132329%40N04%2Fsets%2F72157630749918206%2F&set_id=72157630749918206&jump_to=" width="400" height="300"></embed></object>
-
-
-
 ]]></content>
   </entry>
   
