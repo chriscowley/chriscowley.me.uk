@@ -4,7 +4,7 @@
   <title><![CDATA[Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-05-13T21:53:56+02:00</updated>
+  <updated>2013-05-29T21:22:14+02:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -12,6 +12,31 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Enable Developer Options on Android Jellybean]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2013/05/29/enable-developer-options-on-android-jellybean/"/>
+    <updated>2013-05-29T21:13:00+02:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2013/05/29/enable-developer-options-on-android-jellybean</id>
+    <content type="html"><![CDATA[<p><img class="right" src="http://www.android.com/images/whatsnew/jb-new-logo.png" title="" >This was weird! I just updated my venerable ZTE Blade to Cyanogenmod 10.1 (Jellybean). I flashed it, then rebooted having completely forgotten to to install GApps. No problem, reboot into Clockmod Recovery and install them. Promlem: no option to reboot to recovery.</p>
+
+<!-- more -->
+
+
+<p>It turns out that you need to enable <em>Advanced reboot</em> in the *Developer Options. Problem where are those options. In Jellybean 4.2 they are hidden.</p>
+
+<ul>
+<li>Open up <em>Settings</em> -> <em>About Phone</em></li>
+<li>Find the entry for <em>Build number</em></li>
+<li>Tap on it 7 times (honest), after the 3rd it will start to count down.</li>
+</ul>
+
+
+<p>Now you will have a new option under <em>Settings</em> for <em>Developer Options</em> in which you can turn on *Advanced Reboot&#8221;</p>
+
+<p>For anyone who has a ZTE Blade and would like to get the latest and greatest Android on it, the files are <a href="https://copy.com/Dqx4qRjgs6KK">here</a>.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[EMC ViPR thoughts]]></title>
@@ -1122,22 +1147,6 @@ The attitude to lunch is probably the biggest single change of all that can only
 <p>Drivers are about the same. The vast majority give me plenty of space, but obviously you get the odd idiot. Just today someone shouted &#8220;Je vais te touer&#8221; so some things are pretty universal it would appear.</p>
 
 <p>I have also found that the paint on the roads (at least in Rennes) is more slippery in the wet. The simple answer has been to avoid the cycle lanes - no real change there then.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[I have a Raspberry Pi]]></title>
-    <link href="http://www.chriscowley.me.uk/blog/2012/08/04/i-have-a-raspberry-pi/"/>
-    <updated>2012-08-04T21:47:00+02:00</updated>
-    <id>http://www.chriscowley.me.uk/blog/2012/08/04/i-have-a-raspberry-pi</id>
-    <content type="html"><![CDATA[<p>Just got my new toy! I have to admit that I am not completely certain what I will do with it yet though.</p>
-
-<!-- more -->
-
-
-<p>It will certainly start by running <a href="http://mpd.wikia.com/wiki/Music_Player_Daemon_Wiki" target="_blank">Music Player Daemon</a>.</p>
-
-<p><a href="http://www.flickr.com/photos/chriscowleyunix/7705281518/" title="Raspberry Pi by chriscowleysound, on Flickr"><img src="http://farm9.staticflickr.com/8023/7705281518_73c2ee8c18.jpg" width="500" height="375" alt="Raspberry Pi"></a></p>
 ]]></content>
   </entry>
   
