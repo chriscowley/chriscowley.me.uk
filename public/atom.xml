@@ -4,7 +4,7 @@
   <title><![CDATA[Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-05-29T21:22:14+02:00</updated>
+  <updated>2013-05-30T22:19:54+02:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -12,6 +12,26 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Jellybean and OpenVPN]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2013/05/30/jellybean-and-openvpn/"/>
+    <updated>2013-05-30T22:14:00+02:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2013/05/30/jellybean-and-openvpn</id>
+    <content type="html"><![CDATA[<p><img class="right" src="http://openvpn.net/templates/telethra/img/ovpntech_logo-s.png">Setting up the server is well documented elsewhere, the <a href="http://openvpn.net/index.php/open-source/documentation/howto.html#quick">official howto</a> works nicely for me. I use a Virtual TUN network (routed) with clients connecting via UDP 1194, with all the network config pushed out by the server. Follow the howto and you will get that at the end.</p>
+
+<!-- more -->
+
+
+<p>When you create the key for your Jellybean client, create a PKCS12 certificate. This just means using the <code>build-key-pkcs12</code> script instead of <code>build-key</code>. Copy that .p12 key to the root of the SD card in your phone.</p>
+
+<p>Now you can make that certificate available for use by the OpenVPN client. Open <em>Setting -> Security -> Install from SD Card</em> and choose the .p12 file you just copied there.</p>
+
+<p>Install <a href="http://code.google.com/p/ics-openvpn/">OpenVPN for Android/ICS-openvpn</a>. In that create a new profile with a suitable name. Under &#8220;Basic&#8221; configure the <em>Server Address</em> and choose your certificate.</p>
+
+<p>The end&#8230;</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Enable Developer Options on Android Jellybean]]></title>
@@ -1110,43 +1130,6 @@ And finally plugged in a pair of these:
 <p>True I am not as hand-ons as I would like to be (for now). However, I am getting exposed to a the real big boys kit with systems that are used by 100k+ users, as opposed to 100 users. The challenge is very real, but exciting. As we quite often said at Snell:</p>
 
 <p>&#8220;Challenge accepted&#8230;&#8221;</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[My new life]]></title>
-    <link href="http://www.chriscowley.me.uk/blog/2012/10/01/my-new-life/"/>
-    <updated>2012-10-01T22:06:00+02:00</updated>
-    <id>http://www.chriscowley.me.uk/blog/2012/10/01/my-new-life</id>
-    <content type="html"><![CDATA[<p>I am now a month in to life in France. Make no mistake I am so far very happy that we have made the right decision, even though not everything is perfect. The biggest beef is without a doubt the paperwork!</p>
-
-<!-- more -->
-
-
-<p>For example, it took us a month to get a phone line and the stumbling block was not having the right piece of paper. To get onto the system you have to have a bill, but to get a bill you need a bill. Call it a catch-22 or a chicken-egg take your pick, but french beaurocrats love that.</p>
-
-<p>Working in France is a little different to England. Add to that the fact that I am going from a <a href="http://www.snellgroup.com" target="_blank">small company</a> to working on a project for a <b>much</b> <a href="http://www.orange-business.com" target="_blank">larger one</a> and you have quite a culture shock.</p>
-
-<p><span class='pullquote-right' data-pullquote='All my colleagues take a 2 hour lunch'>
-The attitude to lunch is probably the biggest single change of all that can only be attributed to country. All my colleagues take a 2 hour lunch religiously, during which they go elsewhere. I am used to taking a 30 minute break to read the Register with a sandwhich/salad at my desk. For now, past an hour, I get bored an return to work. Maybe I will extend my lunch as I get used to it, but maybe not - shorter lunch means I get to go home earlier.
-</span></p>
-
-<h2>Commuting</h2>
-
-<p>My commute is quite a lot further than when I was at Snell:</p>
-
-<iframe width="500" height="300" scrolling="no" frameborder="no" src="https://www.google.com/fusiontables/embedviz?viz=MAP&amp;q=select+col2+from+1J0AXs2Oyzs-J9ChL5U7hgKWkHX-HimQZ699VSO4&amp;h=false&amp;lat=50.820603567709554&amp;lng=-1.011776909545925&amp;z=13&amp;t=1&amp;l=col2"></iframe>
-
-
-<p>That was quite a nice route once you got to Langston harbour. What I do now is very different. For a start I have not cycled all the way yet. Partly because it it a lot further, but also because trains are a <em>lot</em> cheaper here. I pay 80 euros for a month, half of which gets re-imbursed. When your train costs less than 2 euros a day, it does not even make sense to take a car.</p>
-
-<p>The actual cycling is a lot more pleasant as well. I live in a hamlet, and my route take me past the <em>le lac tranquille</em> (the calm lake). In the morning it gets very cold and misty, which is very nice.</p>
-
-<p><a href="http://imgur.com/Trejw"><img src="http://i.imgur.com/Trejw.jpg" title="Hosted by imgur.com" alt="" /></a></p>
-
-<p>Drivers are about the same. The vast majority give me plenty of space, but obviously you get the odd idiot. Just today someone shouted &#8220;Je vais te touer&#8221; so some things are pretty universal it would appear.</p>
-
-<p>I have also found that the paint on the roads (at least in Rennes) is more slippery in the wet. The simple answer has been to avoid the cycle lanes - no real change there then.</p>
 ]]></content>
   </entry>
   
