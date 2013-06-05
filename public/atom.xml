@@ -4,7 +4,7 @@
   <title><![CDATA[Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-04-29T21:43:30+02:00</updated>
+  <updated>2013-06-04T22:19:23+02:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -12,6 +12,116 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Dell Announces VRTX]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2013/06/04/dell-announces-vrtx/"/>
+    <updated>2013-06-04T22:15:00+02:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2013/06/04/dell-announces-vrtx</id>
+    <content type="html"><![CDATA[<p><img class="right" src="http://en.community.dell.com/cfs-file.ashx/__key/communityserver-blogs-components-weblogfiles/00-00-00-37-45/6886.vrtx.JPG"> Dell has announced the new PowerEdge VRTX (pronounced Vertex). The name comes from a vertex being &#8220;the intersection of multiple lines&#8221;, alluding to this being a mixture of a rack server, a blade server and a SAN.</p>
+
+<!-- more -->
+
+
+<p>It is aimed at branch offices, so it contains 4 servers, storage, networking and (unusually) the ability to add PCI-e cards (up to 8, including 3 FH/FL). These cards can be connected to which ever server you want. These features put in competition with the HP C3000 and the Supermicro OfficeBlade.</p>
+
+<p>The other 2 are basically standard blade chassis that have been given quiet fans and IEC power connectors. You can pick and choose storage, PCI-E and compute blades depending on your needs. They also have the full array of networking options: anything from 2 1Gb uplinks to full on 40GB QDR infiniband. VRTX on the other hand is a fixed configuration of a 2U SAS array (either 2.5&#8221; or 3.5&#8221; disks) and 4 compute servers. You can add PCI-e cards, but support is limited. Basically, it expands the limited networking available in the blades themselves (no 10Gb at launch, max of 8x 1Gb uplink with no redundant fabric). There is support for a GPU, but it AMD only with  no Nvidia Tesla support.</p>
+
+<p>So what we have is a system that takes the same amount of space as it competitors and is less flexible. So why would you want it? I have on many cases wanted something that would give me a simple solution to run VMware (or similar) properly (i.e. shared storage and at least 3 nodes) and can go in the corner of the office on a standard plug. The other solutions can do this with a bit of thought (more so with the Supermicro), but with the VRTX like it will do that out-of-the-box.</p>
+
+<p>If I could make 1 request of Dell, it would be to do a &#8220;VRTX lite&#8221; that drops the PCI-e slots and (perhaps) halves the number of disks and servers. To get a pair of computer servers and a small SAN in 2U would be awesome for many a SMB branch office.</p>
+
+<iframe width="640" height="360" src="http://www.youtube.com/embed/16IlDQnIMrk?rel=0" frameborder="0" allowfullscreen></iframe>
+
+
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Jellybean and OpenVPN]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2013/05/30/jellybean-and-openvpn/"/>
+    <updated>2013-05-30T22:14:00+02:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2013/05/30/jellybean-and-openvpn</id>
+    <content type="html"><![CDATA[<p><img class="right" src="http://openvpn.net/templates/telethra/img/ovpntech_logo-s.png">Setting up the server is well documented elsewhere, the <a href="http://openvpn.net/index.php/open-source/documentation/howto.html#quick">official howto</a> works nicely for me. I use a Virtual TUN network (routed) with clients connecting via UDP 1194, with all the network config pushed out by the server. Follow the howto and you will get that at the end.</p>
+
+<!-- more -->
+
+
+<p>When you create the key for your Jellybean client, create a PKCS12 certificate. This just means using the <code>build-key-pkcs12</code> script instead of <code>build-key</code>. Copy that .p12 key to the root of the SD card in your phone.</p>
+
+<p>Now you can make that certificate available for use by the OpenVPN client. Open <em>Setting -> Security -> Install from SD Card</em> and choose the .p12 file you just copied there.</p>
+
+<p>Install <a href="http://code.google.com/p/ics-openvpn/">OpenVPN for Android/ICS-openvpn</a>. In that create a new profile with a suitable name. Under &#8220;Basic&#8221; configure the <em>Server Address</em> and choose your certificate.</p>
+
+<p>The end&#8230;</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Enable Developer Options on Android Jellybean]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2013/05/29/enable-developer-options-on-android-jellybean/"/>
+    <updated>2013-05-29T21:13:00+02:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2013/05/29/enable-developer-options-on-android-jellybean</id>
+    <content type="html"><![CDATA[<p><img class="right" src="http://www.android.com/images/whatsnew/jb-new-logo.png" title="" >This was weird! I just updated my venerable ZTE Blade to Cyanogenmod 10.1 (Jellybean). I flashed it, then rebooted having completely forgotten to to install GApps. No problem, reboot into Clockmod Recovery and install them. Promlem: no option to reboot to recovery.</p>
+
+<!-- more -->
+
+
+<p>It turns out that you need to enable <em>Advanced reboot</em> in the *Developer Options. Problem where are those options. In Jellybean 4.2 they are hidden.</p>
+
+<ul>
+<li>Open up <em>Settings</em> -> <em>About Phone</em></li>
+<li>Find the entry for <em>Build number</em></li>
+<li>Tap on it 7 times (honest), after the 3rd it will start to count down.</li>
+</ul>
+
+
+<p>Now you will have a new option under <em>Settings</em> for <em>Developer Options</em> in which you can turn on *Advanced Reboot&#8221;</p>
+
+<p>For anyone who has a ZTE Blade and would like to get the latest and greatest Android on it, the files are <a href="https://copy.com/Dqx4qRjgs6KK">here</a>.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[EMC ViPR thoughts]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2013/05/13/emc-vipr-thoughts/"/>
+    <updated>2013-05-13T21:45:00+02:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2013/05/13/emc-vipr-thoughts</id>
+    <content type="html"><![CDATA[<p>I have been a little slow on the uptake on this one. I would like to say it is because I was carefully digesting the information, but that is not true; the reality is that I have just had 2 5 day weekends in 2 weeks :-).</p>
+
+<!-- more -->
+
+
+<p>The big announcement at this years EMC World is ViPR. Plenty of people with far bigger reputations than me in the industry have already made their comments:</p>
+
+<ul>
+<li><a href="http://virtualgeek.typepad.com/virtual_geek/2013/05/storage-virtualization-platform-re-imagined.html">Chad Sakac</a> has really good and deep, but long.</li>
+<li><a href="http://chucksblog.emc.com/chucks_blog/2013/05/introducing-emc-vipr-a-breathtaking-approach-to-software-defined-storage.html">Chuck Hollis</a> is nowhere near as technical but (as is normal for Chuck) sells it beautifully</li>
+<li><a href="http://blog.scottlowe.org/2013/05/06/very-early-thoughts-about-emc-vipr/">Scott Lowe</a> has an excellent overview</li>
+<li><a href="http://h30507.www3.hp.com/t5/Around-the-Storage-Block-Blog/ViPR-or-Vapor-The-Software-Defined-Storage-saga-continues/ba-p/138013?utm_source=feedly#.UZCd_covj3w">Kate Davies</a> gives HP&#8217;s take on it, which I sort of agree with, but not completely. As she says, the StoreAll VSA is not really in the same market, but I think it is the closest thing HP have so comparisons will always be drawn.</li>
+</ul>
+
+
+<p>ViPR is EMC&#8217;s response to two major storage problems:
+1.   Storage is missing some sort of abstraction layer, particularly for management (the Control Plane).
+1.   There is more to storage than NFS and iSCSI. As well as NAS/SAN we now have multiple forms of object stores, plus important non-POSIX file systems such as HDFS.</p>
+
+<p>Another problem I would add is that of <em>Openness</em>. For now there is not really any protocols for managing multiple arrays from different manufacturers, even at a basic level. They have been attempts in the past (SMI-S), but they have never taken off. ViPR attacks that problem as well, sort of.</p>
+
+<p>In some respects I am quite excited about ViPR. The ability to completely abstract the management of my storage is potentially very powerful. For now it is not really possible to integrate storage with Configuration Management tools. ViPR gives all supported arrays a REST API, thus it would be very simple to create bindings for the scripting language of your choice. Low and behold, a Puppet module to manage all my storage arrays becomes possible. This very neatly solves problem #1.</p>
+
+<p>This is where my excitement ends however. The problem is that issue of <em>Openness</em> I mentioned above. EMC has gone to great lengths to describe ViPR as open, but the fact remains that it is not. EMC have published the specifications of the REST API, they have also created a plugin interface for third-parties to add their own arrays; this is where it ends however. All development of ViPR is at the mercy of EMC, so why would other vendors support it?</p>
+
+<p>A lot of the management tools in ViPR are already in Openstack Cinder, which supports a much wider range of backends than ViPR at present. In that vendors have a completely open source management layer to develop against. Why would they sell their souls to a competitor? Simple, they will not. EMC exclusive shops will find ViPR to be an excellent way integrating their storage with a DevOps style workflow. Unfortunately my experience is that the sort of organizations that buy EMC (especially the big ones like VMAX) are not really ready for DevOps yet.</p>
+
+<p>Another feature that EMC has been touted is multi-protocol access to your data. Block volumes can be accessed via both iSCSI and FC protocols - nothing really clever there I&#8217;m afraid. Dot Hill has been doing that for several years with the <a href="http://www.dothill.com/wp-content/uploads/2011/08/AssuredSAN-n-3920-3930-C-10.15.11.pdf">AssuredSAN 39x0</a> models (and by extension the the HP P2000 as well). That is also easy enough to do on commodity hardware using  <a href="http://linux-iscsi.org/wiki/Main_Page">LIO target</a> plus a whole lot more. On the file side, it gives you not only access to your data via both CIFS and NFS, but it does add object access to that. They touted this as being very clever, but once again you can already do this using well respected, production proven open source. Glusterfs has an object translator, so that covers that super clever feature. All the data abstraction features it has are already there in in the open source world. If you want object and NAS access to the same peta-byte storage system, you have it in both Glusterfs and Ceph, both of which can easily be managed by CM tools such as Puppet.</p>
+
+<p><span class='pullquote-right' data-pullquote='To be a universal standard it would need to be an open (source) standard'>
+EMC has really pushed ViPR in the last couple of weeks, but it fails to impress me. This is a shame, because in general I like EMC&#8217;s products. I don&#8217;t like their marketing, but in their gear does just work. ViPR will probably do well with large EMC/NetApp shops, but it is by no means the ground-breaking product that EMC would have people believe (to be honest, I&#8217;m not sure anything ever is). It can never be the universal gateway to manage our storage, it is too tied in to EMC. To be a universal standard it would need to be an open (source) standard, which is not really part of EMC&#8217;s culture (with the exception of the awesome Razor).
+</span></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Bamboo Invoice on Centos with Nginx]]></title>
@@ -1021,107 +1131,6 @@ Robin Harris at <a href="http://storagemojo.com/2012/12/05/emcs-xtreme-embarrass
 <p>Later I took it off to ensure that it would fit properly on a &#8220;normal&#8221; sized handlebar by putting it on my mountain bike - it was fine. Also, there was absolutely no scratches on my Felt&#8217;s bars at all, despite my concerns about not having any shims to protect them.</p>
 
 <p>All in all it is a pretty good piece of kit. It can be had from <a href="http://www.mobilefun.co.uk">MobileFun</a> for £13.95, which strikes me as pretty good value.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[My new job]]></title>
-    <link href="http://www.chriscowley.me.uk/blog/2012/10/01/my-new-job/"/>
-    <updated>2012-10-01T22:16:00+02:00</updated>
-    <id>http://www.chriscowley.me.uk/blog/2012/10/01/my-new-job</id>
-    <content type="html"><![CDATA[<p>I have now got new challenges and am designing much bigger systems. Whereas before I would have take one of these:
-<img class="center" src="http://www.chriscowley.me.uk/images/p2000-g3-sff.png" width="250" height="400"></p>
-
-<!-- more -->
-
-
-<p>Plugged it into a pair of these:
-<img class="center" src="http://www.chriscowley.me.uk/images/silkworm.jpg" width="250" height="450">
-And finally plugged in a pair of these:
-<img class="center" src="http://www.chriscowley.me.uk/images/dl380g7.jpg" width="200" height="400"></p>
-
-<p>Now I do not actually do the plugging in - that is not part of the documented process. Also, the system I am designing is on the other side of the world. However I now take one of <a href="http://uk.emc.com/storage/symmetrix-vmax/vmax-20k.htm" target="_blank">these</a>, a couple of <a href="http://www.cisco.com/en/US/products/hw/ps4159/ps4358/ps5395/index.html" target="_blank">these</a> and add a couple of racks of <a href="http://www.cisco.com/en/US/products/ps10265/index.html" target="_blank">these</a>. Finally it all plugs into a couple of <a href="http://www.cisco.com/en/US/products/ps10098/index.html" target="_blank">these</a>.</p>
-
-<p>True I am not as hand-ons as I would like to be (for now). However, I am getting exposed to a the real big boys kit with systems that are used by 100k+ users, as opposed to 100 users. The challenge is very real, but exciting. As we quite often said at Snell:</p>
-
-<p>&#8220;Challenge accepted&#8230;&#8221;</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[My new life]]></title>
-    <link href="http://www.chriscowley.me.uk/blog/2012/10/01/my-new-life/"/>
-    <updated>2012-10-01T22:06:00+02:00</updated>
-    <id>http://www.chriscowley.me.uk/blog/2012/10/01/my-new-life</id>
-    <content type="html"><![CDATA[<p>I am now a month in to life in France. Make no mistake I am so far very happy that we have made the right decision, even though not everything is perfect. The biggest beef is without a doubt the paperwork!</p>
-
-<!-- more -->
-
-
-<p>For example, it took us a month to get a phone line and the stumbling block was not having the right piece of paper. To get onto the system you have to have a bill, but to get a bill you need a bill. Call it a catch-22 or a chicken-egg take your pick, but french beaurocrats love that.</p>
-
-<p>Working in France is a little different to England. Add to that the fact that I am going from a <a href="http://www.snellgroup.com" target="_blank">small company</a> to working on a project for a <b>much</b> <a href="http://www.orange-business.com" target="_blank">larger one</a> and you have quite a culture shock.</p>
-
-<p><span class='pullquote-right' data-pullquote='All my colleagues take a 2 hour lunch'>
-The attitude to lunch is probably the biggest single change of all that can only be attributed to country. All my colleagues take a 2 hour lunch religiously, during which they go elsewhere. I am used to taking a 30 minute break to read the Register with a sandwhich/salad at my desk. For now, past an hour, I get bored an return to work. Maybe I will extend my lunch as I get used to it, but maybe not - shorter lunch means I get to go home earlier.
-</span></p>
-
-<h2>Commuting</h2>
-
-<p>My commute is quite a lot further than when I was at Snell:</p>
-
-<iframe width="500" height="300" scrolling="no" frameborder="no" src="https://www.google.com/fusiontables/embedviz?viz=MAP&amp;q=select+col2+from+1J0AXs2Oyzs-J9ChL5U7hgKWkHX-HimQZ699VSO4&amp;h=false&amp;lat=50.820603567709554&amp;lng=-1.011776909545925&amp;z=13&amp;t=1&amp;l=col2"></iframe>
-
-
-<p>That was quite a nice route once you got to Langston harbour. What I do now is very different. For a start I have not cycled all the way yet. Partly because it it a lot further, but also because trains are a <em>lot</em> cheaper here. I pay 80 euros for a month, half of which gets re-imbursed. When your train costs less than 2 euros a day, it does not even make sense to take a car.</p>
-
-<p>The actual cycling is a lot more pleasant as well. I live in a hamlet, and my route take me past the <em>le lac tranquille</em> (the calm lake). In the morning it gets very cold and misty, which is very nice.</p>
-
-<p><a href="http://imgur.com/Trejw"><img src="http://i.imgur.com/Trejw.jpg" title="Hosted by imgur.com" alt="" /></a></p>
-
-<p>Drivers are about the same. The vast majority give me plenty of space, but obviously you get the odd idiot. Just today someone shouted &#8220;Je vais te touer&#8221; so some things are pretty universal it would appear.</p>
-
-<p>I have also found that the paint on the roads (at least in Rennes) is more slippery in the wet. The simple answer has been to avoid the cycle lanes - no real change there then.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[I have a Raspberry Pi]]></title>
-    <link href="http://www.chriscowley.me.uk/blog/2012/08/04/i-have-a-raspberry-pi/"/>
-    <updated>2012-08-04T21:47:00+02:00</updated>
-    <id>http://www.chriscowley.me.uk/blog/2012/08/04/i-have-a-raspberry-pi</id>
-    <content type="html"><![CDATA[<p>Just got my new toy! I have to admit that I am not completely certain what I will do with it yet though.</p>
-
-<!-- more -->
-
-
-<p>It will certainly start by running <a href="http://mpd.wikia.com/wiki/Music_Player_Daemon_Wiki" target="_blank">Music Player Daemon</a>.</p>
-
-<p><a href="http://www.flickr.com/photos/chriscowleyunix/7705281518/" title="Raspberry Pi by chriscowleysound, on Flickr"><img src="http://farm9.staticflickr.com/8023/7705281518_73c2ee8c18.jpg" width="500" height="375" alt="Raspberry Pi"></a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Isle of Wight Ride]]></title>
-    <link href="http://www.chriscowley.me.uk/blog/2012/07/27/isle-of-wight-ride/"/>
-    <updated>2012-07-27T16:02:00+02:00</updated>
-    <id>http://www.chriscowley.me.uk/blog/2012/07/27/isle-of-wight-ride</id>
-    <content type="html"><![CDATA[<p>Last week I successfully did my first 65 mile ride. Of course it was not a race, but that never stopped a group of men being over competitive - I won by the way.</p>
-
-<!-- more -->
-
-
-<p>I do not own a cycle computer, nor did I remember to run My Tracks. However, a colleague did record it on his Garmin GPS:</p>
-
-<iframe width='465' height='548' frameborder='0' src='http://connect.garmin.com:80/activity/embed/203587506'></iframe>
-
-
-
-
-<object width="400" height="300"> <param name="flashvars" value="offsite=true&lang=en-us&page_show_url=%2Fphotos%2F83132329%40N04%2Fsets%2F72157630749918206%2Fshow%2F&page_show_back_url=%2Fphotos%2F83132329%40N04%2Fsets%2F72157630749918206%2F&set_id=72157630749918206&jump_to="></param> <param name="movie" value="http://www.flickr.com/apps/slideshow/show.swf?v=109615"></param> <param name="allowFullScreen" value="true"></param><embed type="application/x-shockwave-flash" src="http://www.flickr.com/apps/slideshow/show.swf?v=109615" allowFullScreen="true" flashvars="offsite=true&lang=en-us&page_show_url=%2Fphotos%2F83132329%40N04%2Fsets%2F72157630749918206%2Fshow%2F&page_show_back_url=%2Fphotos%2F83132329%40N04%2Fsets%2F72157630749918206%2F&set_id=72157630749918206&jump_to=" width="400" height="300"></embed></object>
-
-
-
 ]]></content>
   </entry>
   

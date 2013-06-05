@@ -1,0 +1,398 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>EMC ViPR thoughts - Just Another Linux Blog</title>
+  <meta name="author" content="Chris Cowley">
+
+  
+  <meta name="description" content="I have been a little slow on the uptake on this one. I would like to say it is because I was carefully digesting the information, but that is not &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://www.chriscowley.me.uk/blog/2013/05/13/emc-vipr-thoughts/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Just Another Linux Blog" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript">
+    // Avoid conflict with ender.js.
+    jQuery.noConflict();
+</script>
+<!-- jQuery Form Plugin -->
+<script src="http://malsup.github.com/jquery.form.js"></script>
+<!-- jQuery Form Validation Plugin -->
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js"></script> 
+<script src="/javascripts/google_form.js"></script>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-32843690-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Just Another Linux Blog</a></h1>
+  
+    <h2>maybe a bit about cycling as well</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://www.duckduckgo.com/" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sites" value="site:www.chriscowley.me.uk" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search&hellip;"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Home</a></li>
+  <li><a href="/about">About</a></li>
+  <li><a href="/consulting">Consulting</a></li>
+  <li><a href="/yum">Yum</a></li>
+  <li><a href="/contact">Contact</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">EMC ViPR Thoughts</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-13T21:45:00+02:00" pubdate data-updated="true">Monday 13 May 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I have been a little slow on the uptake on this one. I would like to say it is because I was carefully digesting the information, but that is not true; the reality is that I have just had 2 5 day weekends in 2 weeks :-).</p>
+
+<!-- more -->
+
+
+<p>The big announcement at this years EMC World is ViPR. Plenty of people with far bigger reputations than me in the industry have already made their comments:</p>
+
+<ul>
+<li><a href="http://virtualgeek.typepad.com/virtual_geek/2013/05/storage-virtualization-platform-re-imagined.html">Chad Sakac</a> has really good and deep, but long.</li>
+<li><a href="http://chucksblog.emc.com/chucks_blog/2013/05/introducing-emc-vipr-a-breathtaking-approach-to-software-defined-storage.html">Chuck Hollis</a> is nowhere near as technical but (as is normal for Chuck) sells it beautifully</li>
+<li><a href="http://blog.scottlowe.org/2013/05/06/very-early-thoughts-about-emc-vipr/">Scott Lowe</a> has an excellent overview</li>
+<li><a href="http://h30507.www3.hp.com/t5/Around-the-Storage-Block-Blog/ViPR-or-Vapor-The-Software-Defined-Storage-saga-continues/ba-p/138013?utm_source=feedly#.UZCd_covj3w">Kate Davies</a> gives HP&#8217;s take on it, which I sort of agree with, but not completely. As she says, the StoreAll VSA is not really in the same market, but I think it is the closest thing HP have so comparisons will always be drawn.</li>
+</ul>
+
+
+<p>ViPR is EMC&#8217;s response to two major storage problems:
+1.   Storage is missing some sort of abstraction layer, particularly for management (the Control Plane).
+1.   There is more to storage than NFS and iSCSI. As well as NAS/SAN we now have multiple forms of object stores, plus important non-POSIX file systems such as HDFS.</p>
+
+<p>Another problem I would add is that of <em>Openness</em>. For now there is not really any protocols for managing multiple arrays from different manufacturers, even at a basic level. They have been attempts in the past (SMI-S), but they have never taken off. ViPR attacks that problem as well, sort of.</p>
+
+<p>In some respects I am quite excited about ViPR. The ability to completely abstract the management of my storage is potentially very powerful. For now it is not really possible to integrate storage with Configuration Management tools. ViPR gives all supported arrays a REST API, thus it would be very simple to create bindings for the scripting language of your choice. Low and behold, a Puppet module to manage all my storage arrays becomes possible. This very neatly solves problem #1.</p>
+
+<p>This is where my excitement ends however. The problem is that issue of <em>Openness</em> I mentioned above. EMC has gone to great lengths to describe ViPR as open, but the fact remains that it is not. EMC have published the specifications of the REST API, they have also created a plugin interface for third-parties to add their own arrays; this is where it ends however. All development of ViPR is at the mercy of EMC, so why would other vendors support it?</p>
+
+<p>A lot of the management tools in ViPR are already in Openstack Cinder, which supports a much wider range of backends than ViPR at present. In that vendors have a completely open source management layer to develop against. Why would they sell their souls to a competitor? Simple, they will not. EMC exclusive shops will find ViPR to be an excellent way integrating their storage with a DevOps style workflow. Unfortunately my experience is that the sort of organizations that buy EMC (especially the big ones like VMAX) are not really ready for DevOps yet.</p>
+
+<p>Another feature that EMC has been touted is multi-protocol access to your data. Block volumes can be accessed via both iSCSI and FC protocols - nothing really clever there I&#8217;m afraid. Dot Hill has been doing that for several years with the <a href="http://www.dothill.com/wp-content/uploads/2011/08/AssuredSAN-n-3920-3930-C-10.15.11.pdf">AssuredSAN 39x0</a> models (and by extension the the HP P2000 as well). That is also easy enough to do on commodity hardware using  <a href="http://linux-iscsi.org/wiki/Main_Page">LIO target</a> plus a whole lot more. On the file side, it gives you not only access to your data via both CIFS and NFS, but it does add object access to that. They touted this as being very clever, but once again you can already do this using well respected, production proven open source. Glusterfs has an object translator, so that covers that super clever feature. All the data abstraction features it has are already there in in the open source world. If you want object and NAS access to the same peta-byte storage system, you have it in both Glusterfs and Ceph, both of which can easily be managed by CM tools such as Puppet.</p>
+
+<p><span class='pullquote-right' data-pullquote='To be a universal standard it would need to be an open (source) standard'>
+EMC has really pushed ViPR in the last couple of weeks, but it fails to impress me. This is a shame, because in general I like EMC&#8217;s products. I don&#8217;t like their marketing, but in their gear does just work. ViPR will probably do well with large EMC/NetApp shops, but it is by no means the ground-breaking product that EMC would have people believe (to be honest, I&#8217;m not sure anything ever is). It can never be the universal gateway to manage our storage, it is too tied in to EMC. To be a universal standard it would need to be an open (source) standard, which is not really part of EMC&#8217;s culture (with the exception of the awesome Razor).
+</span></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Chris Cowley</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-13T21:45:00+02:00" pubdate data-updated="true">Monday 13 May 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/storage/'>storage</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.chriscowley.me.uk/blog/2013/05/13/emc-vipr-thoughts/" data-via="chriscowleyunix" data-counturl="http://www.chriscowley.me.uk/blog/2013/05/13/emc-vipr-thoughts/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/04/29/bamboo-invoice-on-centos-with-nginx/" title="Previous Post: Bamboo Invoice on Centos with Nginx">&laquo; Bamboo Invoice on Centos with Nginx</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/05/29/enable-developer-options-on-android-jellybean/" title="Next Post: Enable Developer Options on Android Jellybean">Enable Developer Options on Android Jellybean &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>About Me</h1>
+  <p>A bilingual systems engineer based in rainy Brittany with a passion for open source solutions</p>
+  <p><a href="http://files.chriscowley.me.uk/ChrisCowley-pubkey.asc.html">My PGP Key</a>"
+
+
+</section>
+<section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/06/04/dell-announces-vrtx/">Dell Announces VRTX</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/05/30/jellybean-and-openvpn/">Jellybean and OpenVPN</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/05/29/enable-developer-options-on-android-jellybean/">Enable Developer Options on Android Jellybean</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/05/13/emc-vipr-thoughts/">EMC ViPR thoughts</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/04/29/bamboo-invoice-on-centos-with-nginx/">Bamboo Invoice on Centos with Nginx</a>
+      </li>
+    
+  </ul>
+</section>
+<a href="http://www.blogwithintegrity.com/"><img src="http://www.blogwithintegrity.com/badges/BWI_150sq.jpg" border="0" alt="BlogWithIntegrity.com"/></a>
+
+<section>
+  <h1>Latest Tweets</h1>
+  <ul id="tweets">
+    <li class="loading">Status updating...</li>
+  </ul>
+  <script type="text/javascript">
+    $.domReady(function(){
+      getTwitterFeed("chriscowleyunix", 4, false);
+    });
+  </script>
+  <script src="/javascripts/twitter.js" type="text/javascript"> </script>
+  
+    <a href="http://twitter.com/chriscowleyunix" class="twitter-follow-button" data-show-count="false">Follow @chriscowleyunix</a>
+  
+</section>
+
+<iframe height='454' width='250' frameborder='0' allowtransparency='true' scrolling='no' src='http://app.strava.com/athletes/1988717/latest-rides/a36a00e7b429238653218b855633d03f5fd0e7ae'></iframe>
+<script type="text/javascript">
+//default banner house ad url 
+clicksor_default_url = '';
+clicksor_banner_border = '#252525'; clicksor_banner_ad_bg = '#FFFFFF';
+clicksor_banner_link_color = '#000000'; clicksor_banner_text_color = '#666666';
+clicksor_banner_image_banner = true; clicksor_banner_text_banner = true;
+clicksor_layer_border_color = '#252525';
+clicksor_layer_ad_bg = '#FFFFFF'; clicksor_layer_ad_link_color = '#000000';
+clicksor_layer_ad_text_color = '#666666'; clicksor_text_link_bg = '';
+clicksor_text_link_color = ''; clicksor_enable_text_link = false;
+clicksor_layer_banner = false;
+</script>
+<script type="text/javascript" src="http://ads.clicksor.com/newServing/showAd.php?nid=1&amp;pid=302576&amp;adtype=10&amp;sid=497364"></script>
+<noscript><a href="http://www.yesadvertising.com">affiliate marketing</a></noscript>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/chriscowley">@chriscowley</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'chriscowley',
+            count: 3,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/104270895010699552462?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_GB"><img alt="Creative Commons Licence" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_GB">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>.
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+            /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+            var disqus_shortname = 'justanotherlinuxblog'; // required: replace example with your forum shortname
+
+            /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function() {
+                var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+        <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
