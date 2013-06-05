@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: programming | Just Another Linux Blog]]></title>
+  <title><![CDATA[Category: Programming | Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/blog/categories/programming/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-06-04T22:19:23+02:00</updated>
+  <updated>2013-06-05T10:16:11+01:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -14,46 +14,47 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Fixed my gihub repo list]]></title>
-    <link href="http://www.chriscowley.me.uk/blog/2012/07/03/fixed-my-gihub-repo-list/"/>
-    <updated>2012-07-03T20:54:00+02:00</updated>
-    <id>http://www.chriscowley.me.uk/blog/2012/07/03/fixed-my-gihub-repo-list</id>
-    <content type="html"><![CDATA[<p>My Github repo list has not worked as all since I moved over to Octopress. This evening I though I would have a little look into it.</p>
+    <title type="html"><![CDATA[PyCurl and self-signed SSL certificates]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2012/04/05/pycurl-and-self-signed-ssl-certificates/"/>
+    <updated>2012-04-05T16:50:00+01:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2012/04/05/pycurl-and-self-signed-ssl-certificates</id>
+    <content type="html"><![CDATA[<p>At <a href="http://www.snellgroup.com" target="_blank">Snell</a> we make heavy use of self-signed certificates for internal websites, such as the R&amp;D wiki. Active Directory makes it easy for us to make this transparent to the users, those that use Firefox/Chrome can find our well-published instructions to add the CA certificate to their own browsers.</p>
 
 <!-- more -->
 
 
-<p>It turned out that GitHub has <a href="https://github.com/blog/1160-github-api-v2-end-of-life" target="_blank">depreciated the version 1 and 2 APIs</a>. Octopress was using version 2, so I have made a little change.</p>
+<p>Today I was writing a script to that pulls lots of attachments off our Confluence wiki, which we access through SSL using one of those certificates. Of course PyCurl  moaned that it could not verify the host, but I did not care – I know it is the right host!</p>
 
-<p><div><script src='https://gist.github.com/3042647.js?file='></script>
-<noscript><pre><code></code></pre></noscript></div>
-</p>
+<p>Finding documentation both on SSL and PyCurl is problematic at best. OpenSSL’s documentation it complete, but could not be more unreadable if written by a right-handed doctor using a broken crayon with his left-hand; pyCurl’s documentation is non-existent.</p>
 
-<p>According to <a href="https://github.com/imathis/octopress/issues/620" target="_blank">this issue</a> there will be a fix in <a href="https://github.com/imathis/octopress/tree/2.1" target="_blank" >Octopress 2.1</a>. However, this patch will keep things working until Brandon Mathis moves it into the master branch. Of course that issue also highlighted the fact that I had just re-invented the wheel :(</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Back to basics]]></title>
-    <link href="http://www.chriscowley.me.uk/blog/2012/02/22/back-to-basics/"/>
-    <updated>2012-02-22T13:00:00+01:00</updated>
-    <id>http://www.chriscowley.me.uk/blog/2012/02/22/back-to-basics</id>
-    <content type="html"><![CDATA[<p>I have been a Sys Admin for quite a while now. Specialising in Linux means that I am often called upon to be a “jack of all trades, master of many”. In the last week I have touched upon storage, multiple programming languages (Bash, PHP, Python, Ruby and Java), Linux, Exchange, Tomcat, Virtualization and Systems architecture. I am sure the list could go on … and on … and on …</p>
+<p>After an hour of Google-Fu and DuckDuckGo-Fu I finally managed to do what I wanted:</p>
 
-<!-- more -->
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span> (pycurl_ssl.py)</span> <a href='/downloads/code/pycurl_ssl.py'>download</a></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='py'><span class='line'><span class="c">#!/usr/bin/env python</span>
+</span><span class='line'><span class="n">downloadedFile</span> <span class="o">=</span> <span class="s">&quot;/tmp/stuff&quot;</span>
+</span><span class='line'><span class="n">outfile</span> <span class="o">=</span> <span class="nb">file</span><span class="p">(</span><span class="n">downloadedFile</span><span class="p">,</span> <span class="s">&#39;wb&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="n">url</span> <span class="o">=</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">someurl</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span>
+</span><span class='line'><span class="n">c</span> <span class="o">=</span> <span class="n">pycurl</span><span class="o">.</span><span class="n">Curl</span><span class="p">()</span>
+</span><span class='line'><span class="n">c</span><span class="o">.</span><span class="n">setopt</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">URL</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+</span><span class='line'><span class="n">c</span><span class="o">.</span><span class="n">setopt</span><span class="p">(</span><span class="n">pycurl</span><span class="o">.</span><span class="n">USERPWD</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">:</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">))</span>
+</span><span class='line'><span class="n">c</span><span class="o">.</span><span class="n">setopt</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">WRITEFUNCTION</span><span class="p">,</span> <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">)</span>
+</span><span class='line'><span class="n">c</span><span class="o">.</span><span class="n">setopt</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">SSL_VERIFYPEER</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="c"># That is you key line for this purpose!</span>
+</span><span class='line'><span class="n">c</span><span class="o">.</span><span class="n">perform</span><span class="p">()</span>
+</span><span class='line'><span class="n">c</span><span class="o">.</span><span class="n">close</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
-
-<p>There is however something that I feel I am missing. Before I was in my current post, I was more of a developer. I did a lot of Shell scripting, but also ADA and C/C++. Nowadays I do not do that, which is a shame. Virtually all modern programming languages trace their roots back to C and C++. The whole of Linux/UNIX traces its roots back to C. Our world is built on C/C++!</p>
-
-<p>This is something I have neglected over recent years, so I’m going to change that. A bit of Google-fu just now has bought me some interesting resources:</p>
-
-<pre><code>&lt;a href="http://www.cplusplus.com/doc/tutorial/" target="_blank" &gt;http://www.cplusplus.com/doc/tutorial/&lt;/a&gt;
-&lt;a href="http://www.howtoforge.com/howtos/programming/c-cplusplus" target="_blank" &gt;http://www.howtoforge.com/howtos/programming/c-cplusplus&lt;/a&gt;
-&lt;a href="http://www.gtk.org/tutorial1.2/" target="_blank" &gt;http://www.gtk.org/tutorial1.2/&lt;/a&gt;
-&lt;a href="http://zetcode.com/tutorials/qt4tutorial/" target="_blank" &gt;http://zetcode.com/tutorials/qt4tutorial/&lt;/a&gt;
-</code></pre>
-
-<p>I have not looked at any of these in detail yet, but I will be over the next few days. At the end I hope to have dragged this hard-earned knowledge kicking and screaming from the back of my mind.</p>
+<p>There you go!</p>
 ]]></content>
   </entry>
   

@@ -5,12 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>VMware CLI installation woes on Centos 6 - Just Another Linux Blog</title>
+  <title>Initial thoughts on EMC ViPR - Just Another Linux Blog</title>
   <meta name="author" content="Chris Cowley">
 
   
-  <meta name="description" content="Installing the VMware CLI should have been simple, but it was a bit of a fiddle. Use yum all the bits it needs: 1
-yum install make autoconf automake &hellip;">
+  <meta name="description" content="The big announcement at this years EMC World is ViPR. Plenty of people with far bigger reputations than me in the industry have already made their &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +18,7 @@ yum install make autoconf automake &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.chriscowley.me.uk/blog/2012/02/06/vmware-cli-installation-woes-on-centos-6/">
+  <link rel="canonical" href="http://www.chriscowley.me.uk/blog/2013/05/07/initial-thoughts-on-emc-vipr/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -94,7 +93,7 @@ yum install make autoconf automake &hellip;">
   
   <header>
     
-      <h1 class="entry-title">VMware CLI Installation Woes on Centos 6</h1>
+      <h1 class="entry-title">Initial Thoughts on EMC ViPR</h1>
     
     
       <p class="meta">
@@ -110,7 +109,7 @@ yum install make autoconf automake &hellip;">
   
 
 
-<time datetime="2012-02-06T13:09:00+00:00" pubdate data-updated="true">Monday 06 February 2012</time>
+<time datetime="2013-05-07T13:32:00+01:00" pubdate data-updated="true">Tuesday 07 May 2013</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -119,52 +118,39 @@ yum install make autoconf automake &hellip;">
   </header>
 
 
-<div class="entry-content"><p>Installing the VMware CLI should have been simple, but it was a bit of a fiddle.</p>
-
-<p>Use yum  all the bits it needs:</p>
+<div class="entry-content"><p><img class="right" src="https://upload.wikimedia.org/wikipedia/en/8/8b/Colonial_viper_original-series.JPG" width="350" title="Colonel Viper - geddit haha" > The big announcement at this years EMC World is ViPR. Plenty of people with far bigger reputations than me in the industry have already made their comments:</p>
 
 <!-- more -->
 
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>yum install make autoconf automake openssl-devel gcc gcc-c++ make uuid-perl libuuid-devel uuid-devel  perl-Data-Dump perl-SOAP-Lite perl-XML-SAX perl-XML-NamespaceSupport perl-XML-LibXML perl-XML-LibXML-Common perl-CPAN</span></code></pre></td></tr></table></div></figure>
+<ul>
+<li><a href="http://virtualgeek.typepad.com/virtual_geek/2013/05/storage-virtualization-platform-re-imagined.html">Chad Sakac</a> has really good and deep, but long.</li>
+<li><a href="http://chucksblog.emc.com/chucks_blog/2013/05/introducing-emc-vipr-a-breathtaking-approach-to-software-defined-storage.html">Chuck Hollis</a> is nowhere near as technical but (as is normal for Chuck) sells it beautifully</li>
+<li><a href="http://blog.scottlowe.org/2013/05/06/very-early-thoughts-about-emc-vipr/">Scott Lowe</a> has an excellent overview</li>
+</ul>
 
 
-<p>You should now be able to run the installer, but I had another problem though. The installer script would not believe me that I had a direct internet connection and insisted that I gave some proxy server settings. As a simple workaround I just commented out that code in the installation script:</p>
+<p>Chad Sakac has also made a few technical introductory videos too that are linked on his article. I strongly recommend reading his article.</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>if ( direct_command("env | grep -i http_proxy") ) {
-</span><span class='line'> $httpproxy = 1;
-</span><span class='line'>} else {
-</span><span class='line'> print wrap("http_proxy not set. please set environment variable 'http_proxy' e.g. export http_proxy=http://myproxy.mydomain.com:0000 . \n\n", 0);
-</span><span class='line'>}
-</span><span class='line'>if ( direct_command("env | grep -i ftp_proxy") ) {
-</span><span class='line'> $ftpproxy = 1;
-</span><span class='line'>} else {
-</span><span class='line'> print wrap("ftp_proxy not set. please set environment variable 'ftp_proxy' e.g. export ftp_proxy=http://myproxy.mydomain.com:0000 . \n\n", 0);
-</span><span class='line'>}
-</span><span class='line'>
-</span><span class='line'>if ( !( $ftpproxy && $httpproxy)) {
-</span><span class='line'>    uninstall_file($gInstallerMainDB);
-</span><span class='line'>    exit 1;
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+<p>I am quite excited so far about ViPR, although that may be because it is new and shiney. Please note that my research is ongoing, so some of what I say may be inaccurate/just-plain-nonsense.</p>
+
+<p>ViPR is EMC&#8217;s response to two major storage problems:</p>
+
+<ol>
+<li>Storage is missing some sort of abstraction layer, particularly for management (the Control Plane).</li>
+<li>There is more to storage than NFS and iSCSI. As well as NAS/SAN we now have multiple forms of object stores, plus important non-POSIX file systems such as HDFS.</li>
+</ol>
 
 
-<p>After this I was able to run the installer with no problems. Of course, there is still the problem I have VMware about them putting their files under <em>/usr</em>. If it is not under control of my package manager, the default should be <em>/opt</em> or <em>/usr/local</em>.</p>
+<p>Another problem I would add is that of <em>Openness</em>. For now there is not really any protocols for managing multiple arrays from different manufacturers, even at a basic level. They have been attempts in the past (SMI-S), but they have never taken off. ViPR attacks that problem as well, kind</p>
+
+<p>Both southbound (data) and northbound (management) services are managed via plugins that hit the RESTful API.</p>
+
+<p><a href="http://imgur.com/OdTFVO5"><img src="http://i.imgur.com/OdTFVO5.png" title="Hosted by imgur.com"/></a></p>
+
+<p>The API on both sides is fully documented and this is what make this so exciting.</p>
+
+<p>So called &#8220;Unified&#8221; systems try and answer point 2 to a certain extent. However, the tend to concentrate on giving both block and file access. What they do not do is give access the same data by more than two mechanisms. You can get block by either FC or iSCSI, or you can get to file by either CIFS or NFS. If you want to access your NFS share using a REST API, you are stuck. Likewise, the array has no knowledge of what is in your block, so you cannot access it via NFS.</p>
 </div>
 
 
@@ -187,12 +173,12 @@ yum install make autoconf automake &hellip;">
   
 
 
-<time datetime="2012-02-06T13:09:00+00:00" pubdate data-updated="true">Monday 06 February 2012</time>
+<time datetime="2013-05-07T13:32:00+01:00" pubdate data-updated="true">Tuesday 07 May 2013</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/virtualisation/'>virtualisation</a>
+    <a class='category' href='/blog/categories/storage/'>storage</a>
   
 </span>
 
@@ -201,7 +187,7 @@ yum install make autoconf automake &hellip;">
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.chriscowley.me.uk/blog/2012/02/06/vmware-cli-installation-woes-on-centos-6/" data-via="chriscowleyunix" data-counturl="http://www.chriscowley.me.uk/blog/2012/02/06/vmware-cli-installation-woes-on-centos-6/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.chriscowley.me.uk/blog/2013/05/07/initial-thoughts-on-emc-vipr/" data-via="chriscowleyunix" data-counturl="http://www.chriscowley.me.uk/blog/2013/05/07/initial-thoughts-on-emc-vipr/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -214,10 +200,10 @@ yum install make autoconf automake &hellip;">
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2011/11/10/open-source-storage/" title="Previous Post: Open Source Storage">&laquo; Open Source Storage</a>
+        <a class="basic-alignment left" href="/blog/2013/04/29/bamboo-invoice-on-centos-with-nginx/" title="Previous Post: Bamboo Invoice on Centos with Nginx">&laquo; Bamboo Invoice on Centos with Nginx</a>
       
       
-        <a class="basic-alignment right" href="/blog/2012/02/08/home-made-redundant-thin-provisioned-san/" title="Next Post: Home-made Redundant Thin-provisioned SAN">Home-made Redundant Thin-provisioned SAN &raquo;</a>
+        <a class="basic-alignment right" href="/blog/2013/05/13/emc-vipr-thoughts/" title="Next Post: EMC ViPR thoughts">EMC ViPR thoughts &raquo;</a>
       
     </p>
   </footer>
