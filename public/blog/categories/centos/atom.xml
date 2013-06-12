@@ -4,7 +4,7 @@
   <title><![CDATA[Category: centos | Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/blog/categories/centos/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-06-05T11:00:00+01:00</updated>
+  <updated>2013-06-12T21:06:20+02:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Installing Adito/OpenVPN-ALS on CentOS]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2012/10/26/installing-adito-slash-openvpn-als-on-centos/"/>
-    <updated>2012-10-26T21:19:00+01:00</updated>
+    <updated>2012-10-26T21:19:00+02:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2012/10/26/installing-adito-slash-openvpn-als-on-centos</id>
     <content type="html"><![CDATA[<p><a href="http://sourceforge.net/projects/openvpn-als">OpenVPN-ALS</a>, formerly known as Adito, is not to be confused with <a href="http://www.openvpn.net">OpenVPN</a>. They both brilliant tools that work in completely different things, but in a similar way. Confused? Excellent...</p>
 

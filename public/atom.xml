@@ -4,7 +4,7 @@
   <title><![CDATA[Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-06-05T11:00:00+01:00</updated>
+  <updated>2013-06-12T21:06:20+02:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Dell Announces VRTX]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/06/04/dell-announces-vrtx/"/>
-    <updated>2013-06-04T22:15:00+01:00</updated>
+    <updated>2013-06-04T22:15:00+02:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/06/04/dell-announces-vrtx</id>
     <content type="html"><![CDATA[<p><img class="right" src="http://en.community.dell.com/cfs-file.ashx/__key/communityserver-blogs-components-weblogfiles/00-00-00-37-45/6886.vrtx.JPG"> Dell has announced the new PowerEdge VRTX (pronounced Vertex). The name comes from a vertex being &#8220;the intersection of multiple lines&#8221;, alluding to this being a mixture of a rack server, a blade server and a SAN.</p>
 
@@ -25,9 +25,9 @@
 
 <p>It is aimed at branch offices, so it contains 4 servers, storage, networking and (unusually) the ability to add PCI-e cards (up to 8, including 3 FH/FL). These cards can be connected to which ever server you want. These features put in competition with the HP C3000 and the Supermicro OfficeBlade.</p>
 
-<p>The other 2 are basically standard blade chassis that have been given quiet fans and IEC power connectors. You can pick and choose storage, PCI-E and compute blades depending on your needs. They also have the full array of networking options: anything from 2 1Gb uplinks to full on 40GB QDR infiniband. VRTX on the other hand is a fixed configuration of a 2U SAS array (either 2.5&#8221; or 3.5&#8221; disks) and 4 compute servers. You can add PCI-e cards, but support is limited. Basically, it expands the limited networking available in the blades themselves (no 10Gb at launch, max of 8x 1Gb uplink with no redundant fabric). There is support for a GPU, but it AMD only with  no Nvidia Tesla support.</p>
+<p>The other 2 are basically standard blade chassis that have been given quiet fans and IEC power connectors. You can pick and choose storage, PCI-E and compute blades depending on your needs. They also have the full array of networking options: anything from 2 1Gb uplinks to full on 40GB QDR infiniband. VRTX on the other hand is a fixed configuration of a 2U SAS array (either 2.5&#8221; or 3.5&#8221; disks) and 4 compute servers. You can add PCI-e cards, but support is limited. Basically, it expands the limited networking available in the blades themselves (no 10Gb at launch, max of 8x 1Gb uplink with no redundant fabric). There is support for a GPU, but it is AMD only with  no Nvidia Tesla support.</p>
 
-<p>So what we have is a system that takes the same amount of space as it competitors and is less flexible. So why would you want it? I have on many cases wanted something that would give me a simple solution to run VMware (or similar) properly (i.e. shared storage and at least 3 nodes) and can go in the corner of the office on a standard plug. The other solutions can do this with a bit of thought (more so with the Supermicro), but with the VRTX like it will do that out-of-the-box.</p>
+<p>So what we have is a system that takes the same amount of space as it competitors and is less flexible. So why would you want it? In several cases I have wanted something that would give me a simple solution to run VMware (or similar) properly (i.e. shared storage and at least 2 nodes) and go in the corner of the office on a standard plug. The other solutions can do this with a bit of thought (more so with the Supermicro), but with the VRTX will do that out-of-the-box.</p>
 
 <p>If I could make 1 request of Dell, it would be to do a &#8220;VRTX lite&#8221; that drops the PCI-e slots and (perhaps) halves the number of disks and servers. To get a pair of computer servers and a small SAN in a 4 bay NAS sized box would be awesome for many a SMB branch office.</p>
 
@@ -41,7 +41,7 @@
   <entry>
     <title type="html"><![CDATA[Jellybean and OpenVPN]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/05/30/jellybean-and-openvpn/"/>
-    <updated>2013-05-30T22:14:00+01:00</updated>
+    <updated>2013-05-30T22:14:00+02:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/05/30/jellybean-and-openvpn</id>
     <content type="html"><![CDATA[<p><img class="right" src="http://openvpn.net/templates/telethra/img/ovpntech_logo-s.png">Setting up the server is well documented elsewhere, the <a href="http://openvpn.net/index.php/open-source/documentation/howto.html#quick">official howto</a> works nicely for me. I use a Virtual TUN network (routed) with clients connecting via UDP 1194, with all the network config pushed out by the server. Follow the howto and you will get that at the end.</p>
 
@@ -61,7 +61,7 @@
   <entry>
     <title type="html"><![CDATA[Enable Developer Options on Android Jellybean]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/05/29/enable-developer-options-on-android-jellybean/"/>
-    <updated>2013-05-29T21:13:00+01:00</updated>
+    <updated>2013-05-29T21:13:00+02:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/05/29/enable-developer-options-on-android-jellybean</id>
     <content type="html"><![CDATA[<p><img class="right" src="http://www.android.com/images/whatsnew/jb-new-logo.png" title="" >This was weird! I just updated my venerable ZTE Blade to Cyanogenmod 10.1 (Jellybean). I flashed it, then rebooted having completely forgotten to to install GApps. No problem, reboot into Clockmod Recovery and install them. Promlem: no option to reboot to recovery.</p>
 
@@ -86,7 +86,7 @@
   <entry>
     <title type="html"><![CDATA[EMC ViPR thoughts]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/05/13/emc-vipr-thoughts/"/>
-    <updated>2013-05-13T21:45:00+01:00</updated>
+    <updated>2013-05-13T21:45:00+02:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/05/13/emc-vipr-thoughts</id>
     <content type="html"><![CDATA[<p>I have been a little slow on the uptake on this one. I would like to say it is because I was carefully digesting the information, but that is not true; the reality is that I have just had 2 5 day weekends in 2 weeks :-).</p>
 
@@ -124,50 +124,9 @@ EMC has really pushed ViPR in the last couple of weeks, but it fails to impress 
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Initial thoughts on EMC ViPR]]></title>
-    <link href="http://www.chriscowley.me.uk/blog/2013/05/07/initial-thoughts-on-emc-vipr/"/>
-    <updated>2013-05-07T13:32:00+01:00</updated>
-    <id>http://www.chriscowley.me.uk/blog/2013/05/07/initial-thoughts-on-emc-vipr</id>
-    <content type="html"><![CDATA[<p><img class="right" src="https://upload.wikimedia.org/wikipedia/en/8/8b/Colonial_viper_original-series.JPG" width="350" title="Colonel Viper - geddit haha" > The big announcement at this years EMC World is ViPR. Plenty of people with far bigger reputations than me in the industry have already made their comments:</p>
-
-<!-- more -->
-
-
-<ul>
-<li><a href="http://virtualgeek.typepad.com/virtual_geek/2013/05/storage-virtualization-platform-re-imagined.html">Chad Sakac</a> has really good and deep, but long.</li>
-<li><a href="http://chucksblog.emc.com/chucks_blog/2013/05/introducing-emc-vipr-a-breathtaking-approach-to-software-defined-storage.html">Chuck Hollis</a> is nowhere near as technical but (as is normal for Chuck) sells it beautifully</li>
-<li><a href="http://blog.scottlowe.org/2013/05/06/very-early-thoughts-about-emc-vipr/">Scott Lowe</a> has an excellent overview</li>
-</ul>
-
-
-<p>Chad Sakac has also made a few technical introductory videos too that are linked on his article. I strongly recommend reading his article.</p>
-
-<p>I am quite excited so far about ViPR, although that may be because it is new and shiney. Please note that my research is ongoing, so some of what I say may be inaccurate/just-plain-nonsense.</p>
-
-<p>ViPR is EMC&#8217;s response to two major storage problems:</p>
-
-<ol>
-<li>Storage is missing some sort of abstraction layer, particularly for management (the Control Plane).</li>
-<li>There is more to storage than NFS and iSCSI. As well as NAS/SAN we now have multiple forms of object stores, plus important non-POSIX file systems such as HDFS.</li>
-</ol>
-
-
-<p>Another problem I would add is that of <em>Openness</em>. For now there is not really any protocols for managing multiple arrays from different manufacturers, even at a basic level. They have been attempts in the past (SMI-S), but they have never taken off. ViPR attacks that problem as well, kind</p>
-
-<p>Both southbound (data) and northbound (management) services are managed via plugins that hit the RESTful API.</p>
-
-<p><a href="http://imgur.com/OdTFVO5"><img src="http://i.imgur.com/OdTFVO5.png" title="Hosted by imgur.com"/></a></p>
-
-<p>The API on both sides is fully documented and this is what make this so exciting.</p>
-
-<p>So called &#8220;Unified&#8221; systems try and answer point 2 to a certain extent. However, the tend to concentrate on giving both block and file access. What they do not do is give access the same data by more than two mechanisms. You can get block by either FC or iSCSI, or you can get to file by either CIFS or NFS. If you want to access your NFS share using a REST API, you are stuck. Likewise, the array has no knowledge of what is in your block, so you cannot access it via NFS.</p>
-]]></content>
-  </entry>
-  
-  <entry>
     <title type="html"><![CDATA[Bamboo Invoice on Centos with Nginx]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/04/29/bamboo-invoice-on-centos-with-nginx/"/>
-    <updated>2013-04-29T21:16:00+01:00</updated>
+    <updated>2013-04-29T21:16:00+02:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/04/29/bamboo-invoice-on-centos-with-nginx</id>
     <content type="html"><![CDATA[<p>BambooInvoice is free Open Source invoicing software intended for small businesses and independent contractors. It is easy to use and creates pretty good looking invoices.</p>
 
@@ -347,7 +306,7 @@ EMC has really pushed ViPR in the last couple of weeks, but it fails to impress 
   <entry>
     <title type="html"><![CDATA[Using Hiera with Puppet]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/04/11/using-hiera-with-puppet/"/>
-    <updated>2013-04-11T20:24:00+01:00</updated>
+    <updated>2013-04-11T20:24:00+02:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/04/11/using-hiera-with-puppet</id>
     <content type="html"><![CDATA[<p>Using Hiera with Puppet is something I have struggled with a bit. I could see the benefits, namely decoupling my site configuration from my logic. However, for some reason I struggled a bit to really get my head around it. This was compounded by it being quite new (only really integrated in Puppet 3), so the docs are  little lacking.</p>
 
@@ -361,9 +320,9 @@ EMC has really pushed ViPR in the last couple of weeks, but it fails to impress 
 <h1>Configuration</h1>
 
 <ul>
-<li>NFS Module: https://github.com/chriscowley/my-puppet/tree/master/modules/nfs</li>
-<li>Hiera Config: https://github.com/chriscowley/my-puppet/blob/master/hiera.yaml</li>
-<li>Hiera Data: https://github.com/chriscowley/my-puppet/tree/master/hieradata</li>
+<li><a href="https://github.com/chriscowley/puppet-nfs">NFS Module</a></li>
+<li><a href="https://github.com/chriscowley/my-master-puppet/blob/master/hiera.yaml">Hiera Config</a></li>
+<li><a href="https://github.com/chriscowley/my-master-puppet/tree/master/hieradata">Hiera Data</a></li>
 </ul>
 
 
@@ -455,7 +414,7 @@ EMC has really pushed ViPR in the last couple of weeks, but it fails to impress 
   <entry>
     <title type="html"><![CDATA[Stop the hate on software RAID]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/04/07/stop-the-hate-on-software-raid/"/>
-    <updated>2013-04-07T20:21:00+01:00</updated>
+    <updated>2013-04-07T20:21:00+02:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/04/07/stop-the-hate-on-software-raid</id>
     <content type="html"><![CDATA[<p><img class="right" src="http://www.chriscowley.me.uk/images/NetappClustering.jpg">I&#8217;ve had a another bee in my bonnet recently. Specifically, it has been to do with hardware vs software RAID, but I think it goes deeper than that. It started a couple of months back with a discussion on <a href="http://redd.it/18dp63">Reddit</a>. Some of the comments were:</p>
 
@@ -531,7 +490,7 @@ As I said at the start, the subject here is software vs hardware RAID, but my pr
   <entry>
     <title type="html"><![CDATA[Writeable TFTP Server On CentOS]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/03/25/writeable-tftp-server-on-centos/"/>
-    <updated>2013-03-25T15:45:00+00:00</updated>
+    <updated>2013-03-25T15:45:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/03/25/writeable-tftp-server-on-centos</id>
     <content type="html"><![CDATA[<p>Well this caught me out for an embarassingly long time. There are <a href="http://blog.penumbra.be/tag/tftp/">loads</a> <a href="http://www.question-defense.com/2008/11/13/linux-setup-tftp-server-on-centos">of</a> <a href="http://wiki.centos.org/EdHeron/PXESetup">examples</a> of setting up a TFTP server on the web. The vast majority of them assume that you are using them read-only for PXE booting.</p>
 
@@ -617,7 +576,7 @@ As I said at the start, the subject here is software vs hardware RAID, but my pr
   <entry>
     <title type="html"><![CDATA[What a boss owes their staff]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/03/18/what-a-boss-owes-their-staff/"/>
-    <updated>2013-03-18T20:47:00+00:00</updated>
+    <updated>2013-03-18T20:47:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/03/18/what-a-boss-owes-their-staff</id>
     <content type="html"><![CDATA[<p><img class="right" src="http://www.chriscowley.me.uk/images/reputation-management-starts-with-trust.jpg"> I recently had a conversation on Twitter with my friend <a href="http://www.robborley.com/">Rob Borley</a> who runs a <a href="http://www.dootrix.com/">mobile startup</a>. He had asked what interesting perks he should be giving his <a href="https://twitter.com/bobscape/statuses/313610008535367680">staff</a>.</p>
 
@@ -645,7 +604,7 @@ Trust leads to everything else that we like about work. Allowing your staff to w
   <entry>
     <title type="html"><![CDATA[Thoughts on the shiney new VMAX]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/03/01/thoughts-on-the-shiney-new-vmax/"/>
-    <updated>2013-03-01T15:21:00+00:00</updated>
+    <updated>2013-03-01T15:21:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/03/01/thoughts-on-the-shiney-new-vmax</id>
     <content type="html"><![CDATA[<p><img class="right" src="http://www.emc.com/R1/images/EMC_Image_C_1310593327367_header-image-vmax-10k.png"> I&#8217;ve spent a significant amount of time recently swatting up on EMC&#8217;s new <a href="http://chucksblog.emc.com/chucks_blog/2013/02/introducing-vmax-cloud-edition.html">VMAX Cloud Edition</a>. It has to be said that this looks like one of the most interesting storage announcements I have seen in a long time. In fact I have a project coming up that I think it may well be a perfect fit for.</p>
 
@@ -680,7 +639,7 @@ That is all very interesting, but so far it is just a new approach to the UI. It
   <entry>
     <title type="html"><![CDATA[The Linux to Storage]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/02/25/the-linux-to-storage/"/>
-    <updated>2013-02-25T13:09:00+00:00</updated>
+    <updated>2013-02-25T13:09:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/02/25/the-linux-to-storage</id>
     <content type="html"><![CDATA[<p>Martin &#8220;Storagebod&#8221; Glassborow recently wrote an interesting article where he asked &#8220;Who&#8217;ll do a Linux to Storage?&#8221;. As someone who is equal parts Storage and Linux, the same question runs around my head quite often. Not just that, but how to do it. It is safe to say that all the constituent parts are already in the Open Source Ecosystem. It just needs someone to pull them all together wrap them up in an integrated interface (be that a GUI, CLI, an API or all).</p>
 
@@ -702,7 +661,7 @@ That is all very interesting, but so far it is just a new approach to the UI. It
   <entry>
     <title type="html"><![CDATA[Something from the shadows]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/02/21/something-from-the-shadows/"/>
-    <updated>2013-02-21T16:06:00+00:00</updated>
+    <updated>2013-02-21T16:06:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/02/21/something-from-the-shadows</id>
     <content type="html"><![CDATA[<p>An intriguing startup came out of stealth mode a few days ago. <a href="http://pernixdata.com/">Pernix Data</a> was founded by Pookan Kumar and Satyam Vaghani, both of who were pretty near top of the pile in VMware&#8217;s storage team.</p>
 
@@ -723,7 +682,7 @@ What their plans are I do not know. It is very early days, maybe they will be a 
   <entry>
     <title type="html"><![CDATA[How much should you spend on IT]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/02/06/how-much-should-you-spend-on-it/"/>
-    <updated>2013-02-06T16:04:00+00:00</updated>
+    <updated>2013-02-06T16:04:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/02/06/how-much-should-you-spend-on-it</id>
     <content type="html"><![CDATA[<p>A recent discussion/argument I had on Reddit got me thinking about the cost of solutions we put in.</p>
 
@@ -753,7 +712,7 @@ It is not always necessary to get the shiniest stuff, with the longest/quickest 
   <entry>
     <title type="html"><![CDATA[In praise of old school UNIX]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/02/05/in-praise-of-old-school-unix/"/>
-    <updated>2013-02-05T16:13:00+00:00</updated>
+    <updated>2013-02-05T16:13:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/02/05/in-praise-of-old-school-unix</id>
     <content type="html"><![CDATA[<p>What am I doing today? Documentation that is what. I am writing a document on how to do <a href="http://www.chriscowley.me.uk/blog/2012/11/19/sftp-chroot-on-centos/">this</a>. To any Linux user it is a very simple process and I could just give them a link to my own website.</p>
 
@@ -807,7 +766,7 @@ It is not always necessary to get the shiniest stuff, with the longest/quickest 
   <entry>
     <title type="html"><![CDATA[Trac with Nginx on Centos]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/01/21/trac-with-nginx-on-centos/"/>
-    <updated>2013-01-21T11:53:00+00:00</updated>
+    <updated>2013-01-21T11:53:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/01/21/trac-with-nginx-on-centos</id>
     <content type="html"><![CDATA[<p><a href="tac.edgewall.org">Trac</a> is an excellent online project management tool. Nginx us a great web server. Surely the combination of the two should be a match made in heaven. I would say so, although there are a couple problems. The easiest way to deploy Trac is on Apache using mod_wsgi or FastCGI. This option does not really exist for Nginx. Okay, it can do FastCGI, but I have not get that set up on my server.</p>
 
@@ -877,7 +836,7 @@ It is not always necessary to get the shiniest stuff, with the longest/quickest 
   <entry>
     <title type="html"><![CDATA[What will HP do next?]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2012/12/17/what-will-hp-do-next/"/>
-    <updated>2012-12-17T15:16:00+00:00</updated>
+    <updated>2012-12-17T15:16:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2012/12/17/what-will-hp-do-next</id>
     <content type="html"><![CDATA[<p>HP recently announced a new range of 3Par based arrays that are aimed at mid-range enterprise. There now appear to be 2 ranges for the future:</p>
 
@@ -911,7 +870,7 @@ It is not always necessary to get the shiniest stuff, with the longest/quickest 
   <entry>
     <title type="html"><![CDATA[EMC ExtremIO Thoughts]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2012/12/10/emc-extremio-thoughts/"/>
-    <updated>2012-12-10T16:39:00+00:00</updated>
+    <updated>2012-12-10T16:39:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2012/12/10/emc-extremio-thoughts</id>
     <content type="html"><![CDATA[<p>There has been quite a bit of musing recently on the web about EMC and what will come out of their ExtremIO acquisition. They have recently (finally) started demonstrating an all-flash array. The name says it all: ExtremIO. It is for super high IOPS applications - Virtual desktops, enormous DBs, that sort of thing.</p>
 
@@ -952,7 +911,7 @@ Robin Harris at <a href="http://storagemojo.com/2012/12/05/emcs-xtreme-embarrass
   <entry>
     <title type="html"><![CDATA[SFTP Chroot on CentOS]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2012/11/19/sftp-chroot-on-centos/"/>
-    <updated>2012-11-19T19:59:00+00:00</updated>
+    <updated>2012-11-19T19:59:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2012/11/19/sftp-chroot-on-centos</id>
     <content type="html"><![CDATA[<p>This came up today where I needed to give secure file transfer to customers. To complicate things I had to use an out-of-the-box RHEL6 system. The obvious answer was to use SSH and limit those users to SFTP only. Locking them into a chroot was not a requirement, but it seemed like a good idea to me. I found plenty of docs that got 80% of the way, or took a shortcut, but this should be complete.</p>
 
@@ -1043,7 +1002,7 @@ Robin Harris at <a href="http://storagemojo.com/2012/12/05/emcs-xtreme-embarrass
   <entry>
     <title type="html"><![CDATA[Installing Adito/OpenVPN-ALS on CentOS]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2012/10/26/installing-adito-slash-openvpn-als-on-centos/"/>
-    <updated>2012-10-26T21:19:00+01:00</updated>
+    <updated>2012-10-26T21:19:00+02:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2012/10/26/installing-adito-slash-openvpn-als-on-centos</id>
     <content type="html"><![CDATA[<p><a href="http://sourceforge.net/projects/openvpn-als">OpenVPN-ALS</a>, formerly known as Adito, is not to be confused with <a href="http://www.openvpn.net">OpenVPN</a>. They both brilliant tools that work in completely different things, but in a similar way. Confused? Excellent&#8230;</p>
 
@@ -1150,6 +1109,28 @@ Robin Harris at <a href="http://storagemojo.com/2012/12/05/emcs-xtreme-embarrass
 
 
 <p>The output will tell you the Zip file it has built which you can now upload. Go to the &#8220;Extension Manger&#8221; from the menu on the left. On the right you wil see &#8220;Upload Extension&#8221;. Choose the Zip file and you can configure it to connect to whatever Linux machine you want. &#8220;Putty SSH&#8221; will now be available in the list of installed applications.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[A Cycling Related Review]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2012/10/23/a-cycling-related-review/"/>
+    <updated>2012-10-23T20:31:00+02:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2012/10/23/a-cycling-related-review</id>
+    <content type="html"><![CDATA[<p><img class="right" src="http://www.arkon.com/images/slimgrip/sm532.jpg" width="300" height="300"> A little bit if a move away from computers and related subjects today. I was recently contacted by <a href="http://www.gearzap.com">Gearzap</a>/<a href="http://www.mobilefun.co.uk">MobileFun</a> who had seen that I had a Raspberry Pi. They asked if I would like to review a case and I cheekily asked if they could also give me something to mount my phone on the handlebars of my bike. Much to my pleasant surprise, they said yes.</p>
+
+<!-- more -->
+
+
+<p>The sent me the <a href="http://www.arkon.com/slimgrip/slimgrip-bike-mount.html">Arkon SM532</a>. Unsurprisingly it is made in China, but then what is not nowadays. Having said that, the build quality is pretty good and the instructions pretty clear.</p>
+
+<p>I mounted it on my beloved <a href="http://flic.kr/p/cDCcFd">Felt</a> road bike as it is what I am currently using day to day. This unfortunately highlighted the only real problem I found. Modern road bikes have thicker handle bars than many other types of bike. This meant that fitting the bracket to them was tight. It comes with several rubber shims, that a) protect you handlebars, b) stop it from slipping around. It was not possible to use those. It has to be said that is pretty ugly as well, but if that worries you then buy a Garmin.</p>
+
+<p>Anyway, I persevered and attached it without the shims and prayed that it would not do any damage. As I said, the instructions were very clear and this only took a few minutes.  Once on it all seemed perfectly secure, so the next day I put my phone in it. The clips keep it in place pretty well and the you also have the bungie cord as an extra, so I was not worried it would fall out at all. The route I took is a collection of French farm lanes. Some are very smooth, but some are horrible. Also, it is harvest time, so there is plenty of dried mud on the road to give it a bit more of a shaking. It held up very well, nothing shifted at all and I could easily angle the phone so it was just right.</p>
+
+<p>Later I took it off to ensure that it would fit properly on a &#8220;normal&#8221; sized handlebar by putting it on my mountain bike - it was fine. Also, there was absolutely no scratches on my Felt&#8217;s bars at all, despite my concerns about not having any shims to protect them.</p>
+
+<p>All in all it is a pretty good piece of kit. It can be had from <a href="http://www.mobilefun.co.uk">MobileFun</a> for £13.95, which strikes me as pretty good value.</p>
 ]]></content>
   </entry>
   

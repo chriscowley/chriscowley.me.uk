@@ -14,9 +14,9 @@ I learnt a lot from that, but it would be nice if there was an equivalent writte
 
 # Configuration
 
-  * NFS Module: https://github.com/chriscowley/puppet-nfs
-  * Hiera Config: https://github.com/chriscowley/my-master-puppet/blob/master/hiera.yaml
-  * Hiera Data: https://github.com/chriscowley/my-master-puppet/tree/master/hieradata
+  * [NFS Module](https://github.com/chriscowley/puppet-nfs)
+  * [Hiera Config](https://github.com/chriscowley/my-master-puppet/blob/master/hiera.yaml)
+  * [Hiera Data](https://github.com/chriscowley/my-master-puppet/tree/master/hieradata)
 
 
 I am using Open Source Puppet 3. If you are using 2.7 or Puppet Enterprise, files will be in a slightly different place. That is all explained in the documentation linked above.

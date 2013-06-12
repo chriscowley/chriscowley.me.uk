@@ -4,7 +4,7 @@
   <title><![CDATA[Category: android | Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/blog/categories/android/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-06-05T11:00:00+01:00</updated>
+  <updated>2013-06-12T21:06:20+02:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[Jellybean and OpenVPN]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/05/30/jellybean-and-openvpn/"/>
-    <updated>2013-05-30T22:14:00+01:00</updated>
+    <updated>2013-05-30T22:14:00+02:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/05/30/jellybean-and-openvpn</id>
     <content type="html"><![CDATA[<p><img class="right" src="http://openvpn.net/templates/telethra/img/ovpntech_logo-s.png">Setting up the server is well documented elsewhere, the <a href="http://openvpn.net/index.php/open-source/documentation/howto.html#quick">official howto</a> works nicely for me. I use a Virtual TUN network (routed) with clients connecting via UDP 1194, with all the network config pushed out by the server. Follow the howto and you will get that at the end.</p>
 
@@ -36,7 +36,7 @@
   <entry>
     <title type="html"><![CDATA[Enable Developer Options on Android Jellybean]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/05/29/enable-developer-options-on-android-jellybean/"/>
-    <updated>2013-05-29T21:13:00+01:00</updated>
+    <updated>2013-05-29T21:13:00+02:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/05/29/enable-developer-options-on-android-jellybean</id>
     <content type="html"><![CDATA[<p><img class="right" src="http://www.android.com/images/whatsnew/jb-new-logo.png" title="" >This was weird! I just updated my venerable ZTE Blade to Cyanogenmod 10.1 (Jellybean). I flashed it, then rebooted having completely forgotten to to install GApps. No problem, reboot into Clockmod Recovery and install them. Promlem: no option to reboot to recovery.</p>
 
