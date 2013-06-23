@@ -185,6 +185,10 @@
         <lastmod>2013-06-12T20:53:06+02:00</lastmod>
     </url>
     <url>
+        <loc>http://www.chriscowley.me.uk/blog/2013/06/23/automated-glusterfs/</loc>
+        <lastmod>2013-06-23T22:25:04+02:00</lastmod>
+    </url>
+    <url>
         <loc>http://www.chriscowley.me.uk/contact/</loc>
         <lastmod>2013-06-12T20:53:06+02:00</lastmod>
     </url>
@@ -194,7 +198,7 @@
     </url>
     <url>
         <loc>http://www.chriscowley.me.uk/</loc>
-        <lastmod>2013-06-12T21:05:31+02:00</lastmod>
+        <lastmod>2013-06-23T22:25:04+02:00</lastmod>
     </url>
     <url>
         <loc>http://www.chriscowley.me.uk/consulting/</loc>
@@ -210,6 +214,6 @@
     </url>
     <url>
         <loc>http://www.chriscowley.me.uk/blog/archives/</loc>
-        <lastmod>2013-06-12T21:05:31+02:00</lastmod>
+        <lastmod>2013-06-23T22:25:04+02:00</lastmod>
     </url>
 </urlset>

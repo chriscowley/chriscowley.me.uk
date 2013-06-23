@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Add SAN functions to Highly Available NFS/NAS - Just Another Linux Blog</title>
+  <title>Automated GlusterFS - Just Another Linux Blog</title>
   <meta name="author" content="Chris Cowley">
 
   
-  <meta name="description" content="This based on my last post where I documented building a Highly Available NFS/NAS server. There is not a huge amount that needs to be done in order &hellip;">
+  <meta name="description" content="As I promised on Twitter, this is how I automate a GlusterFS deployment. I&#8217;m making a few assumptions here: I am using CentOS 6, so should &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.chriscowley.me.uk/blog/2012/03/20/add-san-functions-to-highly-available-nfs-slash-nas/">
+  <link rel="canonical" href="http://www.chriscowley.me.uk/blog/2013/06/23/automated-glusterfs/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -93,7 +93,7 @@
   
   <header>
     
-      <h1 class="entry-title">Add SAN Functions to Highly Available NFS/NAS</h1>
+      <h1 class="entry-title">Automated GlusterFS</h1>
     
     
       <p class="meta">
@@ -109,7 +109,7 @@
   
 
 
-<time datetime="2012-03-20T21:07:00+01:00" pubdate data-updated="true">Tuesday 20 March 2012</time>
+<time datetime="2013-06-23T22:02:00+02:00" pubdate data-updated="true">Sunday 23 June 2013</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -118,96 +118,39 @@
   </header>
 
 
-<div class="entry-content"><p>This based on my last post where I documented building a Highly Available NFS/NAS server.</p>
-
-<p>There is not a huge amount that needs to be done in order to add iSCSI functionality as well.</p>
+<div class="entry-content"><p><img class="right" src="http://www.hastexo.com/system/files/imagecache/sidebar/20120221105324808-f2df3ea3e3aeab8_250_0.png"> As I promised on Twitter, this is how I automate a GlusterFS deployment. I&#8217;m making a few assumptions here:</p>
 
 <!-- more -->
 
 
-<p>Add a file called <em>/etc/drbd/iscsi.res</em> containing:</p>
+<ul>
+<li>I am using CentOS 6, so should work on RHEL 6 and Scientific Linux 6 too. Others may work, but YMMV.</li>
+<li>That you have a way of automating your base OS installation. My personal preference is to use <a href="https://github.com/puppetlabs/Razor">Razor</a>.</li>
+<li>You have a system with at least a complete spare disk dedicated to a GlusterFS brick. That is the best way to run GlusterFS anyway.</li>
+<li>You have 2 nodes and want to replicate the data</li>
+<li>You have a simple setup with only a single network, because I am being lazy. As a proof-of concept this is fine. Modifying this for second network is quite easy, just change the IP address in you use.</li>
+</ul>
+
+
+<p><img src="https://docs.google.com/drawings/d/1XA7GH3a4BL1uszFXrSsZjysi59Iinh-0RmhqdDbt7QQ/pub?w=673&h=315" title="'simple gluster architecture'" ></p>
+
+<p>The diagram above shows the basic layout of what to start from in terms of hardware. In terms of software, you just need a basic CentOS 6 install and to have Puppet working.</p>
+
+<p>I use a pair of Puppet modules (both in the Forge): <a href="http://forge.puppetlabs.com/thias/glusterfs">thias/glusterfs</a> and <a href="http://forge.puppetlabs.com/puppetlabs/lvm">puppetlabs/lvm</a>. The GlusterFS module CAN do the LVM config, but that strikes me as not the best idea. The UNIX philosophy of &#8220;do one job well&#8221;  holds up for Puppet modules as well. You will also need my <a href="https://github.com/chriscowley/puppet-yumrepos">yumrepos</a> module.</p>
+
+<p>Clone those 3 modules into your modules directory:</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>resource iscsi {
-</span><span class='line'>    on nfs1 {
-</span><span class='line'>        device /dev/drbd1;
-</span><span class='line'>        disk   /dev/vdc;
-</span><span class='line'>        meta-disk internal;
-</span><span class='line'>        address   10.0.0.1:7789;
-</span><span class='line'>    }
-</span><span class='line'>    on nfs2 {
-</span><span class='line'>        device /dev/drbd1;
-</span><span class='line'>        disk   /dev/vdc;
-</span><span class='line'>        meta-disk internal;
-</span><span class='line'>        address   10.0.0.2:7789;
-</span><span class='line'>    }
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cd /etc/puppet/
+</span><span class='line'>git clone git://github.com/chriscowley/puppet-yumrepos.git modules/yumrepos
+</span><span class='line'>puppet module install puppetlabs/lvm --version 0.1.2
+</span><span class='line'>puppet module install thias/glusterfs --version 0.0.3</span></code></pre></td></tr></table></div></figure>
 
 
-<p>This differs from the previous resource in 2 ways. Obviously it using a different physical disk. Also the port number of the address is incremented; each resource has to have its own port to communicate on.</p>
-
-<h2>Configure Heartbeat</h2>
-
-<p>Add a new resource to <em>/etc/ha.d/haresources</em>:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>iscsi1.snellwilcox.local IPaddr::10.0.0.101/24/eth0 drbddisk::iscsi tgtd</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Same primary host, new IP address, new drbd resource and of course the service to be controlled (tgtd in this case).</p>
-
-<p>I also made a couple of changes to <em>/etc/ha.d/ha.cf</em>:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>keepalive 500ms
-</span><span class='line'>deadtime 5
-</span><span class='line'>warntime 10
-</span><span class='line'>initdead 120</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This changes the regularity of the heartbeat packets from every 2 seconds to 2 every second. We also say that a node is dead after only 5 seconds rather than after 30.</p>
-
-<h2>Configure an iSCSI Target</h2>
-
-<p>Tgtd has a config file that you can use in <em>/etc/tgt/targets.conf</em>. It is an XML file, so add entry like:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;target iqn.2011-07.world.server:target0&gt;
-</span><span class='line'>        # provided devicce as a iSCSI target
-</span><span class='line'>        backing-store /dev/vg_matthew/lv_iscsi1
-</span><span class='line'>        # iSCSI Initiator's IP address you allow to connect
-</span><span class='line'>        initiator-address 192.168.1.20
-</span><span class='line'>        # authentication info ( set anyone you like for "username", "password" )
-</span><span class='line'>&lt;/target&gt;</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The target name is by convention <em>iqn.year-month.reverse-domainname:hostname.targetname</em>. Each backing store will be a seperate LUN. A discussion of this is out of the scope of this article.</p>
-
-<p>By default, this config file is disabled. Enable it by un-commenting the line <code>#TGTD_CONFIG=/etc/tgt/targets.conf</code> in <em>/etc/sysconfig/tgtd</em>. You can now enable the target with service tgtd reload.</p>
-
-<p>Now when you run <code>tgtadm –mode target –op show</code> you should get something like:</p>
+<p>I have specified the versions as that is what was the latest at the time of writing. You should be able to take the latest as well, but comment with any differences if any. That gives the core of what you need so you can now move on to you <code>nodes.pp</code>.</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -240,60 +183,170 @@
 <span class='line-number'>29</span>
 <span class='line-number'>30</span>
 <span class='line-number'>31</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Target 1: iqn.2012-03.com.example:iscsi.target1
-</span><span class='line'>    System information:
-</span><span class='line'>        Driver: iscsi
-</span><span class='line'>        State: ready
-</span><span class='line'>    I_T nexus information:
-</span><span class='line'>    LUN information:
-</span><span class='line'>        LUN: 0
-</span><span class='line'>            Type: controller
-</span><span class='line'>            SCSI ID: IET     00010000
-</span><span class='line'>            SCSI SN: beaf10
-</span><span class='line'>            Size: 0 MB, Block size: 1
-</span><span class='line'>            Online: Yes
-</span><span class='line'>            Removable media: No
-</span><span class='line'>            Readonly: No
-</span><span class='line'>            Backing store type: null
-</span><span class='line'>            Backing store path: None
-</span><span class='line'>            Backing store flags:
-</span><span class='line'>        LUN: 1
-</span><span class='line'>            Type: disk
-</span><span class='line'>            SCSI ID: IET     00010001
-</span><span class='line'>            SCSI SN: beaf11
-</span><span class='line'>            Size: 8590 MB, Block size: 512
-</span><span class='line'>            Online: Yes
-</span><span class='line'>            Removable media: No
-</span><span class='line'>            Readonly: No
-</span><span class='line'>            Backing store type: rdwr
-</span><span class='line'>            Backing store path: /dev/drbd/by-res/iscsi
-</span><span class='line'>            Backing store flags:
-</span><span class='line'>    Account information:
-</span><span class='line'>    ACL information:
-</span><span class='line'>        ALL</span></code></pre></td></tr></table></div></figure>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>class basenode {
+</span><span class='line'>  class { 'yumrepos': }
+</span><span class='line'>  class { 'yumrepos::epel': }
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>class glusternode {
+</span><span class='line'>  class { 'basenode': }
+</span><span class='line'>  class { 'yumrepos::gluster': }
+</span><span class='line'>  
+</span><span class='line'>  volume_group { "vg0":
+</span><span class='line'>    ensure =&gt; present,
+</span><span class='line'>    physical_volumes =&gt; "/dev/sdb",
+</span><span class='line'>    require =&gt; Physical_volume["/dev/sdb"]
+</span><span class='line'>  }
+</span><span class='line'>  physical_volume { "/dev/sdb":
+</span><span class='line'>    ensure =&gt; present
+</span><span class='line'>  }
+</span><span class='line'>  logical_volume { "gv0":
+</span><span class='line'>    ensure =&gt; present,
+</span><span class='line'>    require =&gt; Volume_group['vg0'],
+</span><span class='line'>    volume_group =&gt; "vg0",
+</span><span class='line'>    size =&gt; "7G",
+</span><span class='line'>  }
+</span><span class='line'>  file { [ '/export', '/export/gv0']:
+</span><span class='line'>    seltype =&gt; 'usr_t',
+</span><span class='line'>    ensure =&gt; directory,
+</span><span class='line'>  }
+</span><span class='line'>  package { 'xfsprogs': ensure =&gt; installed
+</span><span class='line'>  }
+</span><span class='line'>  filesystem { "/dev/vg0/gv0":
+</span><span class='line'>    ensure =&gt; present,
+</span><span class='line'>    fs_type =&gt; "xfs",
+</span><span class='line'>    options =&gt; "-i size=512",
+</span><span class='line'>    require =&gt; [Package['xfsprogs'], Logical_volume['gv0'] ],
+</span><span class='line'>  }
+</span><span class='line'>  
+</span><span class='line'>  mount { '/export/gv0':
+</span><span class='line'>    device =&gt; '/dev/vg0/gv0',
+</span><span class='line'>    fstype =&gt; 'xfs',
+</span><span class='line'>    options =&gt; 'defaults',
+</span><span class='line'>    ensure =&gt; mounted,
+</span><span class='line'>    require =&gt; [ Filesystem['/dev/vg0/gv0'], File['/export/gv0'] ],
+</span><span class='line'>  }
+</span><span class='line'>  class { 'glusterfs::server':
+</span><span class='line'>    peers =&gt; $::hostname ? {
+</span><span class='line'>      'gluster1' =&gt; '192.168.1.38', # Note these are the IPs of the other nodes
+</span><span class='line'>      'gluster2' =&gt; '192.168.1.84',
+</span><span class='line'>    },
+</span><span class='line'>  }
+</span><span class='line'>  glusterfs::volume { 'gv0':
+</span><span class='line'>    create_options =&gt; 'replica 2 192.168.1.38:/export/gv0 192.168.1.84:/export/gv0',
+</span><span class='line'>    require =&gt; Mount['/export/gv0'],
+</span><span class='line'>  }
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>node 'gluster1' {
+</span><span class='line'>  include glusternode
+</span><span class='line'>  file { '/var/www': ensure =&gt; directory }
+</span><span class='line'>  glusterfs::mount { '/var/www':
+</span><span class='line'>    device =&gt; $::hostname ? {
+</span><span class='line'>      'gluster1' =&gt; '192.168.1.84:/gv0',
+</span><span class='line'>    }
+</span><span class='line'>  }
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>node 'gluster2' {
+</span><span class='line'>  include glusternode
+</span><span class='line'>  file { '/var/www': ensure =&gt; directory }
+</span><span class='line'>  glusterfs::mount { '/var/www':
+</span><span class='line'>    device =&gt; $::hostname ? {
+</span><span class='line'>      'gluster2' =&gt; '192.168.1.38:/gv0',
+</span><span class='line'>    }
+</span><span class='line'>  }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
 
 
-<h2>Connect An Initiator</h2>
+<p>What does all that do? Starting from the top:</p>
 
-<p>Install the iscsi utils:</p>
+<ul>
+<li> The <code>basenode</code> class does all your basic configuration across all your hosts. Mine actually does a lot more, but these are the relevant parts.</li>
+<li> The <code>glusternode</code> class is shared between all your GlusterFS nodes. This is where all your Server configuration is.</li>
+<li> Configures LVM
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>yum install iscsi-initiator-utils
-</span><span class='line'>chkconfig iscsi on
-</span><span class='line'>chkconfig iscsid on</span></code></pre></td></tr></table></div></figure>
+<ul>
+<li>Defines the Volume Group &#8220;vg0&#8221; with the Physical Volume <code>/dev/sdb</code></li>
+<li>Creates a Logical Volume &#8220;gv0&#8221; for GlusterFS use and make it 7GB</li>
+</ul>
+</li>
+<li> Configures the file system
+
+<ul>
+<li>Creates the directory <code>/export/gv0</code></li>
+<li>Formats the LV created previously with XFS (installs the package if necessary)</li>
+<li>Mounts the LV at <code>/export/gv0</code></li>
+</ul>
+</li>
+</ul>
 
 
-<p>Discover the targets on the host and login to the target.</p>
+<p>This is now all ready for the GlusterFS module to do its stuff. All this happens in those last two sections.</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>iscsiadm -m discovery -t sendtargets -p 10.0.0.101
-</span><span class='line'>iscsiadm -m node --login</span></code></pre></td></tr></table></div></figure>
+<ul>
+<li> The class <code>glusterfs::Server</code> sets up the peering between the two hosts. This will actually generate a errors, but do not worry. This because gluster1 successfully peers with gluster2. As a result gluster2 fails to peer with gluster1 as they are already peered.</li>
+<li> Now <code>glusterfs::volume</code> creates a replicated volume, having first ensured that the LV is mounted correctly.</li>
+<li> All this is then included in the node declarations for <code>gluster1</code> and <code>gluster2</code>.</li>
+</ul>
 
 
-<p>If you run <code>cat /proc/partitions</code> you will see an new partition has appeared. You can do whatever you want with it.</p>
+<p>All that creates the server very nicely. It will need a few passes to get everything in place, while giving a few red herring errors. It should would however, all the errors are there in the README for the GlusterFS module in PuppetForge, so do not panic.</p>
+
+<p>A multi-petabyte scale-out storage system is pretty useless if the data cannot be read by anything. So lets use those nodes and mount the volume. This could also be a separate node (but once again I am being lazy) the process will be exactly the same.</p>
+
+<ul>
+<li> Create a mount point for it ( `file {&#8216;/var/www&#8217;: ensure => directory }</li>
+<li> Define your <code>glusterfs::mount</code> using any of the hosts in the cluster.</li>
+</ul>
+
+
+<p>Voila, that should all pull together and give you a fully automated GlusterFS set up. The sort of scale that GlusterFS can reach makes this sort of automation absolutely essential in my opinion. This should be relatively easy to convert to Chef or Ansible, whatever takes your fancy. I have just used Puppet because of my familiarity with it.</p>
+
+<p>This is only one way of doing this, and I make no claims to being the most adept Puppet user in the world. All I hope to achieve is that someone finds this useful. Courteous comments welcome.</p>
 </div>
 
 
@@ -316,12 +369,12 @@
   
 
 
-<time datetime="2012-03-20T21:07:00+01:00" pubdate data-updated="true">Tuesday 20 March 2012</time>
+<time datetime="2013-06-23T22:02:00+02:00" pubdate data-updated="true">Sunday 23 June 2013</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/storage/'>storage</a>
+    <a class='category' href='/blog/categories/devops/'>devops</a>, <a class='category' href='/blog/categories/puppet/'>puppet</a>, <a class='category' href='/blog/categories/storage/'>storage</a>
   
 </span>
 
@@ -330,7 +383,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.chriscowley.me.uk/blog/2012/03/20/add-san-functions-to-highly-available-nfs-slash-nas/" data-via="chriscowleyunix" data-counturl="http://www.chriscowley.me.uk/blog/2012/03/20/add-san-functions-to-highly-available-nfs-slash-nas/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.chriscowley.me.uk/blog/2013/06/23/automated-glusterfs/" data-via="chriscowleyunix" data-counturl="http://www.chriscowley.me.uk/blog/2013/06/23/automated-glusterfs/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -343,10 +396,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2012/03/19/highly-available-nfs-slash-nas/" title="Previous Post: Highly Available NFS/NAS">&laquo; Highly Available NFS/NAS</a>
+        <a class="basic-alignment left" href="/blog/2013/06/04/dell-announces-vrtx/" title="Previous Post: Dell Announces VRTX">&laquo; Dell Announces VRTX</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2012/04/05/pycurl-and-self-signed-ssl-certificates/" title="Next Post: PyCurl and self-signed SSL certificates">PyCurl and self-signed SSL certificates &raquo;</a>
       
     </p>
   </footer>

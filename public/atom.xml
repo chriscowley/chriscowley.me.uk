@@ -4,7 +4,7 @@
   <title><![CDATA[Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-06-12T21:06:20+02:00</updated>
+  <updated>2013-06-23T22:25:19+02:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -12,6 +12,243 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Automated GlusterFS]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2013/06/23/automated-glusterfs/"/>
+    <updated>2013-06-23T22:02:00+02:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2013/06/23/automated-glusterfs</id>
+    <content type="html"><![CDATA[<p><img class="right" src="http://www.hastexo.com/system/files/imagecache/sidebar/20120221105324808-f2df3ea3e3aeab8_250_0.png"> As I promised on Twitter, this is how I automate a GlusterFS deployment. I&#8217;m making a few assumptions here:</p>
+
+<!-- more -->
+
+
+<ul>
+<li>I am using CentOS 6, so should work on RHEL 6 and Scientific Linux 6 too. Others may work, but YMMV.</li>
+<li>That you have a way of automating your base OS installation. My personal preference is to use <a href="https://github.com/puppetlabs/Razor">Razor</a>.</li>
+<li>You have a system with at least a complete spare disk dedicated to a GlusterFS brick. That is the best way to run GlusterFS anyway.</li>
+<li>You have 2 nodes and want to replicate the data</li>
+<li>You have a simple setup with only a single network, because I am being lazy. As a proof-of concept this is fine. Modifying this for second network is quite easy, just change the IP address in you use.</li>
+</ul>
+
+
+<p><img src="https://docs.google.com/drawings/d/1XA7GH3a4BL1uszFXrSsZjysi59Iinh-0RmhqdDbt7QQ/pub?w=673&h=315" title="'simple gluster architecture'" ></p>
+
+<p>The diagram above shows the basic layout of what to start from in terms of hardware. In terms of software, you just need a basic CentOS 6 install and to have Puppet working.</p>
+
+<p>I use a pair of Puppet modules (both in the Forge): <a href="http://forge.puppetlabs.com/thias/glusterfs">thias/glusterfs</a> and <a href="http://forge.puppetlabs.com/puppetlabs/lvm">puppetlabs/lvm</a>. The GlusterFS module CAN do the LVM config, but that strikes me as not the best idea. The UNIX philosophy of &#8220;do one job well&#8221;  holds up for Puppet modules as well. You will also need my <a href="https://github.com/chriscowley/puppet-yumrepos">yumrepos</a> module.</p>
+
+<p>Clone those 3 modules into your modules directory:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>cd /etc/puppet/
+</span><span class='line'>git clone git://github.com/chriscowley/puppet-yumrepos.git modules/yumrepos
+</span><span class='line'>puppet module install puppetlabs/lvm --version 0.1.2
+</span><span class='line'>puppet module install thias/glusterfs --version 0.0.3</span></code></pre></td></tr></table></div></figure>
+
+
+<p>I have specified the versions as that is what was the latest at the time of writing. You should be able to take the latest as well, but comment with any differences if any. That gives the core of what you need so you can now move on to you <code>nodes.pp</code>.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+<span class='line-number'>67</span>
+<span class='line-number'>68</span>
+<span class='line-number'>69</span>
+<span class='line-number'>70</span>
+<span class='line-number'>71</span>
+<span class='line-number'>72</span>
+<span class='line-number'>73</span>
+<span class='line-number'>74</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>class basenode {
+</span><span class='line'>  class { 'yumrepos': }
+</span><span class='line'>  class { 'yumrepos::epel': }
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>class glusternode {
+</span><span class='line'>  class { 'basenode': }
+</span><span class='line'>  class { 'yumrepos::gluster': }
+</span><span class='line'>  
+</span><span class='line'>  volume_group { "vg0":
+</span><span class='line'>    ensure =&gt; present,
+</span><span class='line'>    physical_volumes =&gt; "/dev/sdb",
+</span><span class='line'>    require =&gt; Physical_volume["/dev/sdb"]
+</span><span class='line'>  }
+</span><span class='line'>  physical_volume { "/dev/sdb":
+</span><span class='line'>    ensure =&gt; present
+</span><span class='line'>  }
+</span><span class='line'>  logical_volume { "gv0":
+</span><span class='line'>    ensure =&gt; present,
+</span><span class='line'>    require =&gt; Volume_group['vg0'],
+</span><span class='line'>    volume_group =&gt; "vg0",
+</span><span class='line'>    size =&gt; "7G",
+</span><span class='line'>  }
+</span><span class='line'>  file { [ '/export', '/export/gv0']:
+</span><span class='line'>    seltype =&gt; 'usr_t',
+</span><span class='line'>    ensure =&gt; directory,
+</span><span class='line'>  }
+</span><span class='line'>  package { 'xfsprogs': ensure =&gt; installed
+</span><span class='line'>  }
+</span><span class='line'>  filesystem { "/dev/vg0/gv0":
+</span><span class='line'>    ensure =&gt; present,
+</span><span class='line'>    fs_type =&gt; "xfs",
+</span><span class='line'>    options =&gt; "-i size=512",
+</span><span class='line'>    require =&gt; [Package['xfsprogs'], Logical_volume['gv0'] ],
+</span><span class='line'>  }
+</span><span class='line'>  
+</span><span class='line'>  mount { '/export/gv0':
+</span><span class='line'>    device =&gt; '/dev/vg0/gv0',
+</span><span class='line'>    fstype =&gt; 'xfs',
+</span><span class='line'>    options =&gt; 'defaults',
+</span><span class='line'>    ensure =&gt; mounted,
+</span><span class='line'>    require =&gt; [ Filesystem['/dev/vg0/gv0'], File['/export/gv0'] ],
+</span><span class='line'>  }
+</span><span class='line'>  class { 'glusterfs::server':
+</span><span class='line'>    peers =&gt; $::hostname ? {
+</span><span class='line'>      'gluster1' =&gt; '192.168.1.38', # Note these are the IPs of the other nodes
+</span><span class='line'>      'gluster2' =&gt; '192.168.1.84',
+</span><span class='line'>    },
+</span><span class='line'>  }
+</span><span class='line'>  glusterfs::volume { 'gv0':
+</span><span class='line'>    create_options =&gt; 'replica 2 192.168.1.38:/export/gv0 192.168.1.84:/export/gv0',
+</span><span class='line'>    require =&gt; Mount['/export/gv0'],
+</span><span class='line'>  }
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>node 'gluster1' {
+</span><span class='line'>  include glusternode
+</span><span class='line'>  file { '/var/www': ensure =&gt; directory }
+</span><span class='line'>  glusterfs::mount { '/var/www':
+</span><span class='line'>    device =&gt; $::hostname ? {
+</span><span class='line'>      'gluster1' =&gt; '192.168.1.84:/gv0',
+</span><span class='line'>    }
+</span><span class='line'>  }
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>node 'gluster2' {
+</span><span class='line'>  include glusternode
+</span><span class='line'>  file { '/var/www': ensure =&gt; directory }
+</span><span class='line'>  glusterfs::mount { '/var/www':
+</span><span class='line'>    device =&gt; $::hostname ? {
+</span><span class='line'>      'gluster2' =&gt; '192.168.1.38:/gv0',
+</span><span class='line'>    }
+</span><span class='line'>  }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>What does all that do? Starting from the top:</p>
+
+<ul>
+<li> The <code>basenode</code> class does all your basic configuration across all your hosts. Mine actually does a lot more, but these are the relevant parts.</li>
+<li> The <code>glusternode</code> class is shared between all your GlusterFS nodes. This is where all your Server configuration is.</li>
+<li> Configures LVM
+
+<ul>
+<li>Defines the Volume Group &#8220;vg0&#8221; with the Physical Volume <code>/dev/sdb</code></li>
+<li>Creates a Logical Volume &#8220;gv0&#8221; for GlusterFS use and make it 7GB</li>
+</ul>
+</li>
+<li> Configures the file system
+
+<ul>
+<li>Creates the directory <code>/export/gv0</code></li>
+<li>Formats the LV created previously with XFS (installs the package if necessary)</li>
+<li>Mounts the LV at <code>/export/gv0</code></li>
+</ul>
+</li>
+</ul>
+
+
+<p>This is now all ready for the GlusterFS module to do its stuff. All this happens in those last two sections.</p>
+
+<ul>
+<li> The class <code>glusterfs::Server</code> sets up the peering between the two hosts. This will actually generate a errors, but do not worry. This because gluster1 successfully peers with gluster2. As a result gluster2 fails to peer with gluster1 as they are already peered.</li>
+<li> Now <code>glusterfs::volume</code> creates a replicated volume, having first ensured that the LV is mounted correctly.</li>
+<li> All this is then included in the node declarations for <code>gluster1</code> and <code>gluster2</code>.</li>
+</ul>
+
+
+<p>All that creates the server very nicely. It will need a few passes to get everything in place, while giving a few red herring errors. It should would however, all the errors are there in the README for the GlusterFS module in PuppetForge, so do not panic.</p>
+
+<p>A multi-petabyte scale-out storage system is pretty useless if the data cannot be read by anything. So lets use those nodes and mount the volume. This could also be a separate node (but once again I am being lazy) the process will be exactly the same.</p>
+
+<ul>
+<li> Create a mount point for it ( `file {&#8216;/var/www&#8217;: ensure => directory }</li>
+<li> Define your <code>glusterfs::mount</code> using any of the hosts in the cluster.</li>
+</ul>
+
+
+<p>Voila, that should all pull together and give you a fully automated GlusterFS set up. The sort of scale that GlusterFS can reach makes this sort of automation absolutely essential in my opinion. This should be relatively easy to convert to Chef or Ansible, whatever takes your fancy. I have just used Puppet because of my familiarity with it.</p>
+
+<p>This is only one way of doing this, and I make no claims to being the most adept Puppet user in the world. All I hope to achieve is that someone finds this useful. Courteous comments welcome.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Dell Announces VRTX]]></title>
@@ -1109,28 +1346,6 @@ Robin Harris at <a href="http://storagemojo.com/2012/12/05/emcs-xtreme-embarrass
 
 
 <p>The output will tell you the Zip file it has built which you can now upload. Go to the &#8220;Extension Manger&#8221; from the menu on the left. On the right you wil see &#8220;Upload Extension&#8221;. Choose the Zip file and you can configure it to connect to whatever Linux machine you want. &#8220;Putty SSH&#8221; will now be available in the list of installed applications.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[A Cycling Related Review]]></title>
-    <link href="http://www.chriscowley.me.uk/blog/2012/10/23/a-cycling-related-review/"/>
-    <updated>2012-10-23T20:31:00+02:00</updated>
-    <id>http://www.chriscowley.me.uk/blog/2012/10/23/a-cycling-related-review</id>
-    <content type="html"><![CDATA[<p><img class="right" src="http://www.arkon.com/images/slimgrip/sm532.jpg" width="300" height="300"> A little bit if a move away from computers and related subjects today. I was recently contacted by <a href="http://www.gearzap.com">Gearzap</a>/<a href="http://www.mobilefun.co.uk">MobileFun</a> who had seen that I had a Raspberry Pi. They asked if I would like to review a case and I cheekily asked if they could also give me something to mount my phone on the handlebars of my bike. Much to my pleasant surprise, they said yes.</p>
-
-<!-- more -->
-
-
-<p>The sent me the <a href="http://www.arkon.com/slimgrip/slimgrip-bike-mount.html">Arkon SM532</a>. Unsurprisingly it is made in China, but then what is not nowadays. Having said that, the build quality is pretty good and the instructions pretty clear.</p>
-
-<p>I mounted it on my beloved <a href="http://flic.kr/p/cDCcFd">Felt</a> road bike as it is what I am currently using day to day. This unfortunately highlighted the only real problem I found. Modern road bikes have thicker handle bars than many other types of bike. This meant that fitting the bracket to them was tight. It comes with several rubber shims, that a) protect you handlebars, b) stop it from slipping around. It was not possible to use those. It has to be said that is pretty ugly as well, but if that worries you then buy a Garmin.</p>
-
-<p>Anyway, I persevered and attached it without the shims and prayed that it would not do any damage. As I said, the instructions were very clear and this only took a few minutes.  Once on it all seemed perfectly secure, so the next day I put my phone in it. The clips keep it in place pretty well and the you also have the bungie cord as an extra, so I was not worried it would fall out at all. The route I took is a collection of French farm lanes. Some are very smooth, but some are horrible. Also, it is harvest time, so there is plenty of dried mud on the road to give it a bit more of a shaking. It held up very well, nothing shifted at all and I could easily angle the phone so it was just right.</p>
-
-<p>Later I took it off to ensure that it would fit properly on a &#8220;normal&#8221; sized handlebar by putting it on my mountain bike - it was fine. Also, there was absolutely no scratches on my Felt&#8217;s bars at all, despite my concerns about not having any shims to protect them.</p>
-
-<p>All in all it is a pretty good piece of kit. It can be had from <a href="http://www.mobilefun.co.uk">MobileFun</a> for £13.95, which strikes me as pretty good value.</p>
 ]]></content>
   </entry>
   

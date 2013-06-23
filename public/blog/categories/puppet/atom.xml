@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: devops | Just Another Linux Blog]]></title>
-  <link href="http://www.chriscowley.me.uk/blog/categories/devops/atom.xml" rel="self"/>
+  <title><![CDATA[Category: puppet | Just Another Linux Blog]]></title>
+  <link href="http://www.chriscowley.me.uk/blog/categories/puppet/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
   <updated>2013-06-23T22:25:19+02:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
@@ -201,96 +201,6 @@ require =&gt; Mount['/export/gv0'],
 <p>Voila, that should all pull together and give you a fully automated GlusterFS set up. The sort of scale that GlusterFS can reach makes this sort of automation absolutely essential in my opinion. This should be relatively easy to convert to Chef or Ansible, whatever takes your fancy. I have just used Puppet because of my familiarity with it.</p>
 
 <p>This is only one way of doing this, and I make no claims to being the most adept Puppet user in the world. All I hope to achieve is that someone finds this useful. Courteous comments welcome.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Using Hiera with Puppet]]></title>
-    <link href="http://www.chriscowley.me.uk/blog/2013/04/11/using-hiera-with-puppet/"/>
-    <updated>2013-04-11T20:24:00+02:00</updated>
-    <id>http://www.chriscowley.me.uk/blog/2013/04/11/using-hiera-with-puppet</id>
-    <content type="html"><![CDATA[<p>Using Hiera with Puppet is something I have struggled with a bit. I could see the benefits, namely decoupling my site configuration from my logic. However, for some reason I struggled a bit to really get my head around it. This was compounded by it being quite new (only really integrated in Puppet 3), so the docs are  little lacking.</p>
-
-<!-- more -->
-
-
-<p>There is some though, the <a href="http://docs.puppetlabs.com/hiera/latest/">documentation on PuppetLab's site</a> is excellent, but a bit light. It explains the principles well, but is a little limited in real-world examples. Probably the best resource I found was Kelsey Hightower's excellent presentation at <a href="http://youtu.be/z9TK-gUNFHk">PuppetConf 2012</a>:</p>
-
-<p>I learnt a lot from that, but it would be nice if there was an equivalent written down. I suppose that is what I am aiming at here.</p>
-
-<h1>Configuration</h1>
-
-<ul>
-<li><a href="https://github.com/chriscowley/puppet-nfs">NFS Module</a></li>
-<li><a href="https://github.com/chriscowley/my-master-puppet/blob/master/hiera.yaml">Hiera Config</a></li>
-<li><a href="https://github.com/chriscowley/my-master-puppet/tree/master/hieradata">Hiera Data</a></li>
-</ul>
-
-
-<p>I am using Open Source Puppet 3. If you are using 2.7 or Puppet Enterprise, files will be in a slightly different place. That is all explained in the documentation linked above.</p>
-
-<p>The first thing you need to do is configure Hiera using the file <code>/etc/puppet/hiera.yaml</code>. Mine looks like this:</p>
-
-<h2>```</h2>
-
-<p>:backends:
-- yaml
-:yaml:
-:datadir: /etc/puppet/hieradata/
-:hierarchy:
-- %{::clientcert}
-- common
-```</p>
-
-<p>This tells Hiera to use only the YAML backend - I do not like JSON because it always looks messy to me. It will look for the data in the folder <code>/etc/puppet/hieradata</code>. Finally it will look in that folder for a file called <clientcert>.yaml, then common.yaml. The process it uses to apply the values is explained very nicely in this image:
-<img src="http://docs.puppetlabs.com/hiera/latest/images/hierarchy1.png"></p>
-
-<p>Next, create the file <code>/etc/puppet/hieradata/&lt;certname&gt;.yaml</code> that contains your NFS exports:</p>
-
-<h2>```</h2>
-
-<p>exports:
-- /srv/iso
-- /srv/images
-```</p>
-
-<p>Now, checkout my NFS module from Github links above. If you are not on RHEL6 or similar (I use Centos personally) you will have to modify it as needed.</p>
-
-<p>There are 2 files that are really interesting here. The manifest file (manifests/server.pp) and the template to build the <code>/etc/exports</code> file (templates/exports.erb). We'll take apart the manifest, the template just iterates over the data passed to it from that.</p>
-
-<p>The first line creates an array variable called $exports from the Hiera data. Specifically, it looks for a key called <em>exports</em>. Hiera then goes through the hierarchy explained earlier looking for that key. In this case it will find it in the <certname>.yaml.</p>
-
-<p>This data is now used for 2 things. First it creates the necessary folders, then it build <code>/etc/exports</code>. Here there is a minor problem, because you cannot do a <em>for each</em> loop in a Puppet manifest. We can fiddle it a bit by using a <a href="http://docs.puppetlabs.com/puppet/3/reference/lang_defined_types.html">defined type</a>.</p>
-
-<p>The line <code>list_exports { $exports:; }</code> passes the <code>$exports</code> array to the type we define above it. This then goes ahead and creates the folders ready to be exported. The <code>-&gt;</code> builds an <a href="http://docs.puppetlabs.com/puppet/3/reference/lang_relationships.html#chaining-arrows">order relationship</a> with the File resource for <em>/etc/exports</em>. Specifically, that the directories need to be created before they are exported.</p>
-
-<p>```
-  define list_exports {</p>
-
-<pre><code>$export = $name
-file { $export:
-  ensure =&gt; directory,
-  mode =&gt; '0755',
-  owner =&gt; 'root',
-  group =&gt; 'root'
-}
-</code></pre>
-
-<p>  }
-  list_exports { $exports:; } -> File['/etc/exports']
-```</p>
-
-<p>Now it can go ahead and build the <code>/etc/exports</code> file using that same $exports array in the <code>templates/exports.erb</code> template:</p>
-
-<p><code>
-  &lt;% [exports].flatten.each do |export| -%&gt;
-  &lt;%= export %&gt; 192.168.1.0/255.255.255.0(rw,no_root_squash,no_subtree_check)
-  &lt;% end -%&gt;
-</code></p>
-
-<p>There is nothing especially Hiera'y about this, other than where the data in that array came from.</p>
-
-<p>The rest of the manifest deals with installing the packages and configuring services. Once again, nothing especially linked with Hiera, but hopefully it will be useful for anyone wanting to Puppetize their NFS servers - which of course you should be.</p>
 ]]></content>
   </entry>
   

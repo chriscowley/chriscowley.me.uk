@@ -4,7 +4,7 @@
   <title><![CDATA[Category: storage | Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/blog/categories/storage/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-06-12T21:06:20+02:00</updated>
+  <updated>2013-06-23T22:25:19+02:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -12,6 +12,197 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Automated GlusterFS]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2013/06/23/automated-glusterfs/"/>
+    <updated>2013-06-23T22:02:00+02:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2013/06/23/automated-glusterfs</id>
+    <content type="html"><![CDATA[<p><img class="right" src="http://www.hastexo.com/system/files/imagecache/sidebar/20120221105324808-f2df3ea3e3aeab8_250_0.png"> As I promised on Twitter, this is how I automate a GlusterFS deployment. I'm making a few assumptions here:</p>
+
+<!-- more -->
+
+
+<ul>
+<li>I am using CentOS 6, so should work on RHEL 6 and Scientific Linux 6 too. Others may work, but YMMV.</li>
+<li>That you have a way of automating your base OS installation. My personal preference is to use <a href="https://github.com/puppetlabs/Razor">Razor</a>.</li>
+<li>You have a system with at least a complete spare disk dedicated to a GlusterFS brick. That is the best way to run GlusterFS anyway.</li>
+<li>You have 2 nodes and want to replicate the data</li>
+<li>You have a simple setup with only a single network, because I am being lazy. As a proof-of concept this is fine. Modifying this for second network is quite easy, just change the IP address in you use.</li>
+</ul>
+
+
+<p><img src="https://docs.google.com/drawings/d/1XA7GH3a4BL1uszFXrSsZjysi59Iinh-0RmhqdDbt7QQ/pub?w=673&amp;h=315" title="'simple gluster architecture'" ></p>
+
+<p>The diagram above shows the basic layout of what to start from in terms of hardware. In terms of software, you just need a basic CentOS 6 install and to have Puppet working.</p>
+
+<p>I use a pair of Puppet modules (both in the Forge): <a href="http://forge.puppetlabs.com/thias/glusterfs">thias/glusterfs</a> and <a href="http://forge.puppetlabs.com/puppetlabs/lvm">puppetlabs/lvm</a>. The GlusterFS module CAN do the LVM config, but that strikes me as not the best idea. The UNIX philosophy of "do one job well"  holds up for Puppet modules as well. You will also need my <a href="https://github.com/chriscowley/puppet-yumrepos">yumrepos</a> module.</p>
+
+<p>Clone those 3 modules into your modules directory:</p>
+
+<p><code>
+cd /etc/puppet/
+git clone git://github.com/chriscowley/puppet-yumrepos.git modules/yumrepos
+puppet module install puppetlabs/lvm --version 0.1.2
+puppet module install thias/glusterfs --version 0.0.3
+</code></p>
+
+<p>I have specified the versions as that is what was the latest at the time of writing. You should be able to take the latest as well, but comment with any differences if any. That gives the core of what you need so you can now move on to you <code>nodes.pp</code>.</p>
+
+<p>```
+class basenode {
+  class { 'yumrepos': }
+  class { 'yumrepos::epel': }
+}</p>
+
+<p>class glusternode {
+  class { 'basenode': }
+  class { 'yumrepos::gluster': }</p>
+
+<p>  volume_group { "vg0":</p>
+
+<pre><code>ensure =&gt; present,
+physical_volumes =&gt; "/dev/sdb",
+require =&gt; Physical_volume["/dev/sdb"]
+</code></pre>
+
+<p>  }
+  physical_volume { "/dev/sdb":</p>
+
+<pre><code>ensure =&gt; present
+</code></pre>
+
+<p>  }
+  logical_volume { "gv0":</p>
+
+<pre><code>ensure =&gt; present,
+require =&gt; Volume_group['vg0'],
+volume_group =&gt; "vg0",
+size =&gt; "7G",
+</code></pre>
+
+<p>  }
+  file { [ '/export', '/export/gv0']:</p>
+
+<pre><code>seltype =&gt; 'usr_t',
+ensure =&gt; directory,
+</code></pre>
+
+<p>  }
+  package { 'xfsprogs': ensure => installed
+  }
+  filesystem { "/dev/vg0/gv0":</p>
+
+<pre><code>ensure =&gt; present,
+fs_type =&gt; "xfs",
+options =&gt; "-i size=512",
+require =&gt; [Package['xfsprogs'], Logical_volume['gv0'] ],
+</code></pre>
+
+<p>  }</p>
+
+<p>  mount { '/export/gv0':</p>
+
+<pre><code>device =&gt; '/dev/vg0/gv0',
+fstype =&gt; 'xfs',
+options =&gt; 'defaults',
+ensure =&gt; mounted,
+require =&gt; [ Filesystem['/dev/vg0/gv0'], File['/export/gv0'] ],
+</code></pre>
+
+<p>  }
+  class { 'glusterfs::server':</p>
+
+<pre><code>peers =&gt; $::hostname ? {
+  'gluster1' =&gt; '192.168.1.38', # Note these are the IPs of the other nodes
+  'gluster2' =&gt; '192.168.1.84',
+},
+</code></pre>
+
+<p>  }
+  glusterfs::volume { 'gv0':</p>
+
+<pre><code>create_options =&gt; 'replica 2 192.168.1.38:/export/gv0 192.168.1.84:/export/gv0',
+require =&gt; Mount['/export/gv0'],
+</code></pre>
+
+<p>  }
+}</p>
+
+<p>node 'gluster1' {
+  include glusternode
+  file { '/var/www': ensure => directory }
+  glusterfs::mount { '/var/www':</p>
+
+<pre><code>device =&gt; $::hostname ? {
+  'gluster1' =&gt; '192.168.1.84:/gv0',
+}
+</code></pre>
+
+<p>  }
+}</p>
+
+<p>node 'gluster2' {
+  include glusternode
+  file { '/var/www': ensure => directory }
+  glusterfs::mount { '/var/www':</p>
+
+<pre><code>device =&gt; $::hostname ? {
+  'gluster2' =&gt; '192.168.1.38:/gv0',
+}
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p>What does all that do? Starting from the top:</p>
+
+<ul>
+<li> The <code>basenode</code> class does all your basic configuration across all your hosts. Mine actually does a lot more, but these are the relevant parts.</li>
+<li> The <code>glusternode</code> class is shared between all your GlusterFS nodes. This is where all your Server configuration is.</li>
+<li> Configures LVM
+
+<ul>
+<li>Defines the Volume Group "vg0" with the Physical Volume <code>/dev/sdb</code></li>
+<li>Creates a Logical Volume "gv0" for GlusterFS use and make it 7GB</li>
+</ul>
+</li>
+<li> Configures the file system
+
+<ul>
+<li>Creates the directory <code>/export/gv0</code></li>
+<li>Formats the LV created previously with XFS (installs the package if necessary)</li>
+<li>Mounts the LV at <code>/export/gv0</code></li>
+</ul>
+</li>
+</ul>
+
+
+<p>This is now all ready for the GlusterFS module to do its stuff. All this happens in those last two sections.</p>
+
+<ul>
+<li> The class <code>glusterfs::Server</code> sets up the peering between the two hosts. This will actually generate a errors, but do not worry. This because gluster1 successfully peers with gluster2. As a result gluster2 fails to peer with gluster1 as they are already peered.</li>
+<li> Now <code>glusterfs::volume</code> creates a replicated volume, having first ensured that the LV is mounted correctly.</li>
+<li> All this is then included in the node declarations for <code>gluster1</code> and <code>gluster2</code>.</li>
+</ul>
+
+
+<p>All that creates the server very nicely. It will need a few passes to get everything in place, while giving a few red herring errors. It should would however, all the errors are there in the README for the GlusterFS module in PuppetForge, so do not panic.</p>
+
+<p>A multi-petabyte scale-out storage system is pretty useless if the data cannot be read by anything. So lets use those nodes and mount the volume. This could also be a separate node (but once again I am being lazy) the process will be exactly the same.</p>
+
+<ul>
+<li> Create a mount point for it ( `file {'/var/www': ensure => directory }</li>
+<li> Define your <code>glusterfs::mount</code> using any of the hosts in the cluster.</li>
+</ul>
+
+
+<p>Voila, that should all pull together and give you a fully automated GlusterFS set up. The sort of scale that GlusterFS can reach makes this sort of automation absolutely essential in my opinion. This should be relatively easy to convert to Chef or Ansible, whatever takes your fancy. I have just used Puppet because of my familiarity with it.</p>
+
+<p>This is only one way of doing this, and I make no claims to being the most adept Puppet user in the world. All I hope to achieve is that someone finds this useful. Courteous comments welcome.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[EMC ViPR thoughts]]></title>
@@ -183,27 +374,6 @@ That is all very interesting, but so far it is just a new approach to the UI. It
 <p>All this can sit on top of Btrfs allowing each node to have up to 16 exabytes of local storage. For now I am not convinced by it, at least on RHEL 6 as I have seen numerous kernel panics, nor did I have a huge amount of joy on Fedora 17, but there is no doubt that it will get there. Alternatively, there is always the combination of XFS and LVM. XFS is getting on a bit now, but it has been revived by Red Hat in recent years and it is a proven performer with plenty of life left in it yet.</p>
 
 <p>After all that, who do I think is ripe to do some serious disrupting in the storage market? Who will "Do a Red Hat" as Martin puts it? Simple: it will be Red Hat! Look at the best of breed tools at every level of the storage stack on Linux and you will find it is either from Red Hat (Gluster) or they are heavily involved (LIO target). They have the resources and the market/mind share to do it. Also they have a long history of working with and feeding back to the community, so the fortuitous circle will continue.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Something from the shadows]]></title>
-    <link href="http://www.chriscowley.me.uk/blog/2013/02/21/something-from-the-shadows/"/>
-    <updated>2013-02-21T16:06:00+01:00</updated>
-    <id>http://www.chriscowley.me.uk/blog/2013/02/21/something-from-the-shadows</id>
-    <content type="html"><![CDATA[<p>An intriguing startup came out of stealth mode a few days ago. <a href="http://pernixdata.com/">Pernix Data</a> was founded by Pookan Kumar and Satyam Vaghani, both of who were pretty near top of the pile in VMware's storage team.</p>
-
-<!--more -->
-
-
-<p>What they are offering is, to me at least, a blinding flash of the obvious. It is a softweare layer that runs on a VMware hypervisor that uses local flash as a cache for whatevery is coming off your main storage array. <img class="right" src="http://pernixdata.com/images/home_graphic3.png" width="300" height="217">. That could be an SSD (or multiple) or a PCI-e card.</p>
-
-<p>Reading what they have to say, it is completely transparent to the hypervisor, so everything just works. Obviously me being an Open Source fanatic I imediately started thinking how I could do this with Linux; it took me about 5 minutes.</p>
-
-<p>You take your SAN array and give your LUN to your Hypervisors (running KVM obviously, and with a local SSD). Normally you would stick a clustered file system (such as GFS2) on that shared LUN. Instead you use a tiered block device on top of that LUN. There are two that come immediately to mind: <a href="https://github.com/facebook/flashcache/">Flashcache</a> and <a href="http://sourceforge.net/projects/tier/files/">Btier</a>.</p>
-
-<p>Finally, you can put your clustered file system on that tiered device. I do not have the time or facilities to test this, but I cannot see why it would not work. Maybe someone at Red Hat (seeing as they do the bulk of KVM and GFS2 development) can run with this and see what happens.
-What their plans are I do not know. It is very early days, maybe they will be a success maybe not. As they are both ex-VMware, I would not be at all surprised if they get bought back into the VMware fold. Certainly this is a functionality that I would have like to have seen in the past.</p>
 ]]></content>
   </entry>
   
