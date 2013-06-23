@@ -4,7 +4,7 @@
   <title><![CDATA[Category: devops | Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/blog/categories/devops/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-06-23T22:25:19+02:00</updated>
+  <updated>2013-06-23T22:27:38+02:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -24,7 +24,12 @@
 
 
 <ul>
-<li>I am using CentOS 6, so should work on RHEL 6 and Scientific Linux 6 too. Others may work, but YMMV.</li>
+<li>I am using CentOS 6, so should work on RHEL 6 and Scientific Linux 6 too. Others may work, but YMMV.
+
+<ul>
+<li>As I use XFS, RHEL users will need the <em>Scalable Storage</em> option. Ext4 will work, but XFS is recommended.</li>
+</ul>
+</li>
 <li>That you have a way of automating your base OS installation. My personal preference is to use <a href="https://github.com/puppetlabs/Razor">Razor</a>.</li>
 <li>You have a system with at least a complete spare disk dedicated to a GlusterFS brick. That is the best way to run GlusterFS anyway.</li>
 <li>You have 2 nodes and want to replicate the data</li>

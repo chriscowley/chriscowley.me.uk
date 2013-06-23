@@ -9,6 +9,7 @@ categories: [storage, puppet, devops]
 <!-- more -->
 
 * I am using CentOS 6, so should work on RHEL 6 and Scientific Linux 6 too. Others may work, but YMMV.
+   * As I use XFS, RHEL users will need the _Scalable Storage_ option. Ext4 will work, but XFS is recommended.
 * That you have a way of automating your base OS installation. My personal preference is to use [Razor](https://github.com/puppetlabs/Razor).
 * You have a system with at least a complete spare disk dedicated to a GlusterFS brick. That is the best way to run GlusterFS anyway.
 * You have 2 nodes and want to replicate the data
