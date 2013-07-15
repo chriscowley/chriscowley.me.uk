@@ -4,7 +4,7 @@
   <title><![CDATA[Category: cycling | Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/blog/categories/cycling/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-06-23T22:27:38+02:00</updated>
+  <updated>2013-07-15T15:24:48+01:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -14,9 +14,59 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Home-made Exercise drink]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2013/07/15/home-made-exercise-drink/"/>
+    <updated>2013-07-15T14:52:00+01:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2013/07/15/home-made-exercise-drink</id>
+    <content type="html"><![CDATA[<p><img class="right" src="http://farm8.staticflickr.com/7120/7645659336_357c65c781.jpg">This is a simple post which also breaks from the normal subjects of Linux and storage.</p>
+
+<p>Today I am going to share a very simple recipe for what I drink when I am cycling. I have some fairly simple requirements for this.</p>
+
+<!-- more -->
+
+
+<ol>
+<li>It must work (it must rehydrate me effectively)</li>
+<li>It must not be a rip off</li>
+<li>I want to have a at least a reasonable idea of what is in it.</li>
+</ol>
+
+
+<p>You can spend a small fortune on these drinks. Exercise nutrition is big business, but at starting roughly 1 euros a a bottle (3-4 euros a day at this time of year, plus my hay fever medicines) they can get pricey.</p>
+
+<p>In reality you need 3 things:</p>
+
+<ol>
+<li>Water, and plenty of it</li>
+<li>Sugar to give you back the fuel you burn.</li>
+<li>Salt to help you absorb the fluid</li>
+</ol>
+
+
+<p>I use  500ml bottles from my <a href="http://www.laboutiqueducycle.fr/">LBS</a> that I chose for very technical reasons (they gave them to me free).</p>
+
+<p>The important thing to get right is the proportions. Not enough sugar and you will not replace the glucose that you burn, too much and you will struggle to absorb it. Likewise with salt, not enough and you're absorption rate will be to slow, too much and it will 1) taste nasty and 2) dehydrate you.</p>
+
+<p>For each 500ml bottle I go for:</p>
+
+<ul>
+<li>5 teaspoon sugar (25-30g)</li>
+<li>2-3 generous pinchs of salt</li>
+</ul>
+
+
+<p>That would taste disgusting, so add a touch of fruit squash to taste. I use Grenadine, because the children love it so it always in the fridge, but a sugar-free squash would be fine or a dash for fresh fruit juice.</p>
+
+<p>Finally, I use unrefined sugar and for the salt I use <a href="http://en.wikipedia.org/wiki/Gu%C3%A9rande#Salt_marshes">Sel de Guérande</a>. That way I know I am using the best quality ingredients, something I am sure the likes of Gatorade do not do.</p>
+
+<p>Final cost is minimal, but it seems to work for me.</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[A Cycling Related Review]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2012/10/23/a-cycling-related-review/"/>
-    <updated>2012-10-23T20:31:00+02:00</updated>
+    <updated>2012-10-23T20:31:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2012/10/23/a-cycling-related-review</id>
     <content type="html"><![CDATA[<p><img class="right" src="http://www.arkon.com/images/slimgrip/sm532.jpg" width="300" height="300"> A little bit if a move away from computers and related subjects today. I was recently contacted by <a href="http://www.gearzap.com">Gearzap</a>/<a href="http://www.mobilefun.co.uk">MobileFun</a> who had seen that I had a Raspberry Pi. They asked if I would like to review a case and I cheekily asked if they could also give me something to mount my phone on the handlebars of my bike. Much to my pleasant surprise, they said yes.</p>
 
@@ -38,7 +88,7 @@
   <entry>
     <title type="html"><![CDATA[Isle of Wight Ride]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2012/07/27/isle-of-wight-ride/"/>
-    <updated>2012-07-27T16:02:00+02:00</updated>
+    <updated>2012-07-27T16:02:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2012/07/27/isle-of-wight-ride</id>
     <content type="html"><![CDATA[<p>Last week I successfully did my first 65 mile ride. Of course it was not a race, but that never stopped a group of men being over competitive - I won by the way.</p>
 

@@ -4,7 +4,7 @@
   <title><![CDATA[Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-06-23T22:27:38+02:00</updated>
+  <updated>2013-07-15T15:24:48+01:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -14,9 +14,59 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Home-made Exercise drink]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2013/07/15/home-made-exercise-drink/"/>
+    <updated>2013-07-15T14:52:00+01:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2013/07/15/home-made-exercise-drink</id>
+    <content type="html"><![CDATA[<p><img class="right" src="http://farm8.staticflickr.com/7120/7645659336_357c65c781.jpg">This is a simple post which also breaks from the normal subjects of Linux and storage.</p>
+
+<p>Today I am going to share a very simple recipe for what I drink when I am cycling. I have some fairly simple requirements for this.</p>
+
+<!-- more -->
+
+
+<ol>
+<li>It must work (it must rehydrate me effectively)</li>
+<li>It must not be a rip off</li>
+<li>I want to have a at least a reasonable idea of what is in it.</li>
+</ol>
+
+
+<p>You can spend a small fortune on these drinks. Exercise nutrition is big business, but at starting roughly 1 euros a a bottle (3-4 euros a day at this time of year, plus my hay fever medicines) they can get pricey.</p>
+
+<p>In reality you need 3 things:</p>
+
+<ol>
+<li>Water, and plenty of it</li>
+<li>Sugar to give you back the fuel you burn.</li>
+<li>Salt to help you absorb the fluid</li>
+</ol>
+
+
+<p>I use  500ml bottles from my <a href="http://www.laboutiqueducycle.fr/">LBS</a> that I chose for very technical reasons (they gave them to me free).</p>
+
+<p>The important thing to get right is the proportions. Not enough sugar and you will not replace the glucose that you burn, too much and you will struggle to absorb it. Likewise with salt, not enough and you&#8217;re absorption rate will be to slow, too much and it will 1) taste nasty and 2) dehydrate you.</p>
+
+<p>For each 500ml bottle I go for:</p>
+
+<ul>
+<li>5 teaspoon sugar (25-30g)</li>
+<li>2-3 generous pinchs of salt</li>
+</ul>
+
+
+<p>That would taste disgusting, so add a touch of fruit squash to taste. I use Grenadine, because the children love it so it always in the fridge, but a sugar-free squash would be fine or a dash for fresh fruit juice.</p>
+
+<p>Finally, I use unrefined sugar and for the salt I use <a href="http://en.wikipedia.org/wiki/Gu%C3%A9rande#Salt_marshes">Sel de Guérande</a>. That way I know I am using the best quality ingredients, something I am sure the likes of Gatorade do not do.</p>
+
+<p>Final cost is minimal, but it seems to work for me.</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Automated GlusterFS]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/06/23/automated-glusterfs/"/>
-    <updated>2013-06-23T22:02:00+02:00</updated>
+    <updated>2013-06-23T22:02:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/06/23/automated-glusterfs</id>
     <content type="html"><![CDATA[<p><img class="right" src="http://www.hastexo.com/system/files/imagecache/sidebar/20120221105324808-f2df3ea3e3aeab8_250_0.png"> As I promised on Twitter, this is how I automate a GlusterFS deployment. I&#8217;m making a few assumptions here:</p>
 
@@ -258,7 +308,7 @@
   <entry>
     <title type="html"><![CDATA[Dell Announces VRTX]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/06/04/dell-announces-vrtx/"/>
-    <updated>2013-06-04T22:15:00+02:00</updated>
+    <updated>2013-06-04T22:15:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/06/04/dell-announces-vrtx</id>
     <content type="html"><![CDATA[<p><img class="right" src="http://en.community.dell.com/cfs-file.ashx/__key/communityserver-blogs-components-weblogfiles/00-00-00-37-45/6886.vrtx.JPG"> Dell has announced the new PowerEdge VRTX (pronounced Vertex). The name comes from a vertex being &#8220;the intersection of multiple lines&#8221;, alluding to this being a mixture of a rack server, a blade server and a SAN.</p>
 
@@ -283,7 +333,7 @@
   <entry>
     <title type="html"><![CDATA[Jellybean and OpenVPN]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/05/30/jellybean-and-openvpn/"/>
-    <updated>2013-05-30T22:14:00+02:00</updated>
+    <updated>2013-05-30T22:14:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/05/30/jellybean-and-openvpn</id>
     <content type="html"><![CDATA[<p><img class="right" src="http://openvpn.net/templates/telethra/img/ovpntech_logo-s.png">Setting up the server is well documented elsewhere, the <a href="http://openvpn.net/index.php/open-source/documentation/howto.html#quick">official howto</a> works nicely for me. I use a Virtual TUN network (routed) with clients connecting via UDP 1194, with all the network config pushed out by the server. Follow the howto and you will get that at the end.</p>
 
@@ -303,7 +353,7 @@
   <entry>
     <title type="html"><![CDATA[Enable Developer Options on Android Jellybean]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/05/29/enable-developer-options-on-android-jellybean/"/>
-    <updated>2013-05-29T21:13:00+02:00</updated>
+    <updated>2013-05-29T21:13:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/05/29/enable-developer-options-on-android-jellybean</id>
     <content type="html"><![CDATA[<p><img class="right" src="http://www.android.com/images/whatsnew/jb-new-logo.png" title="" >This was weird! I just updated my venerable ZTE Blade to Cyanogenmod 10.1 (Jellybean). I flashed it, then rebooted having completely forgotten to to install GApps. No problem, reboot into Clockmod Recovery and install them. Promlem: no option to reboot to recovery.</p>
 
@@ -328,7 +378,7 @@
   <entry>
     <title type="html"><![CDATA[EMC ViPR thoughts]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/05/13/emc-vipr-thoughts/"/>
-    <updated>2013-05-13T21:45:00+02:00</updated>
+    <updated>2013-05-13T21:45:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/05/13/emc-vipr-thoughts</id>
     <content type="html"><![CDATA[<p>I have been a little slow on the uptake on this one. I would like to say it is because I was carefully digesting the information, but that is not true; the reality is that I have just had 2 5 day weekends in 2 weeks :-).</p>
 
@@ -368,7 +418,7 @@ EMC has really pushed ViPR in the last couple of weeks, but it fails to impress 
   <entry>
     <title type="html"><![CDATA[Bamboo Invoice on Centos with Nginx]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/04/29/bamboo-invoice-on-centos-with-nginx/"/>
-    <updated>2013-04-29T21:16:00+02:00</updated>
+    <updated>2013-04-29T21:16:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/04/29/bamboo-invoice-on-centos-with-nginx</id>
     <content type="html"><![CDATA[<p>BambooInvoice is free Open Source invoicing software intended for small businesses and independent contractors. It is easy to use and creates pretty good looking invoices.</p>
 
@@ -548,7 +598,7 @@ EMC has really pushed ViPR in the last couple of weeks, but it fails to impress 
   <entry>
     <title type="html"><![CDATA[Using Hiera with Puppet]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/04/11/using-hiera-with-puppet/"/>
-    <updated>2013-04-11T20:24:00+02:00</updated>
+    <updated>2013-04-11T20:24:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/04/11/using-hiera-with-puppet</id>
     <content type="html"><![CDATA[<p>Using Hiera with Puppet is something I have struggled with a bit. I could see the benefits, namely decoupling my site configuration from my logic. However, for some reason I struggled a bit to really get my head around it. This was compounded by it being quite new (only really integrated in Puppet 3), so the docs are  little lacking.</p>
 
@@ -656,7 +706,7 @@ EMC has really pushed ViPR in the last couple of weeks, but it fails to impress 
   <entry>
     <title type="html"><![CDATA[Stop the hate on software RAID]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/04/07/stop-the-hate-on-software-raid/"/>
-    <updated>2013-04-07T20:21:00+02:00</updated>
+    <updated>2013-04-07T20:21:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/04/07/stop-the-hate-on-software-raid</id>
     <content type="html"><![CDATA[<p><img class="right" src="http://www.chriscowley.me.uk/images/NetappClustering.jpg">I&#8217;ve had a another bee in my bonnet recently. Specifically, it has been to do with hardware vs software RAID, but I think it goes deeper than that. It started a couple of months back with a discussion on <a href="http://redd.it/18dp63">Reddit</a>. Some of the comments were:</p>
 
@@ -732,7 +782,7 @@ As I said at the start, the subject here is software vs hardware RAID, but my pr
   <entry>
     <title type="html"><![CDATA[Writeable TFTP Server On CentOS]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/03/25/writeable-tftp-server-on-centos/"/>
-    <updated>2013-03-25T15:45:00+01:00</updated>
+    <updated>2013-03-25T15:45:00+00:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/03/25/writeable-tftp-server-on-centos</id>
     <content type="html"><![CDATA[<p>Well this caught me out for an embarassingly long time. There are <a href="http://blog.penumbra.be/tag/tftp/">loads</a> <a href="http://www.question-defense.com/2008/11/13/linux-setup-tftp-server-on-centos">of</a> <a href="http://wiki.centos.org/EdHeron/PXESetup">examples</a> of setting up a TFTP server on the web. The vast majority of them assume that you are using them read-only for PXE booting.</p>
 
@@ -818,7 +868,7 @@ As I said at the start, the subject here is software vs hardware RAID, but my pr
   <entry>
     <title type="html"><![CDATA[What a boss owes their staff]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/03/18/what-a-boss-owes-their-staff/"/>
-    <updated>2013-03-18T20:47:00+01:00</updated>
+    <updated>2013-03-18T20:47:00+00:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/03/18/what-a-boss-owes-their-staff</id>
     <content type="html"><![CDATA[<p><img class="right" src="http://www.chriscowley.me.uk/images/reputation-management-starts-with-trust.jpg"> I recently had a conversation on Twitter with my friend <a href="http://www.robborley.com/">Rob Borley</a> who runs a <a href="http://www.dootrix.com/">mobile startup</a>. He had asked what interesting perks he should be giving his <a href="https://twitter.com/bobscape/statuses/313610008535367680">staff</a>.</p>
 
@@ -846,7 +896,7 @@ Trust leads to everything else that we like about work. Allowing your staff to w
   <entry>
     <title type="html"><![CDATA[Thoughts on the shiney new VMAX]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/03/01/thoughts-on-the-shiney-new-vmax/"/>
-    <updated>2013-03-01T15:21:00+01:00</updated>
+    <updated>2013-03-01T15:21:00+00:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/03/01/thoughts-on-the-shiney-new-vmax</id>
     <content type="html"><![CDATA[<p><img class="right" src="http://www.emc.com/R1/images/EMC_Image_C_1310593327367_header-image-vmax-10k.png"> I&#8217;ve spent a significant amount of time recently swatting up on EMC&#8217;s new <a href="http://chucksblog.emc.com/chucks_blog/2013/02/introducing-vmax-cloud-edition.html">VMAX Cloud Edition</a>. It has to be said that this looks like one of the most interesting storage announcements I have seen in a long time. In fact I have a project coming up that I think it may well be a perfect fit for.</p>
 
@@ -881,7 +931,7 @@ That is all very interesting, but so far it is just a new approach to the UI. It
   <entry>
     <title type="html"><![CDATA[The Linux to Storage]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/02/25/the-linux-to-storage/"/>
-    <updated>2013-02-25T13:09:00+01:00</updated>
+    <updated>2013-02-25T13:09:00+00:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/02/25/the-linux-to-storage</id>
     <content type="html"><![CDATA[<p>Martin &#8220;Storagebod&#8221; Glassborow recently wrote an interesting article where he asked &#8220;Who&#8217;ll do a Linux to Storage?&#8221;. As someone who is equal parts Storage and Linux, the same question runs around my head quite often. Not just that, but how to do it. It is safe to say that all the constituent parts are already in the Open Source Ecosystem. It just needs someone to pull them all together wrap them up in an integrated interface (be that a GUI, CLI, an API or all).</p>
 
@@ -903,7 +953,7 @@ That is all very interesting, but so far it is just a new approach to the UI. It
   <entry>
     <title type="html"><![CDATA[Something from the shadows]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/02/21/something-from-the-shadows/"/>
-    <updated>2013-02-21T16:06:00+01:00</updated>
+    <updated>2013-02-21T16:06:00+00:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/02/21/something-from-the-shadows</id>
     <content type="html"><![CDATA[<p>An intriguing startup came out of stealth mode a few days ago. <a href="http://pernixdata.com/">Pernix Data</a> was founded by Pookan Kumar and Satyam Vaghani, both of who were pretty near top of the pile in VMware&#8217;s storage team.</p>
 
@@ -924,7 +974,7 @@ What their plans are I do not know. It is very early days, maybe they will be a 
   <entry>
     <title type="html"><![CDATA[How much should you spend on IT]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/02/06/how-much-should-you-spend-on-it/"/>
-    <updated>2013-02-06T16:04:00+01:00</updated>
+    <updated>2013-02-06T16:04:00+00:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/02/06/how-much-should-you-spend-on-it</id>
     <content type="html"><![CDATA[<p>A recent discussion/argument I had on Reddit got me thinking about the cost of solutions we put in.</p>
 
@@ -954,7 +1004,7 @@ It is not always necessary to get the shiniest stuff, with the longest/quickest 
   <entry>
     <title type="html"><![CDATA[In praise of old school UNIX]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/02/05/in-praise-of-old-school-unix/"/>
-    <updated>2013-02-05T16:13:00+01:00</updated>
+    <updated>2013-02-05T16:13:00+00:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/02/05/in-praise-of-old-school-unix</id>
     <content type="html"><![CDATA[<p>What am I doing today? Documentation that is what. I am writing a document on how to do <a href="http://www.chriscowley.me.uk/blog/2012/11/19/sftp-chroot-on-centos/">this</a>. To any Linux user it is a very simple process and I could just give them a link to my own website.</p>
 
@@ -1008,7 +1058,7 @@ It is not always necessary to get the shiniest stuff, with the longest/quickest 
   <entry>
     <title type="html"><![CDATA[Trac with Nginx on Centos]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/01/21/trac-with-nginx-on-centos/"/>
-    <updated>2013-01-21T11:53:00+01:00</updated>
+    <updated>2013-01-21T11:53:00+00:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/01/21/trac-with-nginx-on-centos</id>
     <content type="html"><![CDATA[<p><a href="tac.edgewall.org">Trac</a> is an excellent online project management tool. Nginx us a great web server. Surely the combination of the two should be a match made in heaven. I would say so, although there are a couple problems. The easiest way to deploy Trac is on Apache using mod_wsgi or FastCGI. This option does not really exist for Nginx. Okay, it can do FastCGI, but I have not get that set up on my server.</p>
 
@@ -1078,7 +1128,7 @@ It is not always necessary to get the shiniest stuff, with the longest/quickest 
   <entry>
     <title type="html"><![CDATA[What will HP do next?]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2012/12/17/what-will-hp-do-next/"/>
-    <updated>2012-12-17T15:16:00+01:00</updated>
+    <updated>2012-12-17T15:16:00+00:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2012/12/17/what-will-hp-do-next</id>
     <content type="html"><![CDATA[<p>HP recently announced a new range of 3Par based arrays that are aimed at mid-range enterprise. There now appear to be 2 ranges for the future:</p>
 
@@ -1112,7 +1162,7 @@ It is not always necessary to get the shiniest stuff, with the longest/quickest 
   <entry>
     <title type="html"><![CDATA[EMC ExtremIO Thoughts]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2012/12/10/emc-extremio-thoughts/"/>
-    <updated>2012-12-10T16:39:00+01:00</updated>
+    <updated>2012-12-10T16:39:00+00:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2012/12/10/emc-extremio-thoughts</id>
     <content type="html"><![CDATA[<p>There has been quite a bit of musing recently on the web about EMC and what will come out of their ExtremIO acquisition. They have recently (finally) started demonstrating an all-flash array. The name says it all: ExtremIO. It is for super high IOPS applications - Virtual desktops, enormous DBs, that sort of thing.</p>
 
@@ -1153,7 +1203,7 @@ Robin Harris at <a href="http://storagemojo.com/2012/12/05/emcs-xtreme-embarrass
   <entry>
     <title type="html"><![CDATA[SFTP Chroot on CentOS]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2012/11/19/sftp-chroot-on-centos/"/>
-    <updated>2012-11-19T19:59:00+01:00</updated>
+    <updated>2012-11-19T19:59:00+00:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2012/11/19/sftp-chroot-on-centos</id>
     <content type="html"><![CDATA[<p>This came up today where I needed to give secure file transfer to customers. To complicate things I had to use an out-of-the-box RHEL6 system. The obvious answer was to use SSH and limit those users to SFTP only. Locking them into a chroot was not a requirement, but it seemed like a good idea to me. I found plenty of docs that got 80% of the way, or took a shortcut, but this should be complete.</p>
 
@@ -1238,119 +1288,6 @@ Robin Harris at <a href="http://storagemojo.com/2012/12/05/emcs-xtreme-embarrass
 <li><a href="http://wiki.centos.org/TipsAndTricks/SelinuxBooleans">CentOS Wiki SELinuxBooleans</a></li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Installing Adito/OpenVPN-ALS on CentOS]]></title>
-    <link href="http://www.chriscowley.me.uk/blog/2012/10/26/installing-adito-slash-openvpn-als-on-centos/"/>
-    <updated>2012-10-26T21:19:00+02:00</updated>
-    <id>http://www.chriscowley.me.uk/blog/2012/10/26/installing-adito-slash-openvpn-als-on-centos</id>
-    <content type="html"><![CDATA[<p><a href="http://sourceforge.net/projects/openvpn-als">OpenVPN-ALS</a>, formerly known as Adito, is not to be confused with <a href="http://www.openvpn.net">OpenVPN</a>. They both brilliant tools that work in completely different things, but in a similar way. Confused? Excellent&#8230;</p>
-
-<!-- more -->
-
-
-<p>OpenVPN-ALS (from now on known as Adito, because I find it less confusing) is a browser based SSL VPN that enables you to acess resources on your own network, even if you are behind a restrictive proxy and/or firewall.</p>
-
-<p>First you need a basic install of CentOS. The absolute base system is plenty. One thing to note is that to get the best from this it cannot share space with another web server as it takes up port 443. Make sure Apache/Nginx et al are not installed.</p>
-
-<p>The next step is to install a couple of essentials. OpenVPN-ALS is a java applications, so obviously you need a JRE (in fact you need a JDK), plus it uses Ant for building. The Adito project work purely in branches, to the trunk should be stable.</p>
-
-<p>First get <a href="www.oracle.com">Oracle Java</a> and install it. You can use the instructions <a href="http://www.if-not-true-then-false.com/2010/install-sun-oracle-java-jdk-jre-6-on-fedora-centos-red-hat-rhel/">here</a> to help you. You will need to configure <code>javac</code> and <code>jar</code> as well.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo yum install subversion ant </span></code></pre></td></tr></table></div></figure>
-
-
-<p>Just to be sure run <code>sudo update-alternatives -config java</code> to make sure you are using the latest one:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[chris@adito ~]$ sudo update-alternatives --config java
-</span><span class='line'>
-</span><span class='line'>There is 3 program that provides 'java'.
-</span><span class='line'>
-</span><span class='line'>  Selection    Command
-</span><span class='line'>-----------------------------------------------
-</span><span class='line'> + 1           /usr/lib/jvm/jre-1.5.0-gcj/bin/java
-</span><span class='line'>   2           /usr/lib/jvm/jre-1.6.0-openjdk.x86_64/bin/java
-</span><span class='line'>*  3           /usr/java/jdk1.7.0_07/jre/bin/java
-</span><span class='line'>
-</span><span class='line'>Enter to keep the current selection[+], or type selection number: 3  </span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now check out the current trunk:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo svn co https://openvpn-als.svn.sourceforge.net/svnroot/openvpn-als/adito/trunk /opt/openvpn-als</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Adito needs the tools.jar file that is bundles with the JDK, so copy that into place. You can then go ahead and build.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo cp /usr/java/jdk1.7.0_07/lib/tools.jar /opt/openvpn-als/adito/lib/
-</span><span class='line'>cd /opt/openvpn-als
-</span><span class='line'>sudo ant install</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This will generate a lot of output, but will eventually print something like:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'> [java] Starting installation wizard........................Point your browser to http://adito.chriscowley.local:28080. 
-</span><span class='line'> [java] 
-</span><span class='line'> [java] Press CTRL+C or use the 'Shutdown' option from the web interface to leave the installation wizard.</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Go to the address it gives you and work your way through the wizard. At the end it will exit and tell you to restart the service.</p>
-
-<p>You can return to your console and run</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo ant install-agent
-</span><span class='line'>sudo ant install-service
-</span><span class='line'>sudo /etc/init.d/adito start
-</span><span class='line'>sudo chkconfig adito on</span></code></pre></td></tr></table></div></figure>
-
-
-
-
-<iframe class="imgur-album" width="100%" height="550" frameborder="0" src="http://imgur.com/a/yIVhT/embed"></iframe>
-
-
-<p>You can now log into it, but it will not do much as there are no applications installed. You need to check them out of Subversion, compile and upload them. You can do this on your local machine.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>svn co https://openvpn-als.svn.sourceforge.net/svnroot/openvpn-als/adito-applications/
-</span><span class='line'>cd adito-aplications</span></code></pre></td></tr></table></div></figure>
-
-
-<p>There are quite a few there, but we will just do the portable Putty application.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>cd adito-application-putty-portable-ssh
-</span><span class='line'>ant</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The output will tell you the Zip file it has built which you can now upload. Go to the &#8220;Extension Manger&#8221; from the menu on the left. On the right you wil see &#8220;Upload Extension&#8221;. Choose the Zip file and you can configure it to connect to whatever Linux machine you want. &#8220;Putty SSH&#8221; will now be available in the list of installed applications.</p>
 ]]></content>
   </entry>
   
