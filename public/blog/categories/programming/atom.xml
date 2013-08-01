@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Programming | Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/blog/categories/programming/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-07-15T15:24:48+01:00</updated>
+  <updated>2013-08-01T11:38:38+02:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -16,7 +16,7 @@
   <entry>
     <title type="html"><![CDATA[PyCurl and self-signed SSL certificates]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2012/04/05/pycurl-and-self-signed-ssl-certificates/"/>
-    <updated>2012-04-05T16:50:00+01:00</updated>
+    <updated>2012-04-05T16:50:00+02:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2012/04/05/pycurl-and-self-signed-ssl-certificates</id>
     <content type="html"><![CDATA[<p>At <a href="http://www.snellgroup.com" target="_blank">Snell</a> we make heavy use of self-signed certificates for internal websites, such as the R&amp;D wiki. Active Directory makes it easy for us to make this transparent to the users, those that use Firefox/Chrome can find our well-published instructions to add the CA certificate to their own browsers.</p>
 

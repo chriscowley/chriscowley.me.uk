@@ -4,7 +4,7 @@
   <title><![CDATA[Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-07-15T15:24:48+01:00</updated>
+  <updated>2013-08-01T11:38:38+02:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -14,9 +14,97 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Home-made Energy Drink]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2013/08/01/home-made-energy-drink/"/>
+    <updated>2013-08-01T11:23:00+02:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2013/08/01/home-made-energy-drink</id>
+    <content type="html"><![CDATA[<p><img class="right" src="http://farm8.staticflickr.com/7120/7645659336_357c65c781.jpg" width="200" height="300">This is a simple post which also breaks from the normal subjects of Linux and storage.</p>
+
+<p>Today I am going to share a very simple recipe for what I drink when I am cycling. I have some fairly simple requirements for this.</p>
+
+<!-- more -->
+
+
+<ol>
+<li>It must work (it must rehydrate me effectively)</li>
+<li>It must not be a rip off</li>
+<li>I want to have a at least a reasonable idea of what is in it.</li>
+</ol>
+
+
+<p>You can spend a small fortune on these drinks. Exercise nutrition is big business, but at starting roughly 1 euros a a bottle (3-4 euros a day at this time of year, plus my hay fever medicines) they can get pricey.</p>
+
+<p>In reality you need 3 things:</p>
+
+<ol>
+<li>Water, and plenty of it</li>
+<li>Sugar to give you back the fuel you burn.</li>
+<li>Salt to help you absorb the fluid</li>
+</ol>
+
+
+<p>I use  500ml bottles from my <a href="http://www.laboutiqueducycle.fr/">LBS</a> that I chose for very technical reasons (they gave them to me free).</p>
+
+<p>The important thing to get right is the proportions. Not enough sugar and you will not replace the glucose that you burn, too much and you will struggle to absorb it. Likewise with salt, not enough and you&#8217;re absorption rate will be to slow, too much and it will 1) taste nasty and 2) dehydrate you.</p>
+
+<p>For each 500ml bottle I go for:</p>
+
+<ul>
+<li>3 teaspoon sugar (15-20g)</li>
+<li>2-3  pinchs of salt</li>
+</ul>
+
+
+<p>That would taste disgusting, so add a touch of fruit squash to taste. I use Grenadine, because the children love it so it always in the fridge, but a sugar-free squash would be fine or a dash for fresh fruit juice. To allow for the extra sugar in the Grenadine, I cut down the added sugar by 1 teaspoon.</p>
+
+<p>Finally, I use unrefined sugar and for the salt I use <a href="http://en.wikipedia.org/wiki/Gu%C3%A9rande#Salt_marshes">Sel de Guérande</a>. That way I know I am using the best quality ingredients, something I am sure the likes of Gatorade do not do.</p>
+
+<p>Final cost is minimal, but it seems to work for me. Everyone is different, so these may levels need adjusting for you.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Connect to Fedora 19 with FreeNX]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2013/08/01/connect-to-fedora-19-with-freenx/"/>
+    <updated>2013-08-01T10:17:00+02:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2013/08/01/connect-to-fedora-19-with-freenx</id>
+    <content type="html"><![CDATA[<p><img class="right" src="http://i.imgur.com/Z8LFhPUl.png" width="200" height="150"> FreeNX is a great remote desktop protocol. I find it more responsive than VNC and it uses less bandwidth. The biggest advantage though (in my eyes) is that it uses SSH to do the authentication. With VNC, each user has to arrange another password to connect to their VNC session.</p>
+
+<!-- more -->
+
+
+<p>However, FreeNX is still not really working nicely with GNOME 3. If you use KDE you are fine, but I like GNOME and many of the programs are GTK as a result. This means that they look out of place on KDE, which causes my engineer OCD super-sensory powers to go mad.</p>
+
+<p>My workaround is to effectively go back to the tried and tested Gnome 2 environment, nowadays know as MATE.</p>
+
+<p>Get the server installed and configured along with the MATE desktop:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo yum -y groupinstall "MATE desktop"
+</span><span class='line'>sudo yum -y install freenx-server
+</span><span class='line'>sudo /usr/libexec/nx/nxsetup --install --setup-nomachine-key
+</span><span class='line'>sudo chkconfig freenx-server on</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now open <code>/etc/nxserver/node.conf</code> and un-comment the line that sets the <code>COMMAND_START_GNOME</code> variable. You need to edit this line to read:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>COMMAND_START_GNOME=mate-session</span></code></pre></td></tr></table></div></figure>
+
+
+<p>and restart the server with <code>sudo service freenx-server restart</code></p>
+
+<p>Now connect to it using the NX client and chose to use a unix-gnome desktop. Instead of firing up <code>gnome-session</code> (which will fail) it will now run <code>mate-session</code> and you are happy.</p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Home-made Exercise drink]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/07/15/home-made-exercise-drink/"/>
-    <updated>2013-07-15T14:52:00+01:00</updated>
+    <updated>2013-07-15T14:52:00+02:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/07/15/home-made-exercise-drink</id>
     <content type="html"><![CDATA[<p><img class="right" src="http://farm8.staticflickr.com/7120/7645659336_357c65c781.jpg">This is a simple post which also breaks from the normal subjects of Linux and storage.</p>
 
@@ -66,7 +154,7 @@
   <entry>
     <title type="html"><![CDATA[Automated GlusterFS]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/06/23/automated-glusterfs/"/>
-    <updated>2013-06-23T22:02:00+01:00</updated>
+    <updated>2013-06-23T22:02:00+02:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/06/23/automated-glusterfs</id>
     <content type="html"><![CDATA[<p><img class="right" src="http://www.hastexo.com/system/files/imagecache/sidebar/20120221105324808-f2df3ea3e3aeab8_250_0.png"> As I promised on Twitter, this is how I automate a GlusterFS deployment. I&#8217;m making a few assumptions here:</p>
 
@@ -308,7 +396,7 @@
   <entry>
     <title type="html"><![CDATA[Dell Announces VRTX]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/06/04/dell-announces-vrtx/"/>
-    <updated>2013-06-04T22:15:00+01:00</updated>
+    <updated>2013-06-04T22:15:00+02:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/06/04/dell-announces-vrtx</id>
     <content type="html"><![CDATA[<p><img class="right" src="http://en.community.dell.com/cfs-file.ashx/__key/communityserver-blogs-components-weblogfiles/00-00-00-37-45/6886.vrtx.JPG"> Dell has announced the new PowerEdge VRTX (pronounced Vertex). The name comes from a vertex being &#8220;the intersection of multiple lines&#8221;, alluding to this being a mixture of a rack server, a blade server and a SAN.</p>
 
@@ -333,7 +421,7 @@
   <entry>
     <title type="html"><![CDATA[Jellybean and OpenVPN]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/05/30/jellybean-and-openvpn/"/>
-    <updated>2013-05-30T22:14:00+01:00</updated>
+    <updated>2013-05-30T22:14:00+02:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/05/30/jellybean-and-openvpn</id>
     <content type="html"><![CDATA[<p><img class="right" src="http://openvpn.net/templates/telethra/img/ovpntech_logo-s.png">Setting up the server is well documented elsewhere, the <a href="http://openvpn.net/index.php/open-source/documentation/howto.html#quick">official howto</a> works nicely for me. I use a Virtual TUN network (routed) with clients connecting via UDP 1194, with all the network config pushed out by the server. Follow the howto and you will get that at the end.</p>
 
@@ -353,7 +441,7 @@
   <entry>
     <title type="html"><![CDATA[Enable Developer Options on Android Jellybean]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/05/29/enable-developer-options-on-android-jellybean/"/>
-    <updated>2013-05-29T21:13:00+01:00</updated>
+    <updated>2013-05-29T21:13:00+02:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/05/29/enable-developer-options-on-android-jellybean</id>
     <content type="html"><![CDATA[<p><img class="right" src="http://www.android.com/images/whatsnew/jb-new-logo.png" title="" >This was weird! I just updated my venerable ZTE Blade to Cyanogenmod 10.1 (Jellybean). I flashed it, then rebooted having completely forgotten to to install GApps. No problem, reboot into Clockmod Recovery and install them. Promlem: no option to reboot to recovery.</p>
 
@@ -378,7 +466,7 @@
   <entry>
     <title type="html"><![CDATA[EMC ViPR thoughts]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/05/13/emc-vipr-thoughts/"/>
-    <updated>2013-05-13T21:45:00+01:00</updated>
+    <updated>2013-05-13T21:45:00+02:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/05/13/emc-vipr-thoughts</id>
     <content type="html"><![CDATA[<p>I have been a little slow on the uptake on this one. I would like to say it is because I was carefully digesting the information, but that is not true; the reality is that I have just had 2 5 day weekends in 2 weeks :-).</p>
 
@@ -418,7 +506,7 @@ EMC has really pushed ViPR in the last couple of weeks, but it fails to impress 
   <entry>
     <title type="html"><![CDATA[Bamboo Invoice on Centos with Nginx]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/04/29/bamboo-invoice-on-centos-with-nginx/"/>
-    <updated>2013-04-29T21:16:00+01:00</updated>
+    <updated>2013-04-29T21:16:00+02:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/04/29/bamboo-invoice-on-centos-with-nginx</id>
     <content type="html"><![CDATA[<p>BambooInvoice is free Open Source invoicing software intended for small businesses and independent contractors. It is easy to use and creates pretty good looking invoices.</p>
 
@@ -598,7 +686,7 @@ EMC has really pushed ViPR in the last couple of weeks, but it fails to impress 
   <entry>
     <title type="html"><![CDATA[Using Hiera with Puppet]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/04/11/using-hiera-with-puppet/"/>
-    <updated>2013-04-11T20:24:00+01:00</updated>
+    <updated>2013-04-11T20:24:00+02:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/04/11/using-hiera-with-puppet</id>
     <content type="html"><![CDATA[<p>Using Hiera with Puppet is something I have struggled with a bit. I could see the benefits, namely decoupling my site configuration from my logic. However, for some reason I struggled a bit to really get my head around it. This was compounded by it being quite new (only really integrated in Puppet 3), so the docs are  little lacking.</p>
 
@@ -706,7 +794,7 @@ EMC has really pushed ViPR in the last couple of weeks, but it fails to impress 
   <entry>
     <title type="html"><![CDATA[Stop the hate on software RAID]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/04/07/stop-the-hate-on-software-raid/"/>
-    <updated>2013-04-07T20:21:00+01:00</updated>
+    <updated>2013-04-07T20:21:00+02:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/04/07/stop-the-hate-on-software-raid</id>
     <content type="html"><![CDATA[<p><img class="right" src="http://www.chriscowley.me.uk/images/NetappClustering.jpg">I&#8217;ve had a another bee in my bonnet recently. Specifically, it has been to do with hardware vs software RAID, but I think it goes deeper than that. It started a couple of months back with a discussion on <a href="http://redd.it/18dp63">Reddit</a>. Some of the comments were:</p>
 
@@ -782,7 +870,7 @@ As I said at the start, the subject here is software vs hardware RAID, but my pr
   <entry>
     <title type="html"><![CDATA[Writeable TFTP Server On CentOS]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/03/25/writeable-tftp-server-on-centos/"/>
-    <updated>2013-03-25T15:45:00+00:00</updated>
+    <updated>2013-03-25T15:45:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/03/25/writeable-tftp-server-on-centos</id>
     <content type="html"><![CDATA[<p>Well this caught me out for an embarassingly long time. There are <a href="http://blog.penumbra.be/tag/tftp/">loads</a> <a href="http://www.question-defense.com/2008/11/13/linux-setup-tftp-server-on-centos">of</a> <a href="http://wiki.centos.org/EdHeron/PXESetup">examples</a> of setting up a TFTP server on the web. The vast majority of them assume that you are using them read-only for PXE booting.</p>
 
@@ -868,7 +956,7 @@ As I said at the start, the subject here is software vs hardware RAID, but my pr
   <entry>
     <title type="html"><![CDATA[What a boss owes their staff]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/03/18/what-a-boss-owes-their-staff/"/>
-    <updated>2013-03-18T20:47:00+00:00</updated>
+    <updated>2013-03-18T20:47:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/03/18/what-a-boss-owes-their-staff</id>
     <content type="html"><![CDATA[<p><img class="right" src="http://www.chriscowley.me.uk/images/reputation-management-starts-with-trust.jpg"> I recently had a conversation on Twitter with my friend <a href="http://www.robborley.com/">Rob Borley</a> who runs a <a href="http://www.dootrix.com/">mobile startup</a>. He had asked what interesting perks he should be giving his <a href="https://twitter.com/bobscape/statuses/313610008535367680">staff</a>.</p>
 
@@ -896,7 +984,7 @@ Trust leads to everything else that we like about work. Allowing your staff to w
   <entry>
     <title type="html"><![CDATA[Thoughts on the shiney new VMAX]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/03/01/thoughts-on-the-shiney-new-vmax/"/>
-    <updated>2013-03-01T15:21:00+00:00</updated>
+    <updated>2013-03-01T15:21:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/03/01/thoughts-on-the-shiney-new-vmax</id>
     <content type="html"><![CDATA[<p><img class="right" src="http://www.emc.com/R1/images/EMC_Image_C_1310593327367_header-image-vmax-10k.png"> I&#8217;ve spent a significant amount of time recently swatting up on EMC&#8217;s new <a href="http://chucksblog.emc.com/chucks_blog/2013/02/introducing-vmax-cloud-edition.html">VMAX Cloud Edition</a>. It has to be said that this looks like one of the most interesting storage announcements I have seen in a long time. In fact I have a project coming up that I think it may well be a perfect fit for.</p>
 
@@ -931,7 +1019,7 @@ That is all very interesting, but so far it is just a new approach to the UI. It
   <entry>
     <title type="html"><![CDATA[The Linux to Storage]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/02/25/the-linux-to-storage/"/>
-    <updated>2013-02-25T13:09:00+00:00</updated>
+    <updated>2013-02-25T13:09:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/02/25/the-linux-to-storage</id>
     <content type="html"><![CDATA[<p>Martin &#8220;Storagebod&#8221; Glassborow recently wrote an interesting article where he asked &#8220;Who&#8217;ll do a Linux to Storage?&#8221;. As someone who is equal parts Storage and Linux, the same question runs around my head quite often. Not just that, but how to do it. It is safe to say that all the constituent parts are already in the Open Source Ecosystem. It just needs someone to pull them all together wrap them up in an integrated interface (be that a GUI, CLI, an API or all).</p>
 
@@ -953,7 +1041,7 @@ That is all very interesting, but so far it is just a new approach to the UI. It
   <entry>
     <title type="html"><![CDATA[Something from the shadows]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/02/21/something-from-the-shadows/"/>
-    <updated>2013-02-21T16:06:00+00:00</updated>
+    <updated>2013-02-21T16:06:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/02/21/something-from-the-shadows</id>
     <content type="html"><![CDATA[<p>An intriguing startup came out of stealth mode a few days ago. <a href="http://pernixdata.com/">Pernix Data</a> was founded by Pookan Kumar and Satyam Vaghani, both of who were pretty near top of the pile in VMware&#8217;s storage team.</p>
 
@@ -974,7 +1062,7 @@ What their plans are I do not know. It is very early days, maybe they will be a 
   <entry>
     <title type="html"><![CDATA[How much should you spend on IT]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/02/06/how-much-should-you-spend-on-it/"/>
-    <updated>2013-02-06T16:04:00+00:00</updated>
+    <updated>2013-02-06T16:04:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/02/06/how-much-should-you-spend-on-it</id>
     <content type="html"><![CDATA[<p>A recent discussion/argument I had on Reddit got me thinking about the cost of solutions we put in.</p>
 
@@ -1004,7 +1092,7 @@ It is not always necessary to get the shiniest stuff, with the longest/quickest 
   <entry>
     <title type="html"><![CDATA[In praise of old school UNIX]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/02/05/in-praise-of-old-school-unix/"/>
-    <updated>2013-02-05T16:13:00+00:00</updated>
+    <updated>2013-02-05T16:13:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/02/05/in-praise-of-old-school-unix</id>
     <content type="html"><![CDATA[<p>What am I doing today? Documentation that is what. I am writing a document on how to do <a href="http://www.chriscowley.me.uk/blog/2012/11/19/sftp-chroot-on-centos/">this</a>. To any Linux user it is a very simple process and I could just give them a link to my own website.</p>
 
@@ -1058,7 +1146,7 @@ It is not always necessary to get the shiniest stuff, with the longest/quickest 
   <entry>
     <title type="html"><![CDATA[Trac with Nginx on Centos]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2013/01/21/trac-with-nginx-on-centos/"/>
-    <updated>2013-01-21T11:53:00+00:00</updated>
+    <updated>2013-01-21T11:53:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/01/21/trac-with-nginx-on-centos</id>
     <content type="html"><![CDATA[<p><a href="tac.edgewall.org">Trac</a> is an excellent online project management tool. Nginx us a great web server. Surely the combination of the two should be a match made in heaven. I would say so, although there are a couple problems. The easiest way to deploy Trac is on Apache using mod_wsgi or FastCGI. This option does not really exist for Nginx. Okay, it can do FastCGI, but I have not get that set up on my server.</p>
 
@@ -1128,7 +1216,7 @@ It is not always necessary to get the shiniest stuff, with the longest/quickest 
   <entry>
     <title type="html"><![CDATA[What will HP do next?]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2012/12/17/what-will-hp-do-next/"/>
-    <updated>2012-12-17T15:16:00+00:00</updated>
+    <updated>2012-12-17T15:16:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2012/12/17/what-will-hp-do-next</id>
     <content type="html"><![CDATA[<p>HP recently announced a new range of 3Par based arrays that are aimed at mid-range enterprise. There now appear to be 2 ranges for the future:</p>
 
@@ -1156,138 +1244,6 @@ It is not always necessary to get the shiniest stuff, with the longest/quickest 
 <p>This leaves the P4000, which has been re-branded the <a href="http://www8.hp.com/us/en/products/disk-storage/product-detail.html?oid=4118659">StoreVirtual 4000</a>. This seems to me to be a no-brainer. It is already running on commodity DL180 hardware and includes an appliance option. My guess is the physical implementation of this will be phased out. It will become the Virtual Appliance front-end to all this new 3Par based physical goodness.</p>
 
 <p>Finally, I have skipped over the EVA. What does the future hold in store for HP&#8217;s venerable high-end platform. I think nothing. It will go into maintenance mode and be quietly end-of-life&#8217;d. Existing customers will be pushed to <a href="http://h30507.www3.hp.com/t5/Around-the-Storage-Block-Blog/EVA-to-HP-3PAR-StoreServ-online-import/ba-p/128391">migrate</a> over to Storeserv 7000.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[EMC ExtremIO Thoughts]]></title>
-    <link href="http://www.chriscowley.me.uk/blog/2012/12/10/emc-extremio-thoughts/"/>
-    <updated>2012-12-10T16:39:00+00:00</updated>
-    <id>http://www.chriscowley.me.uk/blog/2012/12/10/emc-extremio-thoughts</id>
-    <content type="html"><![CDATA[<p>There has been quite a bit of musing recently on the web about EMC and what will come out of their ExtremIO acquisition. They have recently (finally) started demonstrating an all-flash array. The name says it all: ExtremIO. It is for super high IOPS applications - Virtual desktops, enormous DBs, that sort of thing.</p>
-
-<!-- more -->
-
-
-<p>It is a bit of a depature from traditional EMC, in that it <a href="http://storagenewsletter.com/news/systems/all-ssd-system-from-emc-xtremio-">appears</a> that it is going to be a true scale-out architecture. This is has more in common with Isilion (not developed at EMC) than VMAX (developed at EMC).</p>
-
-<p>The problem is that EMC are <em>extremely</em> late to the market this time around. VMAX was ahead of the curve by adding flash. In the all flash arena there are several options already there, <a href="http://violin-memory.com">Violin</a>, <a href="http://whiptail.com/">Whiptail</a> spring straight to mind.</p>
-
-<p>Over at <a href="http://blog.thestoragearchitect.com/2012/12/10/xtremio-aka-project-x-wheres-the-innovation/">The Storage Architect</a> Chris Evans gives the standard counter-arguments to EMC&#8217;s marketing spin. Namely:</p>
-
-<ol>
-<li>Other vendor solutions aren&#8217;t as resilient</li>
-<li>It&#8217;s a 1.0 product, expect more from 2.0 and beyond</li>
-<li>It gives our customers choice</li>
-</ol>
-
-
-<p>I hate to say it, but EMC have one HUGE advantage over all the startups. Quite simply they are EMC! As experts we know that Violin (for example) have a more mature product than EMC do.</p>
-
-<p><span class='pullquote-right' data-pullquote='When the guy with the credit card sees the name &#8220;EMC&#8221; it will be hard to persuade him that such a mature brand has the more immature product'>
-When the guy with the credit card sees the name &#8220;EMC&#8221; it will be hard to persuade him that such a mature brand has the more immature product. This won&#8217;t be the case everywhere, but in a lot of large enterprise they would go to their storage experts (like me) and ask for advice on which flash array to go for; they then stipulate that it has to come from EMC&#8217;s portfolio. At which point I through my hands up in despair, tell the to buy ExtremIO, the guy who has the better, more mature, solution loses the business that was rightfully theirs.
-</span></p>
-
-<p>It is not a 1.0 product, I can not accept that EMC acquired ExtremIO based on stuff that was only on paper. At best this is a 1.5 product, but realistically it is a 2.0 product. From a company with the resources of EMC, this should be coming out of the blocks running - it should be the best in class. OK, ExtremIO were further from version 1.0 than EMC were maybe lead to believe at the time, but they have got a lot of resources. After a year, they should not be in damage control mode.</p>
-
-<p>Does it really give the customers choice? I would go one step further than what Chris has said - that an all-flash VMAX or VNX would have made sense. I agree with him, but I also think that they have actually removed choice.</p>
-
-<p>I would say that EMC have cocked-up here. They under-estimated the market for all-flash arrays. Even my <a href="http://www.violin-memory.com/news/press-releases/nats-selects-violin-memory-flash-storage-for-virtual-desktop-infrastructure/">old employer have got some</a> and that is in Air Traffic control - there is no-one else who relies more on &#8220;tried and tested&#8221; technology than them. They then rushed to through some money at the problem, but like of Violin were already happy where they were.</p>
-
-<p><span class='pullquote-right' data-pullquote='I wish that EMC would be punished for this'>
-Robin Harris at <a href="http://storagemojo.com/2012/12/05/emcs-xtreme-embarrassment/">StorageMojo</a> thinks this will be a costly mistake for EMC. I disagree, I think by announcing that this is coming EMC will stall the market and thus come out of this fine. Unfortunately there is too much latency in the enterprise storage space for it to be otherwise. I wish it were a bit more dynamic and I wish that EMC would be punished for this, thus rewarding one of the underdogs. That does not happen enough in the enterprise space, especially for an Englishman like me (we do love the underdogs).
-</span></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[SFTP Chroot on CentOS]]></title>
-    <link href="http://www.chriscowley.me.uk/blog/2012/11/19/sftp-chroot-on-centos/"/>
-    <updated>2012-11-19T19:59:00+00:00</updated>
-    <id>http://www.chriscowley.me.uk/blog/2012/11/19/sftp-chroot-on-centos</id>
-    <content type="html"><![CDATA[<p>This came up today where I needed to give secure file transfer to customers. To complicate things I had to use an out-of-the-box RHEL6 system. The obvious answer was to use SSH and limit those users to SFTP only. Locking them into a chroot was not a requirement, but it seemed like a good idea to me. I found plenty of docs that got 80% of the way, or took a shortcut, but this should be complete.</p>
-
-<!-- more -->
-
-
-<p>The basic steps are:</p>
-
-<ol>
-<li>Create a group and the users to that group</li>
-<li>Modify the SSH daemon configuration to limit a group to sftp only</li>
-<li>Setup file system permissions</li>
-<li>Configure SELinux</li>
-<li>Test (of course)</li>
-</ol>
-
-
-<p>Without further ado, lets get started. It should only take about 10 minutes, nothing here is especially complex.</p>
-
-<p>Create a group that is limited to SFTP only and a user to be in that group.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>groupadd sftponly
-</span><span class='line'>useradd sftptest
-</span><span class='line'>usermod -aG sftponly  sftptest</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now you need to make a little change to <code>/etc/ssh/sshd_config</code>. There will be a <em>Subsystem</em> line for <code>sftp</code> which you need to change to read:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Subsystem       sftp    internal-sftp</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now you need to create a block at the end to limit members of a group (ie the sftponly group you created above) and chroot them. Simply add the following to the end of the file:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Match Group sftponly
-</span><span class='line'>    ChrootDirectory %h
-</span><span class='line'>    ForceCommand internal-sftp
-</span><span class='line'>    X11Forwarding no
-</span><span class='line'>    AllowTcpForwarding no</span></code></pre></td></tr></table></div></figure>
-
-
-<p>These changes will require a reload of the SSH daemon: <code>service sshd reload</code></p>
-
-<p>Now you need to make some file permission changes. For some reason which I cannot work out for now, the home directory must be owned by root and have the permissions 755. So we will also need to make a folder in the home directory to upload to and make that owned by the user.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo -u sftptest mkdir -pv /home/sftptest/upload
-</span><span class='line'>chown root. /home/sftptest
-</span><span class='line'>chmod 755 /home/sftptest
-</span><span class='line'>chgrp -R sftponly /home/sftptest</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The last thing we need to do is tell SELinux that we want to upload files via SFTP to a chroot as it is read-only by default. Of course you are running SELinux in enforcing mode aren&#8217;t you :)</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>setsebool -P ssh_chroot_rw_homedirs on</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now from another console you can sftp to your server</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sftp sftptest@&lt;server&gt;</span></code></pre></td></tr></table></div></figure>
-
-
-<p>You should then be able to put a file in your upload folder. However if you try to ssh to the server as the user <em>sftptest</em> it should tell you to go away. Of course you should be able to <em>ssh</em> as your normal user with no problem. Pro tip: make sure to leave a root terminal open just in case.</p>
-
-<p>Required reading:</p>
-
-<ul>
-<li><a href="http://wiki.centos.org/HowTos/SELinux">CentOS Wiki SELinux</a></li>
-<li><a href="http://wiki.centos.org/TipsAndTricks/SelinuxBooleans">CentOS Wiki SELinuxBooleans</a></li>
-</ul>
-
 ]]></content>
   </entry>
   

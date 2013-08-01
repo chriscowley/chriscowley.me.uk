@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: linux - Just Another Linux Blog</title>
+  <title>Connect to Fedora 19 with FreeNX - Just Another Linux Blog</title>
   <meta name="author" content="Chris Cowley">
 
   
-  <meta name="description" content="Category: linux">
+  <meta name="description" content="FreeNX is a great remote desktop protocol. I find it more responsive than VNC and it uses less bandwidth. The biggest advantage though (in my eyes) &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.chriscowley.me.ukblog/categories/linux/">
+  <link rel="canonical" href="http://www.chriscowley.me.uk/blog/2013/08/01/connect-to-fedora-19-with-freenx/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -89,168 +89,128 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Category: Linux</h1>
+    
+      <h1 class="entry-title">Connect to Fedora 19 With FreeNX</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-01T10:17:00+02:00" pubdate data-updated="true">Thursday 01 August 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><p><img class="right" src="http://i.imgur.com/Z8LFhPUl.png" width="200" height="150"> FreeNX is a great remote desktop protocol. I find it more responsive than VNC and it uses less bandwidth. The biggest advantage though (in my eyes) is that it uses SSH to do the authentication. With VNC, each user has to arrange another password to connect to their VNC session.</p>
 
-  
-  <h2>2013</h2>
+<!-- more -->
 
-<article>
-  
-<h1><a href="/blog/2013/08/01/connect-to-fedora-19-with-freenx/">Connect to Fedora 19 with FreeNX</a></h1>
-<time datetime="2013-08-01T10:17:00+02:00" pubdate><span class='month'>Aug</span> <span class='day'>01</span> <span class='year'>2013</span></time>
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/linux/'>linux</a></span>
-</footer>
+<p>However, FreeNX is still not really working nicely with GNOME 3. If you use KDE you are fine, but I like GNOME and many of the programs are GTK as a result. This means that they look out of place on KDE, which causes my engineer OCD super-sensory powers to go mad.</p>
 
+<p>My workaround is to effectively go back to the tried and tested Gnome 2 environment, nowadays know as MATE.</p>
 
-</article>
+<p>Get the server installed and configured along with the MATE desktop:</p>
 
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo yum -y groupinstall "MATE desktop"
+</span><span class='line'>sudo yum -y install freenx-server
+</span><span class='line'>sudo /usr/libexec/nx/nxsetup --install --setup-nomachine-key
+</span><span class='line'>sudo chkconfig freenx-server on</span></code></pre></td></tr></table></div></figure>
 
 
-<article>
-  
-<h1><a href="/blog/2013/04/29/bamboo-invoice-on-centos-with-nginx/">Bamboo Invoice on Centos with Nginx</a></h1>
-<time datetime="2013-04-29T21:16:00+02:00" pubdate><span class='month'>Apr</span> <span class='day'>29</span> <span class='year'>2013</span></time>
+<p>Now open <code>/etc/nxserver/node.conf</code> and un-comment the line that sets the <code>COMMAND_START_GNOME</code> variable. You need to edit this line to read:</p>
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/linux/'>linux</a></span>
-</footer>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>COMMAND_START_GNOME=mate-session</span></code></pre></td></tr></table></div></figure>
 
 
-</article>
+<p>and restart the server with <code>sudo service freenx-server restart</code></p>
 
-
-
-<article>
-  
-<h1><a href="/blog/2013/03/25/writeable-tftp-server-on-centos/">Writeable TFTP Server On CentOS</a></h1>
-<time datetime="2013-03-25T15:45:00+01:00" pubdate><span class='month'>Mar</span> <span class='day'>25</span> <span class='year'>2013</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/linux/'>linux</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2013/02/05/in-praise-of-old-school-unix/">In praise of old school UNIX</a></h1>
-<time datetime="2013-02-05T16:13:00+01:00" pubdate><span class='month'>Feb</span> <span class='day'>05</span> <span class='year'>2013</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/linux/'>linux</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2013/01/21/trac-with-nginx-on-centos/">Trac with Nginx on Centos</a></h1>
-<time datetime="2013-01-21T11:53:00+01:00" pubdate><span class='month'>Jan</span> <span class='day'>21</span> <span class='year'>2013</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/linux/'>linux</a></span>
-</footer>
-
-
-</article>
-
-
-
-  
-  <h2>2012</h2>
-
-<article>
-  
-<h1><a href="/blog/2012/11/19/sftp-chroot-on-centos/">SFTP Chroot on CentOS</a></h1>
-<time datetime="2012-11-19T19:59:00+01:00" pubdate><span class='month'>Nov</span> <span class='day'>19</span> <span class='year'>2012</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/linux/'>linux</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2012/08/04/i-have-a-raspberry-pi/">I have a Raspberry Pi</a></h1>
-<time datetime="2012-08-04T21:47:00+02:00" pubdate><span class='month'>Aug</span> <span class='day'>04</span> <span class='year'>2012</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/linux/'>linux</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2012/06/23/installing-postgresql-on-fedora-17/">Installing PostgreSQL on Fedora 17</a></h1>
-<time datetime="2012-06-23T13:02:00+02:00" pubdate><span class='month'>Jun</span> <span class='day'>23</span> <span class='year'>2012</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/linux/'>linux</a></span>
-</footer>
-
-
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2012/04/18/skype-video-on-fedora-64bit/">Skype video on Fedora 64bit</a></h1>
-<time datetime="2012-04-18T15:53:00+02:00" pubdate><span class='month'>Apr</span> <span class='day'>18</span> <span class='year'>2012</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/linux/'>linux</a></span>
-</footer>
-
-
-</article>
-
-
-
-  
-  <h2>2011</h2>
-
-<article>
-  
-<h1><a href="/blog/2011/10/16/ubuntu-upgrade-problems/">Ubuntu upgrade problems</a></h1>
-<time datetime="2011-10-16T13:24:00+02:00" pubdate><span class='month'>Oct</span> <span class='day'>16</span> <span class='year'>2011</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/linux/'>linux</a></span>
-</footer>
-
-
-</article>
-
+<p>Now connect to it using the NX client and chose to use a unix-gnome desktop. Instead of firing up <code>gnome-session</code> (which will fail) it will now run <code>mate-session</code> and you are happy.</p>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Chris Cowley</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-01T10:17:00+02:00" pubdate data-updated="true">Thursday 01 August 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/linux/'>linux</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.chriscowley.me.uk/blog/2013/08/01/connect-to-fedora-19-with-freenx/" data-via="chriscowleyunix" data-counturl="http://www.chriscowley.me.uk/blog/2013/08/01/connect-to-fedora-19-with-freenx/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/07/15/home-made-exercise-drink/" title="Previous Post: Home-made Exercise drink">&laquo; Home-made Exercise drink</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/08/01/home-made-energy-drink/" title="Next Post: Home-made Energy Drink">Home-made Energy Drink &raquo;</a>
+      
+    </p>
+  </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
 
