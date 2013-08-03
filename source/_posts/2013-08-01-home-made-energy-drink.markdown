@@ -5,7 +5,7 @@ date: 2013-08-01 11:23
 comments: true
 categories: cycling
 ---
-{% img right http://farm8.staticflickr.com/7120/7645659336_357c65c781.jpg 200 300 %}This is a simple post which also breaks from the normal subjects of Linux and storage.
+{% img right http://farm8.staticflickr.com/7120/7645659336_357c65c781.jpg 400 300 %}This is a simple post which also breaks from the normal subjects of Linux and storage.
 
 Today I am going to share a very simple recipe for what I drink when I am cycling. I have some fairly simple requirements for this.
 <!-- more -->
