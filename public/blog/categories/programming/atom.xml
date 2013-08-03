@@ -4,7 +4,7 @@
   <title><![CDATA[Category: programming | Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/blog/categories/programming/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-08-03T21:53:26+02:00</updated>
+  <updated>2013-08-03T22:00:20+02:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -25,7 +25,9 @@
 
 <p>It turned out that GitHub has <a href="https://github.com/blog/1160-github-api-v2-end-of-life" target="_blank">depreciated the version 1 and 2 APIs</a>. Octopress was using version 2, so I have made a little change.</p>
 
-<p>{%gist 3042647 %}</p>
+<p><div><script src='https://gist.github.com/3042647.js?file='></script>
+<noscript><pre><code></code></pre></noscript></div>
+</p>
 
 <p>According to <a href="https://github.com/imathis/octopress/issues/620" target="_blank">this issue</a> there will be a fix in <a href="https://github.com/imathis/octopress/tree/2.1" target="_blank" >Octopress 2.1</a>. However, this patch will keep things working until Brandon Mathis moves it into the master branch. Of course that issue also highlighted the fact that I had just re-invented the wheel :(</p>
 ]]></content>

@@ -5,7 +5,7 @@ date: 2013-08-01 11:23
 comments: true
 categories: cycling
 ---
-{% img right http://farm8.staticflickr.com/7120/7645659336_357c65c781.jpg 400 300 %}This is a simple post which also breaks from the normal subjects of Linux and storage.
+{% img right http://farm8.staticflickr.com/7120/7645659336_357c65c781.jpg 400 300 %}This is a post which breaks from the normal subjects of Linux and storage.
 
 Today I am going to share a very simple recipe for what I drink when I am cycling. I have some fairly simple requirements for this.
 <!-- more -->
@@ -13,7 +13,7 @@ Today I am going to share a very simple recipe for what I drink when I am cyclin
 1. It must not be a rip off
 1. I want to have a at least a reasonable idea of what is in it.
 
-You can spend a small fortune on these drinks. Exercise nutrition is big business, but at starting roughly 1 euros a a bottle (3-4 euros a day at this time of year, plus my hay fever medicines) they can get pricey.
+You can spend a small fortune on these drinks. Exercise nutrition is big business, but starting at roughly 1 euro a bottle (3-4 euros a day at this time of year, plus my hay fever medicines) they can get pricey.
 
 In reality you need 3 things:
 
@@ -34,5 +34,5 @@ That would taste disgusting, so add a touch of fruit squash to taste. I use Gren
 
 Finally, I use unrefined sugar and for the salt I use [Sel de Guérande](http://en.wikipedia.org/wiki/Gu%C3%A9rande#Salt_marshes). That way I know I am using the best quality ingredients, something I am sure the likes of Gatorade do not do.
 
-Final cost is minimal, but it seems to work for me. Everyone is different, so these may levels need adjusting for you.
+Final cost is minimal, but it seems to work for me. Everyone is different, so these levels need adjusting for you.
 
