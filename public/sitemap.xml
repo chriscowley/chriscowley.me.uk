@@ -197,6 +197,12 @@
         <lastmod>2013-08-03T21:59:36+02:00</lastmod>
     </url>
     <url>
+        <loc>
+            http://www.chriscowley.me.uk/blog/2013/09/05/open-source-virtual-san-thought-experiment/
+        </loc>
+        <lastmod>2013-09-05T22:06:44+02:00</lastmod>
+    </url>
+    <url>
         <loc>http://www.chriscowley.me.uk/contact/</loc>
         <lastmod>2013-06-12T20:53:06+02:00</lastmod>
     </url>
@@ -206,7 +212,7 @@
     </url>
     <url>
         <loc>http://www.chriscowley.me.uk/</loc>
-        <lastmod>2013-08-03T21:59:36+02:00</lastmod>
+        <lastmod>2013-09-05T22:06:44+02:00</lastmod>
     </url>
     <url>
         <loc>http://www.chriscowley.me.uk/consulting/</loc>
@@ -222,6 +228,6 @@
     </url>
     <url>
         <loc>http://www.chriscowley.me.uk/blog/archives/</loc>
-        <lastmod>2013-08-03T21:59:36+02:00</lastmod>
+        <lastmod>2013-09-05T22:06:44+02:00</lastmod>
     </url>
 </urlset>

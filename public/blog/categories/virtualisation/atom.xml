@@ -4,7 +4,7 @@
   <title><![CDATA[Category: virtualisation | Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/blog/categories/virtualisation/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-08-03T22:00:20+02:00</updated>
+  <updated>2013-09-05T22:06:56+02:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -12,6 +12,28 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Open Source Virtual SAN thought experiment]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2013/09/05/open-source-virtual-san-thought-experiment/"/>
+    <updated>2013-09-05T21:19:00+02:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2013/09/05/open-source-virtual-san-thought-experiment</id>
+    <content type="html"><![CDATA[<p>Okay, I know I am little slow on the uptake here, but I was on holiday at the time. The announcement of <a href="https://www.vmware.com/products/virtual-san/">Virtual SAN</a> at VMWorld the last week got me thinking a bit.</p>
+
+<!-- more -->
+
+
+<p>Very briefly, Virtual SAN takes locally attached storage on you hypervisors. It then turns it into a distributed object storage system which you can use to store your VMDKs. <a href="http://www.yellow-bricks.com/2013/09/05/how-do-you-know-where-an-object-is-located-with-virtual-san/">Plenty</a> <a href="http://www.computerweekly.com/news/2240166057/VMware-Virtual-SAN-vision-to-disrupt-storage-paradigm">of</a> <a href="http://chucksblog.emc.com/chucks_blog/2013/08/considering-vsan.html">other</a> <a href="http://architecting.it/2013/08/29/reflections-on-vmworld-2013/">people</a> have gone into a lot more detail. Unlike other systems that did a similar job previously this is not a Virtual Appliance, but runs on the hypervisors themselves.</p>
+
+<p>The technology to do this sort of thing using purely Open Source exists. All this has added is a distributed storage layer on each hypervisor. There are plenty of these exist for Linux, with my preference probably being for GlusterFS. Something like this is what I would have in mind:</p>
+
+<p><img class="center" src="http://i.imgur.com/NHYdf78.png"></p>
+
+<p>Ceph is probably the closest to Virtual SAN, as it is fundamentally object-based. Yes there would be CPU and RAM overhead, but that also exists for Virtual SAN too. Something like DRBD/GFS2 is not really suitable here, because it will not scale-out as much. You would not have to have local storage in all your hypervisor nodes (as with Virtual SAN) too.</p>
+
+<p>I honestly do not see any real problems with this.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[VMware CLI installation woes on Centos 6]]></title>
