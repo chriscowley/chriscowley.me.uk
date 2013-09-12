@@ -4,7 +4,7 @@
   <title><![CDATA[Category: storage | Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/blog/categories/storage/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-09-05T22:06:56+02:00</updated>
+  <updated>2013-09-12T21:48:07+02:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -12,6 +12,44 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[The End of Centralised Storage]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2013/09/12/the-end-of-centralised-storage/"/>
+    <updated>2013-09-12T20:20:00+02:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2013/09/12/the-end-of-centralised-storage</id>
+    <content type="html"><![CDATA[<p><img class="right" src="/images/NetappClustering.jpg">That is a pretty drastic title, especially given that I spend a significant part of my day job working with EMC storage arrays. The other day I replied to a tweet by <a href="http://blog.scottlowe.org">Scott Lowe</a> :</p>
+
+<blockquote class="twitter-tweet"><p><a href="https://twitter.com/scott_lowe">@scott_lowe</a> with things like Gluster and ceph what does shared storage actually give apart from complications?</p>&mdash; Chris Cowley (@chriscowleyunix) <a href="https://twitter.com/chriscowleyunix/statuses/377900529760083968">September 11, 2013</a></blockquote>
+
+
+<script async src="http://www.chriscowley.me.uk//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
+<!-- more -->
+
+
+<p>Due to timezone differences between France and the USA I missed out on most of the heated conversation that insued. From what I could see it quickly got out of hand, with people replying to so many others that they barely had any space to say anything. I am sure it has spawned a load of blog posts, as Twitter is eminiently unsuitable for that sort of conversation (at least I have seen one by <a href="http://storagezilla.typepad.com/storagezilla/2013/09/tomorrows-das-yesterday.html">StorageZilla</a>.</p>
+
+<p>The boundary between DAS (Direct Attached Storage) and remote storage (be that a SAN or NAS) is bluring. Traditionally a SAN/NAS array is a proprietory box that gives you bits of disk space that is available to whatever server (or servers) that you want. Conversely, DAS is attached either inside the server or to the back of it. Sharing between multiple servers is possible, but not very slick - no switched fabric, no software configuration, cables have to be physically moved.</p>
+
+<p>Now everything is bluring. In the FLOSS world there is the like of Ceph and GlusterFS, which take your DAS (or whatever) and turn that into a shared pool of storage. You can put this on dedicated boxes, depending on your workload that may well be the best idea. However you are not forced to. To my mind this is a more elegant solution. I have a collection of identical servers, I use some for compute, other for storage, others for both. You can pick and choose, even doing it live.</p>
+
+<p>The thing is, even the array vendors are now using DAS. An EMC VNX is commodity hardware, as is the VMAX (mostly, I believe there is an ASIC used in the encryption engine), Isilion, NetApp, Dell Compellent, HP StoreVirtual (formerly Lefthand). What is the difference in the way they attach their disks? Technically none I suppose, it is just hidden away.</p>
+
+<p>Back to the cloud providers, when you provision a VM there is a process that happens (I am considering Openstack, as that is my area of interest/expertise). You provision an instanceand it takes the template you select and copies it to the local storage on that host. Yes you can short-circuit that and use shared storage, but that is unnecessarily complex and introduces a potential failure point. OK, the disk in the host could fail, but then so would the host and it would just go to a new host.</p>
+
+<p>With Openstack, you can use either Ceph or GlusterFS for your block storage (amongst others). When you create block storage for your instance it is created in that pool and replicated. Again, these will in most cases be distributing and replicating local storage. I have known people use SAN arrays as the backend for Ceph, but that was because they already had them lying around.</p>
+
+<p>There have various products around for a while to share out your local storage on VMware hosts. VMware's own VSA, HP StoreVirtual and now Virtual SAN takes this even deeper, giving tiering and tying directly into the host rather than using a VSA. It certainly seems that DAS is the way forward for (or a hybrid approach such as PernixData FVP). This makes a huge amount of sense, especially in the brave new world of SSDs. The latencies involved in spinning rust effective masked those of the storage fabric. Now though SSDs are so fast, that the time it takes for a storage object to transverse the SAN becomes a facter. Getting at least the performance layer as physically close to the computer layer as possible is now a serious consideration.</p>
+
+<p>Hadoop, the darling of the Big Data lovers, uses HDFS, which also distributes and replicates your data across local storage. GlusterFS can also be used too. You can use EMC arrays, but I do not hear much about that (other than from EMC themselves). The vast majority of Hadoop users seem to be on local storage/HDFS. On a similar note Lustre, very popular in the HPC world, is also designed around local storage.</p>
+
+<p><span class='pullquote-right' data-pullquote='I just do not see anything really exciting in centralised storage'>
+So what am I getting at here? To be honest I am not sure, but I can see a general move away from centralised storage. Even EMC noticed this ages ago - they were talking about running the hypervisor on the VNX/VMAX. At least that is how I remember it anyway, I may well be wrong (if I am, then it is written on the internet now, so it must be true). Red Hat own GlusterFS and are pushing it centre stage for Openstack, Ceph is also an excellent solution. VMware have been pushing Virtual SAN hard and it seems to have got a lot of people really excited. I just do not see anything really exciting in centralised storage, everything interesting is based around DAS.
+</span></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Open Source Virtual SAN thought experiment]]></title>
@@ -344,41 +382,6 @@ The people that write the MD stack in the Linux kernel are not cowboys. It has p
 <p><span class='pullquote-right' data-pullquote='we need to know what is inside that magic black box, especially when it is in the spec sheet'>
 As I said at the start, the subject here is software vs hardware RAID, but my problem goes deeper than that particular argument. As technology professionals, we are technical people. We need to understand what is going on under the bonnet - that is our job! It may be fine for a vendor to pull the wool over a CFO's eyes, but we need to know what is inside that magic black box, especially when it is in the spec sheet.
 </span></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Thoughts on the shiney new VMAX]]></title>
-    <link href="http://www.chriscowley.me.uk/blog/2013/03/01/thoughts-on-the-shiney-new-vmax/"/>
-    <updated>2013-03-01T15:21:00+01:00</updated>
-    <id>http://www.chriscowley.me.uk/blog/2013/03/01/thoughts-on-the-shiney-new-vmax</id>
-    <content type="html"><![CDATA[<p><img class="right" src="http://www.emc.com/R1/images/EMC_Image_C_1310593327367_header-image-vmax-10k.png"> I've spent a significant amount of time recently swatting up on EMC's new <a href="http://chucksblog.emc.com/chucks_blog/2013/02/introducing-vmax-cloud-edition.html">VMAX Cloud Edition</a>. It has to be said that this looks like one of the most interesting storage announcements I have seen in a long time. In fact I have a project coming up that I think it may well be a perfect fit for.</p>
-
-<!-- more -->
-
-
-<p>First a massive thanks to EMC's Matthew Yeager (@mpyeager) who answered a couple of questions I had. He really went the extra mile to clarify a couple of things and the <a href="http://www.youtube.com/watch?v=WoElTAevLDs">video</a> he made is well worth a watch. Also Martin Glassborow (@storagebod) has <a href="http://www.storagebod.com/wordpress/?p=1293">interesting things to say</a> as well.</p>
-
-<p>This is a product that could put a lot of people out of a job. If you are the sort of person who likes to keep hold of your little castle's of knowledge then you will not like this from what I can see. Finally we are able to be truly customer focused, balancing cost, performance and capacity to give them exactly what they want. EMC claim this is a world first and to my knowledge they are right.</p>
-
-<p><span class='pullquote-right' data-pullquote='With that amount of data the amount of art involved diminishes'>
-Storage architects put a lot of time and effort in to tweaking quotes and systems to balance price, capacity and performance for a given work load. However, most of this is just reading up on the best-practises for a given array and situation and applying them. There is nothing that clever to it - reading and practise is what it comes down to. However, it has alway been as much an art as a science because an individual architect does not have a very large dataset to refer to. On the other hand EMC have got 60 million hours of metrics across more than 7000 VMAX systems out in the field. With that amount of data the amount of art involved diminishes and it becomes purely a science.
-</span></p>
-
-<p>What you get is a <a href="http://www.emc.com/storage/symmetrix-vmax/vmax-10k.htm">VMAX 10k</a>, but instead of defining storage pools, tiering policies, RAID levels etc you balance 3 facters: Space, performance and cost. Need a certain performance level for a certain amount of space no matter the cost? Just dial it in and mail EMC a cheque. Have a certain budget, need a certain amount of space, but performance not a problem? Same again.</p>
-
-<p>No longer will we  be carefully balancing the number of SATA and FC spindles and the types of RAID level. No longer will be worrying about what percentage of our workload we need to keep on the SSD layer to assure the necessary number of IOPS. We will not even be calculating how much space we have after the RAID overheads.</p>
-
-<p><span class='pullquote-right' data-pullquote='Here we have the abilty to easily integrate a VMAX with the likes of OpenStack Cinder, Puppet, Libvirt, or whatever'>
-That is all very interesting, but so far it is just a new approach to the UI. It is an excellent approach, but nothing especially clever. One of things I gravitated towards was the white paper about integrating with <a href="http://www.emc.com/collateral/white-papers/h11468-vmax-cloud-edition-wp.pdf">vCloud</a>. Despite it being geared toward VMware (I wonder why? - not!) the principles equally apply to any situation where automation is required. I am a huge DevOps fan (Puppet in particular). Storage arrays have never been particularly automation friendly. In addition to the cloud portal, the VMAX CE also has a RESTful API. Now that is awesome! Here we have the abilty to easily integrate a VMAX with the likes of OpenStack Cinder, Puppet, Libvirt, or whatever you want.
-</span></p>
-
-<p>Finally <a href="http://virtualgeek.typepad.com">Chad Sakac</a> informs me that VMAX CE is just the first. EMC intend to roll this management style out to other product lines. Personally I think this would suit both Isilion and Atmos lines very nicely.</p>
-
-<p>I am really excited about this product. It brings a paradigm shift in storage management and automation. Also I am led to believe that the price is exceptional as well, to point that it seems EMC may even be pushing VNX down a market level (to where it should be perhaps?). I have been <a href="/blog/2012/12/10/emc-extremio-thoughts/">a bit nasty</a> to EMC in the past, but recently they are doing some stuff that has really got me interested. This and <a href="https://github.com/puppetlabs/Razor">Razor</a> are 2 projects that are definitely worth keeping an eye on.</p>
-
-<iframe width="420" height="315" src="http://www.youtube.com/embed/WoElTAevLDs" frameborder="0" allowfullscreen></iframe>
-
 ]]></content>
   </entry>
   

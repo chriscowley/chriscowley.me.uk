@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: general - Just Another Linux Blog</title>
+  <title>The End of Centralised Storage - Just Another Linux Blog</title>
   <meta name="author" content="Chris Cowley">
 
   
-  <meta name="description" content="Category: general">
+  <meta name="description" content="That is a pretty drastic title, especially given that I spend a significant part of my day job working with EMC storage arrays. The other day I &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.chriscowley.me.ukblog/categories/general/">
+  <link rel="canonical" href="http://www.chriscowley.me.uk/blog/2013/09/12/the-end-of-centralised-storage/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -89,36 +89,126 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Category: General</h1>
+    
+      <h1 class="entry-title">The End of Centralised Storage</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-12T20:20:00+02:00" pubdate data-updated="true">Thursday 12 September 2013</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><p><img class="right" src="/images/NetappClustering.jpg">That is a pretty drastic title, especially given that I spend a significant part of my day job working with EMC storage arrays. The other day I replied to a tweet by <a href="http://blog.scottlowe.org">Scott Lowe</a> :</p>
 
-  
-  <h2>2013</h2>
-
-<article>
-  
-<h1><a href="/blog/2013/03/18/what-a-boss-owes-their-staff/">What a boss owes their staff</a></h1>
-<time datetime="2013-03-18T20:47:00+01:00" pubdate><span class='month'>Mar</span> <span class='day'>18</span> <span class='year'>2013</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/general/'>general</a></span>
-</footer>
+<blockquote class="twitter-tweet"><p><a href="https://twitter.com/scott_lowe">@scott_lowe</a> with things like Gluster and ceph what does shared storage actually give apart from complications?</p>&mdash; Chris Cowley (@chriscowleyunix) <a href="https://twitter.com/chriscowleyunix/statuses/377900529760083968">September 11, 2013</a></blockquote>
 
 
-</article>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
+
+<!-- more -->
+
+
+<p>Due to timezone differences between France and the USA I missed out on most of the heated conversation that insued. From what I could see it quickly got out of hand, with people replying to so many others that they barely had any space to say anything. I am sure it has spawned a load of blog posts, as Twitter is eminiently unsuitable for that sort of conversation (at least I have seen one by <a href="http://storagezilla.typepad.com/storagezilla/2013/09/tomorrows-das-yesterday.html">StorageZilla</a>.</p>
+
+<p>The boundary between DAS (Direct Attached Storage) and remote storage (be that a SAN or NAS) is bluring. Traditionally a SAN/NAS array is a proprietory box that gives you bits of disk space that is available to whatever server (or servers) that you want. Conversely, DAS is attached either inside the server or to the back of it. Sharing between multiple servers is possible, but not very slick - no switched fabric, no software configuration, cables have to be physically moved.</p>
+
+<p>Now everything is bluring. In the FLOSS world there is the like of Ceph and GlusterFS, which take your DAS (or whatever) and turn that into a shared pool of storage. You can put this on dedicated boxes, depending on your workload that may well be the best idea. However you are not forced to. To my mind this is a more elegant solution. I have a collection of identical servers, I use some for compute, other for storage, others for both. You can pick and choose, even doing it live.</p>
+
+<p>The thing is, even the array vendors are now using DAS. An EMC VNX is commodity hardware, as is the VMAX (mostly, I believe there is an ASIC used in the encryption engine), Isilion, NetApp, Dell Compellent, HP StoreVirtual (formerly Lefthand). What is the difference in the way they attach their disks? Technically none I suppose, it is just hidden away.</p>
+
+<p>Back to the cloud providers, when you provision a VM there is a process that happens (I am considering Openstack, as that is my area of interest/expertise). You provision an instanceand it takes the template you select and copies it to the local storage on that host. Yes you can short-circuit that and use shared storage, but that is unnecessarily complex and introduces a potential failure point. OK, the disk in the host could fail, but then so would the host and it would just go to a new host.</p>
+
+<p>With Openstack, you can use either Ceph or GlusterFS for your block storage (amongst others). When you create block storage for your instance it is created in that pool and replicated. Again, these will in most cases be distributing and replicating local storage. I have known people use SAN arrays as the backend for Ceph, but that was because they already had them lying around.</p>
+
+<p>There have various products around for a while to share out your local storage on VMware hosts. VMware&#8217;s own VSA, HP StoreVirtual and now Virtual SAN takes this even deeper, giving tiering and tying directly into the host rather than using a VSA. It certainly seems that DAS is the way forward for (or a hybrid approach such as PernixData FVP). This makes a huge amount of sense, especially in the brave new world of SSDs. The latencies involved in spinning rust effective masked those of the storage fabric. Now though SSDs are so fast, that the time it takes for a storage object to transverse the SAN becomes a facter. Getting at least the performance layer as physically close to the computer layer as possible is now a serious consideration.</p>
+
+<p>Hadoop, the darling of the Big Data lovers, uses HDFS, which also distributes and replicates your data across local storage. GlusterFS can also be used too. You can use EMC arrays, but I do not hear much about that (other than from EMC themselves). The vast majority of Hadoop users seem to be on local storage/HDFS. On a similar note Lustre, very popular in the HPC world, is also designed around local storage.</p>
+
+<p><span class='pullquote-right' data-pullquote='I just do not see anything really exciting in centralised storage'>
+So what am I getting at here? To be honest I am not sure, but I can see a general move away from centralised storage. Even EMC noticed this ages ago - they were talking about running the hypervisor on the VNX/VMAX. At least that is how I remember it anyway, I may well be wrong (if I am, then it is written on the internet now, so it must be true). Red Hat own GlusterFS and are pushing it centre stage for Openstack, Ceph is also an excellent solution. VMware have been pushing Virtual SAN hard and it seems to have got a lot of people really excited. I just do not see anything really exciting in centralised storage, everything interesting is based around DAS.
+</span></p>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Chris Cowley</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-12T20:20:00+02:00" pubdate data-updated="true">Thursday 12 September 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/storage/'>storage</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.chriscowley.me.uk/blog/2013/09/12/the-end-of-centralised-storage/" data-via="chriscowleyunix" data-counturl="http://www.chriscowley.me.uk/blog/2013/09/12/the-end-of-centralised-storage/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/09/05/open-source-virtual-san-thought-experiment/" title="Previous Post: Open Source Virtual SAN thought experiment">&laquo; Open Source Virtual SAN thought experiment</a>
+      
+      
+    </p>
+  </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
 
