@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linux | Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-11-03T21:52:15+01:00</updated>
+  <updated>2013-11-03T21:55:11+01:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -18,7 +18,7 @@
     <link href="http://www.chriscowley.me.uk/blog/2013/08/01/connect-to-fedora-19-with-freenx/"/>
     <updated>2013-08-01T10:17:00+02:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/08/01/connect-to-fedora-19-with-freenx</id>
-    <content type="html"><![CDATA[<p><img class="right" src="http://i.imgur.com/Z8LFhPUl.png" width="400" height="250"> FreeNX is a great remote desktop protocol. I find it more responsive than VNC and it uses less bandwidth. The biggest advantage though (in my eyes) is that it uses SSH to do the authentication. With VNC, each user has to arrange another password to connect to their VNC session.</p>
+    <content type="html"><![CDATA[<p>{% img right http://i.imgur.com/Z8LFhPUl.png 400 250 %} FreeNX is a great remote desktop protocol. I find it more responsive than VNC and it uses less bandwidth. The biggest advantage though (in my eyes) is that it uses SSH to do the authentication. With VNC, each user has to arrange another password to connect to their VNC session.</p>
 
 <!-- more -->
 
@@ -308,9 +308,7 @@ sudo -u trac htpasswd -c /var/local/trac/.htpasswd example-realm chris
 
 <p>Create an init script (<code>/etc/init.d/trac</code>) that contains something like:</p>
 
-<p><div><script src='https://gist.github.com/4586539.js?file='></script>
-<noscript><pre><code></code></pre></noscript></div>
-</p>
+<p>{% gist 4586539 %}</p>
 
 <p>Start up the Trac daemon and enable it on boot up</p>
 
@@ -330,9 +328,7 @@ sudo yum install nginx
 
 <p>Create the file <code>/etc/nginx/conf.d/trac.conf</code> containing something like:</p>
 
-<p><div><script src='https://gist.github.com/4586630.js?file='></script>
-<noscript><pre><code></code></pre></noscript></div>
-</p>
+<p>{% gist 4586630 %}</p>
 
 <p>Finally enable Nginx on boot up and start it:</p>
 
