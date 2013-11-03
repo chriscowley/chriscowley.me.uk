@@ -211,14 +211,6 @@
         <lastmod>2013-06-12T20:53:06+02:00</lastmod>
     </url>
     <url>
-        <loc>http://www.chriscowley.me.uk/yum/</loc>
-        <lastmod>2013-06-12T20:53:06+02:00</lastmod>
-    </url>
-    <url>
-        <loc>http://www.chriscowley.me.uk/</loc>
-        <lastmod>2013-09-12T21:49:56+02:00</lastmod>
-    </url>
-    <url>
         <loc>http://www.chriscowley.me.uk/consulting/</loc>
         <lastmod>2013-06-12T20:53:06+02:00</lastmod>
     </url>
@@ -233,5 +225,13 @@
     <url>
         <loc>http://www.chriscowley.me.uk/blog/archives/</loc>
         <lastmod>2013-09-12T21:49:56+02:00</lastmod>
+    </url>
+    <url>
+        <loc>http://www.chriscowley.me.uk/</loc>
+        <lastmod>2013-09-12T21:49:56+02:00</lastmod>
+    </url>
+    <url>
+        <loc>http://www.chriscowley.me.uk/yum/</loc>
+        <lastmod>2013-06-12T20:53:06+02:00</lastmod>
     </url>
 </urlset>
