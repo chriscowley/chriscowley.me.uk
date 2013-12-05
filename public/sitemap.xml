@@ -67,14 +67,6 @@
         <lastmod>2013-06-12T20:53:06+02:00</lastmod>
     </url>
     <url>
-        <loc>http://www.chriscowley.me.uk/blog/2012/06/23/the-move-to-jekyll/</loc>
-        <lastmod>2013-06-12T20:53:06+02:00</lastmod>
-    </url>
-    <url>
-        <loc>http://www.chriscowley.me.uk/blog/2012/06/23/the-move-to-jekyll+%28copy%29/</loc>
-        <lastmod>2013-06-12T20:53:06+02:00</lastmod>
-    </url>
-    <url>
         <loc>
             http://www.chriscowley.me.uk/blog/2012/07/03/excellent-seminar-given-by-a-friend-of-mine/
         </loc>
@@ -172,7 +164,7 @@
         <loc>
             http://www.chriscowley.me.uk/blog/2013/04/29/bamboo-invoice-on-centos-with-nginx/
         </loc>
-        <lastmod>2013-06-12T20:53:06+02:00</lastmod>
+        <lastmod>2013-12-05T20:50:04+01:00</lastmod>
     </url>
     <url>
         <loc>http://www.chriscowley.me.uk/blog/2013/05/13/emc-vipr-thoughts/</loc>
@@ -212,18 +204,18 @@
     </url>
     <url>
         <loc>http://www.chriscowley.me.uk/blog/2013/09/12/the-end-of-centralised-storage/</loc>
-        <lastmod>2013-09-12T21:49:56+02:00</lastmod>
+        <lastmod>2013-12-05T20:31:27+01:00</lastmod>
     </url>
     <url>
-        <loc>http://www.chriscowley.me.uk/contact/</loc>
-        <lastmod>2013-06-12T20:53:06+02:00</lastmod>
+        <loc>http://www.chriscowley.me.uk/blog/archives/</loc>
+        <lastmod>2013-12-05T20:50:04+01:00</lastmod>
     </url>
     <url>
         <loc>http://www.chriscowley.me.uk/consulting/</loc>
         <lastmod>2013-06-12T20:53:06+02:00</lastmod>
     </url>
     <url>
-        <loc>http://www.chriscowley.me.uk/cv/</loc>
+        <loc>http://www.chriscowley.me.uk/yum/</loc>
         <lastmod>2013-06-12T20:53:06+02:00</lastmod>
     </url>
     <url>
@@ -231,15 +223,15 @@
         <lastmod>2013-06-12T20:53:06+02:00</lastmod>
     </url>
     <url>
-        <loc>http://www.chriscowley.me.uk/blog/archives/</loc>
-        <lastmod>2013-09-12T21:49:56+02:00</lastmod>
-    </url>
-    <url>
         <loc>http://www.chriscowley.me.uk/</loc>
-        <lastmod>2013-09-12T21:49:56+02:00</lastmod>
+        <lastmod>2013-12-05T20:50:04+01:00</lastmod>
     </url>
     <url>
-        <loc>http://www.chriscowley.me.uk/yum/</loc>
+        <loc>http://www.chriscowley.me.uk/cv/</loc>
+        <lastmod>2013-06-12T20:53:06+02:00</lastmod>
+    </url>
+    <url>
+        <loc>http://www.chriscowley.me.uk/contact/</loc>
         <lastmod>2013-06-12T20:53:06+02:00</lastmod>
     </url>
 </urlset>

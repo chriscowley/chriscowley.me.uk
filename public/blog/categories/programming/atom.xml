@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Programming | Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/blog/categories/programming/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-11-03T21:55:11+01:00</updated>
+  <updated>2013-12-05T20:52:29+01:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -29,7 +29,30 @@
 
 <p>After an hour of Google-Fu and DuckDuckGo-Fu I finally managed to do what I wanted:</p>
 
-<p>{% include_code pycurl_ssl.py %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span> (pycurl_ssl.py)</span> <a href='/downloads/code/pycurl_ssl.py'>download</a></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class='py'><span class='line'><span class="c">#!/usr/bin/env python</span>
+</span><span class='line'><span class="n">downloadedFile</span> <span class="o">=</span> <span class="s">&quot;/tmp/stuff&quot;</span>
+</span><span class='line'><span class="n">outfile</span> <span class="o">=</span> <span class="nb">file</span><span class="p">(</span><span class="n">downloadedFile</span><span class="p">,</span> <span class="s">&#39;wb&#39;</span><span class="p">)</span>
+</span><span class='line'><span class="n">url</span> <span class="o">=</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">someurl</span><span class="o">.</span><span class="n">example</span><span class="o">.</span><span class="n">com</span>
+</span><span class='line'><span class="n">c</span> <span class="o">=</span> <span class="n">pycurl</span><span class="o">.</span><span class="n">Curl</span><span class="p">()</span>
+</span><span class='line'><span class="n">c</span><span class="o">.</span><span class="n">setopt</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">URL</span><span class="p">,</span> <span class="n">url</span><span class="p">)</span>
+</span><span class='line'><span class="n">c</span><span class="o">.</span><span class="n">setopt</span><span class="p">(</span><span class="n">pycurl</span><span class="o">.</span><span class="n">USERPWD</span><span class="p">,</span> <span class="s">&quot;</span><span class="si">%s</span><span class="s">:</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">username</span><span class="p">,</span> <span class="n">password</span><span class="p">))</span>
+</span><span class='line'><span class="n">c</span><span class="o">.</span><span class="n">setopt</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">WRITEFUNCTION</span><span class="p">,</span> <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">)</span>
+</span><span class='line'><span class="n">c</span><span class="o">.</span><span class="n">setopt</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">SSL_VERIFYPEER</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="c"># That is you key line for this purpose!</span>
+</span><span class='line'><span class="n">c</span><span class="o">.</span><span class="n">perform</span><span class="p">()</span>
+</span><span class='line'><span class="n">c</span><span class="o">.</span><span class="n">close</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>There you go!</p>
 ]]></content>

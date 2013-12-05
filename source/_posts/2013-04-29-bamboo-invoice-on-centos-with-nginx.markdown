@@ -5,7 +5,7 @@ date: 2013-04-29 21:16
 comments: true
 categories: linux
 ---
-BambooInvoice is free Open Source invoicing software intended for small businesses and independent contractors. It is easy to use and creates pretty good looking invoices.
+[BambooInvoice](http://www.bambooinvoice.org/) is free Open Source invoicing software intended for small businesses and independent contractors. It is easy to use and creates pretty good looking invoices.
 <!-- more -->
 
 It is a simple PHP application that is based on the CodeIgniter framework. This means it is really simple to install on a typically LAMP stack. I however use Nginx and could not find any notes on how to configure it. It is pretty typical you can get most of the way by reading any of the Nginx howto documents on the web. Personally, for PHP apps, I use PHP-FPM, so you could use [this on Howtoforge](http://www.howtoforge.com/installing-nginx-with-php5-and-php-fpm-and-mysql-support-on-centos-6.4) to get most of the way. That will get you a working Nginx, PHP and MySQL system.

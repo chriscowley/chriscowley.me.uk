@@ -4,7 +4,7 @@
   <title><![CDATA[Category: france | Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/blog/categories/france/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-11-03T21:55:11+01:00</updated>
+  <updated>2013-12-05T20:52:29+01:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -19,15 +19,15 @@
     <updated>2012-10-01T22:16:00+02:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2012/10/01/my-new-job</id>
     <content type="html"><![CDATA[<p>I have now got new challenges and am designing much bigger systems. Whereas before I would have take one of these:
-{% img center /images/p2000-g3-sff.png 250 400 %}</p>
+<img class="center" src="/images/p2000-g3-sff.png" width="250" height="400"></p>
 
 <!-- more -->
 
 
 <p>Plugged it into a pair of these:
-{% img center /images/silkworm.jpg 250 450 %}
+<img class="center" src="/images/silkworm.jpg" width="250" height="450">
 And finally plugged in a pair of these:
-{% img center /images/dl380g7.jpg 200 400 %}</p>
+<img class="center" src="/images/dl380g7.jpg" width="200" height="400"></p>
 
 <p>Now I do not actually do the plugging in - that is not part of the documented process. Also, the system I am designing is on the other side of the world. However I now take one of <a href="http://uk.emc.com/storage/symmetrix-vmax/vmax-20k.htm" target="_blank">these</a>, a couple of <a href="http://www.cisco.com/en/US/products/hw/ps4159/ps4358/ps5395/index.html" target="_blank">these</a> and add a couple of racks of <a href="http://www.cisco.com/en/US/products/ps10265/index.html" target="_blank">these</a>. Finally it all plugs into a couple of <a href="http://www.cisco.com/en/US/products/ps10098/index.html" target="_blank">these</a>.</p>
 
@@ -51,9 +51,9 @@ And finally plugged in a pair of these:
 
 <p>Working in France is a little different to England. Add to that the fact that I am going from a <a href="http://www.snellgroup.com" target="_blank">small company</a> to working on a project for a <b>much</b> <a href="http://www.orange-business.com" target="_blank">larger one</a> and you have quite a culture shock.</p>
 
-<p>{% pullquote %}
-The attitude to lunch is probably the biggest single change of all that can only be attributed to country. {" All my colleagues take a 2 hour lunch "} religiously, during which they go elsewhere. I am used to taking a 30 minute break to read the Register with a sandwhich/salad at my desk. For now, past an hour, I get bored an return to work. Maybe I will extend my lunch as I get used to it, but maybe not - shorter lunch means I get to go home earlier.
-{% endpullquote %}</p>
+<p><span class='pullquote-right' data-pullquote='All my colleagues take a 2 hour lunch'>
+The attitude to lunch is probably the biggest single change of all that can only be attributed to country. All my colleagues take a 2 hour lunch religiously, during which they go elsewhere. I am used to taking a 30 minute break to read the Register with a sandwhich/salad at my desk. For now, past an hour, I get bored an return to work. Maybe I will extend my lunch as I get used to it, but maybe not - shorter lunch means I get to go home earlier.
+</span></p>
 
 <h2>Commuting</h2>
 

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: cycling | Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/blog/categories/cycling/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-11-03T21:55:11+01:00</updated>
+  <updated>2013-12-05T20:52:29+01:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -18,7 +18,7 @@
     <link href="http://www.chriscowley.me.uk/blog/2013/08/01/home-made-energy-drink/"/>
     <updated>2013-08-01T11:23:00+02:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/08/01/home-made-energy-drink</id>
-    <content type="html"><![CDATA[<p>{% img right http://farm8.staticflickr.com/7120/7645659336_357c65c781.jpg 400 300 %}This is a post which breaks from the normal subjects of Linux and storage.</p>
+    <content type="html"><![CDATA[<p><img class="right" src="http://farm8.staticflickr.com/7120/7645659336_357c65c781.jpg" width="400" height="300">This is a post which breaks from the normal subjects of Linux and storage.</p>
 
 <p>Today I am going to share a very simple recipe for what I drink when I am cycling. I have some fairly simple requirements for this.</p>
 
@@ -68,7 +68,7 @@
     <link href="http://www.chriscowley.me.uk/blog/2012/10/23/a-cycling-related-review/"/>
     <updated>2012-10-23T20:31:00+02:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2012/10/23/a-cycling-related-review</id>
-    <content type="html"><![CDATA[<p>{% img right http://www.arkon.com/images/slimgrip/sm532.jpg 300 300 %} A little bit if a move away from computers and related subjects today. I was recently contacted by <a href="http://www.gearzap.com">Gearzap</a>/<a href="http://www.mobilefun.co.uk">MobileFun</a> who had seen that I had a Raspberry Pi. They asked if I would like to review a case and I cheekily asked if they could also give me something to mount my phone on the handlebars of my bike. Much to my pleasant surprise, they said yes.</p>
+    <content type="html"><![CDATA[<p><img class="right" src="http://www.arkon.com/images/slimgrip/sm532.jpg" width="300" height="300"> A little bit if a move away from computers and related subjects today. I was recently contacted by <a href="http://www.gearzap.com">Gearzap</a>/<a href="http://www.mobilefun.co.uk">MobileFun</a> who had seen that I had a Raspberry Pi. They asked if I would like to review a case and I cheekily asked if they could also give me something to mount my phone on the handlebars of my bike. Much to my pleasant surprise, they said yes.</p>
 
 <!-- more -->
 
