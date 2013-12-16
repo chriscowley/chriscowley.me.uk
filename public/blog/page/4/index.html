@@ -9,7 +9,7 @@
   <meta name="author" content="Chris Cowley">
 
   
-  <meta name="description" content="My Github repo list has not worked as all since I moved over to Octopress. This evening I though I would have a little look into it. ">
+  <meta name="description" content="The basic idea is that everytime a change happens on the master, it gets pushed to the slave. In this set up it will not get you any more capacity; &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -90,6 +90,49 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/07/17/mirror-a-subversion-repo-with-svnsync/">Mirror a Subversion Repo With Svnsync</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-17T12:03:00+02:00" pubdate data-updated="true">Tuesday 17 July 2012</time>
+        
+         | <a href="/blog/2012/07/17/mirror-a-subversion-repo-with-svnsync/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>The basic idea is that everytime a change happens on the master, it gets pushed to the slave. In this set up it will <em>not</em> get you any more capacity; you cannot commit back to the slave. If you do it will get out of sync, resulting in a <em>split brain</em> situation. This is what we sysadmins call a &#8220;bad thing&#8221;. I am doing this in order to have <a href="http://www.atlassian.com/software/fisheye/overview" target="_blank">Atlassian Fisheye</a> can scan the repository without having to go over the network. The basic layout is:</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/07/17/mirror-a-subversion-repo-with-svnsync/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -484,49 +527,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/02/22/back-to-basics/">Back to Basics</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-02-22T13:00:00+01:00" pubdate data-updated="true">Wednesday 22 February 2012</time>
-        
-         | <a href="/blog/2012/02/22/back-to-basics/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I have been a Sys Admin for quite a while now. Specialising in Linux means that I am often called upon to be a “jack of all trades, master of many”. In the last week I have touched upon storage, multiple programming languages (Bash, PHP, Python, Ruby and Java), Linux, Exchange, Tomcat, Virtualization and Systems architecture. I am sure the list could go on … and on … and on …</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2012/02/22/back-to-basics/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/5/">&larr; Older</a>
@@ -551,6 +551,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/12/16/integrating-rhel-with-active-directory/">Integrating RHEL with Active Directory</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/09/12/the-end-of-centralised-storage/">The End of Centralised Storage</a>
       </li>
     
@@ -564,10 +568,6 @@
     
       <li class="post">
         <a href="/blog/2013/08/01/connect-to-fedora-19-with-freenx/">Connect to Fedora 19 with FreeNX</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/06/23/automated-glusterfs/">Automated GlusterFS</a>
       </li>
     
   </ul>
