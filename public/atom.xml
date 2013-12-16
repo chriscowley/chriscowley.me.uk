@@ -4,7 +4,7 @@
   <title><![CDATA[Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-12-16T11:56:15+01:00</updated>
+  <updated>2013-12-16T20:32:15+01:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -29,14 +29,13 @@
 
 <p><img class="center" src="https://docs.google.com/drawings/d/1tjaacfXrTJtOZCREonoXzdHfgZQHssQ2zkDzFpLGeX0/pub?w=960&h=720"></p>
 
-<p>Integration with AD requires the installation of a few services in Red Hat, along with some minor modifications on the Windows Domain Controllers. On the Linux side, everything revolves around the System Security Services Daemon (SSSD). All communication between the PAM and the various possible back-ends is brokered through this daemon. This is only one solution, there are several. The others involve Winbind (which I have found problematic), or LDAP/Kerberos directly (no offline authentication, more difficult to set up). Note that this does not give you any file sharing, but this can easily be extended to do so using Samba.</p>
+<p>Integration with AD requires the installation of a few services in Red Hat, along with some minor modifications on the Windows Domain Controllers. On the Linux side, everything revolves around the System Security Services Daemon (SSSD). All communication between the PAM and the various possible back-ends is brokered through this daemon. This is only one solution, there are several. The others involve Winbind (which I have found problematic), or LDAP/Kerberos directly (no offline authentication, more difficult to set up). Note that this does not give you any file sharing, but  can easily be extended to do so using Samba.</p>
 
-<p>PAM communicates with SSSD, which in turn talks to Active Directory via LDAP and Kerberos. Identification is performed via LDAP, with the user is authenticated using Kerberos.
-These different components have some prerequisites on Windows.</p>
+<p>PAM communicates with SSSD, which in turn talks to Active Directory via LDAP and Kerberos. Identification is performed via LDAP, with the user is authenticated using Kerberos. These different components have some prerequisites on Windows.</p>
 
 <ul>
-<li>DNS must be working fully - both forward and reverse lookups should be functional. If the Kerberos server (Windows Domain Controller cannot identify the client via DNS, Kerberos will fail.</li>
-<li>Good time is essential – if the two systems have too larger difference in time, Kerberos will fail.</li>
+<li>DNS must be working fully - both forward and reverse lookups should be functional. If the Kerberos server (Windows Domain Controller) cannot identify the client via DNS, Kerberos will fail.</li>
+<li>Accurate time is essential – if the two systems have too larger difference in time (about 5 minutes), Kerberos will fail.</li>
 <li>The Active Directory needs to be extended to include the relevant information for *NIX systems (home directory, shell, UUID/GUID primarily).
 
 <ul>
@@ -54,9 +53,7 @@ These different components have some prerequisites on Windows.</p>
 </ul>
 
 
-<h1>Prerequisites</h1>
-
-<p>In order for the kerberized network to be available, both DNS and NTP must be configured for all servers and clients. In this guide, we will use the Active directory DNS and NTP server. DNS and NTP configuration for the server are not covered here.</p>
+<p>For both DNS and NTP I&#8217;m assuming that you are using the services provided by Active Directory. It is possible to break those out to other boxes, but it beyond my Windows Admin ability/desire to do so.</p>
 
 <h1>Preparing Active Directory</h1>
 
@@ -279,7 +276,7 @@ These different components have some prerequisites on Windows.</p>
 </span><span class='line'> # The following 3 lines bind to AD. Comment them out to use Kerberos
 </span><span class='line'> ldap_default_bind_dn = CN=svc_unix,OU=useraccounts,DC=ad,DC=example,DC=com
 </span><span class='line'> ldap_default_authtok_type = password
-</span><span class='line'> ldap_default_authtok = Welcome_2012</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'> ldap_default_authtok = Welcome_2014</span></code></pre></td></tr></table></div></figure>
 
 
 <p>Instead of doing the SASL/GSSAPI bind I would prefer to do I have chickened out and done a simple bind. Why? Because I am weak&#8230; :-(</p>
