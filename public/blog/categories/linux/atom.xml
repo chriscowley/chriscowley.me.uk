@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linux | Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2013-12-17T20:41:21+01:00</updated>
+  <updated>2014-01-08T22:13:33+01:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -12,6 +12,76 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[RHEL and CentOS joining forces]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2014/01/08/rhel-and-centos-joining-forces/"/>
+    <updated>2014-01-08T14:34:00+01:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2014/01/08/rhel-and-centos-joining-forces</id>
+    <content type="html"><![CDATA[<p><img class="right" src="http://i.imgur.com/3colCNj.png" width="200" height="200">Yesterday saw probably the biggest FLOSS news in recent times. Certainly the biggest news of 2014 so far :-) By some freak of overloaded RSS readers, I missed the announcement, but I did see this:</p>
+
+<blockquote class="twitter-tweet" lang="en"><p>Day 1 at the new job. Important stuff first.. Where do I get my Red Hat ?</p>&mdash; Karanbir Singh (@CentOS) <a href="https://twitter.com/CentOS/statuses/420876286785892353">January 8, 2014</a></blockquote>
+
+
+<script async src="http://www.chriscowley.me.uk//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
+<!-- more -->
+
+
+<p>It did not take long to dig up <a href="http://community.redhat.com/centos-faq/?utm_content=buffer6403d&amp;utm_source=buffer&amp;utm_medium=twitter&amp;utm_campaign=Buffer">this</a> and <a href="http://lists.centos.org/pipermail/centos-announce/2014-January/020100.html">this</a>, where Red Hat and CentOS respectively announce that they have joined forces. Somethings from the announcement struck me:</p>
+
+<blockquote><p> Some of us now work for Red Hat, but not RHEL</p></blockquote>
+
+<p>That is important! This says to me that Red Hat see the value of CentOS as an entity in itself. By not linking the CentOS developers to RHEL in anyway, they are not going to be side-tracking them. Instead, they are simple freeing them up to work more effectively on CentOS.</p>
+
+<blockquote><p>we are now able to work with the Red Hat legal teams</p></blockquote>
+
+<p>QA was always a problem for CentOS, simply because it took place effectively in secret. Now they can just walk down the corridor to talk to the lawers who would have previously (potentially) sued them, all the potential problems go away.</p>
+
+<h1>The RHEL Ecosystem</h1>
+
+<p><span class='pullquote-right' data-pullquote='In Fedora things can break without people really worrying'>
+In the beginning there is <a href="http://fedoraproject.org">Fedora</a>), where the RHEL developers get to play. Here is where they can try new things and make mistakes. In Fedora things can break without people really worrying (especially in Rawhide). The exception to this is my wife as we run it on the family PC and she gets quite frustrated with its foibles. However, she knew she was marrying a geek from the outset, so I will not accept any blame for this.
+</span>}</p>
+
+<p>Periodically, the the Fedora developers will pull everything together and create a release that has the potential to be transformed into RHEL. Here they pull together all the things that have be learnt over the last few releases. I consider this an Alpha release of RHEL. At this point, behind the scences, the RHEL developers will take those packages and start work on the next release of RHEL.</p>
+
+<p><span class='pullquote-right' data-pullquote='Red Hat as a company are built on Open Source'>
+On release of RHEL, Red Hat make the source code available, as required by the terms of the GPL (and other relevant licenses).The thing is, Red Hat as a company are built on Open Source principles, they firmly believe in them and, best of all, they practise what the preach. They would still be within the letter of the law if the just dumped a bunch of apparently random scripts on a web server. Instead, they publish the SRPM packages used to build RHEL.
+</span></p>
+
+<p>CentOS then take these sources and get to work. By definition they are always beind RHEL. As many know this got pretty bad at one point:</p>
+
+<p><img src="http://www.standalone-sysadmin.com/~matt/centos-delays.jpg" title="center" ></p>
+
+<p>(Thanks to Matt Simmons, aka <a href="http://www.standalone-sysadmin.com">Standalone Sysadmin</a>, from whom I blatantly stole that graph, I'll ask permission later)</p>
+
+<p>Since then, things have got better, with new point releases coming hot on the heels of RHEL. Certainly preparations for EL7 seemed to be going on nicely even before this announcement.</p>
+
+<h1>how does this now affect the two projects</h1>
+
+<p>Both CentOS and Red Hat have a lot to gain from this alliance. <img class="right" src="http://i.imgur.com/qbKvXko.jpg" width="350" height="350">I am sure that there are few people in the wider community who will be upset, but I think that it is a good thing. The reality is that CentOS and RHEL have never been enemies. The people that are using CentOS are just simply never going to pay Red Hat for support they do not need.</p>
+
+<p>When I started at Snell (then Snell &amp; Wilcox), the official line was to use RHEL for all our Linux servers. They had everything paid up for a couple of years at the time. By the time renewal came around the global financial crisis had hit, we had used the support two or three times and each time I had solved the problem before Red Hat answered the ticket. So, we decided to switch to CentOS (which was trivial).</p>
+
+<p>At the other end of the scale you have the web-scale people. For them, paying Red Hat for support is both unnecessary (they have the right people on staff) and prohibitvely expensive. When you have tens of thousands of nodes you cannot use a licensing model that support each one.</p>
+
+<p>In the cloud model you also have a problem, in that you are effectively renting an OS. Microsoft and Red Hat you have an administrative overhead of ensuring you have the right licenses available. In my experience Red Hat make it a lot easier, but it is an overhead none the less.</p>
+
+<p>All three of these will get a huge benefit. Now that the CentOS developers are on staff at Red Hat they have direct access to the source code. There should no longer be any need to wait for RHEL to drop before they start building. Red Hat will be supplying infrastructure and commuity support, which will also be a massive bonus.</p>
+
+<p>So what do Red Hat gain? In terms of new customers, they may get some of that first group. These are the people that may well do their testing with CentOS, but may now choose to go production with RHEL. I certianly would be more willing to now that XFS is not in a seperate (expensive) RHN channel. I do not see the cloud or web-scale people changing to a paid support model. It will remain prohibitvely expensive for them.</p>
+
+<p>I think they biggest thing that Red Hat will gain is that get to give Oracle a good kicking. Oracle basically do the same thing as CentOS, but they stick a thumping great big support charge on it. To be honest I have never really worked out why anyone would use it. Yes they are cheaper than Red Hat, but not by much. A couple of years ago Red Hat took steps to <a href="http://www.theregister.co.uk/2011/03/04/red_hat_twarts_oracle_and_novell_with_change_to_source_code_packaging/">make life harder</a>. That had an unfortunate knock-on effect on CentOS, causing the huge delay in CentOS 6. Now CentOS should not have that problem as they are closer to source.</p>
+
+<h1>TL;DR</h1>
+
+<p>CentOS and RHEL joining forces is in my opinion a really good thing, with both parties getting significant benefits. Granted they are bit less tangible for Red Hat, but that does not make them any less significant.</p>
+
+<p>Personally I am really excited to see what it is in store - especially from CentOS. I amy even have a couple of SIG ideas too.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Integrating RHEL with Active Directory]]></title>
@@ -458,54 +528,6 @@ tftp localhost -c put test
 <p>One final note with regards to VMware. This does not work if you are using the VMXNET3 adapter, so make sure you are using the E1000. GETs will work and the file will be created, but no data will be put on the server. To annoy you even more, the test PUTting to localhost will work, but PUTs from a remote host will not.</p>
 
 <p>It has been noted in the VMware forums <a href="http://communities.vmware.com/thread/215456">here</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[In praise of old school UNIX]]></title>
-    <link href="http://www.chriscowley.me.uk/blog/2013/02/05/in-praise-of-old-school-unix/"/>
-    <updated>2013-02-05T16:13:00+01:00</updated>
-    <id>http://www.chriscowley.me.uk/blog/2013/02/05/in-praise-of-old-school-unix</id>
-    <content type="html"><![CDATA[<p>What am I doing today? Documentation that is what. I am writing a document on how to do <a href="http://www.chriscowley.me.uk/blog/2012/11/19/sftp-chroot-on-centos/">this</a>. To any Linux user it is a very simple process and I could just give them a link to my own website.</p>
-
-<!--more-->
-
-
-<p>I am not writing this for a techinical audience though. The people who are going to perform this work will be the 'Level 1 operatives'. This translates roughly to "anyone we can find on the street corners of some Far East city". If I tell them to press the red button labelled "press me" and it turns out to be orange, they will stop. I cannot assume the ability to edit a file in Vi. How can you work around this, well you need to make everything a copy and paste operation. This is easily done in Bash thanks to IO redirection and of course Sed.</p>
-
-<p>Now, a brief recap may be in order, as there are some perfectly knowledgable Linux users who do not know what Sed is. Really, one of them sits behind me. Sed stands for Stream EDitor, and it parses text and applies transformations to it. It was one of the first UNIX utilities. It kind of sits between <a href="https://en.wikipedia.org/wiki/Grep">Grep</a> and <a href="https://en.wikipedia.org/wiki/AWK_programming_language">Awk</a> and is <a href="http://uuner.doslash.org/forfun/">surprisingly powerful</a>.</p>
-
-<p>Anyway, I need to edit a line in a file then add a block of code at the end.</p>
-
-<p>```
-cp -v /etc/ssh/sshd_config{,.dist}
-sed -i ''/<sup>Subsystem/s#/usr/libexec/openssh/sftp-server#internal-sftp#g'</sup> \</p>
-
-<pre><code>/etc/ssh/sshd_config
-</code></pre>
-
-<p>```</p>
-
-<p>First line obviously is a contracted cp line which puts the suffix <em>.dist</em> on the copy.</p>
-
-<p>The basic idea is that it runs through the file (/etc/ssh/sshd_config) and looks for any line that starts with "Subsystem" (<code>/^Subsystem/</code>). If it finds a line that matches it then will perform a "substituion" (<code>/s#</code>). The next 2 blocks tell it what the substitution will be in the order "#From#To#". The reason for  the change from <code>/</code> to <code>#</code> is because of the / in the path name (thanks to <a href="http://www.reddit.com/user/z0nk">Z0nk</a>  for reminding me that you can use arbitary seperators). The "#g" tells Sed to perform the substituion on every instance it finds on the line, rather than just the first one. It is completely superfluous in this example, but I tend to put it in from force of habit. Finally the "-i" tells Sed to perform the edit in place, rather than outputing to Stdout.</p>
-
-<p>The next bit is a bit cleverer. With a single command I want to add a block of text to the file.</p>
-
-<p>```
-cat &lt;<EOF | while read inrec; do echo $inrec >> /etc/ssh/sshd_config; done
-Match Group transfer
-ChrootDirectory /var/local/
-ForceCommmand internal-sftp
-X11Forwarding no
-AllowTcpForwarding no</p>
-
-<p>EOF
-```</p>
-
-<p>Here <code>cat &lt;&lt;EOF</code> tells it send everything you type to Stdout until it sees the string EOF. This then gets piped to a <code>while</code> loop that appends each line of that Stdout to the file we want to extend (<em>/etc/ssh/sshd_config</em> in this case).</p>
-
-<p>Using these old tools and a bit of knowledge of how redirection works has enabled me to make a document that anyone who can copy/paste can follow. It is very easy for technical people to forget that not everyone has the knowledge we have. To us opening Vi is perfectly obvious, but to others maybe it isn't and they are not being paid enough to know. They are just being paid to follow a script. I may not like it, but it is the case - it also helped turn a boring documentation session into something a little more interesting. Which is nice!</p>
 ]]></content>
   </entry>
   
