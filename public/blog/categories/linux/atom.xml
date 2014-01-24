@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linux | Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2014-01-08T22:17:59+01:00</updated>
+  <updated>2014-01-24T22:21:22+01:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -12,6 +12,140 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[NFS with Puppet and an ENC]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2014/01/24/nfs-with-puppet-and-an-enc/"/>
+    <updated>2014-01-24T20:06:00+01:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2014/01/24/nfs-with-puppet-and-an-enc</id>
+    <content type="html"><![CDATA[<p><img class="right" src="http://puppetlabs.com/sites/default/files/PL_logo_horizontal_RGB_0.svg" width="200" height="200">Ages ago (it seems) I posted a <a href="http://www.chriscowley.me.uk/blog/2013/04/11/using-hiera-with-puppet/">howto</a> on configure NFS using Puppet and Hiera. I have been using this happily for several months and adding a new share was is as simple as adding a line to a YAML file. I was never completely happy with it though, especially after I decided to deploy <a href="http://www.theforeman.org">The Foreman</a> in my lab.</p>
+
+<!-- more -->
+
+
+<p>The reason I was never satisfied is because The Foreman makes a really good ENC. I wanted to use this, so I have modified my module to use an ENC rather than Hiera directly.</p>
+
+<p>OK, first I we need to get the module into a position where it uses parameterized classes. This is actually quite simple.</p>
+
+<p>My original manifest is <a href="http://gitlab.chriscowley.me.uk/puppet/chriscowley-nfs/blob/b5d5fe6eba75379fad37255ceddb55208cbe7208/manifests/server.pp">here</a>. The key item is the <em>$exports</em> variable, which is hiera data. All I did was create a class parameter called <em>exports</em> and removed the variable within the class. You can see the new code <a href="http://gitlab.chriscowley.me.uk/puppet/chriscowley-nfs/blob/ab9627cf920f3a87986aa7379168572ca3a55f7e/manifests/server.pp">here</a>. I have also moved the <code>list_exports</code> function out into a <a href="http://gitlab.chriscowley.me.uk/puppet/chriscowley-nfs/blob/ab9627cf920f3a87986aa7379168572ca3a55f7e/manifests/list_exports.pp">seperate file</a>. Apparently this makes it more readable, although I am not convinced in this instance.</p>
+
+<p>I also took the chance to update my module a bit so that it was not hard-coded to my own lab network. To that end, it will automatically pull out the IP address and netmask of eth0. You can edit this easily enough using your ENC.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>manifests/server.pp  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='puppet'><span class='line'>  <span class="kd">class</span> <span class="nc">nfs::server</span> <span class="p">(</span><span class="err">&lt;/</span><span class="ss">p</span><span class="err">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">&lt;</span><span class="ss">pre</span><span class="err">&gt;&lt;</span><span class="ss">code</span><span class="err">&gt;</span><span class="nv">$exports</span> <span class="p">=</span> <span class="p">[</span> <span class="s1">&#39;/srv/share&#39;</span><span class="p">],</span>
+</span><span class='line'><span class="nv">$networkallowed</span> <span class="p">=</span> <span class="nv">$::network_eth0</span><span class="p">,</span>
+</span><span class='line'><span class="nv">$netmaskallowed</span> <span class="p">=</span> <span class="nv">$::netmask_eth0</span><span class="p">,</span>
+</span><span class='line'><span class="err">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="ss">pre</span><span class="err">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">&lt;</span><span class="ss">p</span><span class="err">&gt;</span>  <span class="p">)</span> <span class="p">{</span><span class="err">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">&lt;pre&gt;&lt;code&gt;//</span> <span class="err">Code</span> <span class="err">here</span>
+</span><span class='line'><span class="err">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">&lt;p&gt;</span>  }
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Next we need a simple ENC to supply the data. An ENC is actually just any script that returns YAML. It has a single parameter, which is the FQDN of the node. I use this:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>/usr/local/bin/simple-enc.sh </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;!/bin/bash&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;DATADIR<span class="o">=</span><span class="s2">&quot;/var/local/enc&quot;</span>
+</span><span class='line'><span class="nv">NODE</span><span class="o">=</span><span class="nv">$1</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;cat <span class="s2">&quot;${DATADIR}/${NODE}.yaml&quot;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Next you need a YAML file that looks like:</p>
+
+<h2><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>/var/local/enc/nfs.example.lan.yaml </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">&lt;/h2&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">&lt;p&gt;environment</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">production</span>
+</span><span class='line'><span class="l-Scalar-Plain">classes</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">nfs::server:&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">&lt;pre&gt;&lt;code&gt;exports</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">/srv/share1</span>
+</span><span class='line'>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">/srv/share3</span>
+</span><span class='line'><span class="l-Scalar-Plain">networkallowed</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">192.168.0.0</span>
+</span><span class='line'><span class="l-Scalar-Plain">netmaskallowed</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">255.255.255.0</span>
+</span><span class='line'><span class="l-Scalar-Plain">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">&lt;p&gt;parameters</span><span class="p-Indicator">:</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Finally, you need to enable this on your Puppet master. Add this to <code>/etc/puppet/puppet.conf</code>:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[master]&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>node_terminus = exec
+</span><span class='line'>external_nodes = /usr/local/bin/simple-enc.sh
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Now whenever a node with the FQDN nfs.example.lan syncs with the master it runs <code>/usr/local/bin/simple-enc.sh nfs.examle.lan.yaml</code>. This returns the contents of the YAML file above. The layout of it is pretty logical, but I suggest reading Puppetlabs <a href="http://docs.puppetlabs.com/guides/external_nodes.html">docs</a>.</p>
+
+<p>How is this better than the previous Hiera setup? First I can now use my module with The Foreman which answers my immediate need. Second I can now submit this module to the Forge with a warm fuzzy feeling inside as I am a good citizen. not only does it work with Puppet 3, but also really old versions of Puppet that do not support an ENC or Hiera. It can do this because the user can still edit the class parameters directly, or set the in <code>site.pp</code> (<strong>DON'T DO THAT</strong>).</p>
+
+<p>You can install the module on your own Puppet master with:</p>
+
+<p>```
+git clone http://gitlab.chriscowley.me.uk/puppet/chriscowley-nfs.git \</p>
+
+<pre><code>/etc/puppet/modules/nfs/
+</code></pre>
+
+<p>```</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[RHEL and CentOS joining forces]]></title>
@@ -454,80 +588,6 @@ location ~ /\. {
 ```</p>
 
 <p>At first glance, there is nothing out of the ordinary. This is pretty much what Howtoforge gives you. Look more closely and I have added the 3 lines 39-41. This solves a gateway problem I had when creating a client.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Writeable TFTP Server On CentOS]]></title>
-    <link href="http://www.chriscowley.me.uk/blog/2013/03/25/writeable-tftp-server-on-centos/"/>
-    <updated>2013-03-25T15:45:00+01:00</updated>
-    <id>http://www.chriscowley.me.uk/blog/2013/03/25/writeable-tftp-server-on-centos</id>
-    <content type="html"><![CDATA[<p>Well this caught me out for an embarassingly long time. There are <a href="http://blog.penumbra.be/tag/tftp/">loads</a> <a href="http://www.question-defense.com/2008/11/13/linux-setup-tftp-server-on-centos">of</a> <a href="http://wiki.centos.org/EdHeron/PXESetup">examples</a> of setting up a TFTP server on the web. The vast majority of them assume that you are using them read-only for PXE booting.</p>
-
-<!-- more -->
-
-
-<p>I needed to make it writeable so that it could be used for storing switch/router backups. It is trivially simple once you have read the man page (pro tip: RTFM).</p>
-
-<p>I am doing this on RHEL6, it should be fine on Centos, Scientific Linux or Fedora as is. Any other distro it will require some modification. First install it (install the client as well to test at the end:</p>
-
-<p><code>
-yum install tftp tftp-server xinetd
-chkconfig xinetd on
-</code></p>
-
-<p>Now edit the file `/etc/xinetd.d/tftp to read:</p>
-
-<p>```
-service tftp
-{</p>
-
-<pre><code>socket_type = dgram
-protocol    = udp
-wait        = yes
-user        = root
-server      = /usr/sbin/in.tftpd
-server_args = -c -s /var/lib/tftpboot
-disable     = no
-per_source  = 11
-cps         = 100 2
-flags       = IPv4
-</code></pre>
-
-<p>}
-```</p>
-
-<p>There are 2 changes to this file from the defaults. The <code>disable</code> line enables the service. Normally that is where you leave it. However, you cannot upload to the server in this case without pre-creating the files.</p>
-
-<p>The second change adds a <code>-c</code> flag to the <code>server_args</code> line. This tells the service to create the files as necessary.</p>
-
-<p>It still will not work though. You need to tweak the filesystem permissions and SELinux:</p>
-
-<p><code>
-chmod 777 /var/lib/tftpboot
-setsebool -P tftp_anon_write 1
-</code></p>
-
-<p>Of course you'll also need to open up the firewall. So add the following line to <code>/etc/sysconfig/iptables</code>:</p>
-
-<p><code>
--A INPUT -m state --state NEW -m udp -p udp -m udp --dport 69 -j ACCEPT
-</code></p>
-
-<p>If your IPtables set up is what comes out of the box, there will be a similar line to allow SSH access (tcp:22), I would add this line just after that one. If you have something more complicated, then you will probably know how to add this one as well anyway.</p>
-
-<p>You should now be able to upload something to the server</p>
-
-<p><code>
-echo "stuff" &gt; test
-tftp localhost -c put test
-</code></p>
-
-<p>Your test file should now be in <code>var/lib/tftpboot</code>.</p>
-
-<p>One final note with regards to VMware. This does not work if you are using the VMXNET3 adapter, so make sure you are using the E1000. GETs will work and the file will be created, but no data will be put on the server. To annoy you even more, the test PUTting to localhost will work, but PUTs from a remote host will not.</p>
-
-<p>It has been noted in the VMware forums <a href="http://communities.vmware.com/thread/215456">here</a></p>
 ]]></content>
   </entry>
   

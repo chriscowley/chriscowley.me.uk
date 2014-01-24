@@ -4,7 +4,7 @@
   <title><![CDATA[Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2014-01-08T22:17:59+01:00</updated>
+  <updated>2014-01-24T22:21:22+01:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -12,6 +12,108 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[NFS with Puppet and an ENC]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2014/01/24/nfs-with-puppet-and-an-enc/"/>
+    <updated>2014-01-24T20:06:00+01:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2014/01/24/nfs-with-puppet-and-an-enc</id>
+    <content type="html"><![CDATA[<p><img class="right" src="http://puppetlabs.com/sites/default/files/PL_logo_horizontal_RGB_0.svg" width="200" height="200">Ages ago (it seems) I posted a <a href="http://www.chriscowley.me.uk/blog/2013/04/11/using-hiera-with-puppet/">howto</a> on configure NFS using Puppet and Hiera. I have been using this happily for several months and adding a new share was is as simple as adding a line to a YAML file. I was never completely happy with it though, especially after I decided to deploy <a href="http://www.theforeman.org">The Foreman</a> in my lab.</p>
+
+<!-- more -->
+
+
+<p>The reason I was never satisfied is because The Foreman makes a really good ENC. I wanted to use this, so I have modified my module to use an ENC rather than Hiera directly.</p>
+
+<p>OK, first I we need to get the module into a position where it uses parameterized classes. This is actually quite simple.</p>
+
+<p>My original manifest is <a href="http://gitlab.chriscowley.me.uk/puppet/chriscowley-nfs/blob/b5d5fe6eba75379fad37255ceddb55208cbe7208/manifests/server.pp">here</a>. The key item is the <em>$exports</em> variable, which is hiera data. All I did was create a class parameter called <em>exports</em> and removed the variable within the class. You can see the new code <a href="http://gitlab.chriscowley.me.uk/puppet/chriscowley-nfs/blob/ab9627cf920f3a87986aa7379168572ca3a55f7e/manifests/server.pp">here</a>. I have also moved the <code>list_exports</code> function out into a <a href="http://gitlab.chriscowley.me.uk/puppet/chriscowley-nfs/blob/ab9627cf920f3a87986aa7379168572ca3a55f7e/manifests/list_exports.pp">seperate file</a>. Apparently this makes it more readable, although I am not convinced in this instance.</p>
+
+<p>I also took the chance to update my module a bit so that it was not hard-coded to my own lab network. To that end, it will automatically pull out the IP address and netmask of eth0. You can edit this easily enough using your ENC.</p>
+
+<figure class='code'><figcaption><span>manifests/server.pp  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='puppet'><span class='line'>  <span class="kd">class</span> <span class="nc">nfs::server</span> <span class="p">(</span>
+</span><span class='line'>    <span class="nv">$exports</span> <span class="p">=</span> <span class="p">[</span> <span class="s1">&#39;/srv/share&#39;</span><span class="p">],</span>
+</span><span class='line'>    <span class="nv">$networkallowed</span> <span class="p">=</span> <span class="nv">$::network_eth0</span><span class="p">,</span>
+</span><span class='line'>    <span class="nv">$netmaskallowed</span> <span class="p">=</span> <span class="nv">$::netmask_eth0</span><span class="p">,</span>
+</span><span class='line'>  <span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="err">//</span> <span class="err">Code</span> <span class="err">here</span>
+</span><span class='line'>  }
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Next we need a simple ENC to supply the data. An ENC is actually just any script that returns YAML. It has a single parameter, which is the FQDN of the node. I use this:</p>
+
+<figure class='code'><figcaption><span>/usr/local/bin/simple-enc.sh </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c">#!/bin/bash</span>
+</span><span class='line'><span class="nv">DATADIR</span><span class="o">=</span><span class="s2">&quot;/var/local/enc&quot;</span>
+</span><span class='line'><span class="nv">NODE</span><span class="o">=</span><span class="nv">$1</span>
+</span><span class='line'>
+</span><span class='line'>cat <span class="s2">&quot;${DATADIR}/${NODE}.yaml&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Next you need a YAML file that looks like:</p>
+
+<figure class='code'><figcaption><span>/var/local/enc/nfs.example.lan.yaml </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="nn">---</span>
+</span><span class='line'><span class="l-Scalar-Plain">environment</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">production</span>
+</span><span class='line'><span class="l-Scalar-Plain">classes</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">nfs::server</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">exports</span><span class="p-Indicator">:</span>
+</span><span class='line'>      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">/srv/share1</span>
+</span><span class='line'>      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">/srv/share3</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">networkallowed</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">192.168.0.0</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">netmaskallowed</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">255.255.255.0</span>
+</span><span class='line'><span class="l-Scalar-Plain">parameters</span><span class="p-Indicator">:</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Finally, you need to enable this on your Puppet master. Add this to <code>/etc/puppet/puppet.conf</code>:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[master]
+</span><span class='line'>    node_terminus = exec
+</span><span class='line'>    external_nodes = /usr/local/bin/simple-enc.sh</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now whenever a node with the FQDN nfs.example.lan syncs with the master it runs <code>/usr/local/bin/simple-enc.sh nfs.examle.lan.yaml</code>. This returns the contents of the YAML file above. The layout of it is pretty logical, but I suggest reading Puppetlabs <a href="http://docs.puppetlabs.com/guides/external_nodes.html">docs</a>.</p>
+
+<p>How is this better than the previous Hiera setup? First I can now use my module with The Foreman which answers my immediate need. Second I can now submit this module to the Forge with a warm fuzzy feeling inside as I am a good citizen. not only does it work with Puppet 3, but also really old versions of Puppet that do not support an ENC or Hiera. It can do this because the user can still edit the class parameters directly, or set the in <code>site.pp</code> (<strong>DON&#8217;T DO THAT</strong>).</p>
+
+<p>You can install the module on your own Puppet master with:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git clone http://gitlab.chriscowley.me.uk/puppet/chriscowley-nfs.git \
+</span><span class='line'>    /etc/puppet/modules/nfs/</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[RHEL and CentOS joining forces]]></title>
@@ -1431,36 +1533,6 @@ That is all very interesting, but so far it is just a new approach to the UI. It
 
 <p>Finally, you can put your clustered file system on that tiered device. I do not have the time or facilities to test this, but I cannot see why it would not work. Maybe someone at Red Hat (seeing as they do the bulk of KVM and GFS2 development) can run with this and see what happens.
 What their plans are I do not know. It is very early days, maybe they will be a success maybe not. As they are both ex-VMware, I would not be at all surprised if they get bought back into the VMware fold. Certainly this is a functionality that I would have like to have seen in the past.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[How much should you spend on IT]]></title>
-    <link href="http://www.chriscowley.me.uk/blog/2013/02/06/how-much-should-you-spend-on-it/"/>
-    <updated>2013-02-06T16:04:00+01:00</updated>
-    <id>http://www.chriscowley.me.uk/blog/2013/02/06/how-much-should-you-spend-on-it</id>
-    <content type="html"><![CDATA[<p>A recent discussion/argument I had on Reddit got me thinking about the cost of solutions we put in.</p>
-
-<p>In an ideal world everything would did have full redundancy, and the customer would never have any downtime. Everything would always be up-to-date and keeping it so would require restarting. The reality is very different unfortunately.</p>
-
-<!--more-->
-
-
-<p>This potentially rambling post was inspired by someone accusing me of having &#8220;a horrible idea&#8221; because I suggested someone put pfsense on an Atom PC as a VPN router for a small office. He then proceeded to expain to me how you should always buy an expensive black box from a vendor (he didn&#8217;t say black box if I am honest, I am interpreting), how you have to always have support on absolutely everything. I called &#8216;bullshit&#8217; and the whole thing went round in circles a bit until we both realised that were actually singing from the same song sheet, but from different ends of the room.</p>
-
-<p><span class='pullquote-right' data-pullquote='it is always necessary to look at the actual requirements of the end-user'>
-When looking at a solution it is always necessary to look at the actual requirements of the end-user. I had a conversation with a Director at $lastjob once. We had recently had a planned outage on the website for a few minutes one Sunday night so I could de-commission the old SAN. He said that he wanted us to get to 99.999% IT uptime. My reply after some quick calculations was that we had actually achieved that for the last 3 years at least, but that I would not like to guarantee it in the future with our current and planned infrastructure. This lead to him asking me to go ahead and do the calculations on how to guarantee it. When I went back to him with my figure (done using lots of Open Source, and no vendor support) he changed his mind. This was in what would be classed as an SME - heading towards £100 million a year turnover and one of world&#8217;s best in their field. Not a small company by any means, but they could not justify that cost.
-</span></p>
-
-<p>Having said that they could justify a lot. All our servers were clustered, storage was Fibre-channel, they had a 100TB 8Gb array for a team of 2 people who crunched monster video files all day. All that was justified expenditure, but they were not an internet company, so a bit of downtime could be justified. Even when we had a major disaster and a large swathe of Linux VMs disappeared from this world, nobody actually had to stop working and no money was lost.</p>
-
-<p>A small business is not going to dump the money for multi-thousand pound Cisco router and a zero-contention synchronous internet connection. They may think that they need the best of everything, they may even be willing to pay for it if they have got enough of daddy&#8217;s funding behind them. However that would be foolish, that money would be better spent on giving everyone a Christmas bonus.</p>
-
-<p>Support contracts are another bone of contention. Now everything I have is under one, but that is not always necessary. I once needed to get a couple of TBs of storage into a large office asap. I happenned to have a few FC HBAs, a couple of old Proliants and a pile of MSA1000s in a cupboard. I built up a box with a pair of HBAs and a single MSA1000 and sent the whole lot up to the office with strict instructions that all the extras were for spares only. If something broke, no need for support - just swap it out. I figured it would be good for at least another 3 years. Especially as backups were pretty reliable there. Would a new SAN with expensive support have been more reliable, I doubt it. We would have to wait 4 hours for a new disk, rather than the 5 minutes a took to walk to the cupboard.</p>
-
-<p><span class='pullquote-right' data-pullquote='wisdom can fall at either end of the price-spectrum'>
-It is not always necessary to get the shiniest stuff, with the longest/quickest support contract. We know our gear, we know how reliable it is, we know how long it lasts. The people paying the bills do not, they rely on us to advise them honestly and wisely. That wisdom can fall at either end of the price-spectrum, but needs to be based on the ACTUAL risks and their effect.
-</span></p>
 ]]></content>
   </entry>
   

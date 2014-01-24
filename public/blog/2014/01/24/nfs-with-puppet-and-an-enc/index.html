@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Add SAN functions to Highly Available NFS/NAS - Just Another Linux Blog</title>
+  <title>NFS with Puppet and an ENC - Just Another Linux Blog</title>
   <meta name="author" content="Chris Cowley">
 
   
-  <meta name="description" content="This based on my last post where I documented building a Highly Available NFS/NAS server. There is not a huge amount that needs to be done in order &hellip;">
+  <meta name="description" content="Ages ago (it seems) I posted a howto on configure NFS using Puppet and Hiera. I have been using this happily for several months and adding a new &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.chriscowley.me.uk/blog/2012/03/20/add-san-functions-to-highly-available-nfs-slash-nas/">
+  <link rel="canonical" href="http://www.chriscowley.me.uk/blog/2014/01/24/nfs-with-puppet-and-an-enc/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -93,7 +93,7 @@
   
   <header>
     
-      <h1 class="entry-title">Add SAN Functions to Highly Available NFS/NAS</h1>
+      <h1 class="entry-title">NFS With Puppet and an ENC</h1>
     
     
       <p class="meta">
@@ -109,7 +109,7 @@
   
 
 
-<time datetime="2012-03-20T21:07:00+01:00" pubdate data-updated="true">Tuesday 20 March 2012</time>
+<time datetime="2014-01-24T20:06:00+01:00" pubdate data-updated="true">Friday 24 January 2014</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -118,16 +118,57 @@
   </header>
 
 
-<div class="entry-content"><p>This based on my last post where I documented building a Highly Available NFS/NAS server.</p>
-
-<p>There is not a huge amount that needs to be done in order to add iSCSI functionality as well.</p>
+<div class="entry-content"><p><img class="right" src="http://puppetlabs.com/sites/default/files/PL_logo_horizontal_RGB_0.svg" width="200" height="200">Ages ago (it seems) I posted a <a href="http://www.chriscowley.me.uk/blog/2013/04/11/using-hiera-with-puppet/">howto</a> on configure NFS using Puppet and Hiera. I have been using this happily for several months and adding a new share was is as simple as adding a line to a YAML file. I was never completely happy with it though, especially after I decided to deploy <a href="http://www.theforeman.org">The Foreman</a> in my lab.</p>
 
 <!-- more -->
 
 
-<p>Add a file called <em>/etc/drbd/iscsi.res</em> containing:</p>
+<p>The reason I was never satisfied is because The Foreman makes a really good ENC. I wanted to use this, so I have modified my module to use an ENC rather than Hiera directly.</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<p>OK, first I we need to get the module into a position where it uses parameterized classes. This is actually quite simple.</p>
+
+<p>My original manifest is <a href="http://gitlab.chriscowley.me.uk/puppet/chriscowley-nfs/blob/b5d5fe6eba75379fad37255ceddb55208cbe7208/manifests/server.pp">here</a>. The key item is the <em>$exports</em> variable, which is hiera data. All I did was create a class parameter called <em>exports</em> and removed the variable within the class. You can see the new code <a href="http://gitlab.chriscowley.me.uk/puppet/chriscowley-nfs/blob/ab9627cf920f3a87986aa7379168572ca3a55f7e/manifests/server.pp">here</a>. I have also moved the <code>list_exports</code> function out into a <a href="http://gitlab.chriscowley.me.uk/puppet/chriscowley-nfs/blob/ab9627cf920f3a87986aa7379168572ca3a55f7e/manifests/list_exports.pp">seperate file</a>. Apparently this makes it more readable, although I am not convinced in this instance.</p>
+
+<p>I also took the chance to update my module a bit so that it was not hard-coded to my own lab network. To that end, it will automatically pull out the IP address and netmask of eth0. You can edit this easily enough using your ENC.</p>
+
+<figure class='code'><figcaption><span>manifests/server.pp  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='puppet'><span class='line'>  <span class="kd">class</span> <span class="nc">nfs::server</span> <span class="p">(</span>
+</span><span class='line'>    <span class="nv">$exports</span> <span class="p">=</span> <span class="p">[</span> <span class="s1">&#39;/srv/share&#39;</span><span class="p">],</span>
+</span><span class='line'>    <span class="nv">$networkallowed</span> <span class="p">=</span> <span class="nv">$::network_eth0</span><span class="p">,</span>
+</span><span class='line'>    <span class="nv">$netmaskallowed</span> <span class="p">=</span> <span class="nv">$::netmask_eth0</span><span class="p">,</span>
+</span><span class='line'>  <span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="err">//</span> <span class="err">Code</span> <span class="err">here</span>
+</span><span class='line'>  }
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Next we need a simple ENC to supply the data. An ENC is actually just any script that returns YAML. It has a single parameter, which is the FQDN of the node. I use this:</p>
+
+<figure class='code'><figcaption><span>/usr/local/bin/simple-enc.sh </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'><span class="c">#!/bin/bash</span>
+</span><span class='line'><span class="nv">DATADIR</span><span class="o">=</span><span class="s2">&quot;/var/local/enc&quot;</span>
+</span><span class='line'><span class="nv">NODE</span><span class="o">=</span><span class="nv">$1</span>
+</span><span class='line'>
+</span><span class='line'>cat <span class="s2">&quot;${DATADIR}/${NODE}.yaml&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Next you need a YAML file that looks like:</p>
+
+<figure class='code'><figcaption><span>/var/local/enc/nfs.example.lan.yaml </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -137,163 +178,40 @@
 <span class='line-number'>8</span>
 <span class='line-number'>9</span>
 <span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>resource iscsi {
-</span><span class='line'>    on nfs1 {
-</span><span class='line'>        device /dev/drbd1;
-</span><span class='line'>        disk   /dev/vdc;
-</span><span class='line'>        meta-disk internal;
-</span><span class='line'>        address   10.0.0.1:7789;
-</span><span class='line'>    }
-</span><span class='line'>    on nfs2 {
-</span><span class='line'>        device /dev/drbd1;
-</span><span class='line'>        disk   /dev/vdc;
-</span><span class='line'>        meta-disk internal;
-</span><span class='line'>        address   10.0.0.2:7789;
-</span><span class='line'>    }
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="nn">---</span>
+</span><span class='line'><span class="l-Scalar-Plain">environment</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">production</span>
+</span><span class='line'><span class="l-Scalar-Plain">classes</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">nfs::server</span><span class="p-Indicator">:</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">exports</span><span class="p-Indicator">:</span>
+</span><span class='line'>      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">/srv/share1</span>
+</span><span class='line'>      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">/srv/share3</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">networkallowed</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">192.168.0.0</span>
+</span><span class='line'>    <span class="l-Scalar-Plain">netmaskallowed</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">255.255.255.0</span>
+</span><span class='line'><span class="l-Scalar-Plain">parameters</span><span class="p-Indicator">:</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
-<p>This differs from the previous resource in 2 ways. Obviously it using a different physical disk. Also the port number of the address is incremented; each resource has to have its own port to communicate on.</p>
-
-<h2>Configure Heartbeat</h2>
-
-<p>Add a new resource to <em>/etc/ha.d/haresources</em>:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>iscsi1.snellwilcox.local IPaddr::10.0.0.101/24/eth0 drbddisk::iscsi tgtd</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Same primary host, new IP address, new drbd resource and of course the service to be controlled (tgtd in this case).</p>
-
-<p>I also made a couple of changes to <em>/etc/ha.d/ha.cf</em>:</p>
+<p>Finally, you need to enable this on your Puppet master. Add this to <code>/etc/puppet/puppet.conf</code>:</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>keepalive 500ms
-</span><span class='line'>deadtime 5
-</span><span class='line'>warntime 10
-</span><span class='line'>initdead 120</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[master]
+</span><span class='line'>    node_terminus = exec
+</span><span class='line'>    external_nodes = /usr/local/bin/simple-enc.sh</span></code></pre></td></tr></table></div></figure>
 
 
-<p>This changes the regularity of the heartbeat packets from every 2 seconds to 2 every second. We also say that a node is dead after only 5 seconds rather than after 30.</p>
+<p>Now whenever a node with the FQDN nfs.example.lan syncs with the master it runs <code>/usr/local/bin/simple-enc.sh nfs.examle.lan.yaml</code>. This returns the contents of the YAML file above. The layout of it is pretty logical, but I suggest reading Puppetlabs <a href="http://docs.puppetlabs.com/guides/external_nodes.html">docs</a>.</p>
 
-<h2>Configure an iSCSI Target</h2>
+<p>How is this better than the previous Hiera setup? First I can now use my module with The Foreman which answers my immediate need. Second I can now submit this module to the Forge with a warm fuzzy feeling inside as I am a good citizen. not only does it work with Puppet 3, but also really old versions of Puppet that do not support an ENC or Hiera. It can do this because the user can still edit the class parameters directly, or set the in <code>site.pp</code> (<strong>DON&#8217;T DO THAT</strong>).</p>
 
-<p>Tgtd has a config file that you can use in <em>/etc/tgt/targets.conf</em>. It is an XML file, so add entry like:</p>
+<p>You can install the module on your own Puppet master with:</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;target iqn.2011-07.world.server:target0&gt;
-</span><span class='line'>        # provided devicce as a iSCSI target
-</span><span class='line'>        backing-store /dev/vg_matthew/lv_iscsi1
-</span><span class='line'>        # iSCSI Initiator's IP address you allow to connect
-</span><span class='line'>        initiator-address 192.168.1.20
-</span><span class='line'>        # authentication info ( set anyone you like for "username", "password" )
-</span><span class='line'>&lt;/target&gt;</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git clone http://gitlab.chriscowley.me.uk/puppet/chriscowley-nfs.git \
+</span><span class='line'>    /etc/puppet/modules/nfs/</span></code></pre></td></tr></table></div></figure>
 
-
-<p>The target name is by convention <em>iqn.year-month.reverse-domainname:hostname.targetname</em>. Each backing store will be a seperate LUN. A discussion of this is out of the scope of this article.</p>
-
-<p>By default, this config file is disabled. Enable it by un-commenting the line <code>#TGTD_CONFIG=/etc/tgt/targets.conf</code> in <em>/etc/sysconfig/tgtd</em>. You can now enable the target with service tgtd reload.</p>
-
-<p>Now when you run <code>tgtadm –mode target –op show</code> you should get something like:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Target 1: iqn.2012-03.com.example:iscsi.target1
-</span><span class='line'>    System information:
-</span><span class='line'>        Driver: iscsi
-</span><span class='line'>        State: ready
-</span><span class='line'>    I_T nexus information:
-</span><span class='line'>    LUN information:
-</span><span class='line'>        LUN: 0
-</span><span class='line'>            Type: controller
-</span><span class='line'>            SCSI ID: IET     00010000
-</span><span class='line'>            SCSI SN: beaf10
-</span><span class='line'>            Size: 0 MB, Block size: 1
-</span><span class='line'>            Online: Yes
-</span><span class='line'>            Removable media: No
-</span><span class='line'>            Readonly: No
-</span><span class='line'>            Backing store type: null
-</span><span class='line'>            Backing store path: None
-</span><span class='line'>            Backing store flags:
-</span><span class='line'>        LUN: 1
-</span><span class='line'>            Type: disk
-</span><span class='line'>            SCSI ID: IET     00010001
-</span><span class='line'>            SCSI SN: beaf11
-</span><span class='line'>            Size: 8590 MB, Block size: 512
-</span><span class='line'>            Online: Yes
-</span><span class='line'>            Removable media: No
-</span><span class='line'>            Readonly: No
-</span><span class='line'>            Backing store type: rdwr
-</span><span class='line'>            Backing store path: /dev/drbd/by-res/iscsi
-</span><span class='line'>            Backing store flags:
-</span><span class='line'>    Account information:
-</span><span class='line'>    ACL information:
-</span><span class='line'>        ALL</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Connect An Initiator</h2>
-
-<p>Install the iscsi utils:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>yum install iscsi-initiator-utils
-</span><span class='line'>chkconfig iscsi on
-</span><span class='line'>chkconfig iscsid on</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Discover the targets on the host and login to the target.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>iscsiadm -m discovery -t sendtargets -p 10.0.0.101
-</span><span class='line'>iscsiadm -m node --login</span></code></pre></td></tr></table></div></figure>
-
-
-<p>If you run <code>cat /proc/partitions</code> you will see an new partition has appeared. You can do whatever you want with it.</p>
 </div>
 
 
@@ -316,12 +234,12 @@
   
 
 
-<time datetime="2012-03-20T21:07:00+01:00" pubdate data-updated="true">Tuesday 20 March 2012</time>
+<time datetime="2014-01-24T20:06:00+01:00" pubdate data-updated="true">Friday 24 January 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/storage/'>storage</a>
+    <a class='category' href='/blog/categories/devops/'>devops</a>, <a class='category' href='/blog/categories/linux/'>linux</a>, <a class='category' href='/blog/categories/puppet/'>puppet</a>
   
 </span>
 
@@ -330,7 +248,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.chriscowley.me.uk/blog/2012/03/20/add-san-functions-to-highly-available-nfs-slash-nas/" data-via="chriscowleyunix" data-counturl="http://www.chriscowley.me.uk/blog/2012/03/20/add-san-functions-to-highly-available-nfs-slash-nas/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.chriscowley.me.uk/blog/2014/01/24/nfs-with-puppet-and-an-enc/" data-via="chriscowleyunix" data-counturl="http://www.chriscowley.me.uk/blog/2014/01/24/nfs-with-puppet-and-an-enc/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -343,10 +261,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2012/03/19/highly-available-nfs-slash-nas/" title="Previous Post: Highly Available NFS/NAS">&laquo; Highly Available NFS/NAS</a>
+        <a class="basic-alignment left" href="/blog/2014/01/08/rhel-and-centos-joining-forces/" title="Previous Post: RHEL and CentOS joining forces">&laquo; RHEL and CentOS joining forces</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2012/04/05/pycurl-and-self-signed-ssl-certificates/" title="Next Post: PyCurl and self-signed SSL certificates">PyCurl and self-signed SSL certificates &raquo;</a>
       
     </p>
   </footer>
