@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: openvswitch | Just Another Linux Blog]]></title>
+  <link href="http://www.chriscowley.me.uk/blog/categories/openvswitch/atom.xml" rel="self"/>
+  <link href="http://www.chriscowley.me.uk/"/>
+  <updated>2014-02-04T19:01:27+01:00</updated>
+  <id>http://www.chriscowley.me.uk/</id>
+  <author>
+    <name><![CDATA[Chris Cowley]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Docker and GRE tunnels]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2014/01/29/docker-and-gre-tunnels/"/>
+    <updated>2014-01-29T11:23:00+01:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2014/01/29/docker-and-gre-tunnels</id>
+    <content type="html"><![CDATA[<p>Recently I have been playing around with LXC and Open vSwitch. Allied this with my interest in all things DevOps and it was only natural that I would try my hand at building a GRE tunnel between Docker containers on seperate hosts.</p>
+
+<!-- more -->
+
+
+<p>The basic goal is something like this:</p>
+
+<p>I am using Fedora 20, because I like it, but I reckon this will work on CentOS too, although you I think you will need to build Open vSwitch from source. Also, I should give thanks to @scottlowe who wrote up how to do this with Ubuntu. His <a href="http://blog.scottlowe.org/2013/05/07/using-gre-tunnels-with-open-vswitch/">article</a> was very helpful.</p>
+
+<p><img class="center" src="https://docs.google.com/drawings/d/1WK9tieEc-PRPmX9FRjcLYNFT7DQvrtkCk-kQapS-EHY/pub?w=1440&amp;h=1080"></p>
+
+<h1>Getting the Open vSwitches talking to each other.</h1>
+
+<p>Before you can do anything else get switches communicating with each other over a GRE tunnel. To do this you need a couple of bridges:</p>
+
+<ul>
+<li>A standard layer 2 bridge to connect your container interfaces to (<code>docker0</code>)</li>
+<li>Another within the Openvswitch (<code>br0</code>)</li>
+</ul>
+
+
+<h1>Install Docker</h1>
+
+<p><code>
+yum install docker-io
+</code></p>
+
+<p>Unfortunately you need to edit the Systemd service file. The problem is that Docker will create another bridge to attach the containers to. We have already created the bridge and wired it up as required. To avoid this you need to tell it not to create to create that bridge. Edit the file <code>/usr/lib/systemd/system/docker.service</code> and change the line:</p>
+
+<p><code>
+ExecStart=/usr/bin/docker -d
+</code></p>
+
+<p>To read:</p>
+
+<p><code>
+ExecStart=/usr/bin/docker -d -b=none
+</code></p>
+
+<p>This is not ideal, a config option would be better. We shall see what happens in the future.</p>
+
+<p>First you need a couple of packages:</p>
+
+<p><code>
+sudo yum install openvswitch docker-io
+sudo systemctl enable openvswitch
+</code></p>
+]]></content>
+  </entry>
+  
+</feed>

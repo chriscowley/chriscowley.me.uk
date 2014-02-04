@@ -67,7 +67,7 @@ Make sure that /etc/resolv.conf contains your domain controllers.
 
 **Gotcha**: In RHEL/Fedora the DNS setting are defined in /etc/sysconfig/network-settings/ifcfg-eth0 (or whichever NIC comes first) by Anaconda. This will over-write /etc/resolv.conf on reboot. For no good reason other than stubbornness I tend to remove these entries and define resolv.conf myself (or via configuration management). Alternatively put DNS1 and DNS2 entries in the network configuration files.
 
-In `/etc/ntp.conf` change you servers to point at your Domain Controllers.
+In `/etc/krb5.conf` change you servers to point at your Domain Controllers.
 
 ```
 [logging]

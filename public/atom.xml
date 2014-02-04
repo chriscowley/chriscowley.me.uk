@@ -4,7 +4,7 @@
   <title><![CDATA[Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2014-01-24T22:21:22+01:00</updated>
+  <updated>2014-02-04T19:01:27+01:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -12,6 +12,64 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Docker and GRE tunnels]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2014/01/29/docker-and-gre-tunnels/"/>
+    <updated>2014-01-29T11:23:00+01:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2014/01/29/docker-and-gre-tunnels</id>
+    <content type="html"><![CDATA[<p>Recently I have been playing around with LXC and Open vSwitch. Allied this with my interest in all things DevOps and it was only natural that I would try my hand at building a GRE tunnel between Docker containers on seperate hosts.</p>
+
+<!-- more -->
+
+
+<p>The basic goal is something like this:</p>
+
+<p>I am using Fedora 20, because I like it, but I reckon this will work on CentOS too, although you I think you will need to build Open vSwitch from source. Also, I should give thanks to @scottlowe who wrote up how to do this with Ubuntu. His <a href="http://blog.scottlowe.org/2013/05/07/using-gre-tunnels-with-open-vswitch/">article</a> was very helpful.</p>
+
+<p><img class="center" src="https://docs.google.com/drawings/d/1WK9tieEc-PRPmX9FRjcLYNFT7DQvrtkCk-kQapS-EHY/pub?w=1440&h=1080"></p>
+
+<h1>Getting the Open vSwitches talking to each other.</h1>
+
+<p>Before you can do anything else get switches communicating with each other over a GRE tunnel. To do this you need a couple of bridges:</p>
+
+<ul>
+<li>A standard layer 2 bridge to connect your container interfaces to (<code>docker0</code>)</li>
+<li>Another within the Openvswitch (<code>br0</code>)</li>
+</ul>
+
+
+<h1>Install Docker</h1>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>yum install docker-io</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Unfortunately you need to edit the Systemd service file. The problem is that Docker will create another bridge to attach the containers to. We have already created the bridge and wired it up as required. To avoid this you need to tell it not to create to create that bridge. Edit the file <code>/usr/lib/systemd/system/docker.service</code> and change the line:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ExecStart=/usr/bin/docker -d</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To read:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>ExecStart=/usr/bin/docker -d -b=none</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This is not ideal, a config option would be better. We shall see what happens in the future.</p>
+
+<p>First you need a couple of packages:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo yum install openvswitch docker-io
+</span><span class='line'>sudo systemctl enable openvswitch</span></code></pre></td></tr></table></div></figure>
+
+
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[NFS with Puppet and an ENC]]></title>
@@ -271,7 +329,7 @@ On release of RHEL, Red Hat make the source code available, as required by the t
 
 <p><strong>Gotcha</strong>: In RHEL/Fedora the DNS setting are defined in /etc/sysconfig/network-settings/ifcfg-eth0 (or whichever NIC comes first) by Anaconda. This will over-write /etc/resolv.conf on reboot. For no good reason other than stubbornness I tend to remove these entries and define resolv.conf myself (or via configuration management). Alternatively put DNS1 and DNS2 entries in the network configuration files.</p>
 
-<p>In <code>/etc/ntp.conf</code> change you servers to point at your Domain Controllers.</p>
+<p>In <code>/etc/krb5.conf</code> change you servers to point at your Domain Controllers.</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -1512,27 +1570,6 @@ That is all very interesting, but so far it is just a new approach to the UI. It
 <p>All this can sit on top of Btrfs allowing each node to have up to 16 exabytes of local storage. For now I am not convinced by it, at least on RHEL 6 as I have seen numerous kernel panics, nor did I have a huge amount of joy on Fedora 17, but there is no doubt that it will get there. Alternatively, there is always the combination of XFS and LVM. XFS is getting on a bit now, but it has been revived by Red Hat in recent years and it is a proven performer with plenty of life left in it yet.</p>
 
 <p>After all that, who do I think is ripe to do some serious disrupting in the storage market? Who will &#8220;Do a Red Hat&#8221; as Martin puts it? Simple: it will be Red Hat! Look at the best of breed tools at every level of the storage stack on Linux and you will find it is either from Red Hat (Gluster) or they are heavily involved (LIO target). They have the resources and the market/mind share to do it. Also they have a long history of working with and feeding back to the community, so the fortuitous circle will continue.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Something from the shadows]]></title>
-    <link href="http://www.chriscowley.me.uk/blog/2013/02/21/something-from-the-shadows/"/>
-    <updated>2013-02-21T16:06:00+01:00</updated>
-    <id>http://www.chriscowley.me.uk/blog/2013/02/21/something-from-the-shadows</id>
-    <content type="html"><![CDATA[<p>An intriguing startup came out of stealth mode a few days ago. <a href="http://pernixdata.com/">Pernix Data</a> was founded by Pookan Kumar and Satyam Vaghani, both of who were pretty near top of the pile in VMware&#8217;s storage team.</p>
-
-<!--more -->
-
-
-<p>What they are offering is, to me at least, a blinding flash of the obvious. It is a softweare layer that runs on a VMware hypervisor that uses local flash as a cache for whatevery is coming off your main storage array. <img class="right" src="http://pernixdata.com/images/home_graphic3.png" width="300" height="217">. That could be an SSD (or multiple) or a PCI-e card.</p>
-
-<p>Reading what they have to say, it is completely transparent to the hypervisor, so everything just works. Obviously me being an Open Source fanatic I imediately started thinking how I could do this with Linux; it took me about 5 minutes.</p>
-
-<p>You take your SAN array and give your LUN to your Hypervisors (running KVM obviously, and with a local SSD). Normally you would stick a clustered file system (such as GFS2) on that shared LUN. Instead you use a tiered block device on top of that LUN. There are two that come immediately to mind: <a href="https://github.com/facebook/flashcache/">Flashcache</a> and <a href="http://sourceforge.net/projects/tier/files/">Btier</a>.</p>
-
-<p>Finally, you can put your clustered file system on that tiered device. I do not have the time or facilities to test this, but I cannot see why it would not work. Maybe someone at Red Hat (seeing as they do the bulk of KVM and GFS2 development) can run with this and see what happens.
-What their plans are I do not know. It is very early days, maybe they will be a success maybe not. As they are both ex-VMware, I would not be at all surprised if they get bought back into the VMware fold. Certainly this is a functionality that I would have like to have seen in the past.</p>
 ]]></content>
   </entry>
   
