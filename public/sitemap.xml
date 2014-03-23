@@ -221,8 +221,12 @@
         <lastmod>2014-01-24T22:21:15+01:00</lastmod>
     </url>
     <url>
+        <loc>http://www.chriscowley.me.uk/blog/2014/03/21/logstash-on-centos-6/</loc>
+        <lastmod>2014-03-23T19:22:16+01:00</lastmod>
+    </url>
+    <url>
         <loc>http://www.chriscowley.me.uk/blog/archives/</loc>
-        <lastmod>2014-02-04T19:00:01+01:00</lastmod>
+        <lastmod>2014-03-23T19:22:16+01:00</lastmod>
     </url>
     <url>
         <loc>http://www.chriscowley.me.uk/consulting/</loc>
@@ -238,7 +242,7 @@
     </url>
     <url>
         <loc>http://www.chriscowley.me.uk/</loc>
-        <lastmod>2014-02-04T19:00:01+01:00</lastmod>
+        <lastmod>2014-03-23T19:22:16+01:00</lastmod>
     </url>
     <url>
         <loc>http://www.chriscowley.me.uk/cv/</loc>

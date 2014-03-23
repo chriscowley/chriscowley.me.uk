@@ -4,7 +4,7 @@
   <title><![CDATA[Category: monitoring | Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/blog/categories/monitoring/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2014-02-05T20:05:13+01:00</updated>
+  <updated>2014-03-23T19:23:15+01:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -12,6 +12,186 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Logstash on CentOS 6]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2014/03/21/logstash-on-centos-6/"/>
+    <updated>2014-03-21T20:57:00+01:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2014/03/21/logstash-on-centos-6</id>
+    <content type="html"><![CDATA[<p><img class="right" src="http://logstash.net/images/logstash.png" width="200"> It's been a while since I last posted anything, but it is time to. I've been playing around a lot with various tools for gathering information about my environment recently. One of the most important tools for storing that information is decent logging. Syslog is proven and solid, but a little creaky. For storing everything it is fine, but getting anything out is not so great.</p>
+
+<!-- more -->
+
+
+<p>Logstash is an awesome tool written by <a href="https://twitter.com/jordansissel">Jordan Sissel</a> that is used to "collect logs, parse them, and store them for later use (like, for searching)". It has an excellent howto, but I have one problem with it: the use of a tar file rather than packages. This easily worked around though, as Elasticsearch have it in their Yum repository.</p>
+
+<p>First up, define that repository in the file <code>/etc/yum.repos.d/logstash.repo</code>:</p>
+
+<p>```
+[logstash-1.4]
+name=logstash repository for 1.4.x packages
+baseurl=http://packages.elasticsearch.org/logstash/1.4/centos
+gpgcheck=1
+gpgkey=http://packages.elasticsearch.org/GPG-KEY-elasticsearch
+enabled=1</p>
+
+<p>[elasticsearch-1.0]
+name=Elasticsearch repository for 1.0.x packages
+baseurl=http://packages.elasticsearch.org/elasticsearch/1.0/centos
+gpgcheck=1
+gpgkey=http://packages.elasticsearch.org/GPG-KEY-elasticsearch
+enabled=1
+```</p>
+
+<p>The rpm does not create its user and group, nor does it create the PID directory for Kibana. Create those then install Łogstash:</p>
+
+<p><code>
+mkdir /var/run/logstash-web
+yum -y install logstash elasticsearch logstash-contrib.noarch mcollective-logstash-audit.noarch
+chkconfig --add elasticsearch
+chkconfig elasticsearch on
+service elasticsearch start
+</code></p>
+
+<p>For the installation that is it. When you reboot the services will start and you are good to go. Before rebooting though it is worth playing around a little. So lets blatantly rip off the <a href="http://logstash.net/docs/1.4.0/tutorials/getting-started-with-logstash">Quickstart</a>. Run:</p>
+
+<p><code>
+sudo -u logstash /opt/logstash/bin/logstash -e 'input { stdin { } } output { stdout { codec =&gt; rubydebug } }'
+</code></p>
+
+<p>Logstash takes a while to get going as it needs to fire up the JRE (hint: run <code>htop</code> in another terminal to see when the Java process calms down). When it is happy type (in the same console you started it in) <code>hello</code>. You should see something like:</p>
+
+<p>```
+hello
+{</p>
+
+<pre><code>   "message" =&gt; "hello",
+  "@version" =&gt; "1",
+"@timestamp" =&gt; "2014-03-21T20:56:58.439Z",
+      "host" =&gt; "monitor.chriscowley.lan"
+</code></pre>
+
+<p>}</p>
+
+<p>```</p>
+
+<p>That is not very interesting unfortunately. It just takes STDIN, the logs it to STDOUT in a funky format. This all gets more interesting when you start storing your logs somewhere. A good choice is (funnily enough) Elasticsearch. This time run Logstash with this as the output:</p>
+
+<p><code>
+sudo -u logstash /opt/logstash/bin/logstash -e 'input { stdin { } } output { elasticsearch { host =&gt; localhost } }'
+</code></p>
+
+<p>Now if you type something in that same console (we're still taking the input from STDIN) the output will be written to Elasticsearch.</p>
+
+<p>To test that run <code>curl 'http://localhost:9200/_search?pretty'</code> in another console and you should see something like:</p>
+
+<p>```
+{
+  "took" : 11,
+  "timed_out" : false,
+  "_shards" : {</p>
+
+<pre><code>"total" : 5,
+"successful" : 5,
+"failed" : 0
+</code></pre>
+
+<p>  },
+  "hits" : {</p>
+
+<pre><code>  "_index" : "logstash-2014.03.21",
+  "_type" : "logs",
+  "_id" : "aRFzhx-4Ta-jy_PC50U7Lg",
+  "_score" : 1.0, "_source" : {"message":"you know, for logs","@version":"1","@timestamp":"2014-03-21T21:01:17.766Z","host":"monitor.chriscowley.lan"}
+}, {
+  "_index" : "logstash-2014.03.21",
+  "_type" : "logs",
+  "_id" : "VP8WcqOYRuCbpYgGA5S1oA",
+  "_score" : 1.0, "_source" : {"message":"another one for the logs","@version":"1","@timestamp":"2014-03-21T21:03:42.480Z","host":"monitor.chriscowley.lan"}
+} ]
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p>Now that does not persist when you kill Logstash. To do that create a file in <code>/etc/logstash/conf.d/</code> that contains this:</p>
+
+<p>```
+input {
+  file {</p>
+
+<pre><code>path           =&gt; "/var/log/messages"
+start_position =&gt; beginning
+</code></pre>
+
+<p>  }
+}</p>
+
+<p>filter {
+  if [type] == "syslog" {</p>
+
+<pre><code>grok {
+  match =&gt; { "message" =&gt; "%{SYSLOGTIMESTAMP:syslog_timestamp} %{SYSLOGHOST:syslog_hostname} %{DATA:syslog_program}(?:\[%{POSINT:syslog_pid}\])?: %{GREEDYDATA:syslog_message}" }
+  add_field =&gt; [ "received_at", "%{@timestamp}" ]
+  add_field =&gt; [ "received_from", "%{host}" ]
+}
+syslog_pri { }
+date {
+  match =&gt; [ "syslog_timestamp", "MMM  d HH:mm:ss", "MMM dd HH:mm:ss" ]
+}
+</code></pre>
+
+<p>  }
+}</p>
+
+<p>output {
+  elasticsearch {</p>
+
+<pre><code>host =&gt; localhost
+</code></pre>
+
+<p>  }
+  stdout { codec => rubydebug }
+}
+```</p>
+
+<p>That gives you a simple setup for storing everything in that systems' syslog. The logical next step from there is to enable that host a central syslogger. This well documented elsewhere, but simplistically you need to add the following to <code>/etc/rsyslog.conf</code>:</p>
+
+<p>```</p>
+
+<h1>Provides UDP syslog reception</h1>
+
+<p>$ModLoad imudp
+$UDPServerRun 514</p>
+
+<h1>Provides TCP syslog reception</h1>
+
+<p>$ModLoad imtcp
+$InputTCPServerRun 514
+```</p>
+
+<p>There is a single final step due to the fact that /var/log/messages is only readable by <em>root</em>. Normally this is a big faux pas, but I am putting my trust in Jordan Sissel not to have sold his soul to the NSA. To read this (and connect to ports below 1024) Logstash needs to run as <em>root</em>. Edit <code>/etc/sysconfig/logstash</code> and change the line:</p>
+
+<p><code>
+LS_USER=logstash
+</code></p>
+
+<p>to read:</p>
+
+<p><code>
+LS_USER=root
+</code></p>
+
+<p>Now you can start Logstash and it will pull in <code>/var/log/messages</code>:</p>
+
+<p><code>
+service logstash start
+</code></p>
+
+<p>There are loads of configuration options for Logstash, so have a look in the <a href="http://logstash.net/docs/1.4.0/">main documentation</a> and the <a href="http://cookbook.logstash.net/">Cookbook</a> for more.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[SMS from Icinga or Nagios]]></title>
