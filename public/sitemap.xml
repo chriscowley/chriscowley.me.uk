@@ -225,8 +225,14 @@
         <lastmod>2014-03-23T19:22:16+01:00</lastmod>
     </url>
     <url>
+        <loc>
+            http://www.chriscowley.me.uk/blog/2014/03/31/openstack-neutron-performance-problems/
+        </loc>
+        <lastmod>2014-03-31T22:21:09+02:00</lastmod>
+    </url>
+    <url>
         <loc>http://www.chriscowley.me.uk/blog/archives/</loc>
-        <lastmod>2014-03-23T19:22:16+01:00</lastmod>
+        <lastmod>2014-03-31T22:21:09+02:00</lastmod>
     </url>
     <url>
         <loc>http://www.chriscowley.me.uk/consulting/</loc>
@@ -242,7 +248,7 @@
     </url>
     <url>
         <loc>http://www.chriscowley.me.uk/</loc>
-        <lastmod>2014-03-23T19:22:16+01:00</lastmod>
+        <lastmod>2014-03-31T22:21:09+02:00</lastmod>
     </url>
     <url>
         <loc>http://www.chriscowley.me.uk/cv/</loc>

@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Category: cycling - Just Another Linux Blog</title>
+  <title>Openstack Neutron Performance problems - Just Another Linux Blog</title>
   <meta name="author" content="Chris Cowley">
 
   
-  <meta name="description" content="Category: cycling">
+  <meta name="description" content="For the last few weeks I have been consulting on a private cloud project for a local company. Unsurprisingly this has been based around the typical &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.chriscowley.me.ukblog/categories/cycling/">
+  <link rel="canonical" href="http://www.chriscowley.me.uk/blog/2014/03/31/openstack-neutron-performance-problems/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -89,67 +89,156 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Category: Cycling</h1>
+    
+      <h1 class="entry-title">Openstack Neutron Performance Problems</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-31T20:08:00+02:00" pubdate data-updated="true">Monday 31 March 2014</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><p><img class="right" src="http://i.imgur.com/fSMzOUE.jpg">For the last few weeks I have been consulting on a private cloud project for a local company. Unsurprisingly this has been based around the typical Openstack setup.</p>
 
-  
-  <h2>2013</h2>
-
-<article>
-  
-<h1><a href="/blog/2013/08/01/home-made-energy-drink/">Home-made Energy Drink</a></h1>
-<time datetime="2013-08-01T11:23:00+02:00" pubdate><span class='month'>Aug</span> <span class='day'>01</span> <span class='year'>2013</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/cycling/'>cycling</a></span>
-</footer>
+<ul>
+<li>Nova - KVM</li>
+<li>Neutron - Openvswitch</li>
+<li>Cinder - LVM</li>
+<li>Glance - local files</li>
+</ul>
 
 
-</article>
+<!-- more -->
 
 
+<p>My architecture is nothing out of the ordinary. A pair of hosts each with 2 networks that look something like this:</p>
 
-  
-  <h2>2012</h2>
+<p><img src="https://docs.google.com/drawings/d/11le0qu389WptC78_08Bh92qUCLiCBXiZOhDiESSCnxo/pub?w=960&h=720"></p>
 
-<article>
-  
-<h1><a href="/blog/2012/10/23/a-cycling-related-review/">A Cycling Related Review</a></h1>
-<time datetime="2012-10-23T20:31:00+02:00" pubdate><span class='month'>Oct</span> <span class='day'>23</span> <span class='year'>2012</span></time>
+<p>All this is configured using Red Hat RDO. I had done all this under both Grizzly and, using RDO, it was 30 minutes to set up.</p>
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/cycling/'>cycling</a></span>
-</footer>
+<p>Given how common and simple the setup, imagine my surprise when it did not work. What do I mean did not work? From the outset I was worried about Neutron. While I am fairly up to date with SDN in theory, I am fairly green in practise. Fortunately, while RDO does not automate it&#8217;s configuration, there is at least an <a href="http://openstack.redhat.com/Neutron_with_existing_external_network">accurate document</a> in how to configure it.</p>
 
+<p>Now, if I was just using small images that would probably be fine, however this project required Windows images. As a result some problems quickly surfaced. Each time I deployed a new Windows image, everything would lock up:</p>
 
-</article>
-
-
-
-<article>
-  
-<h1><a href="/blog/2012/07/27/isle-of-wight-ride/">Isle of Wight Ride</a></h1>
-<time datetime="2012-07-27T16:02:00+02:00" pubdate><span class='month'>Jul</span> <span class='day'>27</span> <span class='year'>2012</span></time>
-
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/cycling/'>cycling</a></span>
-</footer>
+<ul>
+<li>no network access to VM&#8217;s</li>
+<li>Openvswitch going mad (800-1000% CPU)</li>
+<li>SSH access via eth0 completely dead</li>
+</ul>
 
 
-</article>
+<p>It has to be said that I initially barked up the wrong tree, pointing the finger at disk access (usually the problem with shared systems). However it turned out I was wrong.</p>
 
+<p>A brief Serverfault/Twitter with @martenhauville brought up a few suggestions, one of which caught my eye:</p>
+
+<blockquote><p>there are known Neutron configuration challenges to overcome with GRE and MTU settings</p><footer><strong>@martenhauville</strong> <cite><a href='https://ask.openstack.org/en/question/25947/openstack-neutron-stability-problems-with-openvswitch/'>ask.openstack.org/en/question/&hellip;</a></cite></footer></blockquote>
+
+
+<p>This is where my problem lay: the external switch had an MTU of 1500, Openvswitch also. Finally, <code>ip link</code> in a VM would give you</p>
+
+<pre><code>2: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast master br-ex state UP mode DEFAULT qlen 1000
+</code></pre>
+
+<p>Everything matches, however I was using GRE tunnels, which add a header to each frame. This was pushing them over 1500 on entry to <code>br-tun</code> causing massive network fragmentation, which basically destroyed Openvswitch every time I performed a large transfer. It showed up when deploying an image, because that is hitting the Glance API over http.</p>
+
+<p>Once armed with this knowledge, the fix is trivial. Add the following to <code>/etc/neutron/dhcp_agent.ini</code>:</p>
+
+<pre><code>dnsmasq_config_file=/etc/neutron/dnsmasq-neutron.conf
+</code></pre>
+
+<p>Now create the file <code>/etc/neutron/dnsmasq-neutron.conf</code> which contains the following:</p>
+
+<pre><code>dhcp-option-force=26,1454
+</code></pre>
+
+<p>Now you can restart the DHCP agent and all will be well:</p>
+
+<pre><code>service neutron-dhcp-agent restart
+</code></pre>
+
+<p>I&#8217;ve gone on a bit in this post, as I feel the background is important. By far the hardest part was diagnosing the problem, without knowing what my background was it would be much harder to narrow down your problem to being the same as mine.</p>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Chris Cowley</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-31T20:08:00+02:00" pubdate data-updated="true">Monday 31 March 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/linux/'>linux</a>, <a class='category' href='/blog/categories/openstack/'>openstack</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.chriscowley.me.uk/blog/2014/03/31/openstack-neutron-performance-problems/" data-via="chriscowleyunix" data-counturl="http://www.chriscowley.me.uk/blog/2014/03/31/openstack-neutron-performance-problems/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/03/21/logstash-on-centos-6/" title="Previous Post: Logstash on CentOS 6">&laquo; Logstash on CentOS 6</a>
+      
+      
+    </p>
+  </footer>
 </article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 </div>
 

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linux | Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2014-03-23T19:23:15+01:00</updated>
+  <updated>2014-03-31T22:21:26+02:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -12,6 +12,73 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Openstack Neutron Performance problems]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2014/03/31/openstack-neutron-performance-problems/"/>
+    <updated>2014-03-31T20:08:00+02:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2014/03/31/openstack-neutron-performance-problems</id>
+    <content type="html"><![CDATA[<p><img class="right" src="http://i.imgur.com/fSMzOUE.jpg">For the last few weeks I have been consulting on a private cloud project for a local company. Unsurprisingly this has been based around the typical Openstack setup.</p>
+
+<ul>
+<li>Nova - KVM</li>
+<li>Neutron - Openvswitch</li>
+<li>Cinder - LVM</li>
+<li>Glance - local files</li>
+</ul>
+
+
+<!-- more -->
+
+
+<p>My architecture is nothing out of the ordinary. A pair of hosts each with 2 networks that look something like this:</p>
+
+<p><img src="https://docs.google.com/drawings/d/11le0qu389WptC78_08Bh92qUCLiCBXiZOhDiESSCnxo/pub?w=960&amp;h=720"></p>
+
+<p>All this is configured using Red Hat RDO. I had done all this under both Grizzly and, using RDO, it was 30 minutes to set up.</p>
+
+<p>Given how common and simple the setup, imagine my surprise when it did not work. What do I mean did not work? From the outset I was worried about Neutron. While I am fairly up to date with SDN in theory, I am fairly green in practise. Fortunately, while RDO does not automate it's configuration, there is at least an <a href="http://openstack.redhat.com/Neutron_with_existing_external_network">accurate document</a> in how to configure it.</p>
+
+<p>Now, if I was just using small images that would probably be fine, however this project required Windows images. As a result some problems quickly surfaced. Each time I deployed a new Windows image, everything would lock up:</p>
+
+<ul>
+<li>no network access to VM's</li>
+<li>Openvswitch going mad (800-1000% CPU)</li>
+<li>SSH access via eth0 completely dead</li>
+</ul>
+
+
+<p>It has to be said that I initially barked up the wrong tree, pointing the finger at disk access (usually the problem with shared systems). However it turned out I was wrong.</p>
+
+<p>A brief Serverfault/Twitter with @martenhauville brought up a few suggestions, one of which caught my eye:</p>
+
+<p><blockquote><p>there are known Neutron configuration challenges to overcome with GRE and MTU settings</p><footer><strong>@martenhauville</strong> <cite><a href='https://ask.openstack.org/en/question/25947/openstack-neutron-stability-problems-with-openvswitch/'>ask.openstack.org/en/question/&hellip;</a></cite></footer></blockquote></p>
+
+<p>This is where my problem lay: the external switch had an MTU of 1500, Openvswitch also. Finally, <code>ip link</code> in a VM would give you</p>
+
+<pre><code>2: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast master br-ex state UP mode DEFAULT qlen 1000
+</code></pre>
+
+<p>Everything matches, however I was using GRE tunnels, which add a header to each frame. This was pushing them over 1500 on entry to <code>br-tun</code> causing massive network fragmentation, which basically destroyed Openvswitch every time I performed a large transfer. It showed up when deploying an image, because that is hitting the Glance API over http.</p>
+
+<p>Once armed with this knowledge, the fix is trivial. Add the following to <code>/etc/neutron/dhcp_agent.ini</code>:</p>
+
+<pre><code>dnsmasq_config_file=/etc/neutron/dnsmasq-neutron.conf
+</code></pre>
+
+<p>Now create the file <code>/etc/neutron/dnsmasq-neutron.conf</code> which contains the following:</p>
+
+<pre><code>dhcp-option-force=26,1454
+</code></pre>
+
+<p>Now you can restart the DHCP agent and all will be well:</p>
+
+<pre><code>service neutron-dhcp-agent restart
+</code></pre>
+
+<p>I've gone on a bit in this post, as I feel the background is important. By far the hardest part was diagnosing the problem, without knowing what my background was it would be much harder to narrow down your problem to being the same as mine.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[NFS with Puppet and an ENC]]></title>
@@ -476,118 +543,6 @@ COMMAND_START_GNOME=mate-session
 <p>and restart the server with <code>sudo service freenx-server restart</code></p>
 
 <p>Now connect to it using the NX client and chose to use a unix-gnome desktop. Instead of firing up <code>gnome-session</code> (which will fail) it will now run <code>mate-session</code> and you are happy.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Bamboo Invoice on Centos with Nginx]]></title>
-    <link href="http://www.chriscowley.me.uk/blog/2013/04/29/bamboo-invoice-on-centos-with-nginx/"/>
-    <updated>2013-04-29T21:16:00+02:00</updated>
-    <id>http://www.chriscowley.me.uk/blog/2013/04/29/bamboo-invoice-on-centos-with-nginx</id>
-    <content type="html"><![CDATA[<p><a href="http://www.bambooinvoice.org/">BambooInvoice</a> is free Open Source invoicing software intended for small businesses and independent contractors. It is easy to use and creates pretty good looking invoices.</p>
-
-<!-- more -->
-
-
-<p>It is a simple PHP application that is based on the CodeIgniter framework. This means it is really simple to install on a typically LAMP stack. I however use Nginx and could not find any notes on how to configure it. It is pretty typical you can get most of the way by reading any of the Nginx howto documents on the web. Personally, for PHP apps, I use PHP-FPM, so you could use <a href="http://www.howtoforge.com/installing-nginx-with-php5-and-php-fpm-and-mysql-support-on-centos-6.4">this on Howtoforge</a> to get most of the way. That will get you a working Nginx, PHP and MySQL system.</p>
-
-<p>Download the install file from [http://bambooinvoice.org/] an unzip is in your www folder:</p>
-
-<p><code>bash
-cd /var/www
-wget http://bambooinvoice.org/img/bambooinvoice_089.zip
-unzip bambooinvoice_089.zip
-</code></p>
-
-<p>You next step is to create a database for it along with a user:</p>
-
-<p><code>mysql
-CREATE DATABASE bambooinvoice DEFAULT CHARACTER SET utf8;
-GRANT ALL ON bambooinvoice.* TO 'bambooinvoice'@'localhost' IDENTIFIED BY 'bambooinvoice';
-FLUSH PRIVILEGES;
-exit
-</code></p>
-
-<p>Now you can edit the config files to point at the database:</p>
-
-<p>```php /var/www/bambooinvoices/bamboo_system_files/application/config/database.php
-&lt;?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
-$active_group = 'default';</p>
-
-<p>$db['default']['hostname'] = 'localhost';
-$db['default']['username'] = 'bambooinvoice';
-$db['default']['password'] = 'bambooinvoice';
-$db['default']['database'] = 'bambooinvoice';
-$db['default']['dbdriver'] = 'mysql';
-$db['default']['dbprefix'] = 'bamboo_';
-$db['default']['active_r'] = TRUE;
-$db['default']['pconnect'] = FALSE;
-$db['default']['db_debug'] = TRUE;
-$db['default']['cache_on'] = FALSE;
-$db['default']['cachedir'] = '';
-$db['default']['char_set'] = 'utf8';
-$db['default']['dbcollat'] = 'utf8_general_ci';
-?>
-```</p>
-
-<p>Next you need set the base_url in <code>/var/www/bambooinvoices/bamboo_system_files/application/config/config.php</code>. Nothing else is essential in that file, but read the docs in the ZIP file to see what else you want to change.</p>
-
-<p>Now the all important bit.</p>
-
-<p>```nginx /etc/nginx/conf.d/bamboo.conf
-server {</p>
-
-<pre><code>listen 80;
-server_name bamboo.example;
-root /var/www/bambooinvoice/;
-index index.php index.html;
-access_log              /var/log/nginx/bamboo_access.log;
-error_log               /var/log/nginx/bamboo_error.log;
-
-location = /robots.txt {
-    allow all;
-    log_not_found off;
-    access_log off;
-}
-
-
-# Deny all attempts to access hidden files such as .htaccess, .htpasswd, .DS_Store (Mac).
-location ~ /\. {
-    deny all;
-    access_log off;
-    log_not_found off;
- }
- location / {
-     try_files $uri $uri/ /index.php$request_uri /index.php;
- }
-
-
- location ~ \.php($|/) {
-     try_files $uri =404;
-     fastcgi_pass 127.0.0.1:9000;
-     include /etc/nginx/fastcgi_params;
-     fastcgi_index index.php;
-     set $script $uri;
-     set $path_info "";
-     if ($uri ~ "^(.+\.php)(/.+)") {
-         set $script $1;
-         set $path_info $2;
-     }
-     fastcgi_param URI $uri;
-     # Next two lines are fix the 502 (Bad gateway) error
-     fastcgi_buffers 8 16k;
-     fastcgi_buffer_size 32k;
-
-     fastcgi_param PATH_INFO $path_info;
-     fastcgi_param SCRIPT_NAME $script;
-     fastcgi_param SCRIPT_FILENAME $document_root$script;
-  }
-</code></pre>
-
-<p>}
-```</p>
-
-<p>At first glance, there is nothing out of the ordinary. This is pretty much what Howtoforge gives you. Look more closely and I have added the 3 lines 39-41. This solves a gateway problem I had when creating a client.</p>
 ]]></content>
   </entry>
   

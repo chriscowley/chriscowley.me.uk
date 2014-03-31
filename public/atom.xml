@@ -4,7 +4,7 @@
   <title><![CDATA[Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2014-03-23T19:23:15+01:00</updated>
+  <updated>2014-03-31T22:21:26+02:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -12,6 +12,74 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Openstack Neutron Performance problems]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2014/03/31/openstack-neutron-performance-problems/"/>
+    <updated>2014-03-31T20:08:00+02:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2014/03/31/openstack-neutron-performance-problems</id>
+    <content type="html"><![CDATA[<p><img class="right" src="http://i.imgur.com/fSMzOUE.jpg">For the last few weeks I have been consulting on a private cloud project for a local company. Unsurprisingly this has been based around the typical Openstack setup.</p>
+
+<ul>
+<li>Nova - KVM</li>
+<li>Neutron - Openvswitch</li>
+<li>Cinder - LVM</li>
+<li>Glance - local files</li>
+</ul>
+
+
+<!-- more -->
+
+
+<p>My architecture is nothing out of the ordinary. A pair of hosts each with 2 networks that look something like this:</p>
+
+<p><img src="https://docs.google.com/drawings/d/11le0qu389WptC78_08Bh92qUCLiCBXiZOhDiESSCnxo/pub?w=960&h=720"></p>
+
+<p>All this is configured using Red Hat RDO. I had done all this under both Grizzly and, using RDO, it was 30 minutes to set up.</p>
+
+<p>Given how common and simple the setup, imagine my surprise when it did not work. What do I mean did not work? From the outset I was worried about Neutron. While I am fairly up to date with SDN in theory, I am fairly green in practise. Fortunately, while RDO does not automate it&#8217;s configuration, there is at least an <a href="http://openstack.redhat.com/Neutron_with_existing_external_network">accurate document</a> in how to configure it.</p>
+
+<p>Now, if I was just using small images that would probably be fine, however this project required Windows images. As a result some problems quickly surfaced. Each time I deployed a new Windows image, everything would lock up:</p>
+
+<ul>
+<li>no network access to VM&#8217;s</li>
+<li>Openvswitch going mad (800-1000% CPU)</li>
+<li>SSH access via eth0 completely dead</li>
+</ul>
+
+
+<p>It has to be said that I initially barked up the wrong tree, pointing the finger at disk access (usually the problem with shared systems). However it turned out I was wrong.</p>
+
+<p>A brief Serverfault/Twitter with @martenhauville brought up a few suggestions, one of which caught my eye:</p>
+
+<blockquote><p>there are known Neutron configuration challenges to overcome with GRE and MTU settings</p><footer><strong>@martenhauville</strong> <cite><a href='https://ask.openstack.org/en/question/25947/openstack-neutron-stability-problems-with-openvswitch/'>ask.openstack.org/en/question/&hellip;</a></cite></footer></blockquote>
+
+
+<p>This is where my problem lay: the external switch had an MTU of 1500, Openvswitch also. Finally, <code>ip link</code> in a VM would give you</p>
+
+<pre><code>2: eth0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast master br-ex state UP mode DEFAULT qlen 1000
+</code></pre>
+
+<p>Everything matches, however I was using GRE tunnels, which add a header to each frame. This was pushing them over 1500 on entry to <code>br-tun</code> causing massive network fragmentation, which basically destroyed Openvswitch every time I performed a large transfer. It showed up when deploying an image, because that is hitting the Glance API over http.</p>
+
+<p>Once armed with this knowledge, the fix is trivial. Add the following to <code>/etc/neutron/dhcp_agent.ini</code>:</p>
+
+<pre><code>dnsmasq_config_file=/etc/neutron/dnsmasq-neutron.conf
+</code></pre>
+
+<p>Now create the file <code>/etc/neutron/dnsmasq-neutron.conf</code> which contains the following:</p>
+
+<pre><code>dhcp-option-force=26,1454
+</code></pre>
+
+<p>Now you can restart the DHCP agent and all will be well:</p>
+
+<pre><code>service neutron-dhcp-agent restart
+</code></pre>
+
+<p>I&#8217;ve gone on a bit in this post, as I feel the background is important. By far the hardest part was diagnosing the problem, without knowing what my background was it would be much harder to narrow down your problem to being the same as mine.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Logstash on CentOS 6]]></title>
@@ -1725,28 +1793,6 @@ That is all very interesting, but so far it is just a new approach to the UI. It
 
 <iframe width="420" height="315" src="http://www.youtube.com/embed/WoElTAevLDs" frameborder="0" allowfullscreen></iframe>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[The Linux to Storage]]></title>
-    <link href="http://www.chriscowley.me.uk/blog/2013/02/25/the-linux-to-storage/"/>
-    <updated>2013-02-25T13:09:00+01:00</updated>
-    <id>http://www.chriscowley.me.uk/blog/2013/02/25/the-linux-to-storage</id>
-    <content type="html"><![CDATA[<p>Martin &#8220;Storagebod&#8221; Glassborow recently wrote an interesting article where he asked &#8220;Who&#8217;ll do a Linux to Storage?&#8221;. As someone who is equal parts Storage and Linux, the same question runs around my head quite often. Not just that, but how to do it. It is safe to say that all the constituent parts are already in the Open Source Ecosystem. It just needs someone to pull them all together wrap them up in an integrated interface (be that a GUI, CLI, an API or all).</p>
-
-<!--more -->
-
-
-<p>Linux, obviously, has excellent NFS support. Until recently it was a little lacking in terms of block support. <a href="http://sourceforge.net/projects/iscsitarget/">iSCSI Enterprise Target</a> is ok, but is not packaged for RHEL, which for most shops makes it a big no-no. Likewise <a href="http://stgt.sourceforge.net/">TGT</a> is not bad, I have certainly used it to to good effect, but administering it is a bit like pulling teeth. Additionally, neither are VMware certified and I am pretty sure that TGT at  least is missing a required feature for certification as well (may be persistent reservations). There is a third SCSI target in Linux though: <a href="http://www.linux-iscsi.org/">LIO Kernel Target</a> by Rising Tide Systems. This is a lot newer, but is already VMware Ready certified. Red Hat used it in RHEL6 for FCoE target support, but not for iSCSI. in RHEL7 they will be <a href="http://groveronline.com/2012/11/tgtd-lio-in-rhel-7/">using it for all block storage</a>. It has a much nicer interface than the other targets on Linux, using a very intuitive CLI, nice JSON config files and a rather handy API. Rising Tide are a bit of an unknown however, or at least I thought so. It turns our that both QNAP and Netgear use LIO Kernel Target in their larger devices - hence the VMware certification. In any case, Red Hat are behind it, although I think they are working on a fork of at least the CLI, so I think success is assured there. That solves the problem of block storage, be it iSCSI, Fibre-Channel, FCoE, Infiniband or even USB.</p>
-
-<p>Another important building block in an enterprise storage system is some way of distributing the data for both redunancy and performance. Marin mentions <a href="http://ceph.com/">Ceph</a> which is an excellent system. Personally I would put my money on <a href="http://www.gluster.org/">GlusterFS</a> though. I have had slightly better performance from it. Red Hat bought Gluster about a year ago, and have put some serious development effort into it. As well as POSIX access via Fuse, it has Object storage for use with OpenStack, a native Qemu connector is coming in the next versions. Hadoop can also access it directly. There is also a very good Puppet module for it, which gets around one of Martin&#8217;s critisms of Ceph.</p>
-
-<p>Which brings me nicely to managing this theoretical system. Embedding Puppet in this sort of solution would also make sense. There will be need to a way of keep config sync&#8217;ed on all the nodes (I mentioned that this disruptive product will be scale-out didn&#8217;t I? NO? OK, it will be - prediction for the day). Puppet does this already very well, so why re-invent the wheel.</p>
-
-<p>All this can sit on top of Btrfs allowing each node to have up to 16 exabytes of local storage. For now I am not convinced by it, at least on RHEL 6 as I have seen numerous kernel panics, nor did I have a huge amount of joy on Fedora 17, but there is no doubt that it will get there. Alternatively, there is always the combination of XFS and LVM. XFS is getting on a bit now, but it has been revived by Red Hat in recent years and it is a proven performer with plenty of life left in it yet.</p>
-
-<p>After all that, who do I think is ripe to do some serious disrupting in the storage market? Who will &#8220;Do a Red Hat&#8221; as Martin puts it? Simple: it will be Red Hat! Look at the best of breed tools at every level of the storage stack on Linux and you will find it is either from Red Hat (Gluster) or they are heavily involved (LIO target). They have the resources and the market/mind share to do it. Also they have a long history of working with and feeding back to the community, so the fortuitous circle will continue.</p>
 ]]></content>
   </entry>
   
