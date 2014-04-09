@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: vmware | Just Another Linux Blog]]></title>
+  <link href="http://www.chriscowley.me.uk/blog/categories/vmware/atom.xml" rel="self"/>
+  <link href="http://www.chriscowley.me.uk/"/>
+  <updated>2014-04-09T11:02:44+02:00</updated>
+  <id>http://www.chriscowley.me.uk/</id>
+  <author>
+    <name><![CDATA[Chris Cowley]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[VMware CLI on Ubuntu Saucy Salamander]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2014/04/09/vmware-cli-on-ubuntu-saucy-salamander/"/>
+    <updated>2014-04-09T10:51:00+02:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2014/04/09/vmware-cli-on-ubuntu-saucy-salamander</id>
+    <content type="html"><![CDATA[<p>The current project (as of this week) has me moving away from Openstack for a while. For the next couple of months I will be immersing myself in monitor, metrics and logging. Naturally, this being a shiney new environment, this involves a significant amount of VMware time.</p>
+
+<p>I have inherited an Icinga install running on Ubuntu Server, so I will be needing to run CLI commands to create checks. Simply runnning the installer does not work, as the vmware-cli package is a mixture of 32 and 64 bit commands.</p>
+
+<p>First you need to download the CLI from VMware. How to do that is an exercise for the reader, as I cannot be bothered to find the link (hint: it is not hard). Then you need to install a bunch of packages:</p>
+
+<p><code>
+sudo apt-get install cpanminus libdata-dump-perl libsoap-lite-perl libclass-methodmaker-perl  libxml-libxml-simple-perl libssl-dev libarchive-zip-perl libuuid-perl lib32z1 lib32ncurses5 lib32bz2-1.0
+</code></p>
+
+<p>This includes a bunch of Perl modules for munching through XML, plus some 32-bit libraries so that all the tools can work.</p>
+
+<p>Finally, you can extract the tarball and install the CLI:</p>
+
+<p><code>
+tar xvf VMware-vSphere-CLI-5.5.0-1549297.x86_64.tar.gz
+cd vmware-vsphere-cli-distrib/
+sudo ./vmware-install.pl
+</code></p>
+]]></content>
+  </entry>
+  
+</feed>

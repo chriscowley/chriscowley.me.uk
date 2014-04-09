@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linux | Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2014-03-31T22:21:26+02:00</updated>
+  <updated>2014-04-09T11:02:44+02:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -12,6 +12,33 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[VMware CLI on Ubuntu Saucy Salamander]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2014/04/09/vmware-cli-on-ubuntu-saucy-salamander/"/>
+    <updated>2014-04-09T10:51:00+02:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2014/04/09/vmware-cli-on-ubuntu-saucy-salamander</id>
+    <content type="html"><![CDATA[<p>The current project (as of this week) has me moving away from Openstack for a while. For the next couple of months I will be immersing myself in monitor, metrics and logging. Naturally, this being a shiney new environment, this involves a significant amount of VMware time.</p>
+
+<p>I have inherited an Icinga install running on Ubuntu Server, so I will be needing to run CLI commands to create checks. Simply runnning the installer does not work, as the vmware-cli package is a mixture of 32 and 64 bit commands.</p>
+
+<p>First you need to download the CLI from VMware. How to do that is an exercise for the reader, as I cannot be bothered to find the link (hint: it is not hard). Then you need to install a bunch of packages:</p>
+
+<p><code>
+sudo apt-get install cpanminus libdata-dump-perl libsoap-lite-perl libclass-methodmaker-perl  libxml-libxml-simple-perl libssl-dev libarchive-zip-perl libuuid-perl lib32z1 lib32ncurses5 lib32bz2-1.0
+</code></p>
+
+<p>This includes a bunch of Perl modules for munching through XML, plus some 32-bit libraries so that all the tools can work.</p>
+
+<p>Finally, you can extract the tarball and install the CLI:</p>
+
+<p><code>
+tar xvf VMware-vSphere-CLI-5.5.0-1549297.x86_64.tar.gz
+cd vmware-vsphere-cli-distrib/
+sudo ./vmware-install.pl
+</code></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Openstack Neutron Performance problems]]></title>
@@ -508,41 +535,6 @@ Finally you can enable your LinuxAdmin’s to use sudo. Run the command visudo a
 sudo sed -i 's/PermitRootLogin no/PermitRootLogin yes/' /etc/ssh/sshd_config
 sudo service sshd reload
 </code></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Connect to Fedora 19 with FreeNX]]></title>
-    <link href="http://www.chriscowley.me.uk/blog/2013/08/01/connect-to-fedora-19-with-freenx/"/>
-    <updated>2013-08-01T10:17:00+02:00</updated>
-    <id>http://www.chriscowley.me.uk/blog/2013/08/01/connect-to-fedora-19-with-freenx</id>
-    <content type="html"><![CDATA[<p><img class="right" src="http://i.imgur.com/Z8LFhPUl.png" width="400" height="250"> FreeNX is a great remote desktop protocol. I find it more responsive than VNC and it uses less bandwidth. The biggest advantage though (in my eyes) is that it uses SSH to do the authentication. With VNC, each user has to arrange another password to connect to their VNC session.</p>
-
-<!-- more -->
-
-
-<p>However, FreeNX is still not really working nicely with GNOME 3. If you use KDE you are fine, but I like GNOME and many of the programs are GTK as a result. This means that they look out of place on KDE, which causes my engineer OCD super-sensory powers to go mad.</p>
-
-<p>My workaround is to effectively go back to the tried and tested Gnome 2 environment, nowadays know as MATE.</p>
-
-<p>Get the server installed and configured along with the MATE desktop:</p>
-
-<p><code>
-sudo yum -y groupinstall "MATE desktop"
-sudo yum -y install freenx-server
-sudo /usr/libexec/nx/nxsetup --install --setup-nomachine-key
-sudo chkconfig freenx-server on
-</code></p>
-
-<p>Now open <code>/etc/nxserver/node.conf</code> and un-comment the line that sets the <code>COMMAND_START_GNOME</code> variable. You need to edit this line to read:</p>
-
-<p><code>
-COMMAND_START_GNOME=mate-session
-</code></p>
-
-<p>and restart the server with <code>sudo service freenx-server restart</code></p>
-
-<p>Now connect to it using the NX client and chose to use a unix-gnome desktop. Instead of firing up <code>gnome-session</code> (which will fail) it will now run <code>mate-session</code> and you are happy.</p>
 ]]></content>
   </entry>
   

@@ -9,7 +9,7 @@
   <meta name="author" content="Chris Cowley">
 
   
-  <meta name="description" content="For the last few weeks I have been consulting on a private cloud project for a local company. Unsurprisingly this has been based around the typical &hellip;">
+  <meta name="description" content="The current project (as of this week) has me moving away from Openstack for a while. For the next couple of months I will be immersing myself in &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -90,6 +90,66 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/04/09/vmware-cli-on-ubuntu-saucy-salamander/">VMware CLI on Ubuntu Saucy Salamander</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-09T10:51:00+02:00" pubdate data-updated="true">Wednesday 09 April 2014</time>
+        
+         | <a href="/blog/2014/04/09/vmware-cli-on-ubuntu-saucy-salamander/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>The current project (as of this week) has me moving away from Openstack for a while. For the next couple of months I will be immersing myself in monitor, metrics and logging. Naturally, this being a shiney new environment, this involves a significant amount of VMware time.</p>
+
+<p>I have inherited an Icinga install running on Ubuntu Server, so I will be needing to run CLI commands to create checks. Simply runnning the installer does not work, as the vmware-cli package is a mixture of 32 and 64 bit commands.</p>
+
+<p>First you need to download the CLI from VMware. How to do that is an exercise for the reader, as I cannot be bothered to find the link (hint: it is not hard). Then you need to install a bunch of packages:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo apt-get install cpanminus libdata-dump-perl libsoap-lite-perl libclass-methodmaker-perl  libxml-libxml-simple-perl libssl-dev libarchive-zip-perl libuuid-perl lib32z1 lib32ncurses5 lib32bz2-1.0</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This includes a bunch of Perl modules for munching through XML, plus some 32-bit libraries so that all the tools can work.</p>
+
+<p>Finally, you can extract the tarball and install the CLI:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>tar xvf VMware-vSphere-CLI-5.5.0-1549297.x86_64.tar.gz
+</span><span class='line'>cd vmware-vsphere-cli-distrib/
+</span><span class='line'>sudo ./vmware-install.pl</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -502,49 +562,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/06/23/automated-glusterfs/">Automated GlusterFS</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-06-23T22:02:00+02:00" pubdate data-updated="true">Sunday 23 June 2013</time>
-        
-         | <a href="/blog/2013/06/23/automated-glusterfs/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><img class="right" src="http://www.hastexo.com/system/files/imagecache/sidebar/20120221105324808-f2df3ea3e3aeab8_250_0.png"> As I promised on Twitter, this is how I automate a GlusterFS deployment. I&#8217;m making a few assumptions here:</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2013/06/23/automated-glusterfs/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -567,6 +584,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/04/09/vmware-cli-on-ubuntu-saucy-salamander/">VMware CLI on Ubuntu Saucy Salamander</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/03/31/openstack-neutron-performance-problems/">Openstack Neutron Performance problems</a>
       </li>
     
@@ -580,10 +601,6 @@
     
       <li class="post">
         <a href="/blog/2014/01/08/rhel-and-centos-joining-forces/">RHEL and CentOS joining forces</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/12/16/integrating-rhel-with-active-directory/">Integrating RHEL with Active Directory</a>
       </li>
     
   </ul>

@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Open Source Virtual SAN thought experiment - Just Another Linux Blog</title>
+  <title>VMware CLI on Ubuntu Saucy Salamander - Just Another Linux Blog</title>
   <meta name="author" content="Chris Cowley">
 
   
-  <meta name="description" content="Okay, I know I am little slow on the uptake here, but I was on holiday at the time. The announcement of Virtual SAN at VMWorld the last week got me &hellip;">
+  <meta name="description" content="The current project (as of this week) has me moving away from Openstack for a while. For the next couple of months I will be immersing myself in &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.chriscowley.me.uk/blog/2013/09/05/open-source-virtual-san-thought-experiment/">
+  <link rel="canonical" href="http://www.chriscowley.me.uk/blog/2014/04/09/vmware-cli-on-ubuntu-saucy-salamander/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -93,7 +93,7 @@
   
   <header>
     
-      <h1 class="entry-title">Open Source Virtual SAN Thought Experiment</h1>
+      <h1 class="entry-title">VMware CLI on Ubuntu Saucy Salamander</h1>
     
     
       <p class="meta">
@@ -109,7 +109,7 @@
   
 
 
-<time datetime="2013-09-05T21:19:00+02:00" pubdate data-updated="true">Thursday 05 September 2013</time>
+<time datetime="2014-04-09T10:51:00+02:00" pubdate data-updated="true">Wednesday 09 April 2014</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -118,20 +118,29 @@
   </header>
 
 
-<div class="entry-content"><p>Okay, I know I am little slow on the uptake here, but I was on holiday at the time. The announcement of <a href="https://www.vmware.com/products/virtual-san/">Virtual SAN</a> at VMWorld the last week got me thinking a bit.</p>
+<div class="entry-content"><p>The current project (as of this week) has me moving away from Openstack for a while. For the next couple of months I will be immersing myself in monitor, metrics and logging. Naturally, this being a shiney new environment, this involves a significant amount of VMware time.</p>
 
-<!-- more -->
+<p>I have inherited an Icinga install running on Ubuntu Server, so I will be needing to run CLI commands to create checks. Simply runnning the installer does not work, as the vmware-cli package is a mixture of 32 and 64 bit commands.</p>
+
+<p>First you need to download the CLI from VMware. How to do that is an exercise for the reader, as I cannot be bothered to find the link (hint: it is not hard). Then you need to install a bunch of packages:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo apt-get install cpanminus libdata-dump-perl libsoap-lite-perl libclass-methodmaker-perl  libxml-libxml-simple-perl libssl-dev libarchive-zip-perl libuuid-perl lib32z1 lib32ncurses5 lib32bz2-1.0</span></code></pre></td></tr></table></div></figure>
 
 
-<p>Very briefly, Virtual SAN takes locally attached storage on you hypervisors. It then turns it into a distributed object storage system which you can use to store your VMDKs. <a href="http://www.yellow-bricks.com/2013/09/05/how-do-you-know-where-an-object-is-located-with-virtual-san/">Plenty</a> <a href="http://www.computerweekly.com/news/2240166057/VMware-Virtual-SAN-vision-to-disrupt-storage-paradigm">of</a> <a href="http://chucksblog.emc.com/chucks_blog/2013/08/considering-vsan.html">other</a> <a href="http://architecting.it/2013/08/29/reflections-on-vmworld-2013/">people</a> have gone into a lot more detail. Unlike other systems that did a similar job previously this is not a Virtual Appliance, but runs on the hypervisors themselves.</p>
+<p>This includes a bunch of Perl modules for munching through XML, plus some 32-bit libraries so that all the tools can work.</p>
 
-<p>The technology to do this sort of thing using purely Open Source exists. All this has added is a distributed storage layer on each hypervisor. There are plenty of these exist for Linux, with my preference probably being for GlusterFS. Something like this is what I would have in mind:</p>
+<p>Finally, you can extract the tarball and install the CLI:</p>
 
-<p><img class="center" src="http://i.imgur.com/NHYdf78.png"></p>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>tar xvf VMware-vSphere-CLI-5.5.0-1549297.x86_64.tar.gz
+</span><span class='line'>cd vmware-vsphere-cli-distrib/
+</span><span class='line'>sudo ./vmware-install.pl</span></code></pre></td></tr></table></div></figure>
 
-<p>Ceph is probably the closest to Virtual SAN, as it is fundamentally object-based. Yes there would be CPU and RAM overhead, but that also exists for Virtual SAN too. Something like DRBD/GFS2 is not really suitable here, because it will not scale-out as much. You would not have to have local storage in all your hypervisor nodes (as with Virtual SAN) too.</p>
 
-<p>I honestly do not see any real problems with this.</p>
+
 </div>
 
 
@@ -154,12 +163,12 @@
   
 
 
-<time datetime="2013-09-05T21:19:00+02:00" pubdate data-updated="true">Thursday 05 September 2013</time>
+<time datetime="2014-04-09T10:51:00+02:00" pubdate data-updated="true">Wednesday 09 April 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/storage/'>storage</a>, <a class='category' href='/blog/categories/virtualisation/'>virtualisation</a>
+    <a class='category' href='/blog/categories/linux/'>linux</a>, <a class='category' href='/blog/categories/vmware/'>vmware</a>
   
 </span>
 
@@ -168,7 +177,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.chriscowley.me.uk/blog/2013/09/05/open-source-virtual-san-thought-experiment/" data-via="chriscowleyunix" data-counturl="http://www.chriscowley.me.uk/blog/2013/09/05/open-source-virtual-san-thought-experiment/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.chriscowley.me.uk/blog/2014/04/09/vmware-cli-on-ubuntu-saucy-salamander/" data-via="chriscowleyunix" data-counturl="http://www.chriscowley.me.uk/blog/2014/04/09/vmware-cli-on-ubuntu-saucy-salamander/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -181,10 +190,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/08/01/home-made-energy-drink/" title="Previous Post: Home-made Energy Drink">&laquo; Home-made Energy Drink</a>
+        <a class="basic-alignment left" href="/blog/2014/03/31/openstack-neutron-performance-problems/" title="Previous Post: Openstack Neutron Performance problems">&laquo; Openstack Neutron Performance problems</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/09/12/the-end-of-centralised-storage/" title="Next Post: The End of Centralised Storage">The End of Centralised Storage &raquo;</a>
       
     </p>
   </footer>
