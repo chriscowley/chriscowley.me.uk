@@ -4,7 +4,7 @@
   <title><![CDATA[Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2014-04-09T11:02:44+02:00</updated>
+  <updated>2014-04-09T11:07:02+02:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -40,7 +40,7 @@
 </span><span class='line'>sudo ./vmware-install.pl</span></code></pre></td></tr></table></div></figure>
 
 
-
+<p>I have not tested it, but this will probably be the same process for Debian (at least Wheezy and Sid).</p>
 ]]></content>
   </entry>
   

@@ -25,4 +25,4 @@ cd vmware-vsphere-cli-distrib/
 sudo ./vmware-install.pl
 ```
 
-
+I have not tested it, but this will probably be the same process for Debian (at least Wheezy and Sid).
