@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: france | Just Another Linux Blog]]></title>
+  <link href="http://www.chriscowley.me.uk/blog/categories/france/atom.xml" rel="self"/>
+  <link href="http://www.chriscowley.me.uk/"/>
+  <updated>2014-04-14T22:41:45+02:00</updated>
+  <id>http://www.chriscowley.me.uk/</id>
+  <author>
+    <name><![CDATA[Chris Cowley]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[My new job]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2012/10/01/my-new-job/"/>
+    <updated>2012-10-01T22:16:00+02:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2012/10/01/my-new-job</id>
+    <content type="html"><![CDATA[<p>I have now got new challenges and am designing much bigger systems. Whereas before I would have take one of these:
+<img class="center" src="/images/p2000-g3-sff.png" width="250" height="400"></p>
+
+<!-- more -->
+
+
+<p>Plugged it into a pair of these:
+<img class="center" src="/images/silkworm.jpg" width="250" height="450">
+And finally plugged in a pair of these:
+<img class="center" src="/images/dl380g7.jpg" width="200" height="400"></p>
+
+<p>Now I do not actually do the plugging in - that is not part of the documented process. Also, the system I am designing is on the other side of the world. However I now take one of <a href="http://uk.emc.com/storage/symmetrix-vmax/vmax-20k.htm" target="_blank">these</a>, a couple of <a href="http://www.cisco.com/en/US/products/hw/ps4159/ps4358/ps5395/index.html" target="_blank">these</a> and add a couple of racks of <a href="http://www.cisco.com/en/US/products/ps10265/index.html" target="_blank">these</a>. Finally it all plugs into a couple of <a href="http://www.cisco.com/en/US/products/ps10098/index.html" target="_blank">these</a>.</p>
+
+<p>True I am not as hand-ons as I would like to be (for now). However, I am getting exposed to a the real big boys kit with systems that are used by 100k+ users, as opposed to 100 users. The challenge is very real, but exciting. As we quite often said at Snell:</p>
+
+<p>"Challenge accepted..."</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[My new life]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2012/10/01/my-new-life/"/>
+    <updated>2012-10-01T22:06:00+02:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2012/10/01/my-new-life</id>
+    <content type="html"><![CDATA[<p>I am now a month in to life in France. Make no mistake I am so far very happy that we have made the right decision, even though not everything is perfect. The biggest beef is without a doubt the paperwork!</p>
+
+<!-- more -->
+
+
+<p>For example, it took us a month to get a phone line and the stumbling block was not having the right piece of paper. To get onto the system you have to have a bill, but to get a bill you need a bill. Call it a catch-22 or a chicken-egg take your pick, but french beaurocrats love that.</p>
+
+<p>Working in France is a little different to England. Add to that the fact that I am going from a <a href="http://www.snellgroup.com" target="_blank">small company</a> to working on a project for a <b>much</b> <a href="http://www.orange-business.com" target="_blank">larger one</a> and you have quite a culture shock.</p>
+
+<p><span class='pullquote-right' data-pullquote='All my colleagues take a 2 hour lunch'>
+The attitude to lunch is probably the biggest single change of all that can only be attributed to country. All my colleagues take a 2 hour lunch religiously, during which they go elsewhere. I am used to taking a 30 minute break to read the Register with a sandwhich/salad at my desk. For now, past an hour, I get bored an return to work. Maybe I will extend my lunch as I get used to it, but maybe not - shorter lunch means I get to go home earlier.
+</span></p>
+
+<h2>Commuting</h2>
+
+<p>My commute is quite a lot further than when I was at Snell:</p>
+
+<iframe width="500" height="300" scrolling="no" frameborder="no" src="https://www.google.com/fusiontables/embedviz?viz=MAP&amp;q=select+col2+from+1J0AXs2Oyzs-J9ChL5U7hgKWkHX-HimQZ699VSO4&amp;h=false&amp;lat=50.820603567709554&amp;lng=-1.011776909545925&amp;z=13&amp;t=1&amp;l=col2"></iframe>
+
+
+<p>That was quite a nice route once you got to Langston harbour. What I do now is very different. For a start I have not cycled all the way yet. Partly because it it a lot further, but also because trains are a <em>lot</em> cheaper here. I pay 80 euros for a month, half of which gets re-imbursed. When your train costs less than 2 euros a day, it does not even make sense to take a car.</p>
+
+<p>The actual cycling is a lot more pleasant as well. I live in a hamlet, and my route take me past the <em>le lac tranquille</em> (the calm lake). In the morning it gets very cold and misty, which is very nice.</p>
+
+<p><a href="http://imgur.com/Trejw"><img src="http://i.imgur.com/Trejw.jpg" title="Hosted by imgur.com" alt="" /></a></p>
+
+<p>Drivers are about the same. The vast majority give me plenty of space, but obviously you get the odd idiot. Just today someone shouted "Je vais te touer" so some things are pretty universal it would appear.</p>
+
+<p>I have also found that the paint on the roads (at least in Rennes) is more slippery in the wet. The simple answer has been to avoid the cycle lanes - no real change there then.</p>
+]]></content>
+  </entry>
+  
+</feed>

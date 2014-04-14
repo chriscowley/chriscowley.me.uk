@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: monitoring | Just Another Linux Blog]]></title>
+  <link href="http://www.chriscowley.me.uk/blog/categories/monitoring/atom.xml" rel="self"/>
+  <link href="http://www.chriscowley.me.uk/"/>
+  <updated>2014-04-14T22:41:45+02:00</updated>
+  <id>http://www.chriscowley.me.uk/</id>
+  <author>
+    <name><![CDATA[Chris Cowley]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Logstash on CentOS 6]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2014/03/21/logstash-on-centos-6/"/>
+    <updated>2014-03-21T20:57:00+01:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2014/03/21/logstash-on-centos-6</id>
+    <content type="html"><![CDATA[<p><img class="right" src="http://logstash.net/images/logstash.png" width="200"> It's been a while since I last posted anything, but it is time to. I've been playing around a lot with various tools for gathering information about my environment recently. One of the most important tools for storing that information is decent logging. Syslog is proven and solid, but a little creaky. For storing everything it is fine, but getting anything out is not so great.</p>
+
+<!-- more -->
+
+
+<p>Logstash is an awesome tool written by <a href="https://twitter.com/jordansissel">Jordan Sissel</a> that is used to "collect logs, parse them, and store them for later use (like, for searching)". It has an excellent howto, but I have one problem with it: the use of a tar file rather than packages. This easily worked around though, as Elasticsearch have it in their Yum repository.</p>
+
+<p>First up, define that repository in the file <code>/etc/yum.repos.d/logstash.repo</code>:</p>
+
+<p>```
+[logstash-1.4]
+name=logstash repository for 1.4.x packages
+baseurl=http://packages.elasticsearch.org/logstash/1.4/centos
+gpgcheck=1
+gpgkey=http://packages.elasticsearch.org/GPG-KEY-elasticsearch
+enabled=1</p>
+
+<p>[elasticsearch-1.0]
+name=Elasticsearch repository for 1.0.x packages
+baseurl=http://packages.elasticsearch.org/elasticsearch/1.0/centos
+gpgcheck=1
+gpgkey=http://packages.elasticsearch.org/GPG-KEY-elasticsearch
+enabled=1
+```</p>
+
+<p>The rpm does not create its user and group, nor does it create the PID directory for Kibana. Create those then install Łogstash:</p>
+
+<p><code>
+mkdir /var/run/logstash-web
+yum -y install logstash elasticsearch logstash-contrib.noarch mcollective-logstash-audit.noarch
+chkconfig --add elasticsearch
+chkconfig elasticsearch on
+service elasticsearch start
+</code></p>
+
+<p>For the installation that is it. When you reboot the services will start and you are good to go. Before rebooting though it is worth playing around a little. So lets blatantly rip off the <a href="http://logstash.net/docs/1.4.0/tutorials/getting-started-with-logstash">Quickstart</a>. Run:</p>
+
+<p><code>
+sudo -u logstash /opt/logstash/bin/logstash -e 'input { stdin { } } output { stdout { codec =&gt; rubydebug } }'
+</code></p>
+
+<p>Logstash takes a while to get going as it needs to fire up the JRE (hint: run <code>htop</code> in another terminal to see when the Java process calms down). When it is happy type (in the same console you started it in) <code>hello</code>. You should see something like:</p>
+
+<p>```
+hello
+{</p>
+
+<pre><code>   "message" =&gt; "hello",
+  "@version" =&gt; "1",
+"@timestamp" =&gt; "2014-03-21T20:56:58.439Z",
+      "host" =&gt; "monitor.chriscowley.lan"
+</code></pre>
+
+<p>}</p>
+
+<p>```</p>
+
+<p>That is not very interesting unfortunately. It just takes STDIN, the logs it to STDOUT in a funky format. This all gets more interesting when you start storing your logs somewhere. A good choice is (funnily enough) Elasticsearch. This time run Logstash with this as the output:</p>
+
+<p><code>
+sudo -u logstash /opt/logstash/bin/logstash -e 'input { stdin { } } output { elasticsearch { host =&gt; localhost } }'
+</code></p>
+
+<p>Now if you type something in that same console (we're still taking the input from STDIN) the output will be written to Elasticsearch.</p>
+
+<p>To test that run <code>curl 'http://localhost:9200/_search?pretty'</code> in another console and you should see something like:</p>
+
+<p>```
+{
+  "took" : 11,
+  "timed_out" : false,
+  "_shards" : {</p>
+
+<pre><code>"total" : 5,
+"successful" : 5,
+"failed" : 0
+</code></pre>
+
+<p>  },
+  "hits" : {</p>
+
+<pre><code>  "_index" : "logstash-2014.03.21",
+  "_type" : "logs",
+  "_id" : "aRFzhx-4Ta-jy_PC50U7Lg",
+  "_score" : 1.0, "_source" : {"message":"you know, for logs","@version":"1","@timestamp":"2014-03-21T21:01:17.766Z","host":"monitor.chriscowley.lan"}
+}, {
+  "_index" : "logstash-2014.03.21",
+  "_type" : "logs",
+  "_id" : "VP8WcqOYRuCbpYgGA5S1oA",
+  "_score" : 1.0, "_source" : {"message":"another one for the logs","@version":"1","@timestamp":"2014-03-21T21:03:42.480Z","host":"monitor.chriscowley.lan"}
+} ]
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p>Now that does not persist when you kill Logstash. To do that create a file in <code>/etc/logstash/conf.d/</code> that contains this:</p>
+
+<p>```
+input {
+  file {</p>
+
+<pre><code>path           =&gt; "/var/log/messages"
+start_position =&gt; beginning
+</code></pre>
+
+<p>  }
+}</p>
+
+<p>filter {
+  if [type] == "syslog" {</p>
+
+<pre><code>grok {
+  match =&gt; { "message" =&gt; "%{SYSLOGTIMESTAMP:syslog_timestamp} %{SYSLOGHOST:syslog_hostname} %{DATA:syslog_program}(?:\[%{POSINT:syslog_pid}\])?: %{GREEDYDATA:syslog_message}" }
+  add_field =&gt; [ "received_at", "%{@timestamp}" ]
+  add_field =&gt; [ "received_from", "%{host}" ]
+}
+syslog_pri { }
+date {
+  match =&gt; [ "syslog_timestamp", "MMM  d HH:mm:ss", "MMM dd HH:mm:ss" ]
+}
+</code></pre>
+
+<p>  }
+}</p>
+
+<p>output {
+  elasticsearch {</p>
+
+<pre><code>host =&gt; localhost
+</code></pre>
+
+<p>  }
+  stdout { codec => rubydebug }
+}
+```</p>
+
+<p>That gives you a simple setup for storing everything in that systems' syslog. The logical next step from there is to enable that host a central syslogger. This well documented elsewhere, but simplistically you need to add the following to <code>/etc/rsyslog.conf</code>:</p>
+
+<p>```</p>
+
+<h1>Provides UDP syslog reception</h1>
+
+<p>$ModLoad imudp
+$UDPServerRun 514</p>
+
+<h1>Provides TCP syslog reception</h1>
+
+<p>$ModLoad imtcp
+$InputTCPServerRun 514
+```</p>
+
+<p>There is a single final step due to the fact that /var/log/messages is only readable by <em>root</em>. Normally this is a big faux pas, but I am putting my trust in Jordan Sissel not to have sold his soul to the NSA. To read this (and connect to ports below 1024) Logstash needs to run as <em>root</em>. Edit <code>/etc/sysconfig/logstash</code> and change the line:</p>
+
+<p><code>
+LS_USER=logstash
+</code></p>
+
+<p>to read:</p>
+
+<p><code>
+LS_USER=root
+</code></p>
+
+<p>Now you can start Logstash and it will pull in <code>/var/log/messages</code>:</p>
+
+<p><code>
+service logstash start
+</code></p>
+
+<p>There are loads of configuration options for Logstash, so have a look in the <a href="http://logstash.net/docs/1.4.0/">main documentation</a> and the <a href="http://cookbook.logstash.net/">Cookbook</a> for more.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[SMS from Icinga or Nagios]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2010/05/04/sms-from-icinga-or-nagios/"/>
+    <updated>2010-05-04T13:26:00+02:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2010/05/04/sms-from-icinga-or-nagios</id>
+    <content type="html"><![CDATA[<p>Finding out how to have Nagios (or in my case Icinga) send SMS alerts is easy. However, from my point of view it fell down in 2 ways.</p>
+
+<ol>
+<li>Most of these guides are Debian specific, I am using Centos.</li>
+<li>The SMS alerts are all or nothing, I only want SMS alerts for specific services (such as the corporate website).</li>
+</ol>
+
+
+<!-- more -->
+
+
+<h2>Hardware</h2>
+
+<p>First things first you need something to send the SMS. I am using a brand new Vodaphone USB dongle taped to the side of the rack . I also had it working with a Nokia E51 using the same tools – obviously this would the require constant charging.</p>
+
+<p>Ideally I would have prefered to use an internal card. PCI -> PC card bridges do exist, but I had no joy on my Icinga server, although it did work in a Dell Optiplex we had lying around, but it caused an HP XW4600 not to switch on at all.</p>
+
+<h2>Software</h2>
+
+<p>I am using <a href="http://smstools3.kekekasvi.com/" target="_blank">SMS Server Tools 3</a> which are available for Centos/RHEL in <a href="https://fedoraproject.org/wiki/EPEL" target="_blank">EPEL</a>. This gives you an smsd daemon that watches a folder for text messages in a particular format.</p>
+
+<p>When you have enabled EPEL run
+<code>
+yum install smstools
+chkconfig –levels 35 smsd on
+</code></p>
+
+<p>When I plugged in the USB dongle I got a pair of USB ttys at /dev/ttyUSB0 and /dev/ttyUSB1</p>
+
+<p>Add the following to /etc/smsd.conf
+```
+devices = GSM1
+logfile = /var/log/smsd.log
+loglevel = 7</p>
+
+<p>ARVE Error: no video ID
+device = /dev/ttyUSB0
+smsc = 447785016005 # I am using Vodaphone, your’s may vary.
+incoming = no
+```
+Now you can start the daemon</p>
+
+<pre><code>/etc/init.d/smsd start
+</code></pre>
+
+<p>Finally, for reasons explained later, you need an entry in icinga’s cron.
+<code>
+* * * * * if [[ `ls /tmp/ | grep 'sms-icinga' | wc -l` -gt 0 ]];then /bin/mv /tmp/sms-icinga* /var/spool/sms/outgoing/;fi
+</code></p>
+
+<p>What does this do? It checks “/tmp/” for any files that contain the name “sms-icinga” every minute. If any exist it moves them to “/var/spool/sms/outgoing/”. That last folder is watched by smsd for those special text files mentioned above.
+Icinga/Nagios configuration</p>
+
+<p>First add the commands, for which I use the file /etc/icinga/objects/commands.conf
+```
+define command {</p>
+
+<pre><code>command_name notify-host-by-sms
+command_line /usr/bin/printf “%b” “To: $CONTACTPAGER$\n\n$NOTIFICATIONTYPE$\nHost Alert: $HOSTNAME$ is $HOSTSTATE$\n” &gt; /tmp/sms-icinga.$HOSTNAME$.$HOSTSTATE$.$CONTACTPAGER$
+</code></pre>
+
+<p>}</p>
+
+<p>define command {</p>
+
+<pre><code>command_name notify-service-by-sms
+command_line /usr/bin/printf “%b” “To: $CONTACTPAGER$\n\n$NOTIFICATIONTYPE$\nService Alert:     $SERVICEDESC$ on $HOSTNAME$ is $SERVICESTATE$” &gt; /tmp/sms-icinga.$SERVICEDESC$.$HOSTNAME$.$CONTACTPAGER$
+</code></pre>
+
+<p>}
+```
+These commands write a file in /tmp that includes the string sms-icinga that our cron script looks for. The rest of it is to endure we do not accidentally overwrite an alert that has not been sent yet. The reason we need to write it into tmp, and the mv it to the outgoing folder is a little weird. I found that if I wrote directly to the outgoing folder, then smsd seemed picked it up too early and failed to parse the file correctly – strange, but not to worry.</p>
+
+<p>Now is where need to fiddle things a little bit if we only want to send messages for certain critical services. If you want SMS alerts for all your services you can just add a pager entry to all you contacts. We need to create an SMS user and a couple of templates to base our critical stuff on.</p>
+
+<p>The templates:
+```
+define contact {</p>
+
+<pre><code>name sms-contact
+use generic-contact
+service_notification_commands notify-service-by-sms, notify-service-by-email
+host_notification_commands notify-host-by-sms, notify-host-by-email
+register 0
+</code></pre>
+
+<p>}</p>
+
+<p>define service {</p>
+
+<pre><code>use generic-service
+name critical-service
+contact_groups admins-sms,linux-admin
+</code></pre>
+
+<p>}</p>
+
+<p>define host {</p>
+
+<pre><code>name critical-host
+use generic-host
+contact_groups admins-sms,linux-admin
+</code></pre>
+
+<p>}
+<code>
+my user:
+</code>
+define contact {</p>
+
+<pre><code>contact_name ChrisCowley-SMS
+use sms-contact
+pager &lt;my-mobile-number&gt;
+</code></pre>
+
+<p>}
+<code>
+a contact group:
+</code>
+define contactgroup {</p>
+
+<pre><code>contactgroup_name admins-sms
+members ChrisCowley-SMS
+</code></pre>
+
+<p>}
+```</p>
+
+<p>Finally we can create our essential service:</p>
+
+<p>```
+define service {</p>
+
+<pre><code>use critical-service
+service_description Website-content
+check_command check_http_content!-U http://www.snellgroup.com -m Snell
+host_name www.snellgroup.com
+</code></pre>
+
+<p>}
+```</p>
+]]></content>
+  </entry>
+  
+</feed>

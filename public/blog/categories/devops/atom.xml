@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: devops | Just Another Linux Blog]]></title>
+  <link href="http://www.chriscowley.me.uk/blog/categories/devops/atom.xml" rel="self"/>
+  <link href="http://www.chriscowley.me.uk/"/>
+  <updated>2014-04-14T22:41:45+02:00</updated>
+  <id>http://www.chriscowley.me.uk/</id>
+  <author>
+    <name><![CDATA[Chris Cowley]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[NFS with Puppet and an ENC]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2014/01/24/nfs-with-puppet-and-an-enc/"/>
+    <updated>2014-01-24T20:06:00+01:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2014/01/24/nfs-with-puppet-and-an-enc</id>
+    <content type="html"><![CDATA[<p><img class="right" src="http://puppetlabs.com/sites/default/files/PL_logo_horizontal_RGB_0.svg" width="200" height="200">Ages ago (it seems) I posted a <a href="http://www.chriscowley.me.uk/blog/2013/04/11/using-hiera-with-puppet/">howto</a> on configure NFS using Puppet and Hiera. I have been using this happily for several months and adding a new share was is as simple as adding a line to a YAML file. I was never completely happy with it though, especially after I decided to deploy <a href="http://www.theforeman.org">The Foreman</a> in my lab.</p>
+
+<!-- more -->
+
+
+<p>The reason I was never satisfied is because The Foreman makes a really good ENC. I wanted to use this, so I have modified my module to use an ENC rather than Hiera directly.</p>
+
+<p>OK, first I we need to get the module into a position where it uses parameterized classes. This is actually quite simple.</p>
+
+<p>My original manifest is <a href="http://gitlab.chriscowley.me.uk/puppet/chriscowley-nfs/blob/b5d5fe6eba75379fad37255ceddb55208cbe7208/manifests/server.pp">here</a>. The key item is the <em>$exports</em> variable, which is hiera data. All I did was create a class parameter called <em>exports</em> and removed the variable within the class. You can see the new code <a href="http://gitlab.chriscowley.me.uk/puppet/chriscowley-nfs/blob/ab9627cf920f3a87986aa7379168572ca3a55f7e/manifests/server.pp">here</a>. I have also moved the <code>list_exports</code> function out into a <a href="http://gitlab.chriscowley.me.uk/puppet/chriscowley-nfs/blob/ab9627cf920f3a87986aa7379168572ca3a55f7e/manifests/list_exports.pp">seperate file</a>. Apparently this makes it more readable, although I am not convinced in this instance.</p>
+
+<p>I also took the chance to update my module a bit so that it was not hard-coded to my own lab network. To that end, it will automatically pull out the IP address and netmask of eth0. You can edit this easily enough using your ENC.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>manifests/server.pp  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='puppet'><span class='line'>  <span class="kd">class</span> <span class="nc">nfs::server</span> <span class="p">(</span><span class="err">&lt;/</span><span class="ss">p</span><span class="err">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">&lt;</span><span class="ss">pre</span><span class="err">&gt;&lt;</span><span class="ss">code</span><span class="err">&gt;</span><span class="nv">$exports</span> <span class="p">=</span> <span class="p">[</span> <span class="s1">&#39;/srv/share&#39;</span><span class="p">],</span>
+</span><span class='line'><span class="nv">$networkallowed</span> <span class="p">=</span> <span class="nv">$::network_eth0</span><span class="p">,</span>
+</span><span class='line'><span class="nv">$netmaskallowed</span> <span class="p">=</span> <span class="nv">$::netmask_eth0</span><span class="p">,</span>
+</span><span class='line'><span class="err">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="ss">pre</span><span class="err">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">&lt;</span><span class="ss">p</span><span class="err">&gt;</span>  <span class="p">)</span> <span class="p">{</span><span class="err">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">&lt;pre&gt;&lt;code&gt;//</span> <span class="err">Code</span> <span class="err">here</span>
+</span><span class='line'><span class="err">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">&lt;p&gt;</span>  }
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Next we need a simple ENC to supply the data. An ENC is actually just any script that returns YAML. It has a single parameter, which is the FQDN of the node. I use this:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>/usr/local/bin/simple-enc.sh </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;!/bin/bash&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;DATADIR<span class="o">=</span><span class="s2">&quot;/var/local/enc&quot;</span>
+</span><span class='line'><span class="nv">NODE</span><span class="o">=</span><span class="nv">$1</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;cat <span class="s2">&quot;${DATADIR}/${NODE}.yaml&quot;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Next you need a YAML file that looks like:</p>
+
+<h2><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>/var/local/enc/nfs.example.lan.yaml </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">&lt;/h2&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">&lt;p&gt;environment</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">production</span>
+</span><span class='line'><span class="l-Scalar-Plain">classes</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">nfs::server:&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">&lt;pre&gt;&lt;code&gt;exports</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">/srv/share1</span>
+</span><span class='line'>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">/srv/share3</span>
+</span><span class='line'><span class="l-Scalar-Plain">networkallowed</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">192.168.0.0</span>
+</span><span class='line'><span class="l-Scalar-Plain">netmaskallowed</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">255.255.255.0</span>
+</span><span class='line'><span class="l-Scalar-Plain">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">&lt;p&gt;parameters</span><span class="p-Indicator">:</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Finally, you need to enable this on your Puppet master. Add this to <code>/etc/puppet/puppet.conf</code>:</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[master]&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>node_terminus = exec
+</span><span class='line'>external_nodes = /usr/local/bin/simple-enc.sh
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>Now whenever a node with the FQDN nfs.example.lan syncs with the master it runs <code>/usr/local/bin/simple-enc.sh nfs.examle.lan.yaml</code>. This returns the contents of the YAML file above. The layout of it is pretty logical, but I suggest reading Puppetlabs <a href="http://docs.puppetlabs.com/guides/external_nodes.html">docs</a>.</p>
+
+<p>How is this better than the previous Hiera setup? First I can now use my module with The Foreman which answers my immediate need. Second I can now submit this module to the Forge with a warm fuzzy feeling inside as I am a good citizen. not only does it work with Puppet 3, but also really old versions of Puppet that do not support an ENC or Hiera. It can do this because the user can still edit the class parameters directly, or set the in <code>site.pp</code> (<strong>DON'T DO THAT</strong>).</p>
+
+<p>You can install the module on your own Puppet master with:</p>
+
+<p>```
+git clone http://gitlab.chriscowley.me.uk/puppet/chriscowley-nfs.git \</p>
+
+<pre><code>/etc/puppet/modules/nfs/
+</code></pre>
+
+<p>```</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Automated GlusterFS]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2013/06/23/automated-glusterfs/"/>
+    <updated>2013-06-23T22:02:00+02:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2013/06/23/automated-glusterfs</id>
+    <content type="html"><![CDATA[<p><img class="right" src="http://www.hastexo.com/system/files/imagecache/sidebar/20120221105324808-f2df3ea3e3aeab8_250_0.png"> As I promised on Twitter, this is how I automate a GlusterFS deployment. I'm making a few assumptions here:</p>
+
+<!-- more -->
+
+
+<ul>
+<li>I am using CentOS 6, so should work on RHEL 6 and Scientific Linux 6 too. Others may work, but YMMV.
+
+<ul>
+<li>As I use XFS, RHEL users will need the <em>Scalable Storage</em> option. Ext4 will work, but XFS is recommended.</li>
+</ul>
+</li>
+<li>That you have a way of automating your base OS installation. My personal preference is to use <a href="https://github.com/puppetlabs/Razor">Razor</a>.</li>
+<li>You have a system with at least a complete spare disk dedicated to a GlusterFS brick. That is the best way to run GlusterFS anyway.</li>
+<li>You have 2 nodes and want to replicate the data</li>
+<li>You have a simple setup with only a single network, because I am being lazy. As a proof-of concept this is fine. Modifying this for second network is quite easy, just change the IP address in you use.</li>
+</ul>
+
+
+<p><img src="https://docs.google.com/drawings/d/1XA7GH3a4BL1uszFXrSsZjysi59Iinh-0RmhqdDbt7QQ/pub?w=673&amp;h=315" title="'simple gluster architecture'" ></p>
+
+<p>The diagram above shows the basic layout of what to start from in terms of hardware. In terms of software, you just need a basic CentOS 6 install and to have Puppet working.</p>
+
+<p>I use a pair of Puppet modules (both in the Forge): <a href="http://forge.puppetlabs.com/thias/glusterfs">thias/glusterfs</a> and <a href="http://forge.puppetlabs.com/puppetlabs/lvm">puppetlabs/lvm</a>. The GlusterFS module CAN do the LVM config, but that strikes me as not the best idea. The UNIX philosophy of "do one job well"  holds up for Puppet modules as well. You will also need my <a href="https://github.com/chriscowley/puppet-yumrepos">yumrepos</a> module.</p>
+
+<p>Clone those 3 modules into your modules directory:</p>
+
+<p><code>
+cd /etc/puppet/
+git clone git://github.com/chriscowley/puppet-yumrepos.git modules/yumrepos
+puppet module install puppetlabs/lvm --version 0.1.2
+puppet module install thias/glusterfs --version 0.0.3
+</code></p>
+
+<p>I have specified the versions as that is what was the latest at the time of writing. You should be able to take the latest as well, but comment with any differences if any. That gives the core of what you need so you can now move on to you <code>nodes.pp</code>.</p>
+
+<p>```
+class basenode {
+  class { 'yumrepos': }
+  class { 'yumrepos::epel': }
+}</p>
+
+<p>class glusternode {
+  class { 'basenode': }
+  class { 'yumrepos::gluster': }</p>
+
+<p>  volume_group { "vg0":</p>
+
+<pre><code>ensure =&gt; present,
+physical_volumes =&gt; "/dev/sdb",
+require =&gt; Physical_volume["/dev/sdb"]
+</code></pre>
+
+<p>  }
+  physical_volume { "/dev/sdb":</p>
+
+<pre><code>ensure =&gt; present
+</code></pre>
+
+<p>  }
+  logical_volume { "gv0":</p>
+
+<pre><code>ensure =&gt; present,
+require =&gt; Volume_group['vg0'],
+volume_group =&gt; "vg0",
+size =&gt; "7G",
+</code></pre>
+
+<p>  }
+  file { [ '/export', '/export/gv0']:</p>
+
+<pre><code>seltype =&gt; 'usr_t',
+ensure =&gt; directory,
+</code></pre>
+
+<p>  }
+  package { 'xfsprogs': ensure => installed
+  }
+  filesystem { "/dev/vg0/gv0":</p>
+
+<pre><code>ensure =&gt; present,
+fs_type =&gt; "xfs",
+options =&gt; "-i size=512",
+require =&gt; [Package['xfsprogs'], Logical_volume['gv0'] ],
+</code></pre>
+
+<p>  }</p>
+
+<p>  mount { '/export/gv0':</p>
+
+<pre><code>device =&gt; '/dev/vg0/gv0',
+fstype =&gt; 'xfs',
+options =&gt; 'defaults',
+ensure =&gt; mounted,
+require =&gt; [ Filesystem['/dev/vg0/gv0'], File['/export/gv0'] ],
+</code></pre>
+
+<p>  }
+  class { 'glusterfs::server':</p>
+
+<pre><code>peers =&gt; $::hostname ? {
+  'gluster1' =&gt; '192.168.1.38', # Note these are the IPs of the other nodes
+  'gluster2' =&gt; '192.168.1.84',
+},
+</code></pre>
+
+<p>  }
+  glusterfs::volume { 'gv0':</p>
+
+<pre><code>create_options =&gt; 'replica 2 192.168.1.38:/export/gv0 192.168.1.84:/export/gv0',
+require =&gt; Mount['/export/gv0'],
+</code></pre>
+
+<p>  }
+}</p>
+
+<p>node 'gluster1' {
+  include glusternode
+  file { '/var/www': ensure => directory }
+  glusterfs::mount { '/var/www':</p>
+
+<pre><code>device =&gt; $::hostname ? {
+  'gluster1' =&gt; '192.168.1.84:/gv0',
+}
+</code></pre>
+
+<p>  }
+}</p>
+
+<p>node 'gluster2' {
+  include glusternode
+  file { '/var/www': ensure => directory }
+  glusterfs::mount { '/var/www':</p>
+
+<pre><code>device =&gt; $::hostname ? {
+  'gluster2' =&gt; '192.168.1.38:/gv0',
+}
+</code></pre>
+
+<p>  }
+}
+```</p>
+
+<p>What does all that do? Starting from the top:</p>
+
+<ul>
+<li> The <code>basenode</code> class does all your basic configuration across all your hosts. Mine actually does a lot more, but these are the relevant parts.</li>
+<li> The <code>glusternode</code> class is shared between all your GlusterFS nodes. This is where all your Server configuration is.</li>
+<li> Configures LVM
+
+<ul>
+<li>Defines the Volume Group "vg0" with the Physical Volume <code>/dev/sdb</code></li>
+<li>Creates a Logical Volume "gv0" for GlusterFS use and make it 7GB</li>
+</ul>
+</li>
+<li> Configures the file system
+
+<ul>
+<li>Creates the directory <code>/export/gv0</code></li>
+<li>Formats the LV created previously with XFS (installs the package if necessary)</li>
+<li>Mounts the LV at <code>/export/gv0</code></li>
+</ul>
+</li>
+</ul>
+
+
+<p>This is now all ready for the GlusterFS module to do its stuff. All this happens in those last two sections.</p>
+
+<ul>
+<li> The class <code>glusterfs::Server</code> sets up the peering between the two hosts. This will actually generate a errors, but do not worry. This because gluster1 successfully peers with gluster2. As a result gluster2 fails to peer with gluster1 as they are already peered.</li>
+<li> Now <code>glusterfs::volume</code> creates a replicated volume, having first ensured that the LV is mounted correctly.</li>
+<li> All this is then included in the node declarations for <code>gluster1</code> and <code>gluster2</code>.</li>
+</ul>
+
+
+<p>All that creates the server very nicely. It will need a few passes to get everything in place, while giving a few red herring errors. It should would however, all the errors are there in the README for the GlusterFS module in PuppetForge, so do not panic.</p>
+
+<p>A multi-petabyte scale-out storage system is pretty useless if the data cannot be read by anything. So lets use those nodes and mount the volume. This could also be a separate node (but once again I am being lazy) the process will be exactly the same.</p>
+
+<ul>
+<li> Create a mount point for it ( `file {'/var/www': ensure => directory }</li>
+<li> Define your <code>glusterfs::mount</code> using any of the hosts in the cluster.</li>
+</ul>
+
+
+<p>Voila, that should all pull together and give you a fully automated GlusterFS set up. The sort of scale that GlusterFS can reach makes this sort of automation absolutely essential in my opinion. This should be relatively easy to convert to Chef or Ansible, whatever takes your fancy. I have just used Puppet because of my familiarity with it.</p>
+
+<p>This is only one way of doing this, and I make no claims to being the most adept Puppet user in the world. All I hope to achieve is that someone finds this useful. Courteous comments welcome.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Using Hiera with Puppet]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2013/04/11/using-hiera-with-puppet/"/>
+    <updated>2013-04-11T20:24:00+02:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2013/04/11/using-hiera-with-puppet</id>
+    <content type="html"><![CDATA[<p>Using Hiera with Puppet is something I have struggled with a bit. I could see the benefits, namely decoupling my site configuration from my logic. However, for some reason I struggled a bit to really get my head around it. This was compounded by it being quite new (only really integrated in Puppet 3), so the docs are  little lacking.</p>
+
+<!-- more -->
+
+
+<p>There is some though, the <a href="http://docs.puppetlabs.com/hiera/latest/">documentation on PuppetLab's site</a> is excellent, but a bit light. It explains the principles well, but is a little limited in real-world examples. Probably the best resource I found was Kelsey Hightower's excellent presentation at <a href="http://youtu.be/z9TK-gUNFHk">PuppetConf 2012</a>:</p>
+
+<p>I learnt a lot from that, but it would be nice if there was an equivalent written down. I suppose that is what I am aiming at here.</p>
+
+<h1>Configuration</h1>
+
+<ul>
+<li><a href="https://github.com/chriscowley/puppet-nfs">NFS Module</a></li>
+<li><a href="https://github.com/chriscowley/my-master-puppet/blob/master/hiera.yaml">Hiera Config</a></li>
+<li><a href="https://github.com/chriscowley/my-master-puppet/tree/master/hieradata">Hiera Data</a></li>
+</ul>
+
+
+<p>I am using Open Source Puppet 3. If you are using 2.7 or Puppet Enterprise, files will be in a slightly different place. That is all explained in the documentation linked above.</p>
+
+<p>The first thing you need to do is configure Hiera using the file <code>/etc/puppet/hiera.yaml</code>. Mine looks like this:</p>
+
+<h2>```</h2>
+
+<p>:backends:
+- yaml
+:yaml:
+:datadir: /etc/puppet/hieradata/
+:hierarchy:
+- %{::clientcert}
+- common
+```</p>
+
+<p>This tells Hiera to use only the YAML backend - I do not like JSON because it always looks messy to me. It will look for the data in the folder <code>/etc/puppet/hieradata</code>. Finally it will look in that folder for a file called <clientcert>.yaml, then common.yaml. The process it uses to apply the values is explained very nicely in this image:
+<img src="http://docs.puppetlabs.com/hiera/latest/images/hierarchy1.png"></p>
+
+<p>Next, create the file <code>/etc/puppet/hieradata/&lt;certname&gt;.yaml</code> that contains your NFS exports:</p>
+
+<h2>```</h2>
+
+<p>exports:
+- /srv/iso
+- /srv/images
+```</p>
+
+<p>Now, checkout my NFS module from Github links above. If you are not on RHEL6 or similar (I use Centos personally) you will have to modify it as needed.</p>
+
+<p>There are 2 files that are really interesting here. The manifest file (manifests/server.pp) and the template to build the <code>/etc/exports</code> file (templates/exports.erb). We'll take apart the manifest, the template just iterates over the data passed to it from that.</p>
+
+<p>The first line creates an array variable called $exports from the Hiera data. Specifically, it looks for a key called <em>exports</em>. Hiera then goes through the hierarchy explained earlier looking for that key. In this case it will find it in the <certname>.yaml.</p>
+
+<p>This data is now used for 2 things. First it creates the necessary folders, then it build <code>/etc/exports</code>. Here there is a minor problem, because you cannot do a <em>for each</em> loop in a Puppet manifest. We can fiddle it a bit by using a <a href="http://docs.puppetlabs.com/puppet/3/reference/lang_defined_types.html">defined type</a>.</p>
+
+<p>The line <code>list_exports { $exports:; }</code> passes the <code>$exports</code> array to the type we define above it. This then goes ahead and creates the folders ready to be exported. The <code>-&gt;</code> builds an <a href="http://docs.puppetlabs.com/puppet/3/reference/lang_relationships.html#chaining-arrows">order relationship</a> with the File resource for <em>/etc/exports</em>. Specifically, that the directories need to be created before they are exported.</p>
+
+<p>```
+  define list_exports {</p>
+
+<pre><code>$export = $name
+file { $export:
+  ensure =&gt; directory,
+  mode =&gt; '0755',
+  owner =&gt; 'root',
+  group =&gt; 'root'
+}
+</code></pre>
+
+<p>  }
+  list_exports { $exports:; } -> File['/etc/exports']
+```</p>
+
+<p>Now it can go ahead and build the <code>/etc/exports</code> file using that same $exports array in the <code>templates/exports.erb</code> template:</p>
+
+<p><code>
+  &lt;% [exports].flatten.each do |export| -%&gt;
+  &lt;%= export %&gt; 192.168.1.0/255.255.255.0(rw,no_root_squash,no_subtree_check)
+  &lt;% end -%&gt;
+</code></p>
+
+<p>There is nothing especially Hiera'y about this, other than where the data in that array came from.</p>
+
+<p>The rest of the manifest deals with installing the packages and configuring services. Once again, nothing especially linked with Hiera, but hopefully it will be useful for anyone wanting to Puppetize their NFS servers - which of course you should be.</p>
+]]></content>
+  </entry>
+  
+</feed>

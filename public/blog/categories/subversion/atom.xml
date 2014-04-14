@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Subversion | Just Another Linux Blog]]></title>
+  <link href="http://www.chriscowley.me.uk/blog/categories/subversion/atom.xml" rel="self"/>
+  <link href="http://www.chriscowley.me.uk/"/>
+  <updated>2014-04-14T22:41:45+02:00</updated>
+  <id>http://www.chriscowley.me.uk/</id>
+  <author>
+    <name><![CDATA[Chris Cowley]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Mirror a Subversion repo with svnsync]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2012/07/17/mirror-a-subversion-repo-with-svnsync/"/>
+    <updated>2012-07-17T12:03:00+02:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2012/07/17/mirror-a-subversion-repo-with-svnsync</id>
+    <content type="html"><![CDATA[<p>The basic idea is that everytime a change happens on the master, it gets pushed to the slave. In this set up it will <em>not</em> get you any more capacity; you cannot commit back to the slave. If you do it will get out of sync, resulting in a <em>split brain</em> situation. This is what we sysadmins call a "bad thing". I am doing this in order to have <a href="http://www.atlassian.com/software/fisheye/overview" target="_blank">Atlassian Fisheye</a> can scan the repository without having to go over the network. The basic layout is:</p>
+
+<!-- more -->
+
+
+<p><img class="center" src="/images/svnsync.png"></p>
+
+<p>First the master needs to be able to send the data to the slave without any user interaction. On both the slave create a user to perform the sync:
+<code>
+useradd svnsync
+</code>
+On the master, I use https to access my repositories. This means that all my hook scripts run as the apache user. Change to that user with <code>sudo su -s /bin/bash - apache</code></p>
+
+<p>Create an ssh key-pair (<code>ssh-keygen</code>) and add the contents of <code>~apache\.ssh\id_rsa.pub</code> on the master to <code>~svnsync/.ssh/authorized_keys2</code> on the slave.</p>
+
+<p>Now you can push push data to the slave without a password. Test it by running:
+<code>
+ssh svnsync@&lt;slave&gt;
+</code></p>
+
+<h2>On Slave</h2>
+
+<p>Create a new repository to store what gets pushed to it
+<code>
+svnadmin create --fs-type=fsfs /var/local/svnsync/&lt;reponame&gt;
+chown -Rv svnsync:svnsync /var/local/svnsync/&lt;reponame&gt;
+</code></p>
+
+<p>The process will need to make modifications to the properties, so you need to enable that. Put the following into <code>/var/local/svnsync/&lt;reponame&gt;/hooks/pre-revprop-change</code>
+```</p>
+
+<h1>!/bin/sh</h1>
+
+<p>USER="$3"</p>
+
+<p>if [ "$USER" = "svnsync" ]; then exit 0; fi</p>
+
+<p>echo "Only the svnsync user can change revprops" >&amp;2
+exit 1
+```</p>
+
+<p>Finally make it executable with
+<code>
+chmod +x /var/local/svnsync/&lt;reponame&gt;/hooks/pre-revprop-change
+</code></p>
+
+<h2>On Master</h2>
+
+<p>First initialize the transfer and do the initial population. Do all this as the apache user again.
+```
+svnsync init --username svnsync \</p>
+
+<pre><code>svn+ssh://svnsync@&lt;slave&gt;/var/local/svnsync/&lt;reponame&gt; \
+file:///var/svn/&lt;reponame&gt;
+</code></pre>
+
+<p>```</p>
+
+<p>Now we need to configure the Master repo to push all changes to the slave. Create a post-commit hook script containing
+```</p>
+
+<h1>!/bin/bash</h1>
+
+<p>svnsync --username svnsync --non-interactive sync \</p>
+
+<pre><code>svn+ssh://svnsync@&lt;slave&gt;/var/local/svnsync/&lt;reponame&gt;
+</code></pre>
+
+<p><code>
+Finally create another hook script to keep revision properties in sync in `/var/svn/&lt;reponame&gt;/hooks/post-revprop-change`
+</code></p>
+
+<h1>!/bin/bash</h1>
+
+<p>REPOS="$1"
+REV="$2"
+USER="$3"
+PROPNAME="$4"
+ACTION="$5"</p>
+
+<p>svnsync --username svnsync --non-interactive copy-revprops \</p>
+
+<pre><code>svn+ssh://svnsync@&lt;slave&gt;/var/local/svnsync/&lt;reponame&gt; $REV &amp;&amp; \
+exit 0
+</code></pre>
+
+<p>```</p>
+]]></content>
+  </entry>
+  
+</feed>
