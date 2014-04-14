@@ -1,14 +1,13 @@
 <script type="text/javascript">
-//default banner house ad url 
-clicksor_default_url = '';
-clicksor_banner_border = '#252525'; clicksor_banner_ad_bg = '#FFFFFF';
-clicksor_banner_link_color = '#000000'; clicksor_banner_text_color = '#666666';
-clicksor_banner_image_banner = true; clicksor_banner_text_banner = true;
-clicksor_layer_border_color = '#252525';
-clicksor_layer_ad_bg = '#FFFFFF'; clicksor_layer_ad_link_color = '#000000';
-clicksor_layer_ad_text_color = '#666666'; clicksor_text_link_bg = '';
-clicksor_text_link_color = ''; clicksor_enable_text_link = false;
-clicksor_layer_banner = false;
+  ( function() {
+  if (window.CHITIKA === undefined) { window.CHITIKA = { 'units' : [] }; };
+    var unit = {"publisher":"chriscowley","width":160,"height":160,"sid":"Chitika Default"};
+    var placement_id = window.CHITIKA.units.length;
+    window.CHITIKA.units.push(unit);
+    document.write('<div id="chitikaAdBlock-' + placement_id + '"></div>');
+    var s = document.createElement('script');
+    s.type = 'text/javascript';
+    s.src = '//cdn.chitika.net/getads.js';
+    try { document.getElementsByTagName('head')[0].appendChild(s); } catch(e) { document.write(s.outerHTML); }
+  }());
 </script>
-<script type="text/javascript" src="http://ads.clicksor.com/newServing/showAd.php?nid=1&amp;pid=302576&amp;adtype=10&amp;sid=497364"></script>
-<noscript><a href="http://www.yesadvertising.com">affiliate marketing</a></noscript>
