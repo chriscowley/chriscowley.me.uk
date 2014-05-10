@@ -9,7 +9,7 @@
   <meta name="author" content="Chris Cowley">
 
   
-  <meta name="description" content="How many times have you installed/updated a bit of software and read the line “Please take a back up” or something to that effect? 99 times out of a &hellip;">
+  <meta name="description" content="Install Skype – I used these instructions. This will seem to get everything working, but video will just give you a black screen and no error message &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -21,6 +21,8 @@
   <link rel="canonical" href="http://www.chriscowley.me.uk/blog/page/5/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
+
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="/javascripts/ender.js"></script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
@@ -90,6 +92,49 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/04/18/skype-video-on-fedora-64bit/">Skype Video on Fedora 64bit</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-04-18T15:53:00+02:00" pubdate data-updated="true">Wednesday 18 April 2012</time>
+        
+         | <a href="/blog/2012/04/18/skype-video-on-fedora-64bit/#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Install Skype – I used <a href="http://slayachronicles.blogspot.co.uk/2012/03/installing-skype-on-fedora-16-64-bit.html" target="_blank" >these</a> instructions. This will seem to get everything working, but video will just give you a black screen and no error message. This is because Skype is 32 bit and your webcam driver is 64 bit. Make sure you have libv4l.i686 installed along with a couple of other dependencies:</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/04/18/skype-video-on-fedora-64bit/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -486,51 +531,6 @@
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2011/10/16/ubuntu-upgrade-problems/">Ubuntu Upgrade Problems</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2011-10-16T13:24:00+02:00" pubdate data-updated="true">Sunday 16 October 2011</time>
-        
-         | <a href="/blog/2011/10/16/ubuntu-upgrade-problems/#disqus_thread">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Usually the release upgrade is relatively trouble-free, but this time I had a minor problem. After the upgrade I had no X Windows. It turned out that the NVidia driver not loading.</p>
-
-<p>I had to boot it up in rescue mode, which is selectable from the Grub menu. From there I could drop to a root console.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2011/10/16/ubuntu-upgrade-problems/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/6/">&larr; Older</a>
@@ -556,6 +556,10 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/05/10/home-made-energy-bars/">Home-made Energy Bars</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/04/09/vmware-cli-on-ubuntu-saucy-salamander/">VMware CLI on Ubuntu Saucy Salamander</a>
       </li>
     
@@ -569,10 +573,6 @@
     
       <li class="post">
         <a href="/blog/2014/01/24/nfs-with-puppet-and-an-enc/">NFS with Puppet and an ENC</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/01/08/rhel-and-centos-joining-forces/">RHEL and CentOS joining forces</a>
       </li>
     
   </ul>
@@ -650,7 +650,7 @@
 </section>
 
 
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_GB"><img alt="Creative Commons Licence" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.en_GB">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>.
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons Licence" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
 
   
 </aside>

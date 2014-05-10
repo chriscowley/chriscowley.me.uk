@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Stop the hate on software RAID - Just Another Linux Blog</title>
+  <title>Home-made Energy Bars - Just Another Linux Blog</title>
   <meta name="author" content="Chris Cowley">
 
   
-  <meta name="description" content="I&#8217;ve had a another bee in my bonnet recently. Specifically, it has been to do with hardware vs software RAID, but I think it goes deeper than &hellip;">
+  <meta name="description" content="A break from computing today and into the world of nutrition. Cyclists love to talk about nutrition as the nature of our sport makes it a major &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.chriscowley.me.uk/blog/2013/04/07/stop-the-hate-on-software-raid/">
+  <link rel="canonical" href="http://www.chriscowley.me.uk/blog/2014/05/10/home-made-energy-bars/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
@@ -95,7 +95,7 @@
   
   <header>
     
-      <h1 class="entry-title">Stop the Hate on Software RAID</h1>
+      <h1 class="entry-title">Home-made Energy Bars</h1>
     
     
       <p class="meta">
@@ -111,7 +111,7 @@
   
 
 
-<time datetime="2013-04-07T20:21:00+02:00" pubdate data-updated="true">Sunday 07 April 2013</time>
+<time datetime="2014-05-10T11:57:00+02:00" pubdate data-updated="true">Saturday 10 May 2014</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -120,74 +120,104 @@
   </header>
 
 
-<div class="entry-content"><p><img class="right" src="/images/NetappClustering.jpg">I&#8217;ve had a another bee in my bonnet recently. Specifically, it has been to do with hardware vs software RAID, but I think it goes deeper than that. It started a couple of months back with a discussion on <a href="http://redd.it/18dp63">Reddit</a>. Some of the comments were:</p>
-
-<blockquote><p>Get out, get out now.</p>
-
-<p>while he still can..</p>
-
-<p>WHAT!?
-60 TB on software raid.
-Jeezus.</p>
-
-<p>Software raid? Get rid of it.</p></blockquote>
-
-<p>It then got re-awakened the other day when Matt Simmons (aka <a href="http://www.standalone-sysadmin.com/blog/">The Standalone Sysadmin</a>) asked the following question on Twitter:</p>
-
-<blockquote class="twitter-tweet"><p>So what are the modern arguments for / against hardware / software RAID? I don&#8217;t get out much. <a href="https://twitter.com/search/%23sysadmin">#sysadmin</a></p>&mdash; Matt Simmons (@standaloneSA) <a href="https://twitter.com/standaloneSA/status/319932013492703233">April 4, 2013</a></blockquote>
-
-
-<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-
+<div class="entry-content"><p><img class="right" src="http://i.imgur.com/RUF1L6e.jpg" width="200">A break from computing today and into the world of nutrition. Cyclists love to talk about nutrition as the nature of our sport makes it a major consideration. I do not really know of any other sport where your fuel gives out before the rest of your body.</p>
 
 <!-- more -->
 
 
-<p>At the time of writing, 2 people replied: myself and <a href="http://utcc.utoronto.ca/~cks/space/blog/">Chris Siebenmann</a>. Both of us basically said software RAID is better, hardware is at best pointless.</p>
+<p>This means that cycling nutrition is big business, and expensive. A typical box of energy bars will cost about 1 euro a bar from a big box pusher, more from your LBS. To that end (as I like baking) I decided to make my own.</p>
 
-<p>First of all, I need to define what I mean by hardware RAID. First, I do not care about what you are using for your c:\ drive in Windows, or your / partition in Linux. I am talking about the place where you store your business critical data. If you file server goes down, that is a bad day, but the business will live on. Lose your business data, then you will be out of a job (most likely alongside everyone else). Hardware RAID can thus fall into to categories:</p>
+<h1>Ingredients</h1>
+
+<p>There is not much to it:</p>
 
 <ul>
-<li>a bunch of disks attached to a PCI-e card in a big server</li>
-<li>an external storage array. This could be either SAN or NAS, once again I do not care in this instance.</li>
+<li>200g sugar</li>
+<li>120ml oil</li>
+<li>2 tablespoons honey</li>
+<li>225g porridge oats</li>
+<li>250g fruit/nut mix</li>
 </ul>
 
 
-<p>I am firmly of the opinion that hardware RAID cards should no longer exist. They are at best pointless and at worst a liability. Modern systems are so fast that there is no real performance hit. Also management is a lot easier; if you have a hardware array then you will need to load the manufacturer&#8217;s utilities in order to manage it. By manage, I mean to be told when a disk has failed. On Linux, there is no guarantee that will work. There is a couple of vendors that require packages from RHEL4 to be installed on RHEL6 systems to install their tools. Also, they are invariable closed source, will most likely taint my kernel with binary blobs and generally cause a mess on my previously clean system. By contrast, using software RAID means that I can do all the management with trivial little scripts that can easily be integrated with any monitoring system that I choose to use.</p>
+<p>Obviously the quality of these ingredients is all important. With the amount you are saving compared to a commercial bar, one can afford to splash out here. I use:</p>
 
-<p>I can understand why people are skeptical of software RAID. There have been performance reasons and practical reasons for it not to be trusted. I&#8217;m not going to address the performance argument, suffice to say that RAID is now 25 years old - CPUs have moved on a lot in that time. I remember when the first Promise IDE controllers came out, that used a kind of pseudo-hardware RAID - it was not pretty. The preconceptions are compounded by the plethora of nasty controllers built in to consumer motherboards and (possibly worst of all) Window&#8217;s built in RAID that was just bad.</p>
+<ul>
+<li>Unrefined sugar</li>
+<li>Good quality sunflower oil</li>
+<li>Organic honey from a local producer</li>
+<li>Good quality, thick rolled oats</li>
+</ul>
 
-<p>The thing is, those days are now a long way behind us. For Linux there is absolutely no need for hardware RAID, even Windows will be just fine with an motherboard based RAID for its c: drive.</p>
 
-<p><span class='pullquote-right' data-pullquote='I would say that hardware RAID is a liability'>
-In fact I would say that hardware RAID is a liability. You go to all that effort to safe-guard your data, but the card becomes a single-point-of-failure. It dies, then you spend your time searching Ebay for the same model of card. You buy it, then you pray that the RAID data is stored on the disks and not the controller (not always the case). By contrast, if you use software RAID and the motherboard dies, then you pull the disks and plug them into whatever box running Linux and you recover your data.
-</span></p>
+<p>For the fruit and nut mix you can do whatever you want. We eat a lot of these and get them from a local organic produce shop. I just raid the kitchen draws and see what I come up with. The latest batch had:</p>
 
-<p>There is definitely a time and place for an external array. If you are using virtualisation properly, you need shared storage. The best way to do that, 9 times out of 10, is with an external array. However, even that may well not be as it seems. There are some that still develop dedicated hardware and come out with exciting gear (HP 3Par and Hitachi Data Systems spring to mind). However, the majority of storage is now on Software.</p>
+<ul>
+<li>dried banana</li>
+<li>raisins</li>
+<li>sultanas</li>
+<li>coconut</li>
+<li>cranberries</li>
+</ul>
 
-<p>Let take a look at these things and see just how much &#8220;hardware&#8221; is actually involved.</p>
 
-<p>The EMC VMAX is a big, big black box of storage. Even the &#8220;baby&#8221; 10k one scales up to 1.5PB and 4 engines. The 40k will go up to 3PB and 8 engines. Look a little deeper (one line further on the spec sheet) and you find that what those engines are: quad Xeons (dual on the 10/20k). The great big bad VMAX is a bunch of standard x86 servers running funky software to do all the management and RAID calculations.</p>
+<h1>Recipe</h1>
 
-<p><span class='pullquote-right' data-pullquote='since the Clariion CX4 EMC has been using Windows Storage Server'>
-Like its big brother, the VNX is also a pair of Xeon servers. Even more, it runs Windows. In fact since the Clariion CX4 EMC has been using Windows Storage Server (based on XP) Move along to EMC&#8217;s other lines we find Isilion is nothing more than a big pile of Supermicro servers running (IIRC) FreeBSD.
-</span></p>
+<p>You will need a decent sized saucepan as you&#8217;ll do all the mixing on the hob. Pre-heat the oven to 180ᵒC (350ᵒF/gas mark 4 I believe).</p>
 
-<p>Netapp&#8217;s famed FAS range similarly runs on commodity hardware,OnTAP is <a href="https://en.wikipedia.org/wiki/NetApp_filer">BSD</a> based.</p>
+<p>Start by gently melting together the sugar, oil and honey over a low heat. Be patient, this will take a while.</p>
 
-<p>The list goes on, Dell Compellent? When I looked at it in early 2012, it was still running on Supermicro dual Xeons. The plan was to move it to Dell R-series servers as soon as possible. They were doing validation at the time, I suspect the move is complete now. Reading between the lines, I came away with the impression that it runs on FreeBSD, but I do not know for sure. CoRAID use Supermicro servers, they unusually run Plan9 as their OS. HP StoreVirtual (formerly Lefthand) runs or Proliant Gen8 servers or VMware. In all these cases, there is no extra hardware involved.</p>
+<p>Add you fruit/nut mix and mix it all in thouroughly. At this point you will need enormous will power as the mixture is delicious and you may find yourself eating it all there and then. This will make you feel rather ill (trust me).</p>
 
-<p><span class='pullquote-right' data-pullquote='The people that write the MD stack in the Linux kernel are not cowboys'>
-The people that write the MD stack in the Linux kernel are not cowboys. It has proved over and over again that is both stable and fast. I have trusted some of the most important data under my care to their software:  for many years the ERP system at <a href="http://www.snellgroup.com">Snell</a> has been running on MD devices quite happily. We found it much faster than the P410 cards in the DL360G5 servers that host it. Additionally, you do not need to load in any funky modules or utilities - everything you need to manage the devices is there in the distribution.
-</span></p>
+<p>Finally, add the oats a little bit at a time. It is very important to take your time over this. The mixture gets really thick and heavy, which may be too much for your puny cyclist arms. If you can find a way to stir it with your super-mega strong cyclist legs please tell me in the comments. If not, just ask your wife/mother/mother-in-law/child to help.</p>
 
-<p>ZFS also recommends to bypass any RAID devices and let it do everything in software, as does Btrfs. With <em>Storage Spaces</em> in Server 2012 Microsoft is definitely angling towards software controlled storage as well.</p>
+<p>Once all that is nicly mixed together transfer it to a tin lined with baking paper (25cm x 15cm should be a good size). Make sure it is firmly pressed down with a metal fork. If not the bar will come apart in your pocket (messy).</p>
 
-<p>As with everything in IT, hardware is falling by the wayside in storage. Modern processors can do the processing so fast that there is no performance need for hardware in between your OS and the disks any more. The OS layers (Storage Spaces on Windows and especially MD/LVM on Linux) are so mature now that their reliability can be taken as a given. With the management advantages, there really is no technical reason to stick with hardware RAID. In fact the closer you can get the raw disks to your OS the better.</p>
+<p>Put in the oven for about 15 minutes. When it is nicely golden, take it out and leave it to cool before cutting it up. I find this makes 25-30 small bars (~23-50g each), but your mileage may vary.</p>
 
-<p><span class='pullquote-right' data-pullquote='we need to know what is inside that magic black box, especially when it is in the spec sheet'>
-As I said at the start, the subject here is software vs hardware RAID, but my problem goes deeper than that particular argument. As technology professionals, we are technical people. We need to understand what is going on under the bonnet - that is our job! It may be fine for a vendor to pull the wool over a CFO&#8217;s eyes, but we need to know what is inside that magic black box, especially when it is in the spec sheet.
-</span></p>
+<h1>Nutritional Information</h1>
+
+<p>Of course, this being a geeky blog I had to do some maths and comparisons. Note that this is all calculated from the information on the packets and searching on the internet. I am an engineer, not a nutritionist so do not take this as gospel.</p>
+
+<table>
+<thead>
+<tr>
+<th> Bar </th>
+<th> weight (g) </th>
+<th> Energy (kcal) </th>
+<th> Protein (g) </th>
+<th> Fat (g) </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> Mine </td>
+<td> ~25-30 </td>
+<td> 134          </td>
+<td> 1.2         </td>
+<td> 6.1</td>
+</tr>
+<tr>
+<td> <a href="http://www.scienceinsport.com/sis-products/sis-rego-range/sis-rego-protein/sis-rego-protein-bar-choc-peanut-55g/">SiS Rego</a> </td>
+<td> 55 </td>
+<td> 223 </td>
+<td> 20 </td>
+<td> 6.4 </td>
+</tr>
+<tr>
+<td> <a href="http://highfive.co.uk/product/energy/energybar">High5 Energy Bar</a> </td>
+<td> 60 </td>
+<td> 194 </td>
+<td> 3 </td>
+<td> 2 </td>
+</tr>
+</tbody>
+</table>
+
+
+<p>Mine do not do too badly. Not that both those commercial options have more everything, but they are also much bigger. Two of my bars would beat both of them hands down in all 3 of those measures. It should also be noted that all the fat in these come from the oil and the oats, which is &#8220;healthy fat&#8221; according to High 5.</p>
+
+<p>Like I said, I am an engineer, not a nutritionist. Do not take this as nutritional advise, rather as me sharing something I find works for me. Feel free to use this, but please share your modifications. In fact you are legally obliged to because it is under the <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a> :-).</p>
 </div>
 
 
@@ -210,12 +240,12 @@ As I said at the start, the subject here is software vs hardware RAID, but my pr
   
 
 
-<time datetime="2013-04-07T20:21:00+02:00" pubdate data-updated="true">Sunday 07 April 2013</time>
+<time datetime="2014-05-10T11:57:00+02:00" pubdate data-updated="true">Saturday 10 May 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/storage/'>storage</a>
+    <a class='category' href='/blog/categories/cycling/'>cycling</a>
   
 </span>
 
@@ -224,7 +254,7 @@ As I said at the start, the subject here is software vs hardware RAID, but my pr
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.chriscowley.me.uk/blog/2013/04/07/stop-the-hate-on-software-raid/" data-via="chriscowleyunix" data-counturl="http://www.chriscowley.me.uk/blog/2013/04/07/stop-the-hate-on-software-raid/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.chriscowley.me.uk/blog/2014/05/10/home-made-energy-bars/" data-via="chriscowleyunix" data-counturl="http://www.chriscowley.me.uk/blog/2014/05/10/home-made-energy-bars/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -237,10 +267,8 @@ As I said at the start, the subject here is software vs hardware RAID, but my pr
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/03/25/writeable-tftp-server-on-centos/" title="Previous Post: Writeable TFTP Server On CentOS">&laquo; Writeable TFTP Server On CentOS</a>
+        <a class="basic-alignment left" href="/blog/2014/04/09/vmware-cli-on-ubuntu-saucy-salamander/" title="Previous Post: VMware CLI on Ubuntu Saucy Salamander">&laquo; VMware CLI on Ubuntu Saucy Salamander</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/04/11/using-hiera-with-puppet/" title="Next Post: Using Hiera with Puppet">Using Hiera with Puppet &raquo;</a>
       
     </p>
   </footer>
