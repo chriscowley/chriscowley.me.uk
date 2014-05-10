@@ -5,7 +5,7 @@ date: 2014-05-10 11:57
 comments: true
 categories: ['cycling']
 ---
-A break from computing today and into the world of nutrition. Cyclists love to talk about nutrition as the nature of our sport makes it a major consideration. I do not really know of any other sport where your fuel gives out before the rest of your body.
+{%img right http://i.imgur.com/RUF1L6e.jpg 200 %}A break from computing today and into the world of nutrition. Cyclists love to talk about nutrition as the nature of our sport makes it a major consideration. I do not really know of any other sport where your fuel gives out before the rest of your body.
 <!-- more -->
 
 This means that cycling nutrition is big business, and expensive. A typical box of energy bars will cost about 1 euro a bar from a big box pusher, more from your LBS. To that end (as I like baking) I decided to make my own.
