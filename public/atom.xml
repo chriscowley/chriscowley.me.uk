@@ -4,7 +4,7 @@
   <title><![CDATA[Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2014-06-17T11:34:12+02:00</updated>
+  <updated>2014-06-17T11:44:24+02:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -73,15 +73,17 @@
 </span><span class='line'>  login-policy: allow-realm-logins</span></code></pre></td></tr></table></div></figure>
 
 
-<p>By default <code>realmd</code> used SSSD to perform the authentication. This in turn configured Kerberos and LDAP.</p>
-
-<p>My initial testing has been performed with an Active Directory that has &#8220;Identity Managment for UNIX&#8221; installed. However, I forgot to actually enable my user for UNIX. Even so, it worked perfectly. It sees my Windows groups and defines a home directory of <code>/home/example.com/&lt;username&gt;</code>.</p>
-
 <p>The last step is <code>sudo</code>. If you want to have everyone in <em>Domain Admins</em> have permission to run everything as root, then add the following to <code>sudoers</code>:</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>%domain\ users@example.com ALL=(ALL)       ALL</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>%domain\ admins@example.com ALL=(ALL)       ALL</span></code></pre></td></tr></table></div></figure>
 
+
+<p>By default <code>realmd</code> used SSSD to perform the authentication. This in turn configures Kerberos and LDAP.</p>
+
+<p>My initial testing has been performed with an Active Directory that has &#8220;Identity Managment for UNIX&#8221; installed. However, I forgot to actually enable my user for UNIX. Even so, it worked perfectly. It sees my Windows groups and defines a home directory of <code>/home/example.com/&lt;username&gt;</code>. I am pretty certain that you do not need to extend AD, it should work out of the box from what I can see.</p>
+
+<p>As a bonus, it seems to respect nested groups, something that has always been a bug bear in these things.</p>
 ]]></content>
   </entry>
   

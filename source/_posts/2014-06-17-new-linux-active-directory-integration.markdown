@@ -46,12 +46,14 @@ example.com
   login-policy: allow-realm-logins
 ```
 
-By default `realmd` used SSSD to perform the authentication. This in turn configured Kerberos and LDAP.
-
-My initial testing has been performed with an Active Directory that has "Identity Managment for UNIX" installed. However, I forgot to actually enable my user for UNIX. Even so, it worked perfectly. It sees my Windows groups and defines a home directory of `/home/example.com/<username>`.
-
 The last step is `sudo`. If you want to have everyone in *Domain Admins* have permission to run everything as root, then add the following to `sudoers`:
 
 ```
-%domain\ users@example.com ALL=(ALL)       ALL
+%domain\ admins@example.com ALL=(ALL)       ALL
 ```
+
+By default `realmd` used SSSD to perform the authentication. This in turn configures Kerberos and LDAP.
+
+My initial testing has been performed with an Active Directory that has "Identity Managment for UNIX" installed. However, I forgot to actually enable my user for UNIX. Even so, it worked perfectly. It sees my Windows groups and defines a home directory of `/home/example.com/<username>`. I am pretty certain that you do not need to extend AD, it should work out of the box from what I can see.
+
+As a bonus, it seems to respect nested groups, something that has always been a bug bear in these things.
