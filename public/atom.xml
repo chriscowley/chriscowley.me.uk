@@ -4,7 +4,7 @@
   <title><![CDATA[Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2014-06-17T11:29:05+02:00</updated>
+  <updated>2014-06-17T11:34:12+02:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -19,6 +19,9 @@
     <updated>2014-06-17T10:28:00+02:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2014/06/17/new-linux-active-directory-integration</id>
     <content type="html"><![CDATA[<p>This used to be quite complex, but now is astoundingly simple. Now there is a new project call <a href="http://freedesktop.org/software/realmd/">realmd</a>. It is in recent version of Debian (Jessie and Sid) and Ubuntu (since 13.04). For Red Hat types, it is RHEL7 and Fedora (since 18).</p>
+
+<!-- more -->
+
 
 <p>If you&#8217;re on Debian/Ubuntu, install with:</p>
 

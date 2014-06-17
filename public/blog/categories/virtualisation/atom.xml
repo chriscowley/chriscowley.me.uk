@@ -4,7 +4,7 @@
   <title><![CDATA[Category: virtualisation | Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/blog/categories/virtualisation/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2014-06-17T11:29:08+02:00</updated>
+  <updated>2014-06-17T11:34:12+02:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -27,7 +27,7 @@
 
 <p>The technology to do this sort of thing using purely Open Source exists. All this has added is a distributed storage layer on each hypervisor. There are plenty of these exist for Linux, with my preference probably being for GlusterFS. Something like this is what I would have in mind:</p>
 
-<p>{% img center http://i.imgur.com/NHYdf78.png %}</p>
+<p><img class="center" src="http://i.imgur.com/NHYdf78.png"></p>
 
 <p>Ceph is probably the closest to Virtual SAN, as it is fundamentally object-based. Yes there would be CPU and RAM overhead, but that also exists for Virtual SAN too. Something like DRBD/GFS2 is not really suitable here, because it will not scale-out as much. You would not have to have local storage in all your hypervisor nodes (as with Virtual SAN) too.</p>
 

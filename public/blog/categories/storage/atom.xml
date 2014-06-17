@@ -4,7 +4,7 @@
   <title><![CDATA[Category: storage | Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/blog/categories/storage/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2014-06-17T11:29:08+02:00</updated>
+  <updated>2014-06-17T11:34:12+02:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -18,7 +18,7 @@
     <link href="http://www.chriscowley.me.uk/blog/2013/09/12/the-end-of-centralised-storage/"/>
     <updated>2013-09-12T20:20:00+02:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/09/12/the-end-of-centralised-storage</id>
-    <content type="html"><![CDATA[<p>{% img right /images/NetappClustering.jpg %}That is a pretty drastic title, especially given that I spend a significant part of my day job working with EMC storage arrays. The other day I replied to a tweet by <a href="http://blog.scottlowe.org">Scott Lowe</a> :</p>
+    <content type="html"><![CDATA[<p><img class="right" src="/images/NetappClustering.jpg">That is a pretty drastic title, especially given that I spend a significant part of my day job working with EMC storage arrays. The other day I replied to a tweet by <a href="http://blog.scottlowe.org">Scott Lowe</a> :</p>
 
 <blockquote class="twitter-tweet"><p><a href="https://twitter.com/scott_lowe">@scott_lowe</a> with things like Gluster and Ceph what does shared storage actually give apart from complications?</p>&mdash; Chris Cowley (@chriscowleyunix) <a href="https://twitter.com/chriscowleyunix/statuses/377900529760083968">September 11, 2013</a></blockquote>
 
@@ -45,9 +45,9 @@
 
 <p>Hadoop, the darling of the Big Data lovers, uses HDFS, which also distributes and replicates your data across local storage. GlusterFS can also be used too. You can use EMC arrays, but I do not hear much about that (other than from EMC themselves). The vast majority of Hadoop users seem to be on local storage/HDFS. On a similar note Lustre, very popular in the HPC world, is also designed around local storage.</p>
 
-<p>{% pullquote %}
-So what am I getting at here? To be honest I am not sure, but I can see a general move away from centralised storage. Even EMC noticed this ages ago - they were talking about running the hypervisor on the VNX/VMAX. At least that is how I remember it anyway, I may well be wrong (if I am, then it is written on the internet now, so it must be true). Red Hat own GlusterFS and are pushing it centre stage for Openstack, Ceph is also an excellent solution and has the weight of Mark Shuttleworth and Canonical behind it. VMware have been pushing Virtual SAN hard and it seems to have got a lot of people really excited. {" I just do not see anything really exciting in centralised storage"}, everything interesting is based around DAS.
-{% endpullquote %}</p>
+<p><span class='pullquote-right' data-pullquote='I just do not see anything really exciting in centralised storage'>
+So what am I getting at here? To be honest I am not sure, but I can see a general move away from centralised storage. Even EMC noticed this ages ago - they were talking about running the hypervisor on the VNX/VMAX. At least that is how I remember it anyway, I may well be wrong (if I am, then it is written on the internet now, so it must be true). Red Hat own GlusterFS and are pushing it centre stage for Openstack, Ceph is also an excellent solution and has the weight of Mark Shuttleworth and Canonical behind it. VMware have been pushing Virtual SAN hard and it seems to have got a lot of people really excited. I just do not see anything really exciting in centralised storage, everything interesting is based around DAS.
+</span></p>
 ]]></content>
   </entry>
   
@@ -65,7 +65,7 @@ So what am I getting at here? To be honest I am not sure, but I can see a genera
 
 <p>The technology to do this sort of thing using purely Open Source exists. All this has added is a distributed storage layer on each hypervisor. There are plenty of these exist for Linux, with my preference probably being for GlusterFS. Something like this is what I would have in mind:</p>
 
-<p>{% img center http://i.imgur.com/NHYdf78.png %}</p>
+<p><img class="center" src="http://i.imgur.com/NHYdf78.png"></p>
 
 <p>Ceph is probably the closest to Virtual SAN, as it is fundamentally object-based. Yes there would be CPU and RAM overhead, but that also exists for Virtual SAN too. Something like DRBD/GFS2 is not really suitable here, because it will not scale-out as much. You would not have to have local storage in all your hypervisor nodes (as with Virtual SAN) too.</p>
 
@@ -78,7 +78,7 @@ So what am I getting at here? To be honest I am not sure, but I can see a genera
     <link href="http://www.chriscowley.me.uk/blog/2013/06/23/automated-glusterfs/"/>
     <updated>2013-06-23T22:02:00+02:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/06/23/automated-glusterfs</id>
-    <content type="html"><![CDATA[<p>{% img right http://www.hastexo.com/system/files/imagecache/sidebar/20120221105324808-f2df3ea3e3aeab8_250_0.png %} As I promised on Twitter, this is how I automate a GlusterFS deployment. I'm making a few assumptions here:</p>
+    <content type="html"><![CDATA[<p><img class="right" src="http://www.hastexo.com/system/files/imagecache/sidebar/20120221105324808-f2df3ea3e3aeab8_250_0.png"> As I promised on Twitter, this is how I automate a GlusterFS deployment. I'm making a few assumptions here:</p>
 
 <!-- more -->
 
@@ -97,7 +97,7 @@ So what am I getting at here? To be honest I am not sure, but I can see a genera
 </ul>
 
 
-<p>{% img https://docs.google.com/drawings/d/1XA7GH3a4BL1uszFXrSsZjysi59Iinh-0RmhqdDbt7QQ/pub?w=673&amp;h=315 'simple gluster architecture' %}</p>
+<p><img src="https://docs.google.com/drawings/d/1XA7GH3a4BL1uszFXrSsZjysi59Iinh-0RmhqdDbt7QQ/pub?w=673&amp;h=315" title="'simple gluster architecture'" ></p>
 
 <p>The diagram above shows the basic layout of what to start from in terms of hardware. In terms of software, you just need a basic CentOS 6 install and to have Puppet working.</p>
 
@@ -303,9 +303,9 @@ require =&gt; Mount['/export/gv0'],
 
 <p>Another feature that EMC has been touted is multi-protocol access to your data. Block volumes can be accessed via both iSCSI and FC protocols - nothing really clever there I'm afraid. Dot Hill has been doing that for several years with the <a href="http://www.dothill.com/wp-content/uploads/2011/08/AssuredSAN-n-3920-3930-C-10.15.11.pdf">AssuredSAN 39x0</a> models (and by extension the the HP P2000 as well). That is also easy enough to do on commodity hardware using  <a href="http://linux-iscsi.org/wiki/Main_Page">LIO target</a> plus a whole lot more. On the file side, it gives you not only access to your data via both CIFS and NFS, but it does add object access to that. They touted this as being very clever, but once again you can already do this using well respected, production proven open source. Glusterfs has an object translator, so that covers that super clever feature. All the data abstraction features it has are already there in in the open source world. If you want object and NAS access to the same peta-byte storage system, you have it in both Glusterfs and Ceph, both of which can easily be managed by CM tools such as Puppet.</p>
 
-<p>{% pullquote %}
-EMC has really pushed ViPR in the last couple of weeks, but it fails to impress me. This is a shame, because in general I like EMC's products. I don't like their marketing, but in their gear does just work. ViPR will probably do well with large EMC/NetApp shops, but it is by no means the ground-breaking product that EMC would have people believe (to be honest, I'm not sure anything ever is). It can never be the universal gateway to manage our storage, it is too tied in to EMC. {"To be a universal standard it would need to be an open (source) standard"}, which is not really part of EMC's culture (with the exception of the awesome Razor).
-{% endpullquote %}</p>
+<p><span class='pullquote-right' data-pullquote='To be a universal standard it would need to be an open (source) standard'>
+EMC has really pushed ViPR in the last couple of weeks, but it fails to impress me. This is a shame, because in general I like EMC's products. I don't like their marketing, but in their gear does just work. ViPR will probably do well with large EMC/NetApp shops, but it is by no means the ground-breaking product that EMC would have people believe (to be honest, I'm not sure anything ever is). It can never be the universal gateway to manage our storage, it is too tied in to EMC. To be a universal standard it would need to be an open (source) standard, which is not really part of EMC's culture (with the exception of the awesome Razor).
+</span></p>
 ]]></content>
   </entry>
   
@@ -314,7 +314,7 @@ EMC has really pushed ViPR in the last couple of weeks, but it fails to impress 
     <link href="http://www.chriscowley.me.uk/blog/2013/04/07/stop-the-hate-on-software-raid/"/>
     <updated>2013-04-07T20:21:00+02:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/04/07/stop-the-hate-on-software-raid</id>
-    <content type="html"><![CDATA[<p>{% img right /images/NetappClustering.jpg %}I've had a another bee in my bonnet recently. Specifically, it has been to do with hardware vs software RAID, but I think it goes deeper than that. It started a couple of months back with a discussion on <a href="http://redd.it/18dp63">Reddit</a>. Some of the comments were:</p>
+    <content type="html"><![CDATA[<p><img class="right" src="/images/NetappClustering.jpg">I've had a another bee in my bonnet recently. Specifically, it has been to do with hardware vs software RAID, but I think it goes deeper than that. It started a couple of months back with a discussion on <a href="http://redd.it/18dp63">Reddit</a>. Some of the comments were:</p>
 
 <blockquote><p>Get out, get out now.</p>
 
@@ -353,9 +353,9 @@ Jeezus.</p>
 
 <p>The thing is, those days are now a long way behind us. For Linux there is absolutely no need for hardware RAID, even Windows will be just fine with an motherboard based RAID for its c: drive.</p>
 
-<p>{% pullquote %}
-In fact {"I would say that hardware RAID is a liability"}. You go to all that effort to safe-guard your data, but the card becomes a single-point-of-failure. It dies, then you spend your time searching Ebay for the same model of card. You buy it, then you pray that the RAID data is stored on the disks and not the controller (not always the case). By contrast, if you use software RAID and the motherboard dies, then you pull the disks and plug them into whatever box running Linux and you recover your data.
-{% endpullquote %}</p>
+<p><span class='pullquote-right' data-pullquote='I would say that hardware RAID is a liability'>
+In fact I would say that hardware RAID is a liability. You go to all that effort to safe-guard your data, but the card becomes a single-point-of-failure. It dies, then you spend your time searching Ebay for the same model of card. You buy it, then you pray that the RAID data is stored on the disks and not the controller (not always the case). By contrast, if you use software RAID and the motherboard dies, then you pull the disks and plug them into whatever box running Linux and you recover your data.
+</span></p>
 
 <p>There is definitely a time and place for an external array. If you are using virtualisation properly, you need shared storage. The best way to do that, 9 times out of 10, is with an external array. However, even that may well not be as it seems. There are some that still develop dedicated hardware and come out with exciting gear (HP 3Par and Hitachi Data Systems spring to mind). However, the majority of storage is now on Software.</p>
 
@@ -363,25 +363,25 @@ In fact {"I would say that hardware RAID is a liability"}. You go to all that ef
 
 <p>The EMC VMAX is a big, big black box of storage. Even the "baby" 10k one scales up to 1.5PB and 4 engines. The 40k will go up to 3PB and 8 engines. Look a little deeper (one line further on the spec sheet) and you find that what those engines are: quad Xeons (dual on the 10/20k). The great big bad VMAX is a bunch of standard x86 servers running funky software to do all the management and RAID calculations.</p>
 
-<p>{% pullquote %}
-Like its big brother, the VNX is also a pair of Xeon servers. Even more, it runs Windows. In fact {" since the Clariion CX4 EMC has been using Windows Storage Server "} (based on XP) Move along to EMC's other lines we find Isilion is nothing more than a big pile of Supermicro servers running (IIRC) FreeBSD.
-{% endpullquote %}</p>
+<p><span class='pullquote-right' data-pullquote='since the Clariion CX4 EMC has been using Windows Storage Server'>
+Like its big brother, the VNX is also a pair of Xeon servers. Even more, it runs Windows. In fact since the Clariion CX4 EMC has been using Windows Storage Server (based on XP) Move along to EMC's other lines we find Isilion is nothing more than a big pile of Supermicro servers running (IIRC) FreeBSD.
+</span></p>
 
 <p>Netapp's famed FAS range similarly runs on commodity hardware,OnTAP is <a href="https://en.wikipedia.org/wiki/NetApp_filer">BSD</a> based.</p>
 
 <p>The list goes on, Dell Compellent? When I looked at it in early 2012, it was still running on Supermicro dual Xeons. The plan was to move it to Dell R-series servers as soon as possible. They were doing validation at the time, I suspect the move is complete now. Reading between the lines, I came away with the impression that it runs on FreeBSD, but I do not know for sure. CoRAID use Supermicro servers, they unusually run Plan9 as their OS. HP StoreVirtual (formerly Lefthand) runs or Proliant Gen8 servers or VMware. In all these cases, there is no extra hardware involved.</p>
 
-<p>{% pullquote %}
-{" The people that write the MD stack in the Linux kernel are not cowboys "}. It has proved over and over again that is both stable and fast. I have trusted some of the most important data under my care to their software:  for many years the ERP system at <a href="http://www.snellgroup.com">Snell</a> has been running on MD devices quite happily. We found it much faster than the P410 cards in the DL360G5 servers that host it. Additionally, you do not need to load in any funky modules or utilities - everything you need to manage the devices is there in the distribution.
-{% endpullquote %}</p>
+<p><span class='pullquote-right' data-pullquote='The people that write the MD stack in the Linux kernel are not cowboys'>
+The people that write the MD stack in the Linux kernel are not cowboys. It has proved over and over again that is both stable and fast. I have trusted some of the most important data under my care to their software:  for many years the ERP system at <a href="http://www.snellgroup.com">Snell</a> has been running on MD devices quite happily. We found it much faster than the P410 cards in the DL360G5 servers that host it. Additionally, you do not need to load in any funky modules or utilities - everything you need to manage the devices is there in the distribution.
+</span></p>
 
 <p>ZFS also recommends to bypass any RAID devices and let it do everything in software, as does Btrfs. With <em>Storage Spaces</em> in Server 2012 Microsoft is definitely angling towards software controlled storage as well.</p>
 
 <p>As with everything in IT, hardware is falling by the wayside in storage. Modern processors can do the processing so fast that there is no performance need for hardware in between your OS and the disks any more. The OS layers (Storage Spaces on Windows and especially MD/LVM on Linux) are so mature now that their reliability can be taken as a given. With the management advantages, there really is no technical reason to stick with hardware RAID. In fact the closer you can get the raw disks to your OS the better.</p>
 
-<p>{% pullquote %}
-As I said at the start, the subject here is software vs hardware RAID, but my problem goes deeper than that particular argument. As technology professionals, we are technical people. We need to understand what is going on under the bonnet - that is our job! It may be fine for a vendor to pull the wool over a CFO's eyes, but {" we need to know what is inside that magic black box, especially when it is in the spec sheet"}.
-{% endpullquote %}</p>
+<p><span class='pullquote-right' data-pullquote='we need to know what is inside that magic black box, especially when it is in the spec sheet'>
+As I said at the start, the subject here is software vs hardware RAID, but my problem goes deeper than that particular argument. As technology professionals, we are technical people. We need to understand what is going on under the bonnet - that is our job! It may be fine for a vendor to pull the wool over a CFO's eyes, but we need to know what is inside that magic black box, especially when it is in the spec sheet.
+</span></p>
 ]]></content>
   </entry>
   

@@ -7,6 +7,7 @@ categories: ['linux']
 ---
 This used to be quite complex, but now is astoundingly simple. Now there is a new project call [realmd](http://freedesktop.org/software/realmd/). It is in recent version of Debian (Jessie and Sid) and Ubuntu (since 13.04). For Red Hat types, it is RHEL7 and Fedora (since 18).
 
+<!-- more -->
 
 If you're on Debian/Ubuntu, install with:
 

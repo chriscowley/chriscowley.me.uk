@@ -4,7 +4,7 @@
   <title><![CDATA[Category: monitoring | Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/blog/categories/monitoring/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2014-06-17T11:29:08+02:00</updated>
+  <updated>2014-06-17T11:34:12+02:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -18,7 +18,7 @@
     <link href="http://www.chriscowley.me.uk/blog/2014/03/21/logstash-on-centos-6/"/>
     <updated>2014-03-21T20:57:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2014/03/21/logstash-on-centos-6</id>
-    <content type="html"><![CDATA[<p>{% img right http://logstash.net/images/logstash.png 200 %} It's been a while since I last posted anything, but it is time to. I've been playing around a lot with various tools for gathering information about my environment recently. One of the most important tools for storing that information is decent logging. Syslog is proven and solid, but a little creaky. For storing everything it is fine, but getting anything out is not so great.</p>
+    <content type="html"><![CDATA[<p><img class="right" src="http://logstash.net/images/logstash.png" width="200"> It's been a while since I last posted anything, but it is time to. I've been playing around a lot with various tools for gathering information about my environment recently. One of the most important tools for storing that information is decent logging. Syslog is proven and solid, but a little creaky. For storing everything it is fine, but getting anything out is not so great.</p>
 
 <!-- more -->
 

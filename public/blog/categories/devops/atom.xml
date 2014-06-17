@@ -4,7 +4,7 @@
   <title><![CDATA[Category: devops | Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/blog/categories/devops/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2014-06-17T11:29:08+02:00</updated>
+  <updated>2014-06-17T11:34:12+02:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -18,7 +18,7 @@
     <link href="http://www.chriscowley.me.uk/blog/2014/01/24/nfs-with-puppet-and-an-enc/"/>
     <updated>2014-01-24T20:06:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2014/01/24/nfs-with-puppet-and-an-enc</id>
-    <content type="html"><![CDATA[<p>{% img right http://puppetlabs.com/sites/default/files/PL_logo_horizontal_RGB_0.svg 200 200 %}Ages ago (it seems) I posted a <a href="http://www.chriscowley.me.uk/blog/2013/04/11/using-hiera-with-puppet/">howto</a> on configure NFS using Puppet and Hiera. I have been using this happily for several months and adding a new share was is as simple as adding a line to a YAML file. I was never completely happy with it though, especially after I decided to deploy <a href="http://www.theforeman.org">The Foreman</a> in my lab.</p>
+    <content type="html"><![CDATA[<p><img class="right" src="http://puppetlabs.com/sites/default/files/PL_logo_horizontal_RGB_0.svg" width="200" height="200">Ages ago (it seems) I posted a <a href="http://www.chriscowley.me.uk/blog/2013/04/11/using-hiera-with-puppet/">howto</a> on configure NFS using Puppet and Hiera. I have been using this happily for several months and adding a new share was is as simple as adding a line to a YAML file. I was never completely happy with it though, especially after I decided to deploy <a href="http://www.theforeman.org">The Foreman</a> in my lab.</p>
 
 <!-- more -->
 
@@ -31,62 +31,105 @@
 
 <p>I also took the chance to update my module a bit so that it was not hard-coded to my own lab network. To that end, it will automatically pull out the IP address and netmask of eth0. You can edit this easily enough using your ENC.</p>
 
-<p>{% codeblock lang:puppet manifests/server.pp  %}
-  class nfs::server (</p>
-
-<pre><code>$exports = [ '/srv/share'],
-$networkallowed = $::network_eth0,
-$netmaskallowed = $::netmask_eth0,
-</code></pre>
-
-<p>  ) {</p>
-
-<pre><code>// Code here
-</code></pre>
-
-<p>  }
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>manifests/server.pp  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='puppet'><span class='line'>  <span class="kd">class</span> <span class="nc">nfs::server</span> <span class="p">(</span><span class="err">&lt;/</span><span class="ss">p</span><span class="err">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">&lt;</span><span class="ss">pre</span><span class="err">&gt;&lt;</span><span class="ss">code</span><span class="err">&gt;</span><span class="nv">$exports</span> <span class="p">=</span> <span class="p">[</span> <span class="s1">&#39;/srv/share&#39;</span><span class="p">],</span>
+</span><span class='line'><span class="nv">$networkallowed</span> <span class="p">=</span> <span class="nv">$::network_eth0</span><span class="p">,</span>
+</span><span class='line'><span class="nv">$netmaskallowed</span> <span class="p">=</span> <span class="nv">$::netmask_eth0</span><span class="p">,</span>
+</span><span class='line'><span class="err">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="ss">pre</span><span class="err">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">&lt;</span><span class="ss">p</span><span class="err">&gt;</span>  <span class="p">)</span> <span class="p">{</span><span class="err">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">&lt;pre&gt;&lt;code&gt;//</span> <span class="err">Code</span> <span class="err">here</span>
+</span><span class='line'><span class="err">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">&lt;p&gt;</span>  }
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>Next we need a simple ENC to supply the data. An ENC is actually just any script that returns YAML. It has a single parameter, which is the FQDN of the node. I use this:</p>
 
-<p>{% codeblock /usr/local/bin/simple-enc.sh %}</p>
-
-<h1>!/bin/bash</h1>
-
-<p>DATADIR="/var/local/enc"
-NODE=$1</p>
-
-<p>cat "${DATADIR}/${NODE}.yaml"
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>/usr/local/bin/simple-enc.sh </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;!/bin/bash&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;DATADIR<span class="o">=</span><span class="s2">&quot;/var/local/enc&quot;</span>
+</span><span class='line'><span class="nv">NODE</span><span class="o">=</span><span class="nv">$1</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;cat <span class="s2">&quot;${DATADIR}/${NODE}.yaml&quot;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>Next you need a YAML file that looks like:</p>
 
-<h2>{% codeblock /var/local/enc/nfs.example.lan.yaml %}</h2>
-
-<p>environment: production
-classes:
-  nfs::server:</p>
-
-<pre><code>exports:
-  - /srv/share1
-  - /srv/share3
-networkallowed: 192.168.0.0
-netmaskallowed: 255.255.255.0
-</code></pre>
-
-<p>parameters:
-{% endcodeblock %}</p>
+<h2><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>/var/local/enc/nfs.example.lan.yaml </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">&lt;/h2&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">&lt;p&gt;environment</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">production</span>
+</span><span class='line'><span class="l-Scalar-Plain">classes</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">nfs::server:&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">&lt;pre&gt;&lt;code&gt;exports</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">/srv/share1</span>
+</span><span class='line'>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">/srv/share3</span>
+</span><span class='line'><span class="l-Scalar-Plain">networkallowed</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">192.168.0.0</span>
+</span><span class='line'><span class="l-Scalar-Plain">netmaskallowed</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">255.255.255.0</span>
+</span><span class='line'><span class="l-Scalar-Plain">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">&lt;p&gt;parameters</span><span class="p-Indicator">:</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>Finally, you need to enable this on your Puppet master. Add this to <code>/etc/puppet/puppet.conf</code>:</p>
 
-<p>{% codeblock  %}
-[master]</p>
-
-<pre><code>node_terminus = exec
-external_nodes = /usr/local/bin/simple-enc.sh
-</code></pre>
-
-<p>{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[master]&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>node_terminus = exec
+</span><span class='line'>external_nodes = /usr/local/bin/simple-enc.sh
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>Now whenever a node with the FQDN nfs.example.lan syncs with the master it runs <code>/usr/local/bin/simple-enc.sh nfs.examle.lan.yaml</code>. This returns the contents of the YAML file above. The layout of it is pretty logical, but I suggest reading Puppetlabs <a href="http://docs.puppetlabs.com/guides/external_nodes.html">docs</a>.</p>
 
@@ -109,7 +152,7 @@ git clone http://gitlab.chriscowley.me.uk/puppet/chriscowley-nfs.git \</p>
     <link href="http://www.chriscowley.me.uk/blog/2013/06/23/automated-glusterfs/"/>
     <updated>2013-06-23T22:02:00+02:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/06/23/automated-glusterfs</id>
-    <content type="html"><![CDATA[<p>{% img right http://www.hastexo.com/system/files/imagecache/sidebar/20120221105324808-f2df3ea3e3aeab8_250_0.png %} As I promised on Twitter, this is how I automate a GlusterFS deployment. I'm making a few assumptions here:</p>
+    <content type="html"><![CDATA[<p><img class="right" src="http://www.hastexo.com/system/files/imagecache/sidebar/20120221105324808-f2df3ea3e3aeab8_250_0.png"> As I promised on Twitter, this is how I automate a GlusterFS deployment. I'm making a few assumptions here:</p>
 
 <!-- more -->
 
@@ -128,7 +171,7 @@ git clone http://gitlab.chriscowley.me.uk/puppet/chriscowley-nfs.git \</p>
 </ul>
 
 
-<p>{% img https://docs.google.com/drawings/d/1XA7GH3a4BL1uszFXrSsZjysi59Iinh-0RmhqdDbt7QQ/pub?w=673&amp;h=315 'simple gluster architecture' %}</p>
+<p><img src="https://docs.google.com/drawings/d/1XA7GH3a4BL1uszFXrSsZjysi59Iinh-0RmhqdDbt7QQ/pub?w=673&amp;h=315" title="'simple gluster architecture'" ></p>
 
 <p>The diagram above shows the basic layout of what to start from in terms of hardware. In terms of software, you just need a basic CentOS 6 install and to have Puppet working.</p>
 
@@ -339,7 +382,7 @@ require =&gt; Mount['/export/gv0'],
 ```</p>
 
 <p>This tells Hiera to use only the YAML backend - I do not like JSON because it always looks messy to me. It will look for the data in the folder <code>/etc/puppet/hieradata</code>. Finally it will look in that folder for a file called <clientcert>.yaml, then common.yaml. The process it uses to apply the values is explained very nicely in this image:
-{% img http://docs.puppetlabs.com/hiera/latest/images/hierarchy1.png %}</p>
+<img src="http://docs.puppetlabs.com/hiera/latest/images/hierarchy1.png"></p>
 
 <p>Next, create the file <code>/etc/puppet/hieradata/&lt;certname&gt;.yaml</code> that contains your NFS exports:</p>
 

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linux | Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2014-06-17T11:29:08+02:00</updated>
+  <updated>2014-06-17T11:34:12+02:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -19,6 +19,9 @@
     <updated>2014-06-17T10:28:00+02:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2014/06/17/new-linux-active-directory-integration</id>
     <content type="html"><![CDATA[<p>This used to be quite complex, but now is astoundingly simple. Now there is a new project call <a href="http://freedesktop.org/software/realmd/">realmd</a>. It is in recent version of Debian (Jessie and Sid) and Ubuntu (since 13.04). For Red Hat types, it is RHEL7 and Fedora (since 18).</p>
+
+<!-- more -->
+
 
 <p>If you're on Debian/Ubuntu, install with:</p>
 
@@ -74,7 +77,7 @@ example.com
     <link href="http://www.chriscowley.me.uk/blog/2014/04/09/vmware-cli-on-ubuntu-saucy-salamander/"/>
     <updated>2014-04-09T10:51:00+02:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2014/04/09/vmware-cli-on-ubuntu-saucy-salamander</id>
-    <content type="html"><![CDATA[<p>{% img right http://www.datanalyzers.com/VMware-Data-Recovery.jpg %}The current project (as of this week) has me moving away from Openstack for a while. For the next couple of months I will be immersing myself in monitor, metrics and logging. Naturally, this being a shiney new environment, this involves a significant amount of VMware time.</p>
+    <content type="html"><![CDATA[<p><img class="right" src="http://www.datanalyzers.com/VMware-Data-Recovery.jpg">The current project (as of this week) has me moving away from Openstack for a while. For the next couple of months I will be immersing myself in monitor, metrics and logging. Naturally, this being a shiney new environment, this involves a significant amount of VMware time.</p>
 
 <!-- more -->
 
@@ -106,7 +109,7 @@ sudo ./vmware-install.pl
     <link href="http://www.chriscowley.me.uk/blog/2014/03/31/openstack-neutron-performance-problems/"/>
     <updated>2014-03-31T20:08:00+02:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2014/03/31/openstack-neutron-performance-problems</id>
-    <content type="html"><![CDATA[<p>{% img right http://i.imgur.com/fSMzOUE.jpg %}For the last few weeks I have been consulting on a private cloud project for a local company. Unsurprisingly this has been based around the typical Openstack setup.</p>
+    <content type="html"><![CDATA[<p><img class="right" src="http://i.imgur.com/fSMzOUE.jpg">For the last few weeks I have been consulting on a private cloud project for a local company. Unsurprisingly this has been based around the typical Openstack setup.</p>
 
 <ul>
 <li>Nova - KVM</li>
@@ -121,7 +124,7 @@ sudo ./vmware-install.pl
 
 <p>My architecture is nothing out of the ordinary. A pair of hosts each with 2 networks that look something like this:</p>
 
-<p>{% img https://docs.google.com/drawings/d/11le0qu389WptC78_08Bh92qUCLiCBXiZOhDiESSCnxo/pub?w=960&amp;h=720 %}</p>
+<p><img src="https://docs.google.com/drawings/d/11le0qu389WptC78_08Bh92qUCLiCBXiZOhDiESSCnxo/pub?w=960&amp;h=720"></p>
 
 <p>All this is configured using Red Hat RDO. I had done all this under both Grizzly and, using RDO, it was 30 minutes to set up.</p>
 
@@ -140,9 +143,7 @@ sudo ./vmware-install.pl
 
 <p>A brief Serverfault/Twitter with @martenhauville brought up a few suggestions, one of which caught my eye:</p>
 
-<p>{% blockquote @martenhauville https://ask.openstack.org/en/question/25947/openstack-neutron-stability-problems-with-openvswitch/ %}
-there are known Neutron configuration challenges to overcome with GRE and MTU settings
-{% endblockquote %}</p>
+<p><blockquote><p>there are known Neutron configuration challenges to overcome with GRE and MTU settings</p><footer><strong>@martenhauville</strong> <cite><a href='https://ask.openstack.org/en/question/25947/openstack-neutron-stability-problems-with-openvswitch/'>ask.openstack.org/en/question/&hellip;</a></cite></footer></blockquote></p>
 
 <p>This is where my problem lay: the external switch had an MTU of 1500, Openvswitch also. Finally, <code>ip link</code> in a VM would give you</p>
 
@@ -175,7 +176,7 @@ there are known Neutron configuration challenges to overcome with GRE and MTU se
     <link href="http://www.chriscowley.me.uk/blog/2014/01/24/nfs-with-puppet-and-an-enc/"/>
     <updated>2014-01-24T20:06:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2014/01/24/nfs-with-puppet-and-an-enc</id>
-    <content type="html"><![CDATA[<p>{% img right http://puppetlabs.com/sites/default/files/PL_logo_horizontal_RGB_0.svg 200 200 %}Ages ago (it seems) I posted a <a href="http://www.chriscowley.me.uk/blog/2013/04/11/using-hiera-with-puppet/">howto</a> on configure NFS using Puppet and Hiera. I have been using this happily for several months and adding a new share was is as simple as adding a line to a YAML file. I was never completely happy with it though, especially after I decided to deploy <a href="http://www.theforeman.org">The Foreman</a> in my lab.</p>
+    <content type="html"><![CDATA[<p><img class="right" src="http://puppetlabs.com/sites/default/files/PL_logo_horizontal_RGB_0.svg" width="200" height="200">Ages ago (it seems) I posted a <a href="http://www.chriscowley.me.uk/blog/2013/04/11/using-hiera-with-puppet/">howto</a> on configure NFS using Puppet and Hiera. I have been using this happily for several months and adding a new share was is as simple as adding a line to a YAML file. I was never completely happy with it though, especially after I decided to deploy <a href="http://www.theforeman.org">The Foreman</a> in my lab.</p>
 
 <!-- more -->
 
@@ -188,62 +189,105 @@ there are known Neutron configuration challenges to overcome with GRE and MTU se
 
 <p>I also took the chance to update my module a bit so that it was not hard-coded to my own lab network. To that end, it will automatically pull out the IP address and netmask of eth0. You can edit this easily enough using your ENC.</p>
 
-<p>{% codeblock lang:puppet manifests/server.pp  %}
-  class nfs::server (</p>
-
-<pre><code>$exports = [ '/srv/share'],
-$networkallowed = $::network_eth0,
-$netmaskallowed = $::netmask_eth0,
-</code></pre>
-
-<p>  ) {</p>
-
-<pre><code>// Code here
-</code></pre>
-
-<p>  }
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>manifests/server.pp  </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='puppet'><span class='line'>  <span class="kd">class</span> <span class="nc">nfs::server</span> <span class="p">(</span><span class="err">&lt;/</span><span class="ss">p</span><span class="err">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">&lt;</span><span class="ss">pre</span><span class="err">&gt;&lt;</span><span class="ss">code</span><span class="err">&gt;</span><span class="nv">$exports</span> <span class="p">=</span> <span class="p">[</span> <span class="s1">&#39;/srv/share&#39;</span><span class="p">],</span>
+</span><span class='line'><span class="nv">$networkallowed</span> <span class="p">=</span> <span class="nv">$::network_eth0</span><span class="p">,</span>
+</span><span class='line'><span class="nv">$netmaskallowed</span> <span class="p">=</span> <span class="nv">$::netmask_eth0</span><span class="p">,</span>
+</span><span class='line'><span class="err">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="ss">pre</span><span class="err">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">&lt;</span><span class="ss">p</span><span class="err">&gt;</span>  <span class="p">)</span> <span class="p">{</span><span class="err">&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">&lt;pre&gt;&lt;code&gt;//</span> <span class="err">Code</span> <span class="err">here</span>
+</span><span class='line'><span class="err">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="err">&lt;p&gt;</span>  }
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>Next we need a simple ENC to supply the data. An ENC is actually just any script that returns YAML. It has a single parameter, which is the FQDN of the node. I use this:</p>
 
-<p>{% codeblock /usr/local/bin/simple-enc.sh %}</p>
-
-<h1>!/bin/bash</h1>
-
-<p>DATADIR="/var/local/enc"
-NODE=$1</p>
-
-<p>cat "${DATADIR}/${NODE}.yaml"
-{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>/usr/local/bin/simple-enc.sh </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;h1&gt;!/bin/bash&lt;/h1&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;DATADIR<span class="o">=</span><span class="s2">&quot;/var/local/enc&quot;</span>
+</span><span class='line'><span class="nv">NODE</span><span class="o">=</span><span class="nv">$1</span>&lt;/p&gt;
+</span><span class='line'>
+</span><span class='line'>&lt;p&gt;cat <span class="s2">&quot;${DATADIR}/${NODE}.yaml&quot;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>Next you need a YAML file that looks like:</p>
 
-<h2>{% codeblock /var/local/enc/nfs.example.lan.yaml %}</h2>
-
-<p>environment: production
-classes:
-  nfs::server:</p>
-
-<pre><code>exports:
-  - /srv/share1
-  - /srv/share3
-networkallowed: 192.168.0.0
-netmaskallowed: 255.255.255.0
-</code></pre>
-
-<p>parameters:
-{% endcodeblock %}</p>
+<h2><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>/var/local/enc/nfs.example.lan.yaml </span></figcaption>
+ <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">&lt;/h2&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">&lt;p&gt;environment</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">production</span>
+</span><span class='line'><span class="l-Scalar-Plain">classes</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="l-Scalar-Plain">nfs::server:&lt;/p&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">&lt;pre&gt;&lt;code&gt;exports</span><span class="p-Indicator">:</span>
+</span><span class='line'>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">/srv/share1</span>
+</span><span class='line'>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">/srv/share3</span>
+</span><span class='line'><span class="l-Scalar-Plain">networkallowed</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">192.168.0.0</span>
+</span><span class='line'><span class="l-Scalar-Plain">netmaskallowed</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">255.255.255.0</span>
+</span><span class='line'><span class="l-Scalar-Plain">&lt;/code&gt;&lt;/pre&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="l-Scalar-Plain">&lt;p&gt;parameters</span><span class="p-Indicator">:</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>Finally, you need to enable this on your Puppet master. Add this to <code>/etc/puppet/puppet.conf</code>:</p>
 
-<p>{% codeblock  %}
-[master]</p>
-
-<pre><code>node_terminus = exec
-external_nodes = /usr/local/bin/simple-enc.sh
-</code></pre>
-
-<p>{% endcodeblock %}</p>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>[master]&lt;/p>
+</span><span class='line'>
+</span><span class='line'>&lt;pre>&lt;code>node_terminus = exec
+</span><span class='line'>external_nodes = /usr/local/bin/simple-enc.sh
+</span><span class='line'>&lt;/code>&lt;/pre>
+</span><span class='line'>
+</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>Now whenever a node with the FQDN nfs.example.lan syncs with the master it runs <code>/usr/local/bin/simple-enc.sh nfs.examle.lan.yaml</code>. This returns the contents of the YAML file above. The layout of it is pretty logical, but I suggest reading Puppetlabs <a href="http://docs.puppetlabs.com/guides/external_nodes.html">docs</a>.</p>
 
@@ -266,7 +310,7 @@ git clone http://gitlab.chriscowley.me.uk/puppet/chriscowley-nfs.git \</p>
     <link href="http://www.chriscowley.me.uk/blog/2014/01/08/rhel-and-centos-joining-forces/"/>
     <updated>2014-01-08T14:34:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2014/01/08/rhel-and-centos-joining-forces</id>
-    <content type="html"><![CDATA[<p>{% img right http://i.imgur.com/3colCNj.png 200 200 %}Yesterday saw probably the biggest FLOSS news in recent times. Certainly the biggest news of 2014 so far :-) By some freak of overloaded RSS readers, I missed the announcement, but I did see this:</p>
+    <content type="html"><![CDATA[<p><img class="right" src="http://i.imgur.com/3colCNj.png" width="200" height="200">Yesterday saw probably the biggest FLOSS news in recent times. Certainly the biggest news of 2014 so far :-) By some freak of overloaded RSS readers, I missed the announcement, but I did see this:</p>
 
 <blockquote class="twitter-tweet" lang="en"><p>Day 1 at the new job. Important stuff first.. Where do I get my Red Hat ?</p>&mdash; Karanbir Singh (@CentOS) <a href="https://twitter.com/CentOS/statuses/420876286785892353">January 8, 2014</a></blockquote>
 
@@ -289,19 +333,19 @@ git clone http://gitlab.chriscowley.me.uk/puppet/chriscowley-nfs.git \</p>
 
 <h1>The RHEL Ecosystem</h1>
 
-<p>{% pullquote %}
-In the beginning there is <a href="http://fedoraproject.org">Fedora</a>), where the RHEL developers get to play. Here is where they can try new things and make mistakes. {"In Fedora things can break without people really worrying"} (especially in Rawhide). The exception to this is my wife as we run it on the family PC and she gets quite frustrated with its foibles. However, she knew she was marrying a geek from the outset, so I will not accept any blame for this.
-{% endpullquote %}}</p>
+<p><span class='pullquote-right' data-pullquote='In Fedora things can break without people really worrying'>
+In the beginning there is <a href="http://fedoraproject.org">Fedora</a>), where the RHEL developers get to play. Here is where they can try new things and make mistakes. In Fedora things can break without people really worrying (especially in Rawhide). The exception to this is my wife as we run it on the family PC and she gets quite frustrated with its foibles. However, she knew she was marrying a geek from the outset, so I will not accept any blame for this.
+</span>}</p>
 
 <p>Periodically, the the Fedora developers will pull everything together and create a release that has the potential to be transformed into RHEL. Here they pull together all the things that have be learnt over the last few releases. I consider this an Alpha release of RHEL. At this point, behind the scenes, the RHEL developers will take those packages and start work on the next release of RHEL.</p>
 
-<p>{% pullquote %}
-On release of RHEL, Red Hat make the source code available, as required by the terms of the GPL (and other relevant licenses).The thing is, {"Red Hat as a company are built on Open Source"} principles, they firmly believe in them and, best of all, they practise what the preach. They would still be within the letter of the law if the just dumped a bunch of apparently random scripts on a web server. Instead, they publish the SRPM packages used to build RHEL.
-{% endpullquote %}</p>
+<p><span class='pullquote-right' data-pullquote='Red Hat as a company are built on Open Source'>
+On release of RHEL, Red Hat make the source code available, as required by the terms of the GPL (and other relevant licenses).The thing is, Red Hat as a company are built on Open Source principles, they firmly believe in them and, best of all, they practise what the preach. They would still be within the letter of the law if the just dumped a bunch of apparently random scripts on a web server. Instead, they publish the SRPM packages used to build RHEL.
+</span></p>
 
 <p>CentOS then take these sources and get to work. By definition they are always beind RHEL. As many know this got pretty bad at one point:</p>
 
-<p>{% img http://www.standalone-sysadmin.com/~matt/centos-delays.jpg center %}</p>
+<p><img src="http://www.standalone-sysadmin.com/~matt/centos-delays.jpg" title="center" ></p>
 
 <p>(Thanks to Matt Simmons, aka <a href="http://www.standalone-sysadmin.com">Standalone Sysadmin</a>, from whom I blatantly stole that graph, I'll ask permission later)</p>
 
@@ -309,7 +353,7 @@ On release of RHEL, Red Hat make the source code available, as required by the t
 
 <h1>how does this now affect the two projects</h1>
 
-<p>Both CentOS and Red Hat have a lot to gain from this alliance. {% img right http://i.imgur.com/qbKvXko.jpg 350 350 %}I am sure that there are few people in the wider community who will be upset, but I think that it is a good thing. The reality is that CentOS and RHEL have never been enemies. The people that are using CentOS are just simply never going to pay Red Hat for support they do not need.</p>
+<p>Both CentOS and Red Hat have a lot to gain from this alliance. <img class="right" src="http://i.imgur.com/qbKvXko.jpg" width="350" height="350">I am sure that there are few people in the wider community who will be upset, but I think that it is a good thing. The reality is that CentOS and RHEL have never been enemies. The people that are using CentOS are just simply never going to pay Red Hat for support they do not need.</p>
 
 <p>When I started at Snell (then Snell &amp; Wilcox), the official line was to use RHEL for all our Linux servers. They had everything paid up for a couple of years at the time. By the time renewal came around the global financial crisis had hit, we had used the support two or three times and each time I had solved the problem before Red Hat answered the ticket. So, we decided to switch to CentOS (which was trivial).</p>
 

@@ -125,67 +125,12 @@
 
   <div class="entry-content"><p>This used to be quite complex, but now is astoundingly simple. Now there is a new project call <a href="http://freedesktop.org/software/realmd/">realmd</a>. It is in recent version of Debian (Jessie and Sid) and Ubuntu (since 13.04). For Red Hat types, it is RHEL7 and Fedora (since 18).</p>
 
-<p>If you&#8217;re on Debian/Ubuntu, install with:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>apt-get install realmd</span></code></pre></td></tr></table></div></figure>
-
-
-<p>For RHEL/Fedora:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo yum install realmd</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now you can go ahead and join the domain:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo realm join --user=&lt;admin-user&gt; example.com</span></code></pre></td></tr></table></div></figure>
-
-
-<p>That is it, you can check this by running <code>sudo realm list</code>, which will give you something like:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>example.com
-</span><span class='line'>  type: kerberos
-</span><span class='line'>  realm-name: EXAMPLE.COM
-</span><span class='line'>  domain-name: example.com
-</span><span class='line'>  configured: kerberos-member
-</span><span class='line'>  server-software: active-directory
-</span><span class='line'>  client-software: sssd
-</span><span class='line'>  required-package: oddjob
-</span><span class='line'>  required-package: oddjob-mkhomedir
-</span><span class='line'>  required-package: sssd
-</span><span class='line'>  required-package: adcli
-</span><span class='line'>  required-package: samba-common
-</span><span class='line'>  login-formats: %U@example.com
-</span><span class='line'>  login-policy: allow-realm-logins</span></code></pre></td></tr></table></div></figure>
-
-
-<p>By default <code>realmd</code> used SSSD to perform the authentication. This in turn configured Kerberos and LDAP.</p>
-
-<p>My initial testing has been performed with an Active Directory that has &#8220;Identity Managment for UNIX&#8221; installed. However, I forgot to actually enable my user for UNIX. Even so, it worked perfectly. It sees my Windows groups and defines a home directory of <code>/home/example.com/&lt;username&gt;</code>.</p>
-
-<p>The last step is <code>sudo</code>. If you want to have everyone in <em>Domain Admins</em> have permission to run everything as root, then add the following to <code>sudoers</code>:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>%domain\ users@example.com ALL=(ALL)       ALL</span></code></pre></td></tr></table></div></figure>
-
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/06/17/new-linux-active-directory-integration/">Read on &rarr;</a>
+    </footer>
   
 
 
