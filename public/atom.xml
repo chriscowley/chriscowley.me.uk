@@ -4,7 +4,7 @@
   <title><![CDATA[Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2014-05-10T13:35:56+02:00</updated>
+  <updated>2014-06-17T11:29:05+02:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -12,6 +12,75 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[New Linux Active Directory Integration]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2014/06/17/new-linux-active-directory-integration/"/>
+    <updated>2014-06-17T10:28:00+02:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2014/06/17/new-linux-active-directory-integration</id>
+    <content type="html"><![CDATA[<p>This used to be quite complex, but now is astoundingly simple. Now there is a new project call <a href="http://freedesktop.org/software/realmd/">realmd</a>. It is in recent version of Debian (Jessie and Sid) and Ubuntu (since 13.04). For Red Hat types, it is RHEL7 and Fedora (since 18).</p>
+
+<p>If you&#8217;re on Debian/Ubuntu, install with:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>apt-get install realmd</span></code></pre></td></tr></table></div></figure>
+
+
+<p>For RHEL/Fedora:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo yum install realmd</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now you can go ahead and join the domain:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo realm join --user=&lt;admin-user&gt; example.com</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That is it, you can check this by running <code>sudo realm list</code>, which will give you something like:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>example.com
+</span><span class='line'>  type: kerberos
+</span><span class='line'>  realm-name: EXAMPLE.COM
+</span><span class='line'>  domain-name: example.com
+</span><span class='line'>  configured: kerberos-member
+</span><span class='line'>  server-software: active-directory
+</span><span class='line'>  client-software: sssd
+</span><span class='line'>  required-package: oddjob
+</span><span class='line'>  required-package: oddjob-mkhomedir
+</span><span class='line'>  required-package: sssd
+</span><span class='line'>  required-package: adcli
+</span><span class='line'>  required-package: samba-common
+</span><span class='line'>  login-formats: %U@example.com
+</span><span class='line'>  login-policy: allow-realm-logins</span></code></pre></td></tr></table></div></figure>
+
+
+<p>By default <code>realmd</code> used SSSD to perform the authentication. This in turn configured Kerberos and LDAP.</p>
+
+<p>My initial testing has been performed with an Active Directory that has &#8220;Identity Managment for UNIX&#8221; installed. However, I forgot to actually enable my user for UNIX. Even so, it worked perfectly. It sees my Windows groups and defines a home directory of <code>/home/example.com/&lt;username&gt;</code>.</p>
+
+<p>The last step is <code>sudo</code>. If you want to have everyone in <em>Domain Admins</em> have permission to run everything as root, then add the following to <code>sudoers</code>:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>%domain\ users@example.com ALL=(ALL)       ALL</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Home-made Energy Bars]]></title>
@@ -1784,92 +1853,6 @@ The people that write the MD stack in the Linux kernel are not cowboys. It has p
 <p><span class='pullquote-right' data-pullquote='we need to know what is inside that magic black box, especially when it is in the spec sheet'>
 As I said at the start, the subject here is software vs hardware RAID, but my problem goes deeper than that particular argument. As technology professionals, we are technical people. We need to understand what is going on under the bonnet - that is our job! It may be fine for a vendor to pull the wool over a CFO&#8217;s eyes, but we need to know what is inside that magic black box, especially when it is in the spec sheet.
 </span></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Writeable TFTP Server On CentOS]]></title>
-    <link href="http://www.chriscowley.me.uk/blog/2013/03/25/writeable-tftp-server-on-centos/"/>
-    <updated>2013-03-25T15:45:00+01:00</updated>
-    <id>http://www.chriscowley.me.uk/blog/2013/03/25/writeable-tftp-server-on-centos</id>
-    <content type="html"><![CDATA[<p>Well this caught me out for an embarassingly long time. There are <a href="http://blog.penumbra.be/tag/tftp/">loads</a> <a href="http://www.question-defense.com/2008/11/13/linux-setup-tftp-server-on-centos">of</a> <a href="http://wiki.centos.org/EdHeron/PXESetup">examples</a> of setting up a TFTP server on the web. The vast majority of them assume that you are using them read-only for PXE booting.</p>
-
-<!-- more -->
-
-
-<p>I needed to make it writeable so that it could be used for storing switch/router backups. It is trivially simple once you have read the man page (pro tip: RTFM).</p>
-
-<p>I am doing this on RHEL6, it should be fine on Centos, Scientific Linux or Fedora as is. Any other distro it will require some modification. First install it (install the client as well to test at the end:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>yum install tftp tftp-server xinetd
-</span><span class='line'>chkconfig xinetd on</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now edit the file `/etc/xinetd.d/tftp to read:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>service tftp
-</span><span class='line'>{
-</span><span class='line'>    socket_type = dgram
-</span><span class='line'>    protocol    = udp
-</span><span class='line'>    wait        = yes
-</span><span class='line'>    user        = root
-</span><span class='line'>    server      = /usr/sbin/in.tftpd
-</span><span class='line'>    server_args = -c -s /var/lib/tftpboot
-</span><span class='line'>    disable     = no
-</span><span class='line'>    per_source  = 11
-</span><span class='line'>    cps         = 100 2
-</span><span class='line'>    flags       = IPv4
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<p>There are 2 changes to this file from the defaults. The <code>disable</code> line enables the service. Normally that is where you leave it. However, you cannot upload to the server in this case without pre-creating the files.</p>
-
-<p>The second change adds a <code>-c</code> flag to the <code>server_args</code> line. This tells the service to create the files as necessary.</p>
-
-<p>It still will not work though. You need to tweak the filesystem permissions and SELinux:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>chmod 777 /var/lib/tftpboot
-</span><span class='line'>setsebool -P tftp_anon_write 1</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Of course you&#8217;ll also need to open up the firewall. So add the following line to <code>/etc/sysconfig/iptables</code>:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>-A INPUT -m state --state NEW -m udp -p udp -m udp --dport 69 -j ACCEPT</span></code></pre></td></tr></table></div></figure>
-
-
-<p>If your IPtables set up is what comes out of the box, there will be a similar line to allow SSH access (tcp:22), I would add this line just after that one. If you have something more complicated, then you will probably know how to add this one as well anyway.</p>
-
-<p>You should now be able to upload something to the server</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>echo "stuff" &gt; test
-</span><span class='line'>tftp localhost -c put test</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Your test file should now be in <code>var/lib/tftpboot</code>.</p>
-
-<p>One final note with regards to VMware. This does not work if you are using the VMXNET3 adapter, so make sure you are using the E1000. GETs will work and the file will be created, but no data will be put on the server. To annoy you even more, the test PUTting to localhost will work, but PUTs from a remote host will not.</p>
-
-<p>It has been noted in the VMware forums <a href="http://communities.vmware.com/thread/215456">here</a></p>
 ]]></content>
   </entry>
   

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: systems | Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/blog/categories/systems/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2014-05-10T13:35:56+02:00</updated>
+  <updated>2014-06-17T11:29:08+02:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -18,7 +18,7 @@
     <link href="http://www.chriscowley.me.uk/blog/2013/06/04/dell-announces-vrtx/"/>
     <updated>2013-06-04T22:15:00+02:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2013/06/04/dell-announces-vrtx</id>
-    <content type="html"><![CDATA[<p><img class="right" src="http://en.community.dell.com/cfs-file.ashx/__key/communityserver-blogs-components-weblogfiles/00-00-00-37-45/6886.vrtx.JPG"> Dell has announced the new PowerEdge VRTX (pronounced Vertex). The name comes from a vertex being "the intersection of multiple lines", alluding to this being a mixture of a rack server, a blade server and a SAN.</p>
+    <content type="html"><![CDATA[<p>{% img right http://en.community.dell.com/cfs-file.ashx/__key/communityserver-blogs-components-weblogfiles/00-00-00-37-45/6886.vrtx.JPG %} Dell has announced the new PowerEdge VRTX (pronounced Vertex). The name comes from a vertex being "the intersection of multiple lines", alluding to this being a mixture of a rack server, a blade server and a SAN.</p>
 
 <!-- more -->
 

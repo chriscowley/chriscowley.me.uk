@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linux | Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2014-05-10T13:35:56+02:00</updated>
+  <updated>2014-06-17T11:29:08+02:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -14,11 +14,67 @@
 
   
   <entry>
+    <title type="html"><![CDATA[New Linux Active Directory Integration]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2014/06/17/new-linux-active-directory-integration/"/>
+    <updated>2014-06-17T10:28:00+02:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2014/06/17/new-linux-active-directory-integration</id>
+    <content type="html"><![CDATA[<p>This used to be quite complex, but now is astoundingly simple. Now there is a new project call <a href="http://freedesktop.org/software/realmd/">realmd</a>. It is in recent version of Debian (Jessie and Sid) and Ubuntu (since 13.04). For Red Hat types, it is RHEL7 and Fedora (since 18).</p>
+
+<p>If you're on Debian/Ubuntu, install with:</p>
+
+<p><code>
+apt-get install realmd
+</code></p>
+
+<p>For RHEL/Fedora:</p>
+
+<p><code>
+sudo yum install realmd
+</code></p>
+
+<p>Now you can go ahead and join the domain:</p>
+
+<p><code>
+sudo realm join --user=&lt;admin-user&gt; example.com
+</code></p>
+
+<p>That is it, you can check this by running <code>sudo realm list</code>, which will give you something like:</p>
+
+<p><code>
+example.com
+  type: kerberos
+  realm-name: EXAMPLE.COM
+  domain-name: example.com
+  configured: kerberos-member
+  server-software: active-directory
+  client-software: sssd
+  required-package: oddjob
+  required-package: oddjob-mkhomedir
+  required-package: sssd
+  required-package: adcli
+  required-package: samba-common
+  login-formats: %U@example.com
+  login-policy: allow-realm-logins
+</code></p>
+
+<p>By default <code>realmd</code> used SSSD to perform the authentication. This in turn configured Kerberos and LDAP.</p>
+
+<p>My initial testing has been performed with an Active Directory that has "Identity Managment for UNIX" installed. However, I forgot to actually enable my user for UNIX. Even so, it worked perfectly. It sees my Windows groups and defines a home directory of <code>/home/example.com/&lt;username&gt;</code>.</p>
+
+<p>The last step is <code>sudo</code>. If you want to have everyone in <em>Domain Admins</em> have permission to run everything as root, then add the following to <code>sudoers</code>:</p>
+
+<p><code>
+%domain\ users@example.com ALL=(ALL)       ALL
+</code></p>
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[VMware CLI on Ubuntu Saucy Salamander]]></title>
     <link href="http://www.chriscowley.me.uk/blog/2014/04/09/vmware-cli-on-ubuntu-saucy-salamander/"/>
     <updated>2014-04-09T10:51:00+02:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2014/04/09/vmware-cli-on-ubuntu-saucy-salamander</id>
-    <content type="html"><![CDATA[<p><img class="right" src="http://www.datanalyzers.com/VMware-Data-Recovery.jpg">The current project (as of this week) has me moving away from Openstack for a while. For the next couple of months I will be immersing myself in monitor, metrics and logging. Naturally, this being a shiney new environment, this involves a significant amount of VMware time.</p>
+    <content type="html"><![CDATA[<p>{% img right http://www.datanalyzers.com/VMware-Data-Recovery.jpg %}The current project (as of this week) has me moving away from Openstack for a while. For the next couple of months I will be immersing myself in monitor, metrics and logging. Naturally, this being a shiney new environment, this involves a significant amount of VMware time.</p>
 
 <!-- more -->
 
@@ -50,7 +106,7 @@ sudo ./vmware-install.pl
     <link href="http://www.chriscowley.me.uk/blog/2014/03/31/openstack-neutron-performance-problems/"/>
     <updated>2014-03-31T20:08:00+02:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2014/03/31/openstack-neutron-performance-problems</id>
-    <content type="html"><![CDATA[<p><img class="right" src="http://i.imgur.com/fSMzOUE.jpg">For the last few weeks I have been consulting on a private cloud project for a local company. Unsurprisingly this has been based around the typical Openstack setup.</p>
+    <content type="html"><![CDATA[<p>{% img right http://i.imgur.com/fSMzOUE.jpg %}For the last few weeks I have been consulting on a private cloud project for a local company. Unsurprisingly this has been based around the typical Openstack setup.</p>
 
 <ul>
 <li>Nova - KVM</li>
@@ -65,7 +121,7 @@ sudo ./vmware-install.pl
 
 <p>My architecture is nothing out of the ordinary. A pair of hosts each with 2 networks that look something like this:</p>
 
-<p><img src="https://docs.google.com/drawings/d/11le0qu389WptC78_08Bh92qUCLiCBXiZOhDiESSCnxo/pub?w=960&amp;h=720"></p>
+<p>{% img https://docs.google.com/drawings/d/11le0qu389WptC78_08Bh92qUCLiCBXiZOhDiESSCnxo/pub?w=960&amp;h=720 %}</p>
 
 <p>All this is configured using Red Hat RDO. I had done all this under both Grizzly and, using RDO, it was 30 minutes to set up.</p>
 
@@ -84,7 +140,9 @@ sudo ./vmware-install.pl
 
 <p>A brief Serverfault/Twitter with @martenhauville brought up a few suggestions, one of which caught my eye:</p>
 
-<p><blockquote><p>there are known Neutron configuration challenges to overcome with GRE and MTU settings</p><footer><strong>@martenhauville</strong> <cite><a href='https://ask.openstack.org/en/question/25947/openstack-neutron-stability-problems-with-openvswitch/'>ask.openstack.org/en/question/&hellip;</a></cite></footer></blockquote></p>
+<p>{% blockquote @martenhauville https://ask.openstack.org/en/question/25947/openstack-neutron-stability-problems-with-openvswitch/ %}
+there are known Neutron configuration challenges to overcome with GRE and MTU settings
+{% endblockquote %}</p>
 
 <p>This is where my problem lay: the external switch had an MTU of 1500, Openvswitch also. Finally, <code>ip link</code> in a VM would give you</p>
 
@@ -117,7 +175,7 @@ sudo ./vmware-install.pl
     <link href="http://www.chriscowley.me.uk/blog/2014/01/24/nfs-with-puppet-and-an-enc/"/>
     <updated>2014-01-24T20:06:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2014/01/24/nfs-with-puppet-and-an-enc</id>
-    <content type="html"><![CDATA[<p><img class="right" src="http://puppetlabs.com/sites/default/files/PL_logo_horizontal_RGB_0.svg" width="200" height="200">Ages ago (it seems) I posted a <a href="http://www.chriscowley.me.uk/blog/2013/04/11/using-hiera-with-puppet/">howto</a> on configure NFS using Puppet and Hiera. I have been using this happily for several months and adding a new share was is as simple as adding a line to a YAML file. I was never completely happy with it though, especially after I decided to deploy <a href="http://www.theforeman.org">The Foreman</a> in my lab.</p>
+    <content type="html"><![CDATA[<p>{% img right http://puppetlabs.com/sites/default/files/PL_logo_horizontal_RGB_0.svg 200 200 %}Ages ago (it seems) I posted a <a href="http://www.chriscowley.me.uk/blog/2013/04/11/using-hiera-with-puppet/">howto</a> on configure NFS using Puppet and Hiera. I have been using this happily for several months and adding a new share was is as simple as adding a line to a YAML file. I was never completely happy with it though, especially after I decided to deploy <a href="http://www.theforeman.org">The Foreman</a> in my lab.</p>
 
 <!-- more -->
 
@@ -130,105 +188,62 @@ sudo ./vmware-install.pl
 
 <p>I also took the chance to update my module a bit so that it was not hard-coded to my own lab network. To that end, it will automatically pull out the IP address and netmask of eth0. You can edit this easily enough using your ENC.</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>manifests/server.pp  </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class='puppet'><span class='line'>  <span class="kd">class</span> <span class="nc">nfs::server</span> <span class="p">(</span><span class="err">&lt;/</span><span class="ss">p</span><span class="err">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="err">&lt;</span><span class="ss">pre</span><span class="err">&gt;&lt;</span><span class="ss">code</span><span class="err">&gt;</span><span class="nv">$exports</span> <span class="p">=</span> <span class="p">[</span> <span class="s1">&#39;/srv/share&#39;</span><span class="p">],</span>
-</span><span class='line'><span class="nv">$networkallowed</span> <span class="p">=</span> <span class="nv">$::network_eth0</span><span class="p">,</span>
-</span><span class='line'><span class="nv">$netmaskallowed</span> <span class="p">=</span> <span class="nv">$::netmask_eth0</span><span class="p">,</span>
-</span><span class='line'><span class="err">&lt;</span><span class="sr">/code&gt;&lt;/</span><span class="ss">pre</span><span class="err">&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="err">&lt;</span><span class="ss">p</span><span class="err">&gt;</span>  <span class="p">)</span> <span class="p">{</span><span class="err">&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="err">&lt;pre&gt;&lt;code&gt;//</span> <span class="err">Code</span> <span class="err">here</span>
-</span><span class='line'><span class="err">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="err">&lt;p&gt;</span>  }
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock lang:puppet manifests/server.pp  %}
+  class nfs::server (</p>
+
+<pre><code>$exports = [ '/srv/share'],
+$networkallowed = $::network_eth0,
+$netmaskallowed = $::netmask_eth0,
+</code></pre>
+
+<p>  ) {</p>
+
+<pre><code>// Code here
+</code></pre>
+
+<p>  }
+{% endcodeblock %}</p>
 
 <p>Next we need a simple ENC to supply the data. An ENC is actually just any script that returns YAML. It has a single parameter, which is the FQDN of the node. I use this:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>/usr/local/bin/simple-enc.sh </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='sh'><span class='line'>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;h1&gt;!/bin/bash&lt;/h1&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;DATADIR<span class="o">=</span><span class="s2">&quot;/var/local/enc&quot;</span>
-</span><span class='line'><span class="nv">NODE</span><span class="o">=</span><span class="nv">$1</span>&lt;/p&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;p&gt;cat <span class="s2">&quot;${DATADIR}/${NODE}.yaml&quot;</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock /usr/local/bin/simple-enc.sh %}</p>
+
+<h1>!/bin/bash</h1>
+
+<p>DATADIR="/var/local/enc"
+NODE=$1</p>
+
+<p>cat "${DATADIR}/${NODE}.yaml"
+{% endcodeblock %}</p>
 
 <p>Next you need a YAML file that looks like:</p>
 
-<h2><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>/var/local/enc/nfs.example.lan.yaml </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='yaml'><span class='line'><span class="l-Scalar-Plain">&lt;/h2&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">&lt;p&gt;environment</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">production</span>
-</span><span class='line'><span class="l-Scalar-Plain">classes</span><span class="p-Indicator">:</span>
-</span><span class='line'>  <span class="l-Scalar-Plain">nfs::server:&lt;/p&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">&lt;pre&gt;&lt;code&gt;exports</span><span class="p-Indicator">:</span>
-</span><span class='line'>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">/srv/share1</span>
-</span><span class='line'>  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">/srv/share3</span>
-</span><span class='line'><span class="l-Scalar-Plain">networkallowed</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">192.168.0.0</span>
-</span><span class='line'><span class="l-Scalar-Plain">netmaskallowed</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">255.255.255.0</span>
-</span><span class='line'><span class="l-Scalar-Plain">&lt;/code&gt;&lt;/pre&gt;</span>
-</span><span class='line'>
-</span><span class='line'><span class="l-Scalar-Plain">&lt;p&gt;parameters</span><span class="p-Indicator">:</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<h2>{% codeblock /var/local/enc/nfs.example.lan.yaml %}</h2>
+
+<p>environment: production
+classes:
+  nfs::server:</p>
+
+<pre><code>exports:
+  - /srv/share1
+  - /srv/share3
+networkallowed: 192.168.0.0
+netmaskallowed: 255.255.255.0
+</code></pre>
+
+<p>parameters:
+{% endcodeblock %}</p>
 
 <p>Finally, you need to enable this on your Puppet master. Add this to <code>/etc/puppet/puppet.conf</code>:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[master]&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;pre>&lt;code>node_terminus = exec
-</span><span class='line'>external_nodes = /usr/local/bin/simple-enc.sh
-</span><span class='line'>&lt;/code>&lt;/pre>
-</span><span class='line'>
-</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock  %}
+[master]</p>
+
+<pre><code>node_terminus = exec
+external_nodes = /usr/local/bin/simple-enc.sh
+</code></pre>
+
+<p>{% endcodeblock %}</p>
 
 <p>Now whenever a node with the FQDN nfs.example.lan syncs with the master it runs <code>/usr/local/bin/simple-enc.sh nfs.examle.lan.yaml</code>. This returns the contents of the YAML file above. The layout of it is pretty logical, but I suggest reading Puppetlabs <a href="http://docs.puppetlabs.com/guides/external_nodes.html">docs</a>.</p>
 
@@ -251,7 +266,7 @@ git clone http://gitlab.chriscowley.me.uk/puppet/chriscowley-nfs.git \</p>
     <link href="http://www.chriscowley.me.uk/blog/2014/01/08/rhel-and-centos-joining-forces/"/>
     <updated>2014-01-08T14:34:00+01:00</updated>
     <id>http://www.chriscowley.me.uk/blog/2014/01/08/rhel-and-centos-joining-forces</id>
-    <content type="html"><![CDATA[<p><img class="right" src="http://i.imgur.com/3colCNj.png" width="200" height="200">Yesterday saw probably the biggest FLOSS news in recent times. Certainly the biggest news of 2014 so far :-) By some freak of overloaded RSS readers, I missed the announcement, but I did see this:</p>
+    <content type="html"><![CDATA[<p>{% img right http://i.imgur.com/3colCNj.png 200 200 %}Yesterday saw probably the biggest FLOSS news in recent times. Certainly the biggest news of 2014 so far :-) By some freak of overloaded RSS readers, I missed the announcement, but I did see this:</p>
 
 <blockquote class="twitter-tweet" lang="en"><p>Day 1 at the new job. Important stuff first.. Where do I get my Red Hat ?</p>&mdash; Karanbir Singh (@CentOS) <a href="https://twitter.com/CentOS/statuses/420876286785892353">January 8, 2014</a></blockquote>
 
@@ -274,19 +289,19 @@ git clone http://gitlab.chriscowley.me.uk/puppet/chriscowley-nfs.git \</p>
 
 <h1>The RHEL Ecosystem</h1>
 
-<p><span class='pullquote-right' data-pullquote='In Fedora things can break without people really worrying'>
-In the beginning there is <a href="http://fedoraproject.org">Fedora</a>), where the RHEL developers get to play. Here is where they can try new things and make mistakes. In Fedora things can break without people really worrying (especially in Rawhide). The exception to this is my wife as we run it on the family PC and she gets quite frustrated with its foibles. However, she knew she was marrying a geek from the outset, so I will not accept any blame for this.
-</span>}</p>
+<p>{% pullquote %}
+In the beginning there is <a href="http://fedoraproject.org">Fedora</a>), where the RHEL developers get to play. Here is where they can try new things and make mistakes. {"In Fedora things can break without people really worrying"} (especially in Rawhide). The exception to this is my wife as we run it on the family PC and she gets quite frustrated with its foibles. However, she knew she was marrying a geek from the outset, so I will not accept any blame for this.
+{% endpullquote %}}</p>
 
 <p>Periodically, the the Fedora developers will pull everything together and create a release that has the potential to be transformed into RHEL. Here they pull together all the things that have be learnt over the last few releases. I consider this an Alpha release of RHEL. At this point, behind the scenes, the RHEL developers will take those packages and start work on the next release of RHEL.</p>
 
-<p><span class='pullquote-right' data-pullquote='Red Hat as a company are built on Open Source'>
-On release of RHEL, Red Hat make the source code available, as required by the terms of the GPL (and other relevant licenses).The thing is, Red Hat as a company are built on Open Source principles, they firmly believe in them and, best of all, they practise what the preach. They would still be within the letter of the law if the just dumped a bunch of apparently random scripts on a web server. Instead, they publish the SRPM packages used to build RHEL.
-</span></p>
+<p>{% pullquote %}
+On release of RHEL, Red Hat make the source code available, as required by the terms of the GPL (and other relevant licenses).The thing is, {"Red Hat as a company are built on Open Source"} principles, they firmly believe in them and, best of all, they practise what the preach. They would still be within the letter of the law if the just dumped a bunch of apparently random scripts on a web server. Instead, they publish the SRPM packages used to build RHEL.
+{% endpullquote %}</p>
 
 <p>CentOS then take these sources and get to work. By definition they are always beind RHEL. As many know this got pretty bad at one point:</p>
 
-<p><img src="http://www.standalone-sysadmin.com/~matt/centos-delays.jpg" title="center" ></p>
+<p>{% img http://www.standalone-sysadmin.com/~matt/centos-delays.jpg center %}</p>
 
 <p>(Thanks to Matt Simmons, aka <a href="http://www.standalone-sysadmin.com">Standalone Sysadmin</a>, from whom I blatantly stole that graph, I'll ask permission later)</p>
 
@@ -294,7 +309,7 @@ On release of RHEL, Red Hat make the source code available, as required by the t
 
 <h1>how does this now affect the two projects</h1>
 
-<p>Both CentOS and Red Hat have a lot to gain from this alliance. <img class="right" src="http://i.imgur.com/qbKvXko.jpg" width="350" height="350">I am sure that there are few people in the wider community who will be upset, but I think that it is a good thing. The reality is that CentOS and RHEL have never been enemies. The people that are using CentOS are just simply never going to pay Red Hat for support they do not need.</p>
+<p>Both CentOS and Red Hat have a lot to gain from this alliance. {% img right http://i.imgur.com/qbKvXko.jpg 350 350 %}I am sure that there are few people in the wider community who will be upset, but I think that it is a good thing. The reality is that CentOS and RHEL have never been enemies. The people that are using CentOS are just simply never going to pay Red Hat for support they do not need.</p>
 
 <p>When I started at Snell (then Snell &amp; Wilcox), the official line was to use RHEL for all our Linux servers. They had everything paid up for a couple of years at the time. By the time renewal came around the global financial crisis had hit, we had used the support two or three times and each time I had solved the problem before Red Hat answered the ticket. So, we decided to switch to CentOS (which was trivial).</p>
 
@@ -313,233 +328,6 @@ On release of RHEL, Red Hat make the source code available, as required by the t
 <p>CentOS and RHEL joining forces is in my opinion a really good thing, with both parties getting significant benefits. Granted they are bit less tangible for Red Hat, but that does not make them any less significant.</p>
 
 <p>Personally I am really excited to see what it is in store - especially from CentOS. I even have a couple of SIG ideas too.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Integrating RHEL with Active Directory]]></title>
-    <link href="http://www.chriscowley.me.uk/blog/2013/12/16/integrating-rhel-with-active-directory/"/>
-    <updated>2013-12-16T09:52:00+01:00</updated>
-    <id>http://www.chriscowley.me.uk/blog/2013/12/16/integrating-rhel-with-active-directory</id>
-    <content type="html"><![CDATA[<p>I had a request on Reddit to share a document I wrote about connect Red Hat Enterprise Linux with Active Directory. The original document I wrote is confidential, but I said I would write it up.</p>
-
-<p>This works for both Server 2008(R2) and 2012. If I recall correctly it will also work with 2003, but may need to minor terminology changes on the Windows side. From the Linux side, it should be fine with RHEL 6 and similar (CentOS and Scientific Linux). It should also apply to Fedora, but your mileage may vary.</p>
-
-<!-- more -->
-
-
-<p>So without further ado, let's dive in. To do this you need to know what is actually happening under the surface when you authenticate to AD from a client. The basic idea looks something like this:</p>
-
-<p><img class="center" src="https://docs.google.com/drawings/d/1tjaacfXrTJtOZCREonoXzdHfgZQHssQ2zkDzFpLGeX0/pub?w=960&amp;h=720"></p>
-
-<p>Integration with AD requires the installation of a few services in Red Hat, along with some minor modifications on the Windows Domain Controllers. On the Linux side, everything revolves around the System Security Services Daemon (SSSD). All communication between the PAM and the various possible back-ends is brokered through this daemon. This is only one solution, there are several. The others involve Winbind (which I have found problematic), or LDAP/Kerberos directly (no offline authentication, more difficult to set up). Note that this does not give you any file sharing, but  can easily be extended to do so using Samba.</p>
-
-<p>PAM communicates with SSSD, which in turn talks to Active Directory via LDAP and Kerberos. Identification is performed via LDAP, with the user is authenticated using Kerberos. These different components have some prerequisites on Windows.</p>
-
-<ul>
-<li>DNS must be working fully - both forward and reverse lookups should be functional. If the Kerberos server (Windows Domain Controller) cannot identify the client via DNS, Kerberos will fail.</li>
-<li>Accurate time is essential – if the two systems have too larger difference in time (about 5 minutes), Kerberos will fail.</li>
-<li>The Active Directory needs to be extended to include the relevant information for *NIX systems (home directory, shell, UUID/GUID primarily).
-
-<ul>
-<li>They are actually there, but empty and uneditable. The necessary GUI fields are part of “Identity Management for UNIX”</li>
-</ul>
-</li>
-<li>It must be possible for the Linux client to perform an LDAP search. This could be either via an anonymous bind or authenticated.
-
-<ul>
-<li>Anonymous is obviously not recommended.</li>
-<li>Simple binds (username/password) do work but are not recommended. Although I am not one to practise what I preach (see below).</li>
-<li>The best option is SASL/GSSAPI, using a keytab generated by Samba. This does not require Admin privileges on Windows, only permissions to join computers to the domain.</li>
-</ul>
-</li>
-</ul>
-
-
-<p>For both DNS and NTP I'm assuming that you are using the services provided by Active Directory. It is possible to break those out to other boxes, but it beyond my Windows Admin ability/desire to do so.</p>
-
-<h1>Preparing Active Directory</h1>
-
-<p>In Server Manager, add the Role Service "Identity Management for UNIX". This is under the Role "Active Directory Domain Services" (took me a while to find that). When it asks, use your AD domain name as the NIS name. For example, with a AD domain of <em>chriscowley.lab</em>, use <em>chriscowley</em>.</p>
-
-<p>Once that is installed, create a pair of groups. For the sake of argument, lets call them <em>LinuxAdmin</em> and <em>LinuxUser</em>. The intended roles of these 2 groups is left as an exercise for the reader. When you create these groups, you will see a new tab in the properties window for both groups and users: "UNIX Attributes".</p>
-
-<p>Now go ahead and create a user (or edit an existing one). Go into the UNIX tab and set the configure the user for UNIX access: <img class="right" src="http://i.imgur.com/Ox9kuAy.png"></p>
-
-<ul>
-<li>Select the NIS domain you created earlier</li>
-<li>Set an approprate UUID (default should be fine)</li>
-<li>Set the login shell as <code>/bin/bash</code>, <code>/bin/sh</code> should be fine most of the time, but I have seen a few odd things happen (details escape me)</li>
-<li>Set the home directory. I seperate them out from local users to something like <code>/home/&lt;DOMAIN&gt;/&lt;username&gt;</code></li>
-</ul>
-
-
-<p>Open up one of your groups (let's start with LinuxAdmin) and add the user to that group. Note you have to do it 2 places (don't blame me, I am just the messenger). Both in the standard Groups tab, but also in the UNIX attributes tab.</p>
-
-<p>That should be everything on the Windows side.</p>
-
-<h1>Configure RHEL as a client</h1>
-
-<p>Most of the heavy lifting is done by the <em>System Security Service Daemon</em> (SSSD).</p>
-
-<p><code>
-yum install sssd sssd-client krb5-workstation samba openldap-clients policycoreutils-python
-</code></p>
-
-<p>This should also pull in all the dependencies.</p>
-
-<h2>Configure Kerberos</h2>
-
-<p>I've already said, this but I will repeat myself as getting it wrong will cause many lost hours.</p>
-
-<ul>
-<li>DNS must be working for both forward and reverse lookups</li>
-<li>Time must be in sync accross all the clients</li>
-</ul>
-
-
-<p>Make sure that /etc/resolv.conf contains your domain controllers.</p>
-
-<p><strong>Gotcha</strong>: In RHEL/Fedora the DNS setting are defined in /etc/sysconfig/network-settings/ifcfg-eth0 (or whichever NIC comes first) by Anaconda. This will over-write /etc/resolv.conf on reboot. For no good reason other than stubbornness I tend to remove these entries and define resolv.conf myself (or via configuration management). Alternatively put DNS1 and DNS2 entries in the network configuration files.</p>
-
-<p>In <code>/etc/krb5.conf</code> change you servers to point at your Domain Controllers.</p>
-
-<p>```
-[logging]
- default = FILE:/var/log/krb5libs.log</p>
-
-<p>[libdefaults]
- default_realm = AD.EXAMPLE.COM
- dns_lookup_realm = true
- dns_lookup_kdc = true
- ticket_lifetime = 24h
- renew_lifetime = 7d
- rdns = false
- forwardable = yes</p>
-
-<p>[realms]
- AD.EXAMPLE.COM = {
-  # Define the server only if DNS lookups are not working</p>
-
-<h1>kdc = server.ad.example.com</h1>
-
-<h1>admin_server = server.ad.example.com</h1>
-
-<p> }</p>
-
-<p>[domain_realm]
- .ad.example.com = AD.EXAMPLE.COM
- ad.example.com = AD.EXAMPLE.COM
-```</p>
-
-<p>You should now be able to run:</p>
-
-<p><code>
-kinit aduser@AD.EXAMPLE.COM
-</code></p>
-
-<p>That should obtain a kerberos ticket (check with <code>klist</code>) and you can move on. If it does not work fix it now - Kerberos is horrible to debug later.</p>
-
-<h2>Enable LDAP Searches</h2>
-
-<p>The best way to bind to AD is using SASL/GSSAPI as no passwords are needed.</p>
-
-<p><code>
-kinit Administrator@AD.EXAMPLE.COM
-net ads join createupn=host/client.ad.example.com@AD.EXAMPLE.COM –k
-net ads keytab create   
-net ads keytab add host/client.ad.example.com@AD.EXAMPLE.COM
-</code></p>
-
-<p>You should now be able to get information about yourself from AD using ldapsearch:
-<code>
-ldapsearch -H ldap://server.ad.example.com/ -Y GSSAPI -N -b "dc=ad,dc=example,dc=com" "(&amp;(objectClass=user)(sAMAccountName=aduser))"
-</code></p>
-
-<h2>Configure SSSD</h2>
-
-<p>Everything in SSSD revolves around a single config file (/etc/sssd/ssd.conf).</p>
-
-<p>```
-[sssd]
- config_file_version = 2
- domains = ad.example.com
- services = nss, pam
- debug_level = 0</p>
-
-<p>[nss]</p>
-
-<p>[pam]</p>
-
-<p>[domain/ad.example.com]
- id_provider = ldap
- auth_provider = krb5
- chpass_provider = krb5
- access_provider = ldap</p>
-
-<p> # To use Kerberos, un comment the next line
- #ldap_sasl_mech = GSSAPI</p>
-
-<p> # The following 3 lines bind to AD. Comment them out to use Kerberos
- ldap_default_bind_dn = CN=svc_unix,OU=useraccounts,DC=ad,DC=example,DC=com
- ldap_default_authtok_type = password
- ldap_default_authtok = Welcome_2014</p>
-
-<p> ldap_schema = rfc2307bis</p>
-
-<p> ldap_user_search_base = ,dc=ad,dc=example,dc=com
- ldap_user_object_class = user</p>
-
-<p> ldap_user_home_directory = unixHomeDirectory
- ldap_user_principal = userPrincipalName</p>
-
-<p> ldap_group_search_base = ou=groups,dc=ad,dc=example,dc=com
- ldap_group_object_class = group</p>
-
-<p> ldap_access_order = expire
- ldap_account_expire_policy = ad
- ldap_force_upper_case_realm = true</p>
-
-<p> krb5_realm = AD.EXAMPLE.COM
-```</p>
-
-<p>There is something wrong here. Note the lines:
-```
- # To use Kerberos, un comment the next line
- #ldap_sasl_mech = GSSAPI</p>
-
-<p> # The following 3 lines bind to AD. Comment them out to use Kerberos
- ldap_default_bind_dn = CN=svc_unix,OU=useraccounts,DC=ad,DC=example,DC=com
- ldap_default_authtok_type = password
- ldap_default_authtok = Welcome_2014
-```</p>
-
-<p>Instead of doing the SASL/GSSAPI bind I would prefer to do I have chickened out and done a simple bind. Why? Because I am weak... :-(</p>
-
-<p>Try with kerberos first, if it works then awesome, if not then create a service account in AD that can do nothing other than perform a search and use that to perform the bind. Make sure its path matches that of the <em>ldap_default_bind_dn</em> path, also make sure the password is more complex than "Welcome_2014".</p>
-
-<p>For now this does nothing, we need to tell PAM to use it. The easiest way to enable this on RHEL is to use the authconfig command:</p>
-
-<p><code>
-authconfig --enablesssd --enablesssdauth --enablemkhomedir –update
-</code></p>
-
-<p>This will update <code>/etc/nsswitch.conf</code> and various files in <code>/etc/pam.d</code> to tell the system to authenticate against SSSD. SSSD will in turn talk to Active Directory, using LDAP for Identification and Kerberos for authentication.
-Finally you can enable your LinuxAdmin’s to use sudo. Run the command visudo and add the line:</p>
-
-<p>```
-%LinuxAdmin ALL=(ALL)       ALL</p>
-
-<h1>note the % sign, the defines it as a group not a user</h1>
-
-<p>```</p>
-
-<p>Now your admin’s can run commands as root by prefacing them with sudo. For an encore, I would suggest disabling root login via SSH. Log in as your AD user (leave your root session open, just in case) and run:</p>
-
-<p><code>
-sudo sed -i 's/PermitRootLogin no/PermitRootLogin yes/' /etc/ssh/sshd_config
-sudo service sshd reload
-</code></p>
 ]]></content>
   </entry>
   
