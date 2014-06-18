@@ -4,7 +4,7 @@
   <title><![CDATA[Category: linux | Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/blog/categories/linux/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2014-06-17T11:44:24+02:00</updated>
+  <updated>2014-06-18T14:31:03+02:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -71,6 +71,23 @@ example.com
 <p>My initial testing has been performed with an Active Directory that has "Identity Managment for UNIX" installed. However, I forgot to actually enable my user for UNIX. Even so, it worked perfectly. It sees my Windows groups and defines a home directory of <code>/home/example.com/&lt;username&gt;</code>. I am pretty certain that you do not need to extend AD, it should work out of the box from what I can see.</p>
 
 <p>As a bonus, it seems to respect nested groups, something that has always been a bug bear in these things.</p>
+
+<h2>Edit (18/6/2014)</h2>
+
+<p>It has been bought to my attention that there is dependency problems in Ubuntu 14.04. The <a href="http://funwithlinux.net/2014/04/join-ubuntu-14-04-to-active-directory-domain-using-realmd">work around</a> is to not let <code>realm</code> install the dependencies. To <code>/etc/realmd.conf</code> add:</p>
+
+<p><code>
+[service]
+automatic-install = no
+</code></p>
+
+<p>Now you need to install the necessary packages yourself:</p>
+
+<p><code>
+sudo apt install samba-common-bin, samba-libs sssd-tools krb5-user adcli
+</code></p>
+
+<p>You will need to enter your kerberos domain (e.g. EXAMPLE.COM) during the install. You should be able to get a ticket and join the domain.</p>
 ]]></content>
   </entry>
   

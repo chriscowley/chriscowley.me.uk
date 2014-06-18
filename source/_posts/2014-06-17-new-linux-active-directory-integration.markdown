@@ -57,3 +57,19 @@ By default `realmd` used SSSD to perform the authentication. This in turn config
 My initial testing has been performed with an Active Directory that has "Identity Managment for UNIX" installed. However, I forgot to actually enable my user for UNIX. Even so, it worked perfectly. It sees my Windows groups and defines a home directory of `/home/example.com/<username>`. I am pretty certain that you do not need to extend AD, it should work out of the box from what I can see.
 
 As a bonus, it seems to respect nested groups, something that has always been a bug bear in these things.
+
+## Edit (18/6/2014)
+It has been bought to my attention that there is dependency problems in Ubuntu 14.04. The [work around](http://funwithlinux.net/2014/04/join-ubuntu-14-04-to-active-directory-domain-using-realmd) is to not let `realm` install the dependencies. To `/etc/realmd.conf` add:
+
+```
+[service]
+automatic-install = no
+```
+
+Now you need to install the necessary packages yourself:
+
+```
+sudo apt install samba-common-bin, samba-libs sssd-tools krb5-user adcli
+```
+
+You will need to enter your kerberos domain (e.g. EXAMPLE.COM) during the install. You should be able to get a ticket and join the domain.
