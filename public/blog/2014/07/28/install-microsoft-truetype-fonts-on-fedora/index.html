@@ -5,12 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>VMware CLI installation woes on Centos 6 - Just Another Linux Blog</title>
+  <title>Install Microsoft TrueType fonts on Fedora - Just Another Linux Blog</title>
   <meta name="author" content="Chris Cowley">
 
   
-  <meta name="description" content="Installing the VMware CLI should have been simple, but it was a bit of a fiddle. Use yum all the bits it needs: 1
-yum install make autoconf automake &hellip;">
+  <meta name="description" content="Fedora do nogt bundle Microsoft&#8217;s core Truetype fonts for licensing reasons. Normallly I do not care, personally I prefer Liberation fonts &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +18,7 @@ yum install make autoconf automake &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.chriscowley.me.uk/blog/2012/02/06/vmware-cli-installation-woes-on-centos-6/">
+  <link rel="canonical" href="http://www.chriscowley.me.uk/blog/2014/07/28/install-microsoft-truetype-fonts-on-fedora/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
@@ -96,7 +95,7 @@ yum install make autoconf automake &hellip;">
   
   <header>
     
-      <h1 class="entry-title">VMware CLI Installation Woes on Centos 6</h1>
+      <h1 class="entry-title">Install Microsoft TrueType Fonts on Fedora</h1>
     
     
       <p class="meta">
@@ -112,7 +111,7 @@ yum install make autoconf automake &hellip;">
   
 
 
-<time datetime="2012-02-06T13:09:00+01:00" pubdate data-updated="true">Monday 06 February 2012</time>
+<time datetime="2014-07-28T11:01:00+02:00" pubdate data-updated="true">Monday 28 July 2014</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -121,52 +120,44 @@ yum install make autoconf automake &hellip;">
   </header>
 
 
-<div class="entry-content"><p>Installing the VMware CLI should have been simple, but it was a bit of a fiddle.</p>
-
-<p>Use yum  all the bits it needs:</p>
+<div class="entry-content"><p><img class="right" src="http://i.imgur.com/IVNu1pf.png"> Fedora do nogt bundle Microsoft&#8217;s core Truetype fonts for licensing reasons. Normallly I do not care, personally I prefer <a href="https://fedorahosted.org/liberation-fonts/">Liberation fonts</a> anyway. However, today I needed to Verdana.</p>
 
 <!-- more -->
 
 
+<p>Traditionally, the way to install these on RPM based distributions has been:</p>
+
+<ol>
+<li>Grab the RPM spec file</li>
+<li>Build an RPM from the spec file</li>
+<li>Install RPM using the <code>rpm</code> command.</li>
+</ol>
+
+
+<p>All well and good, however there are a couple of problems.</p>
+
+<ul>
+<li>Using RPM directly is frowned upon</li>
+</ul>
+
+
+<p>Nowadays, Yum does various bits of house keeping in addition to RPM, so this can lead to the <code>rpm</code> and <code>yum</code> databases getting their knickers in a twist.</p>
+
+<p>I get around this with a simple piece of <code>sed</code>/<code>grep</code>:</p>
+
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>yum install make autoconf automake openssl-devel gcc gcc-c++ make uuid-perl libuuid-devel uuid-devel  perl-Data-Dump perl-SOAP-Lite perl-XML-SAX perl-XML-NamespaceSupport perl-XML-LibXML perl-XML-LibXML-Common perl-CPAN</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>curl http://corefonts.sourceforge.net/msttcorefonts-2.0-1.spec | grep -v 'Prereq: /usr/sbin/chkfontpath' &gt; msttcorefonts-2.0-1.spec</span></code></pre></td></tr></table></div></figure>
 
 
-<p>You should now be able to run the installer, but I had another problem though. The installer script would not believe me that I had a direct internet connection and insisted that I gave some proxy server settings. As a simple workaround I just commented out that code in the installation script:</p>
+<p>Now you can do all the usual stuff:</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>if ( direct_command("env | grep -i http_proxy") ) {
-</span><span class='line'> $httpproxy = 1;
-</span><span class='line'>} else {
-</span><span class='line'> print wrap("http_proxy not set. please set environment variable 'http_proxy' e.g. export http_proxy=http://myproxy.mydomain.com:0000 . \n\n", 0);
-</span><span class='line'>}
-</span><span class='line'>if ( direct_command("env | grep -i ftp_proxy") ) {
-</span><span class='line'> $ftpproxy = 1;
-</span><span class='line'>} else {
-</span><span class='line'> print wrap("ftp_proxy not set. please set environment variable 'ftp_proxy' e.g. export ftp_proxy=http://myproxy.mydomain.com:0000 . \n\n", 0);
-</span><span class='line'>}
-</span><span class='line'>
-</span><span class='line'>if ( !( $ftpproxy && $httpproxy)) {
-</span><span class='line'>    uninstall_file($gInstallerMainDB);
-</span><span class='line'>    exit 1;
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>rpmbuild -ba msttcorefonts-2.0-1.spec
+</span><span class='line'>yum --nogpgcheck ~/rpmbuild/RPMS/noarch/msttcorefonts-2.0-1.noarch.rpm</span></code></pre></td></tr></table></div></figure>
 
 
-<p>After this I was able to run the installer with no problems. Of course, there is still the problem I have VMware about them putting their files under <em>/usr</em>. If it is not under control of my package manager, the default should be <em>/opt</em> or <em>/usr/local</em>.</p>
+<p>Relogin and you will have access to Microsoft&#8217;s fonts.</p>
 </div>
 
 
@@ -189,12 +180,12 @@ yum install make autoconf automake &hellip;">
   
 
 
-<time datetime="2012-02-06T13:09:00+01:00" pubdate data-updated="true">Monday 06 February 2012</time>
+<time datetime="2014-07-28T11:01:00+02:00" pubdate data-updated="true">Monday 28 July 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/virtualisation/'>virtualisation</a>
+    <a class='category' href='/blog/categories/linux/'>linux</a>
   
 </span>
 
@@ -203,7 +194,7 @@ yum install make autoconf automake &hellip;">
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.chriscowley.me.uk/blog/2012/02/06/vmware-cli-installation-woes-on-centos-6/" data-via="chriscowleyunix" data-counturl="http://www.chriscowley.me.uk/blog/2012/02/06/vmware-cli-installation-woes-on-centos-6/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.chriscowley.me.uk/blog/2014/07/28/install-microsoft-truetype-fonts-on-fedora/" data-via="chriscowleyunix" data-counturl="http://www.chriscowley.me.uk/blog/2014/07/28/install-microsoft-truetype-fonts-on-fedora/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -216,10 +207,8 @@ yum install make autoconf automake &hellip;">
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2011/11/10/open-source-storage/" title="Previous Post: Open Source Storage">&laquo; Open Source Storage</a>
+        <a class="basic-alignment left" href="/blog/2014/06/25/super-slick-agile-puppet-for-devops/" title="Previous Post: Super Slick Agile Puppet for Devops">&laquo; Super Slick Agile Puppet for Devops</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2012/02/08/home-made-redundant-thin-provisioned-san/" title="Next Post: Home-made Redundant Thin-provisioned SAN">Home-made Redundant Thin-provisioned SAN &raquo;</a>
       
     </p>
   </footer>
