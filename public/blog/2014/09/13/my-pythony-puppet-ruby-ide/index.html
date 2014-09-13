@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Logstash on CentOS 6 - Just Another Linux Blog</title>
+  <title>My Pythony Puppet Ruby vim IDE - Just Another Linux Blog</title>
   <meta name="author" content="Chris Cowley">
 
   
-  <meta name="description" content="It&#8217;s been a while since I last posted anything, but it is time to. I&#8217;ve been playing around a lot with various tools for gathering &hellip;">
+  <meta name="description" content="Despite my penchant for tools written in Ruby (Puppet, Gitlab, Jekyll/Octopress etc) I do not actually like Ruby. I am more of a Python guy. I also &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.chriscowley.me.uk/blog/2014/03/21/logstash-on-centos-6/">
+  <link rel="canonical" href="http://www.chriscowley.me.uk/blog/2014/09/13/my-pythony-puppet-ruby-ide/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
@@ -95,7 +95,7 @@
   
   <header>
     
-      <h1 class="entry-title">Logstash on CentOS 6</h1>
+      <h1 class="entry-title">My Pythony Puppet Ruby Vim IDE</h1>
     
     
       <p class="meta">
@@ -111,7 +111,7 @@
   
 
 
-<time datetime="2014-03-21T20:57:00+01:00" pubdate data-updated="true">Friday 21 March 2014</time>
+<time datetime="2014-09-13T22:03:00+02:00" pubdate data-updated="true">Saturday 13 September 2014</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -120,91 +120,47 @@
   </header>
 
 
-<div class="entry-content"><p><img class="right" src="http://logstash.net/images/logstash.png" width="200"> It&#8217;s been a while since I last posted anything, but it is time to. I&#8217;ve been playing around a lot with various tools for gathering information about my environment recently. One of the most important tools for storing that information is decent logging. Syslog is proven and solid, but a little creaky. For storing everything it is fine, but getting anything out is not so great.</p>
+<div class="entry-content"><p><img class="right" src="http://i.imgur.com/0k24Ambl.png" width="400" height="400">Despite my penchant for tools written in Ruby (Puppet, Gitlab, Jekyll/Octopress etc) I do not actually like Ruby. I am more of a Python guy. I also like Vim, so whenever I use a GUI IDE I end up with something littered with <code>:w</code> and <code>ZZ</code>.</p>
 
 <!-- more -->
 
 
-<p>Logstash is an awesome tool written by <a href="https://twitter.com/jordansissel">Jordan Sissel</a> that is used to &#8220;collect logs, parse them, and store them for later use (like, for searching)&#8221;. It has an excellent howto, but I have one problem with it: the use of a tar file rather than packages. This easily worked around though, as Elasticsearch have it in their Yum repository.</p>
+<p>Despite my pythonic leanings, I also need something that can handle Ruby and Puppet&#8217;s DSL. To which end, this is a bit of a mixture. Fortunately, nothing in either world really contradicts the other, so it works pretty nicely.</p>
 
-<p>First up, define that repository in the file <code>/etc/yum.repos.d/logstash.repo</code>:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>[logstash-1.4]
-</span><span class='line'>name=logstash repository for 1.4.x packages
-</span><span class='line'>baseurl=http://packages.elasticsearch.org/logstash/1.4/centos
-</span><span class='line'>gpgcheck=1
-</span><span class='line'>gpgkey=http://packages.elasticsearch.org/GPG-KEY-elasticsearch
-</span><span class='line'>enabled=1
-</span><span class='line'>
-</span><span class='line'>[elasticsearch-1.0]
-</span><span class='line'>name=Elasticsearch repository for 1.0.x packages
-</span><span class='line'>baseurl=http://packages.elasticsearch.org/elasticsearch/1.0/centos
-</span><span class='line'>gpgcheck=1
-</span><span class='line'>gpgkey=http://packages.elasticsearch.org/GPG-KEY-elasticsearch
-</span><span class='line'>enabled=1</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The rpm does not create its user and group, nor does it create the PID directory for Kibana. Create those then install Łogstash:</p>
+<p>First, the basic environments. Git is needed everywhere, plus I need to isolate the environments of the various projects.</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>mkdir /var/run/logstash-web
-</span><span class='line'>yum -y install logstash elasticsearch logstash-contrib.noarch mcollective-logstash-audit.noarch
-</span><span class='line'>chkconfig --add elasticsearch
-</span><span class='line'>chkconfig elasticsearch on
-</span><span class='line'>service elasticsearch start</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo apt install git python python-dev python-virtualenv virtualenvwrapper curl libxml2-dev libxslt-dev zlib1g-dev ruby-dev
+</span><span class='line'>echo "pip install pyflakes" &gt;&gt; ~/.virtualenvs/postmkvirtualenv
+</span><span class='line'>curl -sSL https://get.rvm.io | bash -s stable --ruby</span></code></pre></td></tr></table></div></figure>
 
 
-<p>For the installation that is it. When you reboot the services will start and you are good to go. Before rebooting though it is worth playing around a little. So lets blatantly rip off the <a href="http://logstash.net/docs/1.4.0/tutorials/getting-started-with-logstash">Quickstart</a>. Run:</p>
+<p>Now we have Git, Virtualenv (and virtualenvwrapper) and RVM installed.</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo -u logstash /opt/logstash/bin/logstash -e 'input { stdin { } } output { stdout { codec =&gt; rubydebug } }'</span></code></pre></td></tr></table></div></figure>
+<h1>Vim</h1>
 
+<p>This the core of everything. I use quite a few plugins:</p>
 
-<p>Logstash takes a while to get going as it needs to fire up the JRE (hint: run <code>htop</code> in another terminal to see when the Java process calms down). When it is happy type (in the same console you started it in) <code>hello</code>. You should see something like:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>hello
-</span><span class='line'>{
-</span><span class='line'>       "message" =&gt; "hello",
-</span><span class='line'>      "@version" =&gt; "1",
-</span><span class='line'>    "@timestamp" =&gt; "2014-03-21T20:56:58.439Z",
-</span><span class='line'>          "host" =&gt; "monitor.chriscowley.lan"
-</span><span class='line'>}
-</span></code></pre></td></tr></table></div></figure>
+<ul>
+<li><a href="https://github.com/andrewle/vim-autoclose">Autoclose</a>: Inserts matching bracket, paren, brace or quote</li>
+<li><a href="https://github.com/vim-scripts/Colour-Sampler-Pack">Colour Sampler Pack</a>: Gives me a nice colour scheme</li>
+<li><a href="https://github.com/sjl/gundo.vim">Gundo</a>: Visualise the undo tree</li>
+<li><a href="https://github.com/sjbach/lusty">Lusty</a>: Manage files within Vim</li>
+<li><a href="https://github.com/cburroughs/pep8">PEP-8</a>: Validate the style of Python files</li>
+<li><a href="https://github.com/vim-scripts/pydoc.vim">PyDoc</a>: Python documentation view- and search-tool (uses pydoc)</li>
+<li><a href="https://github.com/tpope/vim-pathogen">Pathogen</a>: Plugin Manager</li>
+<li><a href="https://github.com/vim-scripts/ScrollColors">Scroll Colours</a>: Colorsheme Scroller, Chooser, and Browser</li>
+<li><a href="https://github.com/ervandew/supertab">Supertab</a>: Tab completion</li>
+<li><a href="https://github.com/jmcantrell/vim-virtualenv">VirtualEnv</a>: Works with Virtualenvs</li>
+<li><a href="https://github.com/rodjek/vim-puppet">Vim Puppet</a>: Puppet niceties</li>
+<li><a href="https://github.com/godlygeek/tabular">Tabular</a>: Text filtering and alignment</li>
+<li><a href="https://github.com/hallison/vim-markdown">Markdown</a>: Markdown syntax highlighter with snippets support</li>
+</ul>
 
 
-<p>That is not very interesting unfortunately. It just takes STDIN, the logs it to STDOUT in a funky format. This all gets more interesting when you start storing your logs somewhere. A good choice is (funnily enough) Elasticsearch. This time run Logstash with this as the output:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>sudo -u logstash /opt/logstash/bin/logstash -e 'input { stdin { } } output { elasticsearch { host =&gt; localhost } }'</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now if you type something in that same console (we&#8217;re still taking the input from STDIN) the output will be written to Elasticsearch.</p>
-
-<p>To test that run <code>curl 'http://localhost:9200/_search?pretty'</code> in another console and you should see something like:</p>
+<p>I keep all this under Git control (available <a href="http://gitlab.chriscowley.me.uk/chriscowleyunix/vim-configuration">here</a>). You can just clone my repo and create a symlink for your <code>.vimrc</code>. If you would rather see what you are doing, then you can replicate my set up like this:</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -227,30 +183,34 @@
 <span class='line-number'>19</span>
 <span class='line-number'>20</span>
 <span class='line-number'>21</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>{
-</span><span class='line'>  "took" : 11,
-</span><span class='line'>  "timed_out" : false,
-</span><span class='line'>  "_shards" : {
-</span><span class='line'>    "total" : 5,
-</span><span class='line'>    "successful" : 5,
-</span><span class='line'>    "failed" : 0
-</span><span class='line'>  },
-</span><span class='line'>  "hits" : {
-</span><span class='line'>      "_index" : "logstash-2014.03.21",
-</span><span class='line'>      "_type" : "logs",
-</span><span class='line'>      "_id" : "aRFzhx-4Ta-jy_PC50U7Lg",
-</span><span class='line'>      "_score" : 1.0, "_source" : {"message":"you know, for logs","@version":"1","@timestamp":"2014-03-21T21:01:17.766Z","host":"monitor.chriscowley.lan"}
-</span><span class='line'>    }, {
-</span><span class='line'>      "_index" : "logstash-2014.03.21",
-</span><span class='line'>      "_type" : "logs",
-</span><span class='line'>      "_id" : "VP8WcqOYRuCbpYgGA5S1oA",
-</span><span class='line'>      "_score" : 1.0, "_source" : {"message":"another one for the logs","@version":"1","@timestamp":"2014-03-21T21:03:42.480Z","host":"monitor.chriscowley.lan"}
-</span><span class='line'>    } ]
-</span><span class='line'>  }
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mkdir -p ${HOME}/.vim/{autoload,bundle}
+</span><span class='line'>cd ${HOME}/.vim/
+</span><span class='line'>git init
+</span><span class='line'>git submodule add https://github.com/andrewle/vim-autoclose.git bundle/vim-autoclose
+</span><span class='line'>git submodule add https://github.com/vim-scripts/Colour-Sampler-Pack.git bundle/colour-sampler-pack
+</span><span class='line'>git submodule add https://github.com/sjl/gundo.vim.git bundle/gundo
+</span><span class='line'>git submodule add https://github.com/sjbach/lusty.git bundle/lusty
+</span><span class='line'>git submodule add https://github.com/cburroughs/pep8.git bundle/pep8
+</span><span class='line'>git submodule add https://github.com/vim-scripts/pydoc.vim.git bundle/pydoc
+</span><span class='line'>git submodule add https://github.com/tpope/vim-pathogen.git bundle/pathogen
+</span><span class='line'>git submodule add https://github.com/vim-scripts/ScrollColors.git bundle/scrollColors
+</span><span class='line'>git submodule add https://github.com/ervandew/supertab.git bundle/supertab
+</span><span class='line'>git submodule add https://github.com/jmcantrell/vim-virtualenv.git bundle/vim-virtualenv
+</span><span class='line'>git submodule add https://github.com/rodjek/vim-puppet.git bundle/puppet
+</span><span class='line'>git submodule add https://github.com/godlygeek/tabular.git bundle/tabular
+</span><span class='line'>git submodule add https://github.com/hallison/vim-markdown.git bundle/markdown
+</span><span class='line'>git submodule init
+</span><span class='line'>git submodule update
+</span><span class='line'>git submodule foreach git submodule init
+</span><span class='line'>git submodule foreach git submodule update
+</span><span class='line'>ln -s ../bundle/pathogen/autoload/pathogen.vim autoload/pathogen.vim
+</span><span class='line'>mv $HOME/.vimrc .
+</span><span class='line'>ln -s '$HOME/.vim/.vimrc' $HOME/.vimrc</span></code></pre></td></tr></table></div></figure>
 
 
-<p>Now that does not persist when you kill Logstash. To do that create a file in <code>/etc/logstash/conf.d/</code> that contains this:</p>
+<p>Add the following to your <code>.vimrc</code>:</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -280,37 +240,75 @@
 <span class='line-number'>26</span>
 <span class='line-number'>27</span>
 <span class='line-number'>28</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>input {
-</span><span class='line'>  file {
-</span><span class='line'>    path           =&gt; "/var/log/messages"
-</span><span class='line'>    start_position =&gt; beginning
-</span><span class='line'>  }
-</span><span class='line'>}
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>" pathogen
+</span><span class='line'>let g:pathogen_disabled = [ 'pathogen' ]    " don't load self
+</span><span class='line'>call pathogen#infect()                      " load everyhting else
+</span><span class='line'>call pathogen#helptags()                    " load plugin help files
+</span><span class='line'> 
+</span><span class='line'>" code folding
+</span><span class='line'>set foldmethod=indent
+</span><span class='line'>set foldlevel=2
+</span><span class='line'>set foldnestmax=4
+</span><span class='line'>  
+</span><span class='line'>" indentation
+</span><span class='line'>set autoindent
+</span><span class='line'>set softtabstop=4 shiftwidth=4 expandtab
+</span><span class='line'>   
+</span><span class='line'>" visual
+</span><span class='line'>highlight Normal ctermbg=black
+</span><span class='line'>set background=dark
+</span><span class='line'>set cursorline
+</span><span class='line'>set t_Co=256
+</span><span class='line'>    
+</span><span class='line'>" syntax highlighting
+</span><span class='line'>syntax on
+</span><span class='line'>filetype on                 " enables filetype detection
+</span><span class='line'>filetype plugin indent on   " enables filetype specific plugins
+</span><span class='line'>     
+</span><span class='line'>" colorpack
+</span><span class='line'>colorscheme vibrantink
 </span><span class='line'>
-</span><span class='line'>filter {
-</span><span class='line'>  if [type] == "syslog" {
-</span><span class='line'>    grok {
-</span><span class='line'>      match =&gt; { "message" =&gt; "%{SYSLOGTIMESTAMP:syslog_timestamp} %{SYSLOGHOST:syslog_hostname} %{DATA:syslog_program}(?:\[%{POSINT:syslog_pid}\])?: %{GREEDYDATA:syslog_message}" }
-</span><span class='line'>      add_field =&gt; [ "received_at", "%{@timestamp}" ]
-</span><span class='line'>      add_field =&gt; [ "received_from", "%{host}" ]
-</span><span class='line'>    }
-</span><span class='line'>    syslog_pri { }
-</span><span class='line'>    date {
-</span><span class='line'>      match =&gt; [ "syslog_timestamp", "MMM  d HH:mm:ss", "MMM dd HH:mm:ss" ]
-</span><span class='line'>    }
-</span><span class='line'>  }
-</span><span class='line'>}
+</span><span class='line'>" gundo
+</span><span class='line'>nnoremap &lt;F5&gt; :GundoToggle&lt;CR&gt;
 </span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>output {
-</span><span class='line'>  elasticsearch {
-</span><span class='line'>    host =&gt; localhost
-</span><span class='line'>  }
-</span><span class='line'>  stdout { codec =&gt; rubydebug }
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>" lusty
+</span><span class='line'>set hidden
+</span><span class='line'>let g:LustyJugglerSuppressRubyWarning = 1"
+</span><span class='line'>        
+</span><span class='line'>" pep8
+</span><span class='line'>let g:pep8_map='&lt;leader&gt;8'
+</span><span class='line'>         
+</span><span class='line'>" supertab
+</span><span class='line'>au FileType python set omnifunc=pythoncomplete#Complete
+</span><span class='line'>let g:SuperTabDefaultCompletionType = "context"
+</span><span class='line'>set completeopt=menuone,longest,preview</span></code></pre></td></tr></table></div></figure>
 
 
-<p>That gives you a simple setup for storing everything in that systems&#8217; syslog. The logical next step from there is to enable that host a central syslogger. This well documented elsewhere, but simplistically you need to add the following to <code>/etc/rsyslog.conf</code>:</p>
+<p>There&#8217;s quite a lot going on there. Refer to the various plugin docs linked above to find what it all does. This would be a good moment to commit all that.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git add .
+</span><span class='line'>git commit -m "Initial commit"</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Tmux</h1>
+
+<p>I use this so I can have a single console window, with multiple panes. Tmux is configured with the file <code>$HOME/.tmux.conf</code>, mine contains:</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -319,34 +317,74 @@
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'># Provides UDP syslog reception
-</span><span class='line'>$ModLoad imudp
-</span><span class='line'>$UDPServerRun 514
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>set-window-option -g mode-keys vi
+</span><span class='line'>bind h select-pane -L
+</span><span class='line'>bind j select-pane -D
+</span><span class='line'>bind k select-pane -U
+</span><span class='line'>bind l select-pane -R
+</span><span class='line'>unbind -n C-b
+</span><span class='line'>set -g prefix C-a
 </span><span class='line'>
-</span><span class='line'># Provides TCP syslog reception
-</span><span class='line'>$ModLoad imtcp
-</span><span class='line'>$InputTCPServerRun 514</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'># easy-to-remember split pane commands
+</span><span class='line'>bind h split-window -h
+</span><span class='line'>bind v split-window -v
+</span><span class='line'>unbind '"'
+</span><span class='line'>unbind %
+</span><span class='line'>
+</span><span class='line'>bind -n M-Left select-pane -L
+</span><span class='line'>bind -n M-Right select-pane -R
+</span><span class='line'>bind -n M-Up select-pane -U
+</span><span class='line'>bind -n M-Down select-pane -D
+</span><span class='line'>set-window-option -g window-status-current-bg yellow
+</span><span class='line'>
+</span><span class='line'># Just click it
+</span><span class='line'>set-option -g mouse-select-pane on
+</span><span class='line'>set-option -g mouse-select-window on
+</span><span class='line'>set-option -g mouse-resize-pane on
+</span><span class='line'> 
+</span><span class='line'># Scroll your way into copy mode (scrollback buffer)
+</span><span class='line'># and select text for copying with the mouse
+</span><span class='line'>setw -g mode-mouse on
+</span><span class='line'>
+</span><span class='line'>set -g set-titles on
+</span><span class='line'>set -g set-titles-string "#T"</span></code></pre></td></tr></table></div></figure>
 
 
-<p>There is a single final step due to the fact that /var/log/messages is only readable by <em>root</em>. Normally this is a big faux pas, but I am putting my trust in Jordan Sissel not to have sold his soul to the NSA. To read this (and connect to ports below 1024) Logstash needs to run as <em>root</em>. Edit <code>/etc/sysconfig/logstash</code> and change the line:</p>
+<p>Now I can use <code>Ctrl+a</code> instead of <code>Ctrl+b</code>. You may not need to do this, but I have little hands.I also change the kes for splitting  my windows (<em>&#8216;h&#8217;</em> horizontally, <em>v</em> vertically).
+I make a few changes from the defaults:</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>LS_USER=logstash</span></code></pre></td></tr></table></div></figure>
-
-
-<p>to read:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>LS_USER=root</span></code></pre></td></tr></table></div></figure>
+<ul>
+<li><code>Ctrl+a</code> instead of <code>Ctrl+b</code> is my prefix. This matches <code>screen</code>, plusI  am more comfortable as I have small hands.</li>
+<li>I can move around panes with either <code>vi</code> keys, arrows or just with the mouse.</li>
+<li>I change the keys to split windows to <code>h</code> (horizontal) and <code>v</code> (vertical).</li>
+</ul>
 
 
-<p>Now you can start Logstash and it will pull in <code>/var/log/messages</code>:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>service logstash start</span></code></pre></td></tr></table></div></figure>
-
-
-<p>There are loads of configuration options for Logstash, so have a look in the <a href="http://logstash.net/docs/1.4.0/">main documentation</a> and the <a href="http://cookbook.logstash.net/">Cookbook</a> for more.</p>
+<p>This all works pretty well for me, although not perfectly. At the moment my clipboard gets intercepted by Tmux,which is top of my my list to fix.</p>
 </div>
 
 
@@ -369,12 +407,12 @@
   
 
 
-<time datetime="2014-03-21T20:57:00+01:00" pubdate data-updated="true">Friday 21 March 2014</time>
+<time datetime="2014-09-13T22:03:00+02:00" pubdate data-updated="true">Saturday 13 September 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/monitoring/'>monitoring</a>
+    <a class='category' href='/blog/categories/devops/'>devops</a>, <a class='category' href='/blog/categories/linux/'>linux</a>
   
 </span>
 
@@ -383,7 +421,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.chriscowley.me.uk/blog/2014/03/21/logstash-on-centos-6/" data-via="chriscowleyunix" data-counturl="http://www.chriscowley.me.uk/blog/2014/03/21/logstash-on-centos-6/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.chriscowley.me.uk/blog/2014/09/13/my-pythony-puppet-ruby-ide/" data-via="chriscowleyunix" data-counturl="http://www.chriscowley.me.uk/blog/2014/09/13/my-pythony-puppet-ruby-ide/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -396,10 +434,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/01/24/nfs-with-puppet-and-an-enc/" title="Previous Post: NFS with Puppet and an ENC">&laquo; NFS with Puppet and an ENC</a>
+        <a class="basic-alignment left" href="/blog/2014/07/28/install-microsoft-truetype-fonts-on-fedora/" title="Previous Post: Install Microsoft TrueType fonts on Fedora">&laquo; Install Microsoft TrueType fonts on Fedora</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/03/31/openstack-neutron-performance-problems/" title="Next Post: Openstack Neutron Performance problems">Openstack Neutron Performance problems &raquo;</a>
       
     </p>
   </footer>

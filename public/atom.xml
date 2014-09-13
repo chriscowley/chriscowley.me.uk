@@ -4,7 +4,7 @@
   <title><![CDATA[Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2014-08-17T14:07:40+02:00</updated>
+  <updated>2014-09-13T22:03:16+02:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -12,6 +12,279 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[My Pythony Puppet Ruby vim IDE]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2014/09/13/my-pythony-puppet-ruby-ide/"/>
+    <updated>2014-09-13T22:03:00+02:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2014/09/13/my-pythony-puppet-ruby-ide</id>
+    <content type="html"><![CDATA[<p><img class="right" src="http://i.imgur.com/0k24Ambl.png" width="400" height="400">Despite my penchant for tools written in Ruby (Puppet, Gitlab, Jekyll/Octopress etc) I do not actually like Ruby. I am more of a Python guy. I also like Vim, so whenever I use a GUI IDE I end up with something littered with <code>:w</code> and <code>ZZ</code>.</p>
+
+<!-- more -->
+
+
+<p>Despite my pythonic leanings, I also need something that can handle Ruby and Puppet&#8217;s DSL. To which end, this is a bit of a mixture. Fortunately, nothing in either world really contradicts the other, so it works pretty nicely.</p>
+
+<p>First, the basic environments. Git is needed everywhere, plus I need to isolate the environments of the various projects.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>sudo apt install git python python-dev python-virtualenv virtualenvwrapper curl libxml2-dev libxslt-dev zlib1g-dev ruby-dev
+</span><span class='line'>echo "pip install pyflakes" &gt;&gt; ~/.virtualenvs/postmkvirtualenv
+</span><span class='line'>curl -sSL https://get.rvm.io | bash -s stable --ruby</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now we have Git, Virtualenv (and virtualenvwrapper) and RVM installed.</p>
+
+<h1>Vim</h1>
+
+<p>This the core of everything. I use quite a few plugins:</p>
+
+<ul>
+<li><a href="https://github.com/andrewle/vim-autoclose">Autoclose</a>: Inserts matching bracket, paren, brace or quote</li>
+<li><a href="https://github.com/vim-scripts/Colour-Sampler-Pack">Colour Sampler Pack</a>: Gives me a nice colour scheme</li>
+<li><a href="https://github.com/sjl/gundo.vim">Gundo</a>: Visualise the undo tree</li>
+<li><a href="https://github.com/sjbach/lusty">Lusty</a>: Manage files within Vim</li>
+<li><a href="https://github.com/cburroughs/pep8">PEP-8</a>: Validate the style of Python files</li>
+<li><a href="https://github.com/vim-scripts/pydoc.vim">PyDoc</a>: Python documentation view- and search-tool (uses pydoc)</li>
+<li><a href="https://github.com/tpope/vim-pathogen">Pathogen</a>: Plugin Manager</li>
+<li><a href="https://github.com/vim-scripts/ScrollColors">Scroll Colours</a>: Colorsheme Scroller, Chooser, and Browser</li>
+<li><a href="https://github.com/ervandew/supertab">Supertab</a>: Tab completion</li>
+<li><a href="https://github.com/jmcantrell/vim-virtualenv">VirtualEnv</a>: Works with Virtualenvs</li>
+<li><a href="https://github.com/rodjek/vim-puppet">Vim Puppet</a>: Puppet niceties</li>
+<li><a href="https://github.com/godlygeek/tabular">Tabular</a>: Text filtering and alignment</li>
+<li><a href="https://github.com/hallison/vim-markdown">Markdown</a>: Markdown syntax highlighter with snippets support</li>
+</ul>
+
+
+<p>I keep all this under Git control (available <a href="http://gitlab.chriscowley.me.uk/chriscowleyunix/vim-configuration">here</a>). You can just clone my repo and create a symlink for your <code>.vimrc</code>. If you would rather see what you are doing, then you can replicate my set up like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>mkdir -p ${HOME}/.vim/{autoload,bundle}
+</span><span class='line'>cd ${HOME}/.vim/
+</span><span class='line'>git init
+</span><span class='line'>git submodule add https://github.com/andrewle/vim-autoclose.git bundle/vim-autoclose
+</span><span class='line'>git submodule add https://github.com/vim-scripts/Colour-Sampler-Pack.git bundle/colour-sampler-pack
+</span><span class='line'>git submodule add https://github.com/sjl/gundo.vim.git bundle/gundo
+</span><span class='line'>git submodule add https://github.com/sjbach/lusty.git bundle/lusty
+</span><span class='line'>git submodule add https://github.com/cburroughs/pep8.git bundle/pep8
+</span><span class='line'>git submodule add https://github.com/vim-scripts/pydoc.vim.git bundle/pydoc
+</span><span class='line'>git submodule add https://github.com/tpope/vim-pathogen.git bundle/pathogen
+</span><span class='line'>git submodule add https://github.com/vim-scripts/ScrollColors.git bundle/scrollColors
+</span><span class='line'>git submodule add https://github.com/ervandew/supertab.git bundle/supertab
+</span><span class='line'>git submodule add https://github.com/jmcantrell/vim-virtualenv.git bundle/vim-virtualenv
+</span><span class='line'>git submodule add https://github.com/rodjek/vim-puppet.git bundle/puppet
+</span><span class='line'>git submodule add https://github.com/godlygeek/tabular.git bundle/tabular
+</span><span class='line'>git submodule add https://github.com/hallison/vim-markdown.git bundle/markdown
+</span><span class='line'>git submodule init
+</span><span class='line'>git submodule update
+</span><span class='line'>git submodule foreach git submodule init
+</span><span class='line'>git submodule foreach git submodule update
+</span><span class='line'>ln -s ../bundle/pathogen/autoload/pathogen.vim autoload/pathogen.vim
+</span><span class='line'>mv $HOME/.vimrc .
+</span><span class='line'>ln -s '$HOME/.vim/.vimrc' $HOME/.vimrc</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Add the following to your <code>.vimrc</code>:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>" pathogen
+</span><span class='line'>let g:pathogen_disabled = [ 'pathogen' ]    " don't load self
+</span><span class='line'>call pathogen#infect()                      " load everyhting else
+</span><span class='line'>call pathogen#helptags()                    " load plugin help files
+</span><span class='line'> 
+</span><span class='line'>" code folding
+</span><span class='line'>set foldmethod=indent
+</span><span class='line'>set foldlevel=2
+</span><span class='line'>set foldnestmax=4
+</span><span class='line'>  
+</span><span class='line'>" indentation
+</span><span class='line'>set autoindent
+</span><span class='line'>set softtabstop=4 shiftwidth=4 expandtab
+</span><span class='line'>   
+</span><span class='line'>" visual
+</span><span class='line'>highlight Normal ctermbg=black
+</span><span class='line'>set background=dark
+</span><span class='line'>set cursorline
+</span><span class='line'>set t_Co=256
+</span><span class='line'>    
+</span><span class='line'>" syntax highlighting
+</span><span class='line'>syntax on
+</span><span class='line'>filetype on                 " enables filetype detection
+</span><span class='line'>filetype plugin indent on   " enables filetype specific plugins
+</span><span class='line'>     
+</span><span class='line'>" colorpack
+</span><span class='line'>colorscheme vibrantink
+</span><span class='line'>
+</span><span class='line'>" gundo
+</span><span class='line'>nnoremap &lt;F5&gt; :GundoToggle&lt;CR&gt;
+</span><span class='line'>
+</span><span class='line'>" lusty
+</span><span class='line'>set hidden
+</span><span class='line'>let g:LustyJugglerSuppressRubyWarning = 1"
+</span><span class='line'>        
+</span><span class='line'>" pep8
+</span><span class='line'>let g:pep8_map='&lt;leader&gt;8'
+</span><span class='line'>         
+</span><span class='line'>" supertab
+</span><span class='line'>au FileType python set omnifunc=pythoncomplete#Complete
+</span><span class='line'>let g:SuperTabDefaultCompletionType = "context"
+</span><span class='line'>set completeopt=menuone,longest,preview</span></code></pre></td></tr></table></div></figure>
+
+
+<p>There&#8217;s quite a lot going on there. Refer to the various plugin docs linked above to find what it all does. This would be a good moment to commit all that.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>git add .
+</span><span class='line'>git commit -m "Initial commit"</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Tmux</h1>
+
+<p>I use this so I can have a single console window, with multiple panes. Tmux is configured with the file <code>$HOME/.tmux.conf</code>, mine contains:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>set-window-option -g mode-keys vi
+</span><span class='line'>bind h select-pane -L
+</span><span class='line'>bind j select-pane -D
+</span><span class='line'>bind k select-pane -U
+</span><span class='line'>bind l select-pane -R
+</span><span class='line'>unbind -n C-b
+</span><span class='line'>set -g prefix C-a
+</span><span class='line'>
+</span><span class='line'># easy-to-remember split pane commands
+</span><span class='line'>bind h split-window -h
+</span><span class='line'>bind v split-window -v
+</span><span class='line'>unbind '"'
+</span><span class='line'>unbind %
+</span><span class='line'>
+</span><span class='line'>bind -n M-Left select-pane -L
+</span><span class='line'>bind -n M-Right select-pane -R
+</span><span class='line'>bind -n M-Up select-pane -U
+</span><span class='line'>bind -n M-Down select-pane -D
+</span><span class='line'>set-window-option -g window-status-current-bg yellow
+</span><span class='line'>
+</span><span class='line'># Just click it
+</span><span class='line'>set-option -g mouse-select-pane on
+</span><span class='line'>set-option -g mouse-select-window on
+</span><span class='line'>set-option -g mouse-resize-pane on
+</span><span class='line'> 
+</span><span class='line'># Scroll your way into copy mode (scrollback buffer)
+</span><span class='line'># and select text for copying with the mouse
+</span><span class='line'>setw -g mode-mouse on
+</span><span class='line'>
+</span><span class='line'>set -g set-titles on
+</span><span class='line'>set -g set-titles-string "#T"</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now I can use <code>Ctrl+a</code> instead of <code>Ctrl+b</code>. You may not need to do this, but I have little hands.I also change the kes for splitting  my windows (<em>&#8216;h&#8217;</em> horizontally, <em>v</em> vertically).
+I make a few changes from the defaults:</p>
+
+<ul>
+<li><code>Ctrl+a</code> instead of <code>Ctrl+b</code> is my prefix. This matches <code>screen</code>, plusI  am more comfortable as I have small hands.</li>
+<li>I can move around panes with either <code>vi</code> keys, arrows or just with the mouse.</li>
+<li>I change the keys to split windows to <code>h</code> (horizontal) and <code>v</code> (vertical).</li>
+</ul>
+
+
+<p>This all works pretty well for me, although not perfectly. At the moment my clipboard gets intercepted by Tmux,which is top of my my list to fix.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Install Microsoft TrueType fonts on Fedora]]></title>
@@ -2143,186 +2416,6 @@ So what am I getting at here? To be honest I am not sure, but I can see a genera
 <p><span class='pullquote-right' data-pullquote='To be a universal standard it would need to be an open (source) standard'>
 EMC has really pushed ViPR in the last couple of weeks, but it fails to impress me. This is a shame, because in general I like EMC&#8217;s products. I don&#8217;t like their marketing, but in their gear does just work. ViPR will probably do well with large EMC/NetApp shops, but it is by no means the ground-breaking product that EMC would have people believe (to be honest, I&#8217;m not sure anything ever is). It can never be the universal gateway to manage our storage, it is too tied in to EMC. To be a universal standard it would need to be an open (source) standard, which is not really part of EMC&#8217;s culture (with the exception of the awesome Razor).
 </span></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Bamboo Invoice on Centos with Nginx]]></title>
-    <link href="http://www.chriscowley.me.uk/blog/2013/04/29/bamboo-invoice-on-centos-with-nginx/"/>
-    <updated>2013-04-29T21:16:00+02:00</updated>
-    <id>http://www.chriscowley.me.uk/blog/2013/04/29/bamboo-invoice-on-centos-with-nginx</id>
-    <content type="html"><![CDATA[<p><a href="http://www.bambooinvoice.org/">BambooInvoice</a> is free Open Source invoicing software intended for small businesses and independent contractors. It is easy to use and creates pretty good looking invoices.</p>
-
-<!-- more -->
-
-
-<p>It is a simple PHP application that is based on the CodeIgniter framework. This means it is really simple to install on a typically LAMP stack. I however use Nginx and could not find any notes on how to configure it. It is pretty typical you can get most of the way by reading any of the Nginx howto documents on the web. Personally, for PHP apps, I use PHP-FPM, so you could use <a href="http://www.howtoforge.com/installing-nginx-with-php5-and-php-fpm-and-mysql-support-on-centos-6.4">this on Howtoforge</a> to get most of the way. That will get you a working Nginx, PHP and MySQL system.</p>
-
-<p>Download the install file from [http://bambooinvoice.org/] an unzip is in your www folder:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> /var/www
-</span><span class='line'>wget http://bambooinvoice.org/img/bambooinvoice_089.zip
-</span><span class='line'>unzip bambooinvoice_089.zip
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>You next step is to create a database for it along with a user:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='mysql'><span class='line'><span class="k">CREATE</span> <span class="k">DATABASE</span> <span class="n">bambooinvoice</span> <span class="k">DEFAULT</span> <span class="k">CHARACTER</span> <span class="kt">SET</span> <span class="n">utf8</span><span class="p">;</span>
-</span><span class='line'><span class="k">GRANT</span> <span class="k">ALL</span> <span class="k">ON</span> <span class="n">bambooinvoice</span><span class="p">.</span><span class="o">*</span> <span class="k">TO</span> <span class="s1">&#39;bambooinvoice&#39;</span><span class="o">@</span><span class="s1">&#39;localhost&#39;</span> <span class="n">IDENTIFIED</span> <span class="k">BY</span> <span class="s1">&#39;bambooinvoice&#39;</span><span class="p">;</span>
-</span><span class='line'><span class="n">FLUSH</span> <span class="n">PRIVILEGES</span><span class="p">;</span>
-</span><span class='line'><span class="k">exit</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now you can edit the config files to point at the database:</p>
-
-<figure class='code'><figcaption><span>/var/www/bambooinvoices/bamboo_system_files/application/config/database.php</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='php'><span class='line'><span class="cp">&lt;?php</span>  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nb">defined</span><span class="p">(</span><span class="s1">&#39;BASEPATH&#39;</span><span class="p">))</span> <span class="k">exit</span><span class="p">(</span><span class="s1">&#39;No direct script access allowed&#39;</span><span class="p">);</span>
-</span><span class='line'><span class="nv">$active_group</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'><span class="nv">$db</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">][</span><span class="s1">&#39;hostname&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;localhost&#39;</span><span class="p">;</span>
-</span><span class='line'><span class="nv">$db</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">][</span><span class="s1">&#39;username&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;bambooinvoice&#39;</span><span class="p">;</span>
-</span><span class='line'><span class="nv">$db</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">][</span><span class="s1">&#39;password&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;bambooinvoice&#39;</span><span class="p">;</span>
-</span><span class='line'><span class="nv">$db</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">][</span><span class="s1">&#39;database&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;bambooinvoice&#39;</span><span class="p">;</span>
-</span><span class='line'><span class="nv">$db</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">][</span><span class="s1">&#39;dbdriver&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;mysql&#39;</span><span class="p">;</span>
-</span><span class='line'><span class="nv">$db</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">][</span><span class="s1">&#39;dbprefix&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;bamboo_&#39;</span><span class="p">;</span>
-</span><span class='line'><span class="nv">$db</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">][</span><span class="s1">&#39;active_r&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">TRUE</span><span class="p">;</span>
-</span><span class='line'><span class="nv">$db</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">][</span><span class="s1">&#39;pconnect&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">FALSE</span><span class="p">;</span>
-</span><span class='line'><span class="nv">$db</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">][</span><span class="s1">&#39;db_debug&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">TRUE</span><span class="p">;</span>
-</span><span class='line'><span class="nv">$db</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">][</span><span class="s1">&#39;cache_on&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">FALSE</span><span class="p">;</span>
-</span><span class='line'><span class="nv">$db</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">][</span><span class="s1">&#39;cachedir&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
-</span><span class='line'><span class="nv">$db</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">][</span><span class="s1">&#39;char_set&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;utf8&#39;</span><span class="p">;</span>
-</span><span class='line'><span class="nv">$db</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">][</span><span class="s1">&#39;dbcollat&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;utf8_general_ci&#39;</span><span class="p">;</span>
-</span><span class='line'><span class="cp">?&gt;</span><span class="x"></span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Next you need set the base_url in <code>/var/www/bambooinvoices/bamboo_system_files/application/config/config.php</code>. Nothing else is essential in that file, but read the docs in the ZIP file to see what else you want to change.</p>
-
-<p>Now the all important bit.</p>
-
-<figure class='code'><figcaption><span>/etc/nginx/conf.d/bamboo.conf</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-</pre></td><td class='code'><pre><code class='nginx'><span class='line'><span class="k">server</span> <span class="p">{</span>
-</span><span class='line'>    <span class="kn">listen</span> <span class="mi">80</span><span class="p">;</span>
-</span><span class='line'>    <span class="kn">server_name</span> <span class="s">bamboo.example</span><span class="p">;</span>
-</span><span class='line'>    <span class="kn">root</span> <span class="s">/var/www/bambooinvoice/</span><span class="p">;</span>
-</span><span class='line'>    <span class="kn">index</span> <span class="s">index.php</span> <span class="s">index.html</span><span class="p">;</span>
-</span><span class='line'>    <span class="kn">access_log</span>              <span class="s">/var/log/nginx/bamboo_access.log</span><span class="p">;</span>
-</span><span class='line'>    <span class="kn">error_log</span>               <span class="s">/var/log/nginx/bamboo_error.log</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kn">location</span> <span class="p">=</span> <span class="s">/robots.txt</span> <span class="p">{</span>
-</span><span class='line'>        <span class="kn">allow</span> <span class="s">all</span><span class="p">;</span>
-</span><span class='line'>        <span class="kn">log_not_found</span> <span class="no">off</span><span class="p">;</span>
-</span><span class='line'>        <span class="kn">access_log</span> <span class="no">off</span><span class="p">;</span>
-</span><span class='line'>    <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>    <span class="c1"># Deny all attempts to access hidden files such as .htaccess, .htpasswd, .DS_Store (Mac).</span>
-</span><span class='line'>    <span class="kn">location</span> <span class="p">~</span> <span class="sr">/\.</span> <span class="p">{</span>
-</span><span class='line'>        <span class="kn">deny</span> <span class="s">all</span><span class="p">;</span>
-</span><span class='line'>        <span class="kn">access_log</span> <span class="no">off</span><span class="p">;</span>
-</span><span class='line'>        <span class="kn">log_not_found</span> <span class="no">off</span><span class="p">;</span>
-</span><span class='line'>     <span class="p">}</span>
-</span><span class='line'>     <span class="kn">location</span> <span class="s">/</span> <span class="p">{</span>
-</span><span class='line'>         <span class="kn">try_files</span> <span class="nv">$uri</span> <span class="nv">$uri/</span> <span class="s">/index.php</span><span class="nv">$request_uri</span> <span class="s">/index.php</span><span class="p">;</span>
-</span><span class='line'>     <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>     <span class="kn">location</span> <span class="p">~</span> <span class="sr">\.php($|/)</span> <span class="p">{</span>
-</span><span class='line'>         <span class="kn">try_files</span> <span class="nv">$uri</span> <span class="p">=</span><span class="mi">404</span><span class="p">;</span>
-</span><span class='line'>         <span class="kn">fastcgi_pass</span> <span class="n">127.0.0.1</span><span class="p">:</span><span class="mi">9000</span><span class="p">;</span>
-</span><span class='line'>         <span class="kn">include</span> <span class="s">/etc/nginx/fastcgi_params</span><span class="p">;</span>
-</span><span class='line'>         <span class="kn">fastcgi_index</span> <span class="s">index.php</span><span class="p">;</span>
-</span><span class='line'>         <span class="kn">set</span> <span class="nv">$script</span> <span class="nv">$uri</span><span class="p">;</span>
-</span><span class='line'>         <span class="kn">set</span> <span class="nv">$path_info</span> <span class="s">&quot;&quot;</span><span class="p">;</span>
-</span><span class='line'>         <span class="kn">if</span> <span class="s">(</span><span class="nv">$uri</span> <span class="p">~</span> <span class="sr">&quot;^(.+\.php)(/.+)&quot;)</span> <span class="p">{</span>
-</span><span class='line'>             <span class="kn">set</span> <span class="nv">$script</span> <span class="nv">$1</span><span class="p">;</span>
-</span><span class='line'>             <span class="kn">set</span> <span class="nv">$path_info</span> <span class="nv">$2</span><span class="p">;</span>
-</span><span class='line'>         <span class="p">}</span>
-</span><span class='line'>         <span class="kn">fastcgi_param</span> <span class="s">URI</span> <span class="nv">$uri</span><span class="p">;</span>
-</span><span class='line'>         <span class="c1"># Next two lines are fix the 502 (Bad gateway) error</span>
-</span><span class='line'>         <span class="kn">fastcgi_buffers</span> <span class="mi">8</span> <span class="mi">16k</span><span class="p">;</span>
-</span><span class='line'>         <span class="kn">fastcgi_buffer_size</span> <span class="mi">32k</span><span class="p">;</span>
-</span><span class='line'>
-</span><span class='line'>         <span class="kn">fastcgi_param</span> <span class="s">PATH_INFO</span> <span class="nv">$path_info</span><span class="p">;</span>
-</span><span class='line'>         <span class="kn">fastcgi_param</span> <span class="s">SCRIPT_NAME</span> <span class="nv">$script</span><span class="p">;</span>
-</span><span class='line'>         <span class="kn">fastcgi_param</span> <span class="s">SCRIPT_FILENAME</span> <span class="nv">$document_root$script</span><span class="p">;</span>
-</span><span class='line'>      <span class="p">}</span>
-</span><span class='line'><span class="p">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>At first glance, there is nothing out of the ordinary. This is pretty much what Howtoforge gives you. Look more closely and I have added the 3 lines 39-41. This solves a gateway problem I had when creating a client.</p>
 ]]></content>
   </entry>
   

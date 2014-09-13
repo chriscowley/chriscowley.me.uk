@@ -4,7 +4,7 @@
   <title><![CDATA[Category: devops | Just Another Linux Blog]]></title>
   <link href="http://www.chriscowley.me.uk/blog/categories/devops/atom.xml" rel="self"/>
   <link href="http://www.chriscowley.me.uk/"/>
-  <updated>2014-08-17T14:07:40+02:00</updated>
+  <updated>2014-09-13T22:03:16+02:00</updated>
   <id>http://www.chriscowley.me.uk/</id>
   <author>
     <name><![CDATA[Chris Cowley]]></name>
@@ -12,6 +12,187 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[My Pythony Puppet Ruby vim IDE]]></title>
+    <link href="http://www.chriscowley.me.uk/blog/2014/09/13/my-pythony-puppet-ruby-ide/"/>
+    <updated>2014-09-13T22:03:00+02:00</updated>
+    <id>http://www.chriscowley.me.uk/blog/2014/09/13/my-pythony-puppet-ruby-ide</id>
+    <content type="html"><![CDATA[<p><img class="right" src="http://i.imgur.com/0k24Ambl.png" width="400" height="400">Despite my penchant for tools written in Ruby (Puppet, Gitlab, Jekyll/Octopress etc) I do not actually like Ruby. I am more of a Python guy. I also like Vim, so whenever I use a GUI IDE I end up with something littered with <code>:w</code> and <code>ZZ</code>.</p>
+
+<!-- more -->
+
+
+<p>Despite my pythonic leanings, I also need something that can handle Ruby and Puppet's DSL. To which end, this is a bit of a mixture. Fortunately, nothing in either world really contradicts the other, so it works pretty nicely.</p>
+
+<p>First, the basic environments. Git is needed everywhere, plus I need to isolate the environments of the various projects.</p>
+
+<p><code>
+sudo apt install git python python-dev python-virtualenv virtualenvwrapper curl libxml2-dev libxslt-dev zlib1g-dev ruby-dev
+echo "pip install pyflakes" &gt;&gt; ~/.virtualenvs/postmkvirtualenv
+curl -sSL https://get.rvm.io | bash -s stable --ruby
+</code></p>
+
+<p>Now we have Git, Virtualenv (and virtualenvwrapper) and RVM installed.</p>
+
+<h1>Vim</h1>
+
+<p>This the core of everything. I use quite a few plugins:</p>
+
+<ul>
+<li><a href="https://github.com/andrewle/vim-autoclose">Autoclose</a>: Inserts matching bracket, paren, brace or quote</li>
+<li><a href="https://github.com/vim-scripts/Colour-Sampler-Pack">Colour Sampler Pack</a>: Gives me a nice colour scheme</li>
+<li><a href="https://github.com/sjl/gundo.vim">Gundo</a>: Visualise the undo tree</li>
+<li><a href="https://github.com/sjbach/lusty">Lusty</a>: Manage files within Vim</li>
+<li><a href="https://github.com/cburroughs/pep8">PEP-8</a>: Validate the style of Python files</li>
+<li><a href="https://github.com/vim-scripts/pydoc.vim">PyDoc</a>: Python documentation view- and search-tool (uses pydoc)</li>
+<li><a href="https://github.com/tpope/vim-pathogen">Pathogen</a>: Plugin Manager</li>
+<li><a href="https://github.com/vim-scripts/ScrollColors">Scroll Colours</a>: Colorsheme Scroller, Chooser, and Browser</li>
+<li><a href="https://github.com/ervandew/supertab">Supertab</a>: Tab completion</li>
+<li><a href="https://github.com/jmcantrell/vim-virtualenv">VirtualEnv</a>: Works with Virtualenvs</li>
+<li><a href="https://github.com/rodjek/vim-puppet">Vim Puppet</a>: Puppet niceties</li>
+<li><a href="https://github.com/godlygeek/tabular">Tabular</a>: Text filtering and alignment</li>
+<li><a href="https://github.com/hallison/vim-markdown">Markdown</a>: Markdown syntax highlighter with snippets support</li>
+</ul>
+
+
+<p>I keep all this under Git control (available <a href="http://gitlab.chriscowley.me.uk/chriscowleyunix/vim-configuration">here</a>). You can just clone my repo and create a symlink for your <code>.vimrc</code>. If you would rather see what you are doing, then you can replicate my set up like this:</p>
+
+<p><code>
+mkdir -p ${HOME}/.vim/{autoload,bundle}
+cd ${HOME}/.vim/
+git init
+git submodule add https://github.com/andrewle/vim-autoclose.git bundle/vim-autoclose
+git submodule add https://github.com/vim-scripts/Colour-Sampler-Pack.git bundle/colour-sampler-pack
+git submodule add https://github.com/sjl/gundo.vim.git bundle/gundo
+git submodule add https://github.com/sjbach/lusty.git bundle/lusty
+git submodule add https://github.com/cburroughs/pep8.git bundle/pep8
+git submodule add https://github.com/vim-scripts/pydoc.vim.git bundle/pydoc
+git submodule add https://github.com/tpope/vim-pathogen.git bundle/pathogen
+git submodule add https://github.com/vim-scripts/ScrollColors.git bundle/scrollColors
+git submodule add https://github.com/ervandew/supertab.git bundle/supertab
+git submodule add https://github.com/jmcantrell/vim-virtualenv.git bundle/vim-virtualenv
+git submodule add https://github.com/rodjek/vim-puppet.git bundle/puppet
+git submodule add https://github.com/godlygeek/tabular.git bundle/tabular
+git submodule add https://github.com/hallison/vim-markdown.git bundle/markdown
+git submodule init
+git submodule update
+git submodule foreach git submodule init
+git submodule foreach git submodule update
+ln -s ../bundle/pathogen/autoload/pathogen.vim autoload/pathogen.vim
+mv $HOME/.vimrc .
+ln -s '$HOME/.vim/.vimrc' $HOME/.vimrc
+</code></p>
+
+<p>Add the following to your <code>.vimrc</code>:</p>
+
+<p>```
+" pathogen
+let g:pathogen_disabled = [ 'pathogen' ]    " don't load self
+call pathogen#infect()                      " load everyhting else
+call pathogen#helptags()                    " load plugin help files</p>
+
+<p>" code folding
+set foldmethod=indent
+set foldlevel=2
+set foldnestmax=4</p>
+
+<p>" indentation
+set autoindent
+set softtabstop=4 shiftwidth=4 expandtab</p>
+
+<p>" visual
+highlight Normal ctermbg=black
+set background=dark
+set cursorline
+set t_Co=256</p>
+
+<p>" syntax highlighting
+syntax on
+filetype on                 " enables filetype detection
+filetype plugin indent on   " enables filetype specific plugins</p>
+
+<p>" colorpack
+colorscheme vibrantink</p>
+
+<p>" gundo
+nnoremap <F5> :GundoToggle<CR></p>
+
+<p>" lusty
+set hidden
+let g:LustyJugglerSuppressRubyWarning = 1"</p>
+
+<p>" pep8
+let g:pep8_map='<leader>8'</p>
+
+<p>" supertab
+au FileType python set omnifunc=pythoncomplete#Complete
+let g:SuperTabDefaultCompletionType = "context"
+set completeopt=menuone,longest,preview
+```</p>
+
+<p>There's quite a lot going on there. Refer to the various plugin docs linked above to find what it all does. This would be a good moment to commit all that.</p>
+
+<p><code>
+git add .
+git commit -m "Initial commit"
+</code></p>
+
+<h1>Tmux</h1>
+
+<p>I use this so I can have a single console window, with multiple panes. Tmux is configured with the file <code>$HOME/.tmux.conf</code>, mine contains:</p>
+
+<p>```
+set-window-option -g mode-keys vi
+bind h select-pane -L
+bind j select-pane -D
+bind k select-pane -U
+bind l select-pane -R
+unbind -n C-b
+set -g prefix C-a</p>
+
+<h1>easy-to-remember split pane commands</h1>
+
+<p>bind h split-window -h
+bind v split-window -v
+unbind '"'
+unbind %</p>
+
+<p>bind -n M-Left select-pane -L
+bind -n M-Right select-pane -R
+bind -n M-Up select-pane -U
+bind -n M-Down select-pane -D
+set-window-option -g window-status-current-bg yellow</p>
+
+<h1>Just click it</h1>
+
+<p>set-option -g mouse-select-pane on
+set-option -g mouse-select-window on
+set-option -g mouse-resize-pane on</p>
+
+<h1>Scroll your way into copy mode (scrollback buffer)</h1>
+
+<h1>and select text for copying with the mouse</h1>
+
+<p>setw -g mode-mouse on</p>
+
+<p>set -g set-titles on
+set -g set-titles-string "#T"
+```</p>
+
+<p>Now I can use <code>Ctrl+a</code> instead of <code>Ctrl+b</code>. You may not need to do this, but I have little hands.I also change the kes for splitting  my windows (<em>'h'</em> horizontally, <em>v</em> vertically).
+I make a few changes from the defaults:</p>
+
+<ul>
+<li><code>Ctrl+a</code> instead of <code>Ctrl+b</code> is my prefix. This matches <code>screen</code>, plusI  am more comfortable as I have small hands.</li>
+<li>I can move around panes with either <code>vi</code> keys, arrows or just with the mouse.</li>
+<li>I change the keys to split windows to <code>h</code> (horizontal) and <code>v</code> (vertical).</li>
+</ul>
+
+
+<p>This all works pretty well for me, although not perfectly. At the moment my clipboard gets intercepted by Tmux,which is top of my my list to fix.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[NFS with Puppet and an ENC]]></title>
