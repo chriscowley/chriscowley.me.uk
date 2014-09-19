@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Mirror a Subversion repo with svnsync - Just Another Linux Blog</title>
+  <title>Open Source Hyper-converged Infrastructure - Just Another Linux Blog</title>
   <meta name="author" content="Chris Cowley">
 
   
-  <meta name="description" content="The basic idea is that everytime a change happens on the master, it gets pushed to the slave. In this set up it will not get you any more capacity; &hellip;">
+  <meta name="description" content="Hyper-converged seems to be all the rage at the moment. VMware&#8217;s announcement of the EVO:RAIL has naturally got lots of tongues wagging. They &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.chriscowley.me.uk/blog/2012/07/17/mirror-a-subversion-repo-with-svnsync/">
+  <link rel="canonical" href="http://www.chriscowley.me.uk/blog/2014/09/19/open-source-hyper-converged-infrastructure/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
@@ -95,7 +95,7 @@
   
   <header>
     
-      <h1 class="entry-title">Mirror a Subversion Repo With Svnsync</h1>
+      <h1 class="entry-title">Open Source Hyper-converged Infrastructure</h1>
     
     
       <p class="meta">
@@ -111,7 +111,7 @@
   
 
 
-<time datetime="2012-07-17T12:03:00+02:00" pubdate data-updated="true">Tuesday 17 July 2012</time>
+<time datetime="2014-09-19T21:18:00+02:00" pubdate data-updated="true">Friday 19 September 2014</time>
         
          | <a href="#disqus_thread">Comments</a>
         
@@ -120,108 +120,142 @@
   </header>
 
 
-<div class="entry-content"><p>The basic idea is that everytime a change happens on the master, it gets pushed to the slave. In this set up it will <em>not</em> get you any more capacity; you cannot commit back to the slave. If you do it will get out of sync, resulting in a <em>split brain</em> situation. This is what we sysadmins call a &#8220;bad thing&#8221;. I am doing this in order to have <a href="http://www.atlassian.com/software/fisheye/overview" target="_blank">Atlassian Fisheye</a> can scan the repository without having to go over the network. The basic layout is:</p>
+<div class="entry-content"><p>Hyper-converged seems to be all the rage at the moment. VMware&#8217;s announcement of the <a href="http://www.vmware.com/products/evorail/">EVO:RAIL</a> has naturally got lots of tongues wagging. They are jumping into a market already well populated.</p>
 
 <!-- more -->
 
 
-<p><img class="center" src="/images/svnsync.png"></p>
+<p>I was looking at the pricing/features and though it all looks a little expensive. Nutanix for example, will sell you the following:</p>
 
-<p>First the master needs to be able to send the data to the slave without any user interaction. On both the slave create a user to perform the sync:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>useradd svnsync</span></code></pre></td></tr></table></div></figure>
-
-
-<p>On the master, I use https to access my repositories. This means that all my hook scripts run as the apache user. Change to that user with <code>sudo su -s /bin/bash - apache</code></p>
-
-<p>Create an ssh key-pair (<code>ssh-keygen</code>) and add the contents of <code>~apache\.ssh\id_rsa.pub</code> on the master to <code>~svnsync/.ssh/authorized_keys2</code> on the slave.</p>
-
-<p>Now you can push push data to the slave without a password. Test it by running:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>ssh svnsync@&lt;slave&gt;</span></code></pre></td></tr></table></div></figure>
+<ul>
+<li>NX-1000: $80k+ (4 little nodes)</li>
+<li>NX-3000: $144k+ (4 big nodes)</li>
+<li>NX-6000: $120k+ (2 massive nodes)</li>
+</ul>
 
 
-<h2>On Slave</h2>
+<p>I&#8217;d imagine that, once you include licensing, EVO:RAIL systems will come in similar. What do you get for your case:</p>
 
-<p>Create a new repository to store what gets pushed to it</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>svnadmin create --fs-type=fsfs /var/local/svnsync/&lt;reponame&gt;
-</span><span class='line'>chown -Rv svnsync:svnsync /var/local/svnsync/&lt;reponame&gt;</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The process will need to make modifications to the properties, so you need to enable that. Put the following into <code>/var/local/svnsync/&lt;reponame&gt;/hooks/pre-revprop-change</code></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>#!/bin/sh
-</span><span class='line'>USER="$3"
-</span><span class='line'>
-</span><span class='line'>if [ "$USER" = "svnsync" ]; then exit 0; fi
-</span><span class='line'>
-</span><span class='line'>echo "Only the svnsync user can change revprops" &gt;&2
-</span><span class='line'>exit 1</span></code></pre></td></tr></table></div></figure>
+<ul>
+<li>A COTS server (dual E5-26x0 Xeon, 64GB+ RAM)</li>
+<li>Networking (at least 2x 1Gb, but most are 10Gb)</li>
+<li>A few TB Storage</li>
+<li>Tend to rely on the customer to supply the network infrastructure, but I see no real problem with that. If I had all HP Procurves in my DC, I would pretty annoyed if I suddenly had a pair of Cisco&#8217;s to worry about</li>
+<li>The while system is built on top of architectually identical building blocks</li>
+</ul>
 
 
-<p>Finally make it executable with</p>
+<p>That last one does not necessarily mean that all the boxes are the same. It means there is no concept of a &#8220;storage node&#8221; or a &#8220;compute node&#8221;. You just have &#8220;nodes&#8221; that all contain compute, storage, networking, whatever. You may have some that are bigger than others, but they all do the same job.</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>chmod +x /var/local/svnsync/&lt;reponame&gt;/hooks/pre-revprop-change</span></code></pre></td></tr></table></div></figure>
+<p>On top of that, you get some software special sauce to tie it all together. For EVO::RAIL, that looks something like this:</p>
+
+<p><img src="http://wahlnetwork.com/wn/wp-content/uploads/2014/08/configure-options-650x335.png" alt="EVO:RAIL install" /></p>
+
+<p>and this:</p>
+
+<p><img src="http://wahlnetwork.com/wn/wp-content/uploads/2014/08/configure-complete-650x330.png" alt="EVO:RAIL install finished" /></p>
+
+<p><a href="http://youtu.be/XOhZgAPn_CU">Which is nice</a></p>
+
+<p>I decided to play a little game, a bit like when you want to buy a new computer: you go online, put together all the parts you want in a basket, look at, dream a little. After a few rounds of this you start justifying it to yourself, then you wife/accountant. Eventually, you build one final basket pull out the credit card an pull the trigger. Well, this is like that, but more expensive.</p>
+
+<p>I think that we now have everything we need in the FLOSS world to impliment a Hyper-converged architecture. I suppose this is my attempt to document that as a some sort of reference architecture. A key component will be Openstack, but not necessarily everywhere.</p>
+
+<h1>Hardware</h1>
+
+<p><img class="right" src="http://www.supermicro.com.tw/a_images/products/superserver/2U/SYS-2027PR-HTR_25.jpg">The easy bit is the CPU and RAM: plenty (at least 6 cores with 64GB of RAM). Networking, surprisingly is also relatively simple. Anything will do (2x 1Gb will be fine an entry level node), but 2x 10Gb is preferable, Infiniband would also be great (Linux works beautifully with Infiniband). All this would (ideally) be put into a box that has <a href="http://www.supermicro.com.tw/products/system/2U/2028/SYS-2028TP-HTR.cfm">multiple nodes in one box</a>.</p>
+
+<p>Storage is more complex. Tiering is essential, and I personally am not a fan of hardware RAID. Additionally, this needs to be replicated. The overall architecture would look something like:</p>
+
+<p><img src="https://docs.google.com/drawings/d/1sTBdhIGMvYiKkELaaO_TXQl8Em3vR8untQvLg4uSj30/pub?w=948&amp;h=460" alt="Cluster overview" /></p>
+
+<p>Each node would have to at least an SSD, plus a decent number of spinny disks to get a sensible capacity. The spinners have no need for RAID - data protection is done on a cluster level higher up the stack. I think right now, I would probably run with Gluster, for reasons which I will revisit later. Ceph is probably where is till be at in the future though.</p>
+
+<p>A good rule of thumb when using tiering is that your SSD should be roughly 10% of your spinning rust. So lets say a single 400-500GB SSD, along side 5TB of spinning disk.</p>
+
+<p>For the clustering, you would need at least 2x 1Gb NICs dedicated to this. If one could dedicate a pair of 10Gb NICs then that would be awesome.</p>
+
+<p>Finally, the OS needs to be installed on something, but a USB key or SD card is more than sufficient for that.</p>
+
+<p>The complex bit is the initial configuration. What really makes the likes of Nutanix and EVO:RAIL stand out is the simplicity of install. The images above our the 4 steps it takes to get an EVO:RAIL cluster running and I have to admit it pretty darn good.</p>
+
+<h1>Software</h1>
+
+<p>What we need to aim at is that you:</p>
+
+<ol>
+<li>download an image</li>
+<li>burn on to USB keys/SD cards</li>
+<li>boot all the nodes</li>
+<li>it works!</li>
+</ol>
 
 
-<h2>On Master</h2>
+<p>I think all the parts to auto-configure a cluster exist in the FOSS world. The problem is making it 100% plug and play. I would say that this is finally a genuine use for IPv6 and mDNS. Let&#8217;s dedicate a pair of 1Gb/s NICs to cluster communications and do all that over IPv6.</p>
 
-<p>First initialize the transfer and do the initial population. Do all this as the apache user again.</p>
+<p>This enables to get a fully working network going with no intervention from the user. Now we can have a Config Management system running over said network. If we use Puppet, then our secret sauce can be used as an ENC to configure all the nodes.</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>svnsync init --username svnsync \
-</span><span class='line'>    svn+ssh://svnsync@&lt;slave&gt;/var/local/svnsync/&lt;reponame&gt; \
-</span><span class='line'>    file:///var/svn/&lt;reponame&gt;</span></code></pre></td></tr></table></div></figure>
+<p>What this means is that amount of new code that needs to be written is relatively small. All we need is that initial configuration utility. To make it super simple, this could even be in &#8220;the cloud&#8221; and each cluster registers itself with a UUID. I suppose this would work in much the same way as <code>etcd</code>. I suppose this interface could also be where the user downloads their image files, thus the UUID could be part of said image. Make all that FLOSS, and people can host their own management portal if they prefer. It would function in much the same way as RHN/Satellite.</p>
 
+<p>Anyway, once that is all done, Puppet can then go and do all the necessary configuration. There is quite a bit of integration that needs to happen here.</p>
 
-<p>Now we need to configure the Master repo to push all changes to the slave. Create a post-commit hook script containing</p>
+<p>There are 2 obvious choices for the virtualisation layer:</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>#!/bin/bash
-</span><span class='line'>svnsync --username svnsync --non-interactive sync \
-</span><span class='line'>    svn+ssh://svnsync@&lt;slave&gt;/var/local/svnsync/&lt;reponame&gt;</span></code></pre></td></tr></table></div></figure>
+<ul>
+<li>oVirt</li>
+<li>Openstack</li>
+</ul>
 
 
-<p>Finally create another hook script to keep revision properties in sync in <code>/var/svn/&lt;reponame&gt;/hooks/post-revprop-change</code></p>
+<p>These are necessarily mutually exclusive. The oVirt team are build in support for various Openstack technologies:</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>#!/bin/bash
-</span><span class='line'>REPOS="$1"
-</span><span class='line'>REV="$2"
-</span><span class='line'>USER="$3"
-</span><span class='line'>PROPNAME="$4"
-</span><span class='line'>ACTION="$5"
-</span><span class='line'>
-</span><span class='line'>svnsync --username svnsync --non-interactive copy-revprops \
-</span><span class='line'>    svn+ssh://svnsync@&lt;slave&gt;/var/local/svnsync/&lt;reponame&gt; $REV && \
-</span><span class='line'>    exit 0</span></code></pre></td></tr></table></div></figure>
+<ul>
+<li>Neutron for networking</li>
+<li>Cinder for block storage</li>
+<li>Glance for template storage</li>
+</ul>
 
+
+<p>Different hosts could be tagged as either oVirt or Nova nodes depending on the type of app they are running. They all then share the same pool of storage.</p>
+
+<p>The configuration would then be dealt with using Puppet roles.</p>
+
+<p>When you need to add a new appliance, you just download an image with the correct UUID and it will add itself to the cluster.</p>
+
+<h1>The bottom line</h1>
+
+<p>Of course, the important bit is the price. This is very much back of envelope, but something like a Supermicro quad-node, where each node consists of:</p>
+
+<ul>
+<li>1x Xeon E5-2620V2 (6C, HT 2.1GHz)</li>
+<li>64GB RAM</li>
+<li>1x 240GB SSD</li>
+<li>2x 1TB 10k SATA</li>
+<li>4x 1Gb NIC</li>
+</ul>
+
+
+<p>comes to ~£8500. This compares pretty well with a Nutanix NX-1000, for 10% of the price.</p>
+
+<p>Something comparable to a the NX-3000 would again be 4 nodes, each consisting of:</p>
+
+<ul>
+<li>2x Xeon E5-2620V2 (6C, HT 2.1GHz)</li>
+<li>128GB RAM</li>
+<li>1x 480GB SSD</li>
+<li>4x 1TB 10k SATA</li>
+<li>4x 1Gb NIC</li>
+<li>4x 10Gb NIC</li>
+</ul>
+
+
+<p>would come to ~£15000. Again, this is 10% of the the price of the commercial solution.</p>
+
+<p>These are 90% markups! <strong>90%!!!</strong> Even when you add in the vSphere licensing, that is still 70%. I have not seen any prices for any of the EVO::RAIL vendors, but I do not see that it will be much different. Why should it be?</p>
+
+<p>Yes they are supported, but that is a lot to pay. I do not mean to pick on Nutanix, they make a fantastic product - one that I have proposed to customers on multiple occasions. The only reason I have used them is because it is relatively easy to find pricing.</p>
+
+<p>Is this a statement of intent? I do not know. For now I do not have the time to run with this, but that does not mean I will not find the time. It does give a good reference architecture that will work for 95% of use cases with the above mentioned virtualisation/cloud platforms.</p>
 </div>
 
 
@@ -244,12 +278,12 @@
   
 
 
-<time datetime="2012-07-17T12:03:00+02:00" pubdate data-updated="true">Tuesday 17 July 2012</time>
+<time datetime="2014-09-19T21:18:00+02:00" pubdate data-updated="true">Friday 19 September 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/subversion/'>Subversion</a>
+    <a class='category' href='/blog/categories/infrastructure/'>infrastructure</a>, <a class='category' href='/blog/categories/linux/'>linux</a>
   
 </span>
 
@@ -258,7 +292,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.chriscowley.me.uk/blog/2012/07/17/mirror-a-subversion-repo-with-svnsync/" data-via="chriscowleyunix" data-counturl="http://www.chriscowley.me.uk/blog/2012/07/17/mirror-a-subversion-repo-with-svnsync/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.chriscowley.me.uk/blog/2014/09/19/open-source-hyper-converged-infrastructure/" data-via="chriscowleyunix" data-counturl="http://www.chriscowley.me.uk/blog/2014/09/19/open-source-hyper-converged-infrastructure/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -271,10 +305,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2012/07/03/fixed-my-gihub-repo-list/" title="Previous Post: Fixed my gihub repo list">&laquo; Fixed my gihub repo list</a>
+        <a class="basic-alignment left" href="/blog/2014/09/13/my-pythony-puppet-ruby-ide/" title="Previous Post: My Pythony Puppet Ruby vim IDE">&laquo; My Pythony Puppet Ruby vim IDE</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2012/07/27/isle-of-wight-ride/" title="Next Post: Isle of Wight Ride">Isle of Wight Ride &raquo;</a>
       
     </p>
   </footer>

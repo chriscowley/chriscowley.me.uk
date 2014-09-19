@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Mirror a Subversion repo with svnsync - Just Another Linux Blog</title>
+  <title>Category: infrastructure - Just Another Linux Blog</title>
   <meta name="author" content="Chris Cowley">
 
   
-  <meta name="description" content="The basic idea is that everytime a change happens on the master, it gets pushed to the slave. In this set up it will not get you any more capacity; &hellip;">
+  <meta name="description" content="Category: infrastructure">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://www.chriscowley.me.uk/blog/2012/07/17/mirror-a-subversion-repo-with-svnsync/">
+  <link rel="canonical" href="http://www.chriscowley.me.ukblog/categories/infrastructure/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
@@ -91,200 +91,36 @@
   <div id="main">
     <div id="content">
       <div>
-<article class="hentry" role="article">
+<article role="article">
   
   <header>
-    
-      <h1 class="entry-title">Mirror a Subversion Repo With Svnsync</h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-17T12:03:00+02:00" pubdate data-updated="true">Tuesday 17 July 2012</time>
-        
-         | <a href="#disqus_thread">Comments</a>
-        
-      </p>
+    <h1 class="entry-title">Category: Infrastructure</h1>
     
   </header>
-
-
-<div class="entry-content"><p>The basic idea is that everytime a change happens on the master, it gets pushed to the slave. In this set up it will <em>not</em> get you any more capacity; you cannot commit back to the slave. If you do it will get out of sync, resulting in a <em>split brain</em> situation. This is what we sysadmins call a &#8220;bad thing&#8221;. I am doing this in order to have <a href="http://www.atlassian.com/software/fisheye/overview" target="_blank">Atlassian Fisheye</a> can scan the repository without having to go over the network. The basic layout is:</p>
-
-<!-- more -->
-
-
-<p><img class="center" src="/images/svnsync.png"></p>
-
-<p>First the master needs to be able to send the data to the slave without any user interaction. On both the slave create a user to perform the sync:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>useradd svnsync</span></code></pre></td></tr></table></div></figure>
-
-
-<p>On the master, I use https to access my repositories. This means that all my hook scripts run as the apache user. Change to that user with <code>sudo su -s /bin/bash - apache</code></p>
-
-<p>Create an ssh key-pair (<code>ssh-keygen</code>) and add the contents of <code>~apache\.ssh\id_rsa.pub</code> on the master to <code>~svnsync/.ssh/authorized_keys2</code> on the slave.</p>
-
-<p>Now you can push push data to the slave without a password. Test it by running:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>ssh svnsync@&lt;slave&gt;</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>On Slave</h2>
-
-<p>Create a new repository to store what gets pushed to it</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>svnadmin create --fs-type=fsfs /var/local/svnsync/&lt;reponame&gt;
-</span><span class='line'>chown -Rv svnsync:svnsync /var/local/svnsync/&lt;reponame&gt;</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The process will need to make modifications to the properties, so you need to enable that. Put the following into <code>/var/local/svnsync/&lt;reponame&gt;/hooks/pre-revprop-change</code></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>#!/bin/sh
-</span><span class='line'>USER="$3"
-</span><span class='line'>
-</span><span class='line'>if [ "$USER" = "svnsync" ]; then exit 0; fi
-</span><span class='line'>
-</span><span class='line'>echo "Only the svnsync user can change revprops" &gt;&2
-</span><span class='line'>exit 1</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Finally make it executable with</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>chmod +x /var/local/svnsync/&lt;reponame&gt;/hooks/pre-revprop-change</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>On Master</h2>
-
-<p>First initialize the transfer and do the initial population. Do all this as the apache user again.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>svnsync init --username svnsync \
-</span><span class='line'>    svn+ssh://svnsync@&lt;slave&gt;/var/local/svnsync/&lt;reponame&gt; \
-</span><span class='line'>    file:///var/svn/&lt;reponame&gt;</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now we need to configure the Master repo to push all changes to the slave. Create a post-commit hook script containing</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>#!/bin/bash
-</span><span class='line'>svnsync --username svnsync --non-interactive sync \
-</span><span class='line'>    svn+ssh://svnsync@&lt;slave&gt;/var/local/svnsync/&lt;reponame&gt;</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Finally create another hook script to keep revision properties in sync in <code>/var/svn/&lt;reponame&gt;/hooks/post-revprop-change</code></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>#!/bin/bash
-</span><span class='line'>REPOS="$1"
-</span><span class='line'>REV="$2"
-</span><span class='line'>USER="$3"
-</span><span class='line'>PROPNAME="$4"
-</span><span class='line'>ACTION="$5"
-</span><span class='line'>
-</span><span class='line'>svnsync --username svnsync --non-interactive copy-revprops \
-</span><span class='line'>    svn+ssh://svnsync@&lt;slave&gt;/var/local/svnsync/&lt;reponame&gt; $REV && \
-</span><span class='line'>    exit 0</span></code></pre></td></tr></table></div></figure>
-
-</div>
-
-
-  <footer>
-    <p class="meta">
-      
   
-
-<span class="byline author vcard">Posted by <span class="fn">Chris Cowley</span></span>
-
-      
-
-
-
-
-
+  <div id="blog-archives" class="category">
 
 
 
   
+  <h2>2014</h2>
+
+<article>
+  
+<h1><a href="/blog/2014/09/19/open-source-hyper-converged-infrastructure/">Open Source Hyper-converged Infrastructure</a></h1>
+<time datetime="2014-09-19T21:18:00+02:00" pubdate><span class='month'>Sep</span> <span class='day'>19</span> <span class='year'>2014</span></time>
+
+<footer>
+  <span class="categories">posted in <a class='category' href='/blog/categories/infrastructure/'>infrastructure</a>, <a class='category' href='/blog/categories/linux/'>linux</a></span>
+</footer>
 
 
-<time datetime="2012-07-17T12:03:00+02:00" pubdate data-updated="true">Tuesday 17 July 2012</time>
-      
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/subversion/'>Subversion</a>
-  
-</span>
-
-
-    </p>
-    
-      <div class="sharing">
-  
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://www.chriscowley.me.uk/blog/2012/07/17/mirror-a-subversion-repo-with-svnsync/" data-via="chriscowleyunix" data-counturl="http://www.chriscowley.me.uk/blog/2012/07/17/mirror-a-subversion-repo-with-svnsync/" >Tweet</a>
-  
-  
-  <div class="g-plusone" data-size="medium"></div>
-  
-  
-    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
-  
-</div>
-
-    
-    <p class="meta">
-      
-        <a class="basic-alignment left" href="/blog/2012/07/03/fixed-my-gihub-repo-list/" title="Previous Post: Fixed my gihub repo list">&laquo; Fixed my gihub repo list</a>
-      
-      
-        <a class="basic-alignment right" href="/blog/2012/07/27/isle-of-wight-ride/" title="Next Post: Isle of Wight Ride">Isle of Wight Ride &raquo;</a>
-      
-    </p>
-  </footer>
 </article>
 
-  <section>
-    <h1>Comments</h1>
-    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </div>
-  </section>
+
+  
+</article>
 
 </div>
 
