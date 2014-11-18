@@ -10,6 +10,7 @@ footer: true
 I run a yum repository for a few packages that are not available and/or too old in the standard Enterprise Linux repositories. 
 
 * CentOS 6: [SRPMS][centos-6-srpms] [i686][centos-6-i686] [x86_64][centos-6-x86_64]
+* CentOS 7: [SRPMS][centos-7-srpms] [x86_64][centos-7-x86_64]
 * Fedora Rawhide: [SRPMS][fedora-rawhide-srpms] [x86_64][fedora-rawhide-x86_64]
 
 
@@ -20,6 +21,8 @@ I run a yum repository for a few packages that are not available and/or too old 
 [centos-6-srpms]: http://yum.chriscowley.me.uk/el/6/SRPMS/repoview/
 [centos-6-i686]: http://yum.chriscowley.me.uk/el/6/i686/repoview/
 [centos-6-x86_64]: http://yum.chriscowley.me.uk/el/6/x86_64/repoview/
+[centos-7-srpms]: http://yum.chriscowley.me.uk/el/7/SRPMS/repoview/
+[centos-7-x86_64]: http://yum.chriscowley.me.uk/el/7/x86_64/repoview/
 [fedora-rawhide-srpms]: http://yum.chriscowley.me.uk/test/fedora/rawhide/source/repoview/
 [fedora-rawhide-x86_64]: http://yum.chriscowley.me.uk/test/fedora/rawhide/x86_64/repoview/
 [gpg-key]: http://yum.chriscowley.me.uk/RPM-GPG-KEY-ChrisCowley
