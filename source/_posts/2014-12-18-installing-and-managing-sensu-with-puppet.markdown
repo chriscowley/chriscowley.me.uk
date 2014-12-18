@@ -3,9 +3,11 @@ layout: post
 title: "Installing and Managing Sensu with Puppet"
 date: 2014-12-18 20:52
 comments: true
-categories: 
+categories: ['devops', 'monitoring']
 ---
 As promised in the [previous post](/blog/2014/11/18/installing-rabbitmq-on-centos-7/), I thought I would share my Sensu/Puppet config. This is based on the Puppet infrastucture I decribed [here](/blog/2014/06/25/super-slick-agile-puppet-for-devops/) so everything goes into Hiera.
+
+<!-- more -->
 
 For reasons best known to me (or my DHCP server) my Sensu host is on 192.168.1.108.
 
