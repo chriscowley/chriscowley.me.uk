@@ -38,7 +38,7 @@ I found an answer on [StackOverflow](http://stackoverflow.com/questions/25816918
 ```
 firewall-cmd --permanent --add-port=5672/tcp
 firewall-cmd --reload
-setsebool -P nisenabled 1
+setsebool -P nis_enabled 1
 ```
 
 Now you can start the service and enable it:
