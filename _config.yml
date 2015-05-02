@@ -2,11 +2,10 @@
 #      Main Configs       #
 # ----------------------- #
 
-url: http://www.chriscowley.me.uk
+url: https://chriscowley.me.uk
 title: Just Another Linux Blog
 subtitle: maybe a bit about cycling as well
 author: Chris Cowley
-simple_search: http://www.duckduckgo.com/
 description:
 
 # Default date format is "ordinal" (resulting in "July 22nd 2007")
