@@ -21,7 +21,7 @@ Ideally I would have prefered to use an internal card. PCI -> PC card bridges do
 
 ## Software
 
-I am using <a href="http://smstools3.kekekasvi.com/" target="_blank">SMS Server Tools 3</a> which are available for Centos/RHEL in <a href="https://fedoraproject.org/wiki/EPEL" target="_blank">EPEL</a>. This gives you an smsd daemon that watches a folder for text messages in a particular format.
+I am using <a href="https://smstools3.kekekasvi.com/" target="_blank">SMS Server Tools 3</a> which are available for Centos/RHEL in <a href="https://fedoraproject.org/wiki/EPEL" target="_blank">EPEL</a>. This gives you an smsd daemon that watches a folder for text messages in a particular format.
 
 When you have enabled EPEL run
 ```
@@ -114,7 +114,7 @@ Finally we can create our essential service:
 define service {
     use critical-service
     service_description Website-content
-    check_command check_http_content!-U http://www.snellgroup.com -m Snell
+    check_command check_http_content!-U https://www.snellgroup.com -m Snell
     host_name www.snellgroup.com
 }
 ```

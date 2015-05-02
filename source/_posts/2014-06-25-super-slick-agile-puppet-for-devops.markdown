@@ -5,7 +5,7 @@ date: 2014-06-25 21:22
 comments: true
 categories: 
 ---
-{% img right http://i.imgur.com/3SJXbMb.jpg %}With a superb buzzword laden title like that, then I reckon massive traffic boost is inevitable.
+{% img right https://i.imgur.com/3SJXbMb.jpg %}With a superb buzzword laden title like that, then I reckon massive traffic boost is inevitable.
 
 Puppet is my favourite Configuration Management tool. This is not a post to try and persuade anyone not to use Ansible, Chef or any other. What I want to do is show I build Puppet based infrastuctures in such away that it meets all the basic tenets of DevOps/Agile/buzzword-of-the-month.
 
@@ -30,7 +30,7 @@ Puppet tends to fall apart pretty quickly if you do not have DNS in place. You c
 Starting with a base Centos 6 install, the installation is very easy:
 
 ```
-yum -y install http://yum.puppetlabs.com/puppetlabs-release-el-6.noarch.rpm
+yum -y install https://yum.puppetlabs.com/puppetlabs-release-el-6.noarch.rpm
 yum -y install puppet puppet-server rubygem-activerecord
 ```
 
@@ -67,14 +67,14 @@ The configuration will look like:
     ssl_client_verify_header = SSL_CLIENT_VERIFY
 ```
 
-Do not use the Puppetmaster service. It uses Webrick, which is bad. Any more than 5 agents and it will start slowing down. Puppet is a RoR app, so stick it behind [Apache/Passenger](http://docs.puppetlabs.com/guides/passenger.html). We installed the `puppet-server` package for a simple reason: when you start it the first time, it will create your SSL certificates automatically. After that initial start you can stop it and forget it ever existed. So just run:
+Do not use the Puppetmaster service. It uses Webrick, which is bad. Any more than 5 agents and it will start slowing down. Puppet is a RoR app, so stick it behind [Apache/Passenger](https://docs.puppetlabs.com/guides/passenger.html). We installed the `puppet-server` package for a simple reason: when you start it the first time, it will create your SSL certificates automatically. After that initial start you can stop it and forget it ever existed. So just run:
 
 ```
 service puppetmaster start
 service puppetmaster stop
 ```
 
-Unfortunately, you will need to put SELinux into Permissive mode temporarily. Once you have fired it up you can [build a local policy](http://wiki.centos.org/HowTos/SELinux#head-faa96b3fdd922004cdb988c1989e56191c257c01) and re-enable it.
+Unfortunately, you will need to put SELinux into Permissive mode temporarily. Once you have fired it up you can [build a local policy](https://wiki.centos.org/HowTos/SELinux#head-faa96b3fdd922004cdb988c1989e56191c257c01) and re-enable it.
 
 ```
 yum install httpd httpd-devel mod_ssl ruby-devel rubygems gcc gcc-c++ curl-devel openssl-devel zlib-devel
@@ -318,7 +318,7 @@ git clone ssh://<username>@puppet.example.com/srv/puppet.git
 cd puppet
 ```
 
-To perform all the testing, [RVM](http://rvm.io/) is your friend. This allows you to replicate the ruby environment on the master, have all the necessary gems installed in a contained environment and sets you up to integrate with Jenkins later. Install is with:
+To perform all the testing, [RVM](https://rvm.io/) is your friend. This allows you to replicate the ruby environment on the master, have all the necessary gems installed in a contained environment and sets you up to integrate with Jenkins later. Install is with:
 
 ```
 curl -sSL https://get.rvm.io | bash -s stable

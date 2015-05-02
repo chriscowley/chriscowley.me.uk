@@ -69,5 +69,5 @@ You should then be able to put a file in your upload folder. However if you try 
 
 Required reading:
 
-* [CentOS Wiki SELinux](http://wiki.centos.org/HowTos/SELinux)
-* [CentOS Wiki SELinuxBooleans](http://wiki.centos.org/TipsAndTricks/SelinuxBooleans)
+* [CentOS Wiki SELinux](https://wiki.centos.org/HowTos/SELinux)
+* [CentOS Wiki SELinuxBooleans](https://wiki.centos.org/TipsAndTricks/SelinuxBooleans)

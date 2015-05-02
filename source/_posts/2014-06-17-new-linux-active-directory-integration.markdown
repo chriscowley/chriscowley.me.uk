@@ -5,7 +5,7 @@ date: 2014-06-17 10:28
 comments: true
 categories: ['linux']
 ---
-This used to be quite complex, but now is astoundingly simple. Now there is a new project call [realmd](http://freedesktop.org/software/realmd/). It is in recent version of Debian (Jessie and Sid) and Ubuntu (since 13.04). For Red Hat types, it is RHEL7 and Fedora (since 18).
+This used to be quite complex, but now is astoundingly simple. Now there is a new project call [realmd](https://freedesktop.org/software/realmd/). It is in recent version of Debian (Jessie and Sid) and Ubuntu (since 13.04). For Red Hat types, it is RHEL7 and Fedora (since 18).
 
 <!-- more -->
 
@@ -59,7 +59,7 @@ My initial testing has been performed with an Active Directory that has "Identit
 As a bonus, it seems to respect nested groups, something that has always been a bug bear in these things.
 
 ## Edit (18/6/2014)
-It has been bought to my attention that there is dependency problems in Ubuntu 14.04. The [work around](http://funwithlinux.net/2014/04/join-ubuntu-14-04-to-active-directory-domain-using-realmd) is to not let `realm` install the dependencies. To `/etc/realmd.conf` add:
+It has been bought to my attention that there is dependency problems in Ubuntu 14.04. The [work around](https://funwithlinux.net/2014/04/join-ubuntu-14-04-to-active-directory-domain-using-realmd) is to not let `realm` install the dependencies. To `/etc/realmd.conf` add:
 
 ```
 [service]

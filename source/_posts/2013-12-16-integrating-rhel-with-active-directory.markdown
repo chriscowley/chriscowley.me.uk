@@ -36,7 +36,7 @@ In Server Manager, add the Role Service "Identity Management for UNIX". This is 
 
 Once that is installed, create a pair of groups. For the sake of argument, lets call them _LinuxAdmin_ and _LinuxUser_. The intended roles of these 2 groups is left as an exercise for the reader. When you create these groups, you will see a new tab in the properties window for both groups and users: "UNIX Attributes".
 
-Now go ahead and create a user (or edit an existing one). Go into the UNIX tab and set the configure the user for UNIX access: {% img right http://i.imgur.com/Ox9kuAy.png %}
+Now go ahead and create a user (or edit an existing one). Go into the UNIX tab and set the configure the user for UNIX access: {% img right https://i.imgur.com/Ox9kuAy.png %}
 
 - Select the NIS domain you created earlier
 - Set an approprate UUID (default should be fine)

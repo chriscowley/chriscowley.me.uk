@@ -5,7 +5,7 @@ date: 2014-07-28 11:01
 comments: true
 categories: linux
 ---
-{% img right http://i.imgur.com/IVNu1pf.png %} Fedora do nogt bundle Microsoft's core Truetype fonts for licensing reasons. Normallly I do not care, personally I prefer [Liberation fonts](https://fedorahosted.org/liberation-fonts/) anyway. However, today I needed to Verdana.
+{% img right https://i.imgur.com/IVNu1pf.png %} Fedora do nogt bundle Microsoft's core Truetype fonts for licensing reasons. Normallly I do not care, personally I prefer [Liberation fonts](https://fedorahosted.org/liberation-fonts/) anyway. However, today I needed to Verdana.
 <!-- more -->
 
 Traditionally, the way to install these on RPM based distributions has been:
@@ -23,7 +23,7 @@ Nowadays, Yum does various bits of house keeping in addition to RPM, so this can
 I get around this with a simple piece of `sed`/`grep`:
 
 ```
-curl http://corefonts.sourceforge.net/msttcorefonts-2.0-1.spec | grep -v 'Prereq: /usr/sbin/chkfontpath' > msttcorefonts-2.0-1.spec
+curl https://corefonts.sourceforge.net/msttcorefonts-2.0-1.spec | grep -v 'Prereq: /usr/sbin/chkfontpath' > msttcorefonts-2.0-1.spec
 ```
 
 Now you can do all the usual stuff:

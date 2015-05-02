@@ -23,7 +23,7 @@ It is also an ongoing process, because it does not only apply your configuration
 
 A benefit that comes from this is that it should also be effectively self-documenting.
 
-Personally I always head towards [Puppet](http://www.puppetlabs.com) here. There are plenty of good options though, such as Ansible and Saltstack.
+Personally I always head towards [Puppet](https://www.puppetlabs.com) here. There are plenty of good options though, such as Ansible and Saltstack.
 
 Working back, provisioning should deploy the most basic system that can hook up to your configuration management system.
 
@@ -31,9 +31,9 @@ Working back, provisioning should deploy the most basic system that can hook up 
 
 The key thing here is that it should link in with the next step (configuration management). It is essentially that it hands the new system over to CM with no input from the SysAdmin. As a Puppet user this means that you should come out at the end with the Puppet agent installed and configured.
 
-I tend towards [Razor](https://github.com/puppetlabs/razor-server) which is truly excellent. There are other good options such as [Cobbler](http://www.cobblerd.org/), but basically anything that can perform an OS install, add an agent and inject a config file is great. In many environments, a simple PXE server with a bunch of kickstart files may well be more than sufficient.
+I tend towards [Razor](https://github.com/puppetlabs/razor-server) which is truly excellent. There are other good options such as [Cobbler](https://www.cobblerd.org/), but basically anything that can perform an OS install, add an agent and inject a config file is great. In many environments, a simple PXE server with a bunch of kickstart files may well be more than sufficient.
 
 Orchestration is the first stage that provides an automated way of launching your provisioning system. It also prepares the Configuration Management. In my ver Puppet-centric world this means it should configure Hiera data for what the new system(s) are to do.
 
-It terms of tooling, there is always a certain amount of cross-pollination. Puppet for example can be used as an excellent way of [controlling your AWS infrastucture](http://puppetlabs.com/blog/provision-aws-infrastructure-using-puppet) which puts it firmly in the provisioning camp. I will not tell anyone not to use it that way, but I personally see it as a little *feature-creep*-like, so I will not be going there. I will be sticking to the tried and tested UNIX philosophy of "do one thing and do it well".
+It terms of tooling, there is always a certain amount of cross-pollination. Puppet for example can be used as an excellent way of [controlling your AWS infrastucture](https://puppetlabs.com/blog/provision-aws-infrastructure-using-puppet) which puts it firmly in the provisioning camp. I will not tell anyone not to use it that way, but I personally see it as a little *feature-creep*-like, so I will not be going there. I will be sticking to the tried and tested UNIX philosophy of "do one thing and do it well".
 

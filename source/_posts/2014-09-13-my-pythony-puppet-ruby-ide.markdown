@@ -6,7 +6,7 @@ comments: true
 categories: ['devops', 'linux']
 ---
 
-{% img right http://i.imgur.com/0k24Ambl.png  400 400 %}Despite my penchant for tools written in Ruby (Puppet, Gitlab, Jekyll/Octopress etc) I do not actually like Ruby. I am more of a Python guy. I also like Vim, so whenever I use a GUI IDE I end up with something littered with `:w` and `ZZ`.
+{% img right https://i.imgur.com/0k24Ambl.png  400 400 %}Despite my penchant for tools written in Ruby (Puppet, Gitlab, Jekyll/Octopress etc) I do not actually like Ruby. I am more of a Python guy. I also like Vim, so whenever I use a GUI IDE I end up with something littered with `:w` and `ZZ`.
 <!-- more -->
 
 Despite my pythonic leanings, I also need something that can handle Ruby and Puppet's DSL. To which end, this is a bit of a mixture. Fortunately, nothing in either world really contradicts the other, so it works pretty nicely.
@@ -39,7 +39,7 @@ This the core of everything. I use quite a few plugins:
 * [Tabular](https://github.com/godlygeek/tabular): Text filtering and alignment
 * [Markdown](https://github.com/hallison/vim-markdown): Markdown syntax highlighter with snippets support
 
-I keep all this under Git control (available [here](http://gitlab.chriscowley.me.uk/chriscowleyunix/vim-configuration)). You can just clone my repo and create a symlink for your `.vimrc`. If you would rather see what you are doing, then you can replicate my set up like this:
+I keep all this under Git control (available [here](https://gitlab.chriscowley.me.uk/chriscowleyunix/vim-configuration)). You can just clone my repo and create a symlink for your `.vimrc`. If you would rather see what you are doing, then you can replicate my set up like this:
 
 ```
 mkdir -p ${HOME}/.vim/{autoload,bundle}

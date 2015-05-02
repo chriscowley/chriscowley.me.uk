@@ -6,7 +6,7 @@ comments: true
 categories: ['infrastructure', 'linux']
 ---
 
-Hyper-converged seems to be all the rage at the moment. VMware's announcement of the [EVO:RAIL](http://www.vmware.com/products/evorail/) has naturally got lots of tongues wagging. They are jumping into a market already well populated.
+Hyper-converged seems to be all the rage at the moment. VMware's announcement of the [EVO:RAIL](https://www.vmware.com/products/evorail/) has naturally got lots of tongues wagging. They are jumping into a market already well populated.
 <!-- more -->
 
 I was looking at the pricing/features and though it all looks a little expensive. Nutanix for example, will sell you the following:
@@ -27,13 +27,13 @@ That last one does not necessarily mean that all the boxes are the same. It mean
 
 On top of that, you get some software special sauce to tie it all together. For EVO::RAIL, that looks something like this:
 
-![EVO:RAIL install](http://wahlnetwork.com/wn/wp-content/uploads/2014/08/configure-options-650x335.png)
+![EVO:RAIL install](https://wahlnetwork.com/wn/wp-content/uploads/2014/08/configure-options-650x335.png)
 
 and this:
 
-![EVO:RAIL install finished](http://wahlnetwork.com/wn/wp-content/uploads/2014/08/configure-complete-650x330.png)
+![EVO:RAIL install finished](https://wahlnetwork.com/wn/wp-content/uploads/2014/08/configure-complete-650x330.png)
 
-[Which is nice](http://youtu.be/XOhZgAPn_CU)
+[Which is nice](https://youtu.be/XOhZgAPn_CU)
 
 I decided to play a little game, a bit like when you want to buy a new computer: you go online, put together all the parts you want in a basket, look at, dream a little. After a few rounds of this you start justifying it to yourself, then you wife/accountant. Eventually, you build one final basket pull out the credit card an pull the trigger. Well, this is like that, but more expensive.
 
@@ -41,7 +41,7 @@ I think that we now have everything we need in the FLOSS world to impliment a Hy
 
 # Hardware
 
-{% img right http://www.supermicro.com.tw/a_images/products/superserver/2U/SYS-2027PR-HTR_25.jpg %}The easy bit is the CPU and RAM: plenty (at least 6 cores with 64GB of RAM). Networking, surprisingly is also relatively simple. Anything will do (2x 1Gb will be fine an entry level node), but 2x 10Gb is preferable, Infiniband would also be great (Linux works beautifully with Infiniband). All this would (ideally) be put into a box that has [multiple nodes in one box](http://www.supermicro.com.tw/products/system/2U/2028/SYS-2028TP-HTR.cfm).
+{% img right https://www.supermicro.com.tw/a_images/products/superserver/2U/SYS-2027PR-HTR_25.jpg %}The easy bit is the CPU and RAM: plenty (at least 6 cores with 64GB of RAM). Networking, surprisingly is also relatively simple. Anything will do (2x 1Gb will be fine an entry level node), but 2x 10Gb is preferable, Infiniband would also be great (Linux works beautifully with Infiniband). All this would (ideally) be put into a box that has [multiple nodes in one box](https://www.supermicro.com.tw/products/system/2U/2028/SYS-2028TP-HTR.cfm).
 
 Storage is more complex. Tiering is essential, and I personally am not a fan of hardware RAID. Additionally, this needs to be replicated. The overall architecture would look something like:
 
