@@ -76,19 +76,42 @@ jenkins:
             write_files:
               - content: |
                   #!/bin/bash
-                  vol-data_id="%vol-data_id%"
-                  vol-data_dev="/dev/disk/by-id/virtio-$(echo ${vol-images_id} | cut -c -20)"
-                  mkfs.ext4 ${vol-data_dev}               
+                  voldata_id="%voldata_id%"
+                  voldata_dev="/dev/disk/by-id/virtio-$(echo ${voldata_id} | cut -c -20)"
+                  mkfs.ext4 ${voldata_dev}               
                   mkdir -pv /var/lib/jenkins
-                  echo "${vol-data_dev} /var/lib/jenkins ext4 defaults 1 2" >> /etc/fstab
+                  echo "${voldata_dev} /var/lib/jenkins ext4 defaults 1 2" >> /etc/fstab
                   mount /var/lib/jenkins
                 path: /tmp/format-disks
                 permissions: '0700'
             runcmd:
               - /tmp/format-disks
           params:
-            "%vol-data-id%": { get_resource: jenkins_data }
+            "%voldata_id%": { get_resource: jenkins_data }
+jenkins_data:
+  type: OS::Cinder::Volume
+  properties:
+    size: 50
+jenkins_data_att:
+  type: OS::Cinder::VolumeAttachment
+  properties:
+    instance_uuid: { get_resource: jenkins }
+    volume_id: { get_resource: jenkins_data}
 ```
 
+What is happenning here? I create 3 resources:
 
-          
+  - a server
+  - a volume
+  - a volume attachment
+
+Within the server there is a _cloud-init_ script passed in via _user_data_. This cloud-init script is created using a template which has a single parameter. This parameter is `%voldata_id%` - I put `%` symbols around all my variables in this context, it makes false matches pretty much impossible. The `get_resource` command collects the ID of the Cinder volume I created.
+
+Now we move into the _cloud-init_ script created which does 2 things:
+
+  - creates a bash script, including the variable for the ID
+  - launches that scripts
+  
+The Bash script calculates what the device will be (`$voldata_dev`), formats it and mounts it at the mountpoint it creates. It also adds this into `/etc/fstab` for the future.
+
+This can easily be used for multiple volumes. All one does is add an extra parameter to collect the extra resources, then extend the Bash script to do them too.
