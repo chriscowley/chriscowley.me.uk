@@ -9,6 +9,8 @@ I'm back playing with Openstack again. The day job once again Openstack based, a
 
 Anyway, the meat of today's problem comes from the day job. I have some instances deployed via heat that have multiple Cinder volumes attached to them, these then need to be mounted in a certain way. The syntax for attaching a cinder volume to an instance is:
 
+<!-- more -->
+
 ```
 
 instance_vol_att:
