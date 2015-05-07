@@ -15,7 +15,5 @@ group :development do
   gem 'stringex'
   gem 'liquid'
 end
-gem 'execjs'
-gem 'therubyracer'
 gem 'sinatra'
 gem 'nokogiri'
