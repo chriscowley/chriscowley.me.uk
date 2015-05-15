@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Identify and mounting Cinder Volumes in using Openstack Heat"
+title: "Identify and mounting Cinder Volumes in Openstack Heat"
 date: 2015-05-05 18:51
 comments: true
 categories: ['openstack']
